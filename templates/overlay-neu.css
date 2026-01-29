@@ -1,0 +1,306 @@
+/* overlay-neu.css - VERSIÓ COMPLETA */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0D47A1 0%, #1976D2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.neu-overlay {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* CAPÇALERA */
+.neu-header {
+    background: linear-gradient(90deg, #1A237E 0%, #283593 100%);
+    color: white;
+    padding: 20px 30px;
+    border-bottom: 4px solid #2196F3;
+}
+
+.neu-header h1 {
+    margin: 0 0 15px 0;
+    font-size: 28px;
+    color: #BBDEFB;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.info-label {
+    color: #90CAF9;
+    font-weight: 600;
+}
+
+.info-value {
+    color: #FFFFFF;
+    font-weight: 700;
+    background: rgba(33, 150, 243, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.back-link {
+    color: #FFCC80;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 2px solid #FFCC80;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    background: #FFCC80;
+    color: #1A237E;
+}
+
+/* CONTINGUT - LLISTAT */
+.neu-content {
+    padding: 25px;
+    min-height: 500px;
+    background: #F5F5F5;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 18px;
+}
+
+/* FILA D'ESTACIÓ */
+.station-row {
+    display: flex;
+    background: white;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+    border-left: 5px solid #2196F3;
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+.station-row:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animació per a les files */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* COLUMNA NEU (ESQUERRA) */
+.snow-column {
+    flex: 0 0 220px;
+    background: linear-gradient(135deg, #1E88E5 0%, #0D47A1 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.snow-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.snow-depth {
+    font-size: 36px;
+    font-weight: 900;
+    margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.snow-label {
+    font-size: 14px;
+    color: #BBDEFB;
+    margin-bottom: 5px;
+}
+
+.snow-station {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.snow-altitude {
+    font-size: 14px;
+    color: #BBDEFB;
+    margin-top: 5px;
+}
+
+.snow-comarca {
+    font-size: 13px;
+    color: #90CAF9;
+    font-style: italic;
+    margin-top: 3px;
+}
+
+/* COLUMNA DADES (DRETA) */
+.data-column {
+    flex: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.data-item {
+    background: #F8F9FA;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.data-label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.data-value {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #333;
+}
+
+/* Colors per tipus de dada */
+.temp-current .data-value { color: #333; }
+.temp-max .data-value { color: #FF5722; }
+.temp-min .data-value { color: #2196F3; }
+.humidity .data-value { color: #4CAF50; }
+.wind .data-value { color: #9C27B0; }
+.precipitation .data-value { color: #00BCD4; }
+.update .data-value { color: #795548; }
+
+/* PEU DE PÀGINA CORREGIT */
+.neu-footer-corrected {
+    background: #1A237E;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    border-top: 2px solid #2196F3;
+}
+
+.footer-left-corrected {
+    color: #90CAF9;
+    flex: 1;
+    text-align: left;
+}
+
+.footer-center-corrected {
+    color: #C5CAE9;
+    font-style: italic;
+    flex: 1;
+    text-align: center;
+    font-size: 15px;
+}
+
+.footer-right-corrected {
+    color: #FFCC80;
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .data-column {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .station-row {
+        flex-direction: column;
+    }
+    
+    .snow-column {
+        flex: 0 0 auto;
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .data-column {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .neu-header h1 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .neu-footer-corrected {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .footer-left-corrected,
+    .footer-center-corrected,
+    .footer-right-corrected {
+        flex: none;
+        width: 100%;
+        text-align: center;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    .neu-content {
+        padding: 15px;
+    }
+}

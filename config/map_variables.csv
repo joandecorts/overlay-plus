@@ -1,0 +1,28 @@
+NOM_VARIABLE;NOM PER L'OVERLAY;
+DADES DEL DIA;;
+Temperatura mitjana;Temperatura mitjana §C;
+Temperatura m…xima;Temperatura m…xima §C;
+Temperatura m¡nima;Temperatura m¡nima §C;
+Humitat relativa mitjana;Humitat relativa mitjana %;
+Precipitaci¢ acumulada;Precipitaci¢ acumulada mm;
+Ratxa m…xima del ventÿ(10 m);Ratxa m…xima del ventÿ(10 m);
+Pressi¢ atmosfŠrica mitjana;Pressi¢ atmosfŠrica mitjana hPa;
+Irradiaci¢ solar global;Irradiaci¢ solar global W/m2;
+Gruix de neu m…xim;Gruix de neu m…xim cm;
+;;
+DADES DEL PERÞODE;;
+VAR_DVM_10_m_graus    ; Direcci¢ vent 10m;
+VAR_DVM_6_m_graus       ; Direcci¢ vent 6m;
+VAR_GN_cm            ; Gruix de Neu cm;
+VAR_HRM_perc          ; Humitat Relativa Mitjana %;
+VAR_PM_hPa           ; Pressi¢ AtmosfŠrica Mitjana  hPa;
+VAR_PPT_mm            ; Precipitaci¢ acumulada mm;
+VAR_Per¡ode_TU       ; Per¡ode (Hora Local);(S'ha de transformar)
+VAR_RS_W_m_2         ; Irradi…ncia Global Mitjana (W/m2);
+VAR_TM_grausC         ; Temperatura Mitjana §C;
+VAR_TN_grausC        ; Temperatura M¡nima §C;
+VAR_TX_grausC        ; Temperatura Mitjana §C;
+VAR_VVM_10_m_km_h    ; Velocitat Mitjana del Vent (Km/h);
+VAR_VVM_6_m_km_h   ; Velocitat Mitjana del Vent (Km/h);
+VAR_VVX_10_m_km_h; Ratxa M…xima del Vent (Km/h);
+VAR_VVX_6_m_km_h     ; Ratxa M…xima del Vent (Km/h);

@@ -1,0 +1,313 @@
+/* overlay.css - VERSIÓ PER COLUMNES DINÀMIQUES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: transparent;
+    overflow: auto;
+    padding: 20px;
+    background-color: #007BFF;
+}
+
+.meteo-overlay {
+    width: 100%;
+    max-width: 1400px; /* Més ample per més columnes */
+    min-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #0a2452 0%, #0d47a1 100%);
+    color: white;
+    border: 3px solid #0056b3;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 35, 102, 0.5);
+    overflow: hidden;
+}
+
+/* CAPÇALERA */
+.overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: linear-gradient(90deg, #0a2452 0%, #0d47a1 100%);
+    border-bottom: 3px solid #ff7b00;
+}
+
+.station-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.station-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffcc80;
+    margin-bottom: 8px;
+}
+
+.location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.municipality, .comarca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.location-label {
+    color: #bbdefb;
+    font-weight: 600;
+}
+
+.municipality span:last-child,
+.comarca span:last-child {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+}
+
+.time-period {
+    background: rgba(255, 123, 0, 0.2);
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 2px solid #ff7b00;
+    width: 100%;
+    text-align: center;
+}
+
+.period-label {
+    font-size: 15px;
+    color: #ffcc80;
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+.period-time {
+    font-size: 19px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.current-time-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.current-time {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffcc80;
+    background: rgba(255, 123, 0, 0.15);
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 2px solid #ff7b00;
+    text-align: center;
+    width: 100%;
+    letter-spacing: 0.5px;
+}
+
+/* CONTINGUT PRINCIPAL (FLEXIBLE) */
+.overlay-content {
+    display: flex;
+    justify-content: flex-start; /* Canviat per permetre més columnes */
+    padding: 25px;
+    background: rgba(10, 36, 82, 0.2);
+    min-height: 190px;
+    overflow-x: auto; /* Scroll horitzontal si hi ha moltes columnes */
+    gap: 15px; /* Espai entre columnes */
+}
+
+.data-column {
+    flex: 0 0 auto; /* No créixer, mida automàtica */
+    padding: 0 18px;
+    min-width: 280px; /* Una mica més ample */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Títol de columna */
+.column-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffcc80;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(255, 123, 0, 0.3);
+}
+
+/* ESTIL PER CADA LÍNIA DE DADES */
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border-left: 4px solid #ff7b00;
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.data-item:hover {
+    background: rgba(255, 123, 0, 0.2);
+    transform: translateX(8px);
+}
+
+.data-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #bbdefb;
+    flex: 1;
+}
+
+.data-value {
+    font-size: 22px;
+    font-weight: 800;
+    text-align: right;
+    min-width: 110px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+/* Colors específics */
+.temp-avg, .temp-max, .temp-min, .pressure { color: #ffcc80; }
+.humidity { color: #80cbc4; }
+.precipitation, .day-precipitation { color: #64b5f6; }
+.wind-avg, .wind-gust { color: #a5d6a7; }
+.wind-dir { color: #ce93d8; }
+.radiation { color: #fff176; }
+.update-time { color: #c5e1a5; }
+.snowDepth, .snowFresh, .snowQuality { color: #ffffff; }
+
+/* DADES DEL DIA */
+.day-summary {
+    background: linear-gradient(90deg, #0d47a1 0%, #1565c0 100%);
+    padding: 18px 25px;
+    border-top: 3px solid #ff7b00;
+    border-bottom: 3px solid #ff7b00;
+}
+
+.day-summary-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffcc80;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.day-data-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.day-data-item {
+    text-align: center;
+    padding: 12px 22px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 123, 0, 0.35);
+    min-width: 200px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.day-data-label {
+    display: block;
+    font-size: 14px;
+    color: #bbdefb;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.day-data-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #ffffff;
+    display: block;
+}
+
+.day-data-note {
+    display: block;
+    font-size: 12px;
+    color: #bbdefb;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* PEU DE PÀGINA */
+.overlay-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: linear-gradient(90deg, #0a2452 0%, #0d47a1 100%);
+    border-top: 2px solid #0056b3;
+    font-size: 14px;
+}
+
+.footer-left {
+    color: #bbdefb;
+    font-weight: 500;
+    flex: 1;
+    text-align: left;
+}
+
+.footer-center {
+    color: #90caf9;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+    font-size: 15px;
+}
+
+.footer-right {
+    color: #c5e1a5;
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .meteo-overlay {
+        min-width: 1000px;
+    }
+    .data-column {
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .meteo-overlay {
+        min-width: 800px;
+    }
+    .overlay-content {
+        flex-wrap: wrap;
+    }
+    .data-column {
+        min-width: 45%;
+        margin-bottom: 15px;
+    }
+}
