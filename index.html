@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay Meteorològic - 4 Columnes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==== ESTIL ORIGINAL PRESERVAT 100% ==== */
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #007BFF;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ff7b00;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .admin-panel h3 {
+            margin-top: 0;
+            color: #ffcc80;
+        }
+        
+        .admin-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(145deg, #ff7b00, #e56b00);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .admin-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .admin-input {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ff7b00;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .admin-info {
+            font-size: 12px;
+            color: #bbdefb;
+            margin-top: 10px;
+            border-top: 1px solid #ff7b00;
+            padding-top: 10px;
+        }
+        
+        .meteo-overlay {
+            background: rgba(10, 25, 49, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 1400px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3949ab;
+        }
+        
+        .station-info {
+            flex: 1;
+        }
+        
+        .station-name {
+            font-size: 24px;
+            color: #4fc3f7;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .location-details {
+            font-size: 14px;
+            color: #bbdefb;
+        }
+        
+        .location-label {
+            color: #7986cb;
+            margin-right: 5px;
+        }
+        
+        .header-right {
+            text-align: right;
+            flex: 1;
+        }
+        
+        /* ==== MODIFICAT: RELLOTGES EXACTAMENT COM LA IMATGE ==== */
+        .dual-clock-digital {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: transparent !important;
+            padding: 0;
+            border: none !important;
+            min-width: 180px;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            align-items: flex-end;
+        }
+        
+        .clock-row-digital {
+            display: flex;
+            justify-content: flex-end;
+            align-items: baseline;
+            gap: 20px; /* Espai entre hora i llegenda */
+            width: 100%;
+        }
+        
+        .clock-time-digital {
+            color: white !important;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            min-width: 85px;
+            text-align: right;
+        }
+        
+        .clock-label-digital {
+            color: white !important; /* Llegendes també en blanc */
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 35px;
+            text-align: left;
+        }
+        
+        /* ==== MODIFICAT: BARRA SELECTORA AL MIG ==== */
+        .header-center {
+            text-align: center;
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .station-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        /* ==== MODIFICAT: DROPDOWN AMB TONS EXACTES ==== */
+        .station-selector select {
+            /* Estat normal - fons blau fosc com la resta */
+            background: linear-gradient(145deg, #1a237e, #283593) !important;
+            color: #bbdefb !important; /* Color com els títols de les columnes */
+            border: 2px solid #3949ab !important;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 300px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        .station-selector select:hover {
+            border-color: #4fc3f7 !important;
+            background: linear-gradient(145deg, #283593, #1a237e) !important;
+        }
+        
+        .station-selector select:focus {
+            outline: none;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+        
+        /* Estil de les opcions quan es desplega - FONS BLANC, LLETRES NEGRES */
+        .station-selector select option {
+            background: white !important;
+            color: black !important;
+            font-weight: 500;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+        
+        .station-selector select option:hover {
+            background: #f0f0f0 !important;
+            color: #1a237e !important;
+        }
+        
+        .station-selector select option:checked {
+            background: #e3f2fd !important;
+            color: #1a237e !important;
+            font-weight: 600;
+        }
+        
+        .station-selector label {
+            color: #bbdefb; /* Color com els títols de les columnes */
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        /* ==== ROTACIÓ ACTIVA ALINEADA AMB EL DROPDOWN ==== */
+        .rotation-status-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .rotation-status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .rotation-status.paused {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .overlay-content {
+            margin: 30px 0;
+        }
+        
+        .columns-4-container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .col-basics {
+            padding-left: 15px;
+        }
+        
+        .col-precip-wind {
+            padding-left: 15px;
+        }
+        
+        .col-other {
+            padding-left: 15px;
+        }
+        
+        .col-additional {
+            padding-left: 15px;
+        }
+        
+        .data-column {
+            margin-bottom: 25px;
+        }
+        
+        .column-title {
+            color: #bbdefb;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #3949ab;
+        }
+        
+        .data-item {
+            background: linear-gradient(145deg, #1a237e, #283593);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border: 2px solid #3949ab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #ff7b00;
+        }
+        
+        .data-item {
+            border-bottom: none !important;
+        }
+        
+        .data-item:hover {
+            transform: translateY(-3px);
+            box-shadow: -8px 0 20px rgba(255, 123, 0, 0.6), 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-left-color: #ff9d4d;
+        }
+        
+        .data-label {
+            color: #bbdefb;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        .data-value {
+            color: #ffcc80;
+            font-weight: bold;
+            font-size: 17px;
+            text-align: right;
+        }
+        
+        @media (max-width: 1200px) {
+            .columns-4-container {
+                flex-direction: column;
+            }
+            .column {
+                min-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .header-center {
+                order: 3;
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .station-controls {
+                flex-direction: column;
+            }
+            
+            .dual-clock-digital {
+                min-width: 160px;
+            }
+            
+            .clock-time-digital {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+            
+            .clock-label-digital {
+                font-size: 14px;
+            }
+        }
+        
+        .day-summary {
+            background: rgba(26, 35, 126, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 2px solid #5c6bc0;
+        }
+        
+        .day-summary-title {
+            color: #c5cae9;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .day-data-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .day-data-item {
+            text-align: center;
+            padding: 15px;
+            min-width: 180px;
+        }
+        
+        .day-data-label {
+            display: block;
+            color: #c5cae9;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .day-data-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff59d;
+            display: block;
+        }
+        
+        .day-data-note {
+            font-size: 12px;
+            color: #9fa8da;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .overlay-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #3949ab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #9fa8da;
+        }
+        
+        .footer-left, .footer-center, .footer-right {
+            flex: 1;
+        }
+        
+        .footer-center {
+            text-align: center;
+        }
+        
+        .footer-right {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .email-icon {
+            color: #4fc3f7;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        
+        .email-link {
+            color: #bbdefb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .email-link:hover {
+            color: #4fc3f7;
+            text-decoration: underline;
+        }
+        
+        /* ==== FI CSS ==== */
+    </style>
+</head>
+<body>
+    <!-- Panel administrador (ocult) -->
+    <div class="admin-panel" id="adminPanel">
+        <h3>⚙️ Mode Administrador</h3>
+        <div class="admin-controls">
+            <div>
+                <label>Temps alternança (segons):</label>
+                <input type="number" id="rotationTime" value="120" min="5" max="300" class="admin-input">
+                <button onclick="setRotationTime()" class="admin-btn">Aplicar</button>
+            </div>
+            <button onclick="toggleRotation()" class="admin-btn" id="toggleRotationBtn">⏸️ Aturar Rotació</button>
+            <button onclick="changeStationManual()" class="admin-btn">🔄 Canviar Estació</button>
+            <button onclick="showStationInfo()" class="admin-btn">📊 Info Estació</button>
+            <button onclick="toggleAdminPanel()" class="admin-btn">❌ Tancar</button>
+        </div>
+        <div class="admin-info">
+            <p>Estació actual: <span id="adminCurrentStation">YT</span></p>
+            <p>Total estacions: <span id="adminTotalStations">33</span></p>
+            <p>Estat: <span id="adminRotationStatus">ACTIVA (120s)</span></p>
+            <p style="font-size: 10px; margin-top: 5px;">(Ctrl+Shift+A per mostrar/amagar)</p>
+            <p style="font-size: 10px;">Clic a l'overlay per aturar/reprendre</p>
+        </div>
+    </div>
+
+    <!-- Overlay meteorològic -->
+    <div class="meteo-overlay" id="meteoOverlay">
+        <!-- CAPÇALERA AMB ESTRUCTURA CORREGIDA -->
+        <div class="overlay-header">
+            <div class="station-info">
+                <div class="station-name" id="current-station-name">Alt Àneu - Bonabé (1.693 m)</div>
+                <div class="location-details">
+                    <span class="municipality">
+                        <span class="location-label">Municipi:</span>
+                        <span id="current-municipality">Alt Àneu</span>
+                    </span>
+                    <span class="comarca">
+                        <span class="location-label">Comarca:</span>
+                        <span id="current-comarca">Pallars Sobirà</span>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- CENTRE: BARRA SELECTORA I ROTACIÓ -->
+            <div class="header-center">
+                <div class="station-controls">
+                    <div class="station-selector">
+                        <label for="stationDropdown">Estació:</label>
+                        <select id="stationDropdown" onchange="changeStationFromDropdown()">
+                            <option value="">Carregant estacions...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="rotation-status-container">
+                    <div class="rotation-status" id="rotationStatus">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>ROTACIÓ ACTIVA (120s)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DRETA: RELLOTGES EXACTAMENT COM LA IMATGE -->
+            <div class="header-right">
+                <div class="dual-clock-digital">
+                    <div class="clock-row-digital">
+                        <span class="clock-time-digital" id="current-time-lt">21:21:21</span>
+                        <span class="clock-label-digital">LT</span>
+                    </div>
+                    <div class="clock-row-digital">
+                        <span class="clock-time-digital" id="current-time-utc">21:21</span>
+                        <span class="clock-label-digital">UTC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTINGUT PRINCIPAL (4 COLUMNES) -->
+        <div class="overlay-content" id="overlayContent">
+            <div class="columns-4-container">
+                
+                <!-- COLUMNA 1: DADES BÀSIQUES -->
+                <div class="column col-basics">
+                    <div class="data-column">
+                        <div class="column-title">📊 Dades Bàsiques</div>
+                        
+                        <div class="data-item" data-delay="0.1">
+                            <span class="data-label">Temp. Mitjana:</span>
+                            <span class="data-value" id="data-tempAvg">{{VAR_TM_grausC}} °C</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.2">
+                            <span class="data-label">Temp. Màxima:</span>
+                            <span class="data-value" id="data-tempMax">{{VAR_TX_grausC}} °C</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.3">
+                            <span class="data-label">Temp. Mínima:</span>
+                            <span class="data-value" id="data-tempMin">{{VAR_TN_grausC}} °C</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.4">
+                            <span class="data-label">Humitat Relativa:</span>
+                            <span class="data-value" id="data-humidity">{{VAR_HRM_perc}} %</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA 2: PRECIPITACIÓ I VENT -->
+                <div class="column col-precip-wind">
+                    <div class="data-column">
+                        <div class="column-title">🌧️ Precipitació & Vent</div>
+                        
+                        <div class="data-item" data-delay="0.1">
+                            <span class="data-label">Precipitació:</span>
+                            <span class="data-value" id="data-precipitation">{{VAR_PPT_mm}} mm</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.2">
+                            <span class="data-label">Vent Mitjà:</span>
+                            <span class="data-value" id="data-windAvg">{{VENT_MITJA}} km/h</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.3">
+                            <span class="data-label">Direcció Vent:</span>
+                            <span class="data-value" id="data-windDir">{{DIRECCIO_VENT}}°</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.4">
+                            <span class="data-label">Ràfega Màxima:</span>
+                            <span class="data-value" id="data-windGust">{{RAFEGA_MAXIMA}} km/h</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA 3: ALTRES DADES -->
+                <div class="column col-other">
+                    <div class="data-column">
+                        <div class="column-title">📈 Altres Dades</div>
+                        
+                        <div class="data-item" data-delay="0.1">
+                            <span class="data-label">Pressió Atmosfèrica:</span>
+                            <span class="data-value" id="data-pressure">{{VAR_PM_hPa}} hPa</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.2">
+                            <span class="data-label">Irradiància Global:</span>
+                            <span class="data-value" id="data-radiation">{{VAR_RS_W_m_2}} W/m²</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.3">
+                            <span class="data-label">Gruix de Neu:</span>
+                            <span class="data-value" id="data-snowDepth">{{VAR_GN_cm}} cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA 4: DADES ADDICIONALS -->
+                <div class="column col-additional">
+                    <div class="data-column">
+                        <div class="column-title">🕐 Dades Addicionals</div>
+                        
+                        <div class="data-item" data-delay="0.1">
+                            <span class="data-label">Període:</span>
+                            <span class="data-value" id="data-period">--/--/---- - --:--</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.2">
+                            <span class="data-label">Altitud:</span>
+                            <span class="data-value" id="data-altitude">{{ALTITUD}} m</span>
+                        </div>
+                        
+                        <div class="data-item" data-delay="0.3">
+                            <span class="data-label">Hora Actualització:</span>
+                            <span class="data-value" id="data-timestamp">{{TIMESTAMP}}</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- DADES DEL DIA -->
+        <div class="day-summary">
+            <div class="day-summary-title">📊 DADES DEL DIA</div>
+            <div class="day-data-container">
+                <div class="day-data-item" data-delay="1.3">
+                    <span class="day-data-label">Temp. màxima del dia</span>
+                    <span class="day-data-value" id="day-temp-max">{{TX_DIARIA_MAX}}°C</span>
+                    <span class="day-data-note">Des de les 00:00</span>
+                </div>
+                <div class="day-data-item" data-delay="1.4">
+                    <span class="day-data-label">Temp. mínima del dia</span>
+                    <span class="day-data-value" id="day-temp-min">{{TN_DIARIA_MIN}}°C</span>
+                    <span class="day-data-note">Des de les 00:00</span>
+                </div>
+                <div class="day-data-item" data-delay="1.5">
+                    <span class="day-data-label">Pluja acumulada</span>
+                    <span class="day-data-value" id="day-precipitation">{{PPT_DIARIA_TOTAL}} mm</span>
+                    <span class="day-data-note">Horari local</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PEU DE PÀGINA -->
+        <div class="overlay-footer">
+            <div class="footer-left">
+                Font de dades: <strong>https://www.meteo.cat - Scraping amb scripts propis</strong>
+            </div>
+            <div class="footer-center">
+                <em> © joandecorts.io</em>
+            </div>
+            <div class="footer-right">
+                <span class="email-icon">✉️</span>
+                <a href="mailto:admin@joandecorts.com" class="email-link">admin@joandecorts.com</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT COMPLET CORREGIT -->
+    <script>
+        // ============================================
+        // CONFIGURACIÓ PRINCIPAL
+        // ============================================
+        const CONFIG = {
+            stationRotationInterval: 120000, // 120 segons per defecte
+            lastDataUpdate: null,
+            adminMode: false,
+            rotationActive: true, // Rotació activada per defecte
+            clickToPause: true,   // Aturar/reprendre amb clic
+            stations: [],          // Llista d'estacions (es carregarà del JSON)
+            currentStationIndex: 0,
+            rotationInterval: null
+        };
+
+        // ============================================
+        // FUNCIONS D'INICIALITZACIÓ
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Inicialitzant overlay meteorològic...');
+            
+            // 1. CARREGAR LLISTA D'ESTACIONS
+            await loadStationsList();
+            
+            // 2. INICIAR RELLOTGES EN TEMPS REAL
+            updateDualClocks();
+            setInterval(updateDualClocks, 1000);
+            
+            // 3. ACTUALITZAR PERÍODE (a la pastilla)
+            updateTimePeriod();
+            setInterval(updateTimePeriod, 30000); // Cada 30 segons
+            
+            // 4. CONFIGURAR CLIC PER ATURAR/REPRENDRE
+            setupClickToPause();
+            
+            // 5. INICIAR ANIMACIÓ DE DADES
+            startDataAnimation();
+            
+            // 6. INICIAR ROTACIÓ AUTOMÀTICA (120s)
+            startStationRotation();
+            
+            // 7. CONFIGURAR TECLAT PER ADMIN
+            setupAdminShortcuts();
+            
+            // 8. ACTUALITZAR INFO DE LA PRIMERA ESTACIÓ
+            if (CONFIG.stations.length > 0) {
+                updateStationInfo(CONFIG.stations[0]);
+            }
+            
+            console.log('✅ Sistema completament inicialitzat!');
+            console.log(`📊 Estacions carregades: ${CONFIG.stations.length}`);
+            console.log('🔄 Rotació automàtica: ACTIVA (120s)');
+        });
+
+        // ============================================
+        // NOVA FUNCIÓ: RELLOTGES EXACTAMENT COM LA IMATGE
+        // ============================================
+        function updateDualClocks() {
+            const now = new Date();
+            
+            // Hora Local (LT) - amb segons
+            const hoursLT = now.getHours().toString().padStart(2, '0');
+            const minutesLT = now.getMinutes().toString().padStart(2, '0');
+            const secondsLT = now.getSeconds().toString().padStart(2, '0');
+            const timeStringLT = `${hoursLT}:${minutesLT}:${secondsLT}`;
+            
+            // Hora UTC - sense segons (com a la teva imatge)
+            const hoursUTC = now.getUTCHours().toString().padStart(2, '0');
+            const minutesUTC = now.getUTCMinutes().toString().padStart(2, '0');
+            const timeStringUTC = `${hoursUTC}:${minutesUTC}`;
+            
+            // Actualitzar els dos rellotges
+            const clockElementLT = document.getElementById('current-time-lt');
+            const clockElementUTC = document.getElementById('current-time-utc');
+            
+            if (clockElementLT) clockElementLT.textContent = timeStringLT;
+            if (clockElementUTC) clockElementUTC.textContent = timeStringUTC;
+        }
+
+        // ============================================
+        // CARREGAR LLISTA D'ESTACIONS DESDE stations_list.js
+        // ============================================
+        async function loadStationsList() {
+            try {
+                const stationsUrl = 'https://joandecorts.github.io/ampliacio_meteo-rss-auto/config/stations_list.js';
+                console.log(`🔍 Carregant estacions de: ${stationsUrl}`);
+                
+                const script = document.createElement('script');
+                script.src = stationsUrl;
+                script.onload = function() {
+                    if (typeof stationsList !== 'undefined') {
+                        CONFIG.stations = stationsList;
+                        populateStationDropdown();
+                        updateAdminStationCount();
+                        console.log(`✅ ${stationsList.length} estacions carregades correctament`);
+                    } else {
+                        console.error('❌ Variable stationsList no trobada');
+                        loadDefaultStations();
+                    }
+                };
+                script.onerror = function() {
+                    console.error('❌ Error carregant stations_list.js, carregant estacions per defecte');
+                    loadDefaultStations();
+                };
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                console.error('❌ Error carregant estacions:', error);
+                loadDefaultStations();
+            }
+        }
+
+        function loadDefaultStations() {
+            CONFIG.stations = [
+                { code: 'YT', name: 'Alt Àneu - Bonabé (1.693 m)', municipi: 'Alt Àneu', comarca: 'Pallars Sobirà' },
+                { code: 'Z1', name: 'Alt Àneu - Bonaigua (2.266 m)', municipi: 'Alt Àneu', comarca: 'Pallars Sobirà' },
+                { code: 'X4', name: 'Barcelona - el Raval', municipi: 'Barcelona', comarca: 'Barcelonès' },
+                { code: 'DG', name: 'Ripoll - Sant Joan de les Abadesses (800 m)', municipi: 'Ripoll', comarca: 'Ripollès' }
+            ];
+            populateStationDropdown();
+            updateAdminStationCount();
+        }
+
+        function populateStationDropdown() {
+            const dropdown = document.getElementById('stationDropdown');
+            if (!dropdown) return;
+            
+            dropdown.innerHTML = '<option value="">Selecciona una estació...</option>';
+            
+            CONFIG.stations.forEach((station, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${station.code} - ${station.name}`;
+                dropdown.appendChild(option);
+            });
+            
+            console.log(`📋 Dropdown poblat amb ${CONFIG.stations.length} estacions`);
+        }
+
+        // ============================================
+        // FUNCIONS DE TEMPS I DATA
+        // ============================================
+        function formatDate(now = new Date()) {
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function updateTimePeriod() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            let periodStartHour = currentHour;
+            let periodStartMinute = currentMinute < 30 ? '00' : '30';
+            let periodEndHour = currentMinute < 30 ? currentHour : (currentHour + 1) % 24;
+            let periodEndMinute = currentMinute < 30 ? '30' : '00';
+            
+            if (periodEndHour === 0 && periodEndMinute === '00') {
+                periodEndHour = 24;
+            }
+            
+            const dateStr = formatDate(now);
+            const periodString = `${dateStr} - ${periodStartHour.toString().padStart(2, '0')}:${periodStartMinute}-${periodEndHour.toString().padStart(2, '0')}:${periodEndMinute}`;
+            
+            const periodElement = document.getElementById('data-period');
+            if (periodElement) {
+                periodElement.textContent = periodString;
+            }
+            
+            const updateTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            document.getElementById('data-timestamp').textContent = updateTime;
+            CONFIG.lastDataUpdate = updateTime;
+        }
+
+        // ============================================
+        // ROTACIÓ I SELECCIÓ D'ESTACIONS
+        // ============================================
+        function setupClickToPause() {
+            const overlay = document.getElementById('meteoOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target.closest('.admin-panel') || e.target.closest('#stationDropdown')) return;
+                    toggleRotation();
+                });
+            }
+        }
+
+        function startStationRotation() {
+            if (CONFIG.rotationInterval) {
+                clearInterval(CONFIG.rotationInterval);
+            }
+            
+            CONFIG.rotationInterval = setInterval(() => {
+                if (CONFIG.rotationActive && CONFIG.stations.length > 1) {
+                    rotateToNextStation();
+                }
+            }, CONFIG.stationRotationInterval);
+            
+            updateRotationStatus();
+        }
+
+        function rotateToNextStation() {
+            if (CONFIG.stations.length === 0) return;
+            
+            CONFIG.currentStationIndex = (CONFIG.currentStationIndex + 1) % CONFIG.stations.length;
+            const station = CONFIG.stations[CONFIG.currentStationIndex];
+            
+            updateStationInfo(station);
+            updateStationDropdownSelection();
+            updateDataTimestamp();
+            
+            console.log(`🔄 Rotació automàtica: Canvi a estació ${station.code} - ${station.name}`);
+        }
+
+        function updateStationInfo(station) {
+            document.getElementById('current-station-name').textContent = station.name;
+            document.getElementById('current-municipality').textContent = station.municipi || extractMunicipality(station.name);
+            document.getElementById('current-comarca').textContent = station.comarca || extractComarca(station.code);
+            document.getElementById('adminCurrentStation').textContent = station.code;
+            
+            const altitudeMatch = station.name.match(/\((\d+(?:\.\d+)?)\s*m\)/);
+            if (altitudeMatch) {
+                document.getElementById('data-altitude').textContent = `${altitudeMatch[1]} m`;
+            }
+        }
+
+        function updateStationDropdownSelection() {
+            const dropdown = document.getElementById('stationDropdown');
+            if (dropdown) {
+                dropdown.value = CONFIG.currentStationIndex;
+            }
+        }
+
+        function changeStationFromDropdown() {
+            const dropdown = document.getElementById('stationDropdown');
+            if (!dropdown || dropdown.value === "") return;
+            
+            const selectedIndex = parseInt(dropdown.value);
+            if (selectedIndex >= 0 && selectedIndex < CONFIG.stations.length) {
+                if (CONFIG.rotationActive) {
+                    toggleRotation();
+                    console.log('⏸️ Rotació aturada (selecció manual)');
+                }
+                
+                CONFIG.currentStationIndex = selectedIndex;
+                const station = CONFIG.stations[selectedIndex];
+                
+                updateStationInfo(station);
+                updateDataTimestamp();
+                startDataAnimation();
+                
+                console.log(`🎯 Estació seleccionada manualment: ${station.code} - ${station.name}`);
+            }
+        }
+
+        function updateDataTimestamp() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            CONFIG.lastDataUpdate = `${hours}:${minutes}`;
+        }
+
+        // ============================================
+        // ANIMACIÓ I INTERFÍCIE
+        // ============================================
+        function startDataAnimation() {
+            const allItems = document.querySelectorAll('.data-item, .day-data-item');
+            allItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-20px)';
+            });
+            
+            allItems.forEach((item, index) => {
+                const delay = parseFloat(item.getAttribute('data-delay') || (index * 0.1));
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, delay * 1000);
+            });
+        }
+
+        function updateRotationStatus() {
+            const statusElement = document.getElementById('rotationStatus');
+            const adminStatusElement = document.getElementById('adminRotationStatus');
+            const seconds = CONFIG.stationRotationInterval / 1000;
+            const icon = statusElement ? statusElement.querySelector('i') : null;
+            
+            if (statusElement) {
+                if (CONFIG.rotationActive) {
+                    statusElement.innerHTML = '<i class="fas fa-sync-alt"></i><span>ROTACIÓ ACTIVA (' + seconds + 's)</span>';
+                    statusElement.classList.remove('paused');
+                } else {
+                    statusElement.innerHTML = '<i class="fas fa-pause"></i><span>ROTACIÓ ATURADA</span>';
+                    statusElement.classList.add('paused');
+                }
+            }
+            
+            if (adminStatusElement) {
+                adminStatusElement.textContent = CONFIG.rotationActive ? `ACTIVA (${seconds}s)` : 'INACTIVA';
+            }
+        }
+
+        function updateAdminStationCount() {
+            const element = document.getElementById('adminTotalStations');
+            if (element) {
+                element.textContent = CONFIG.stations.length;
+            }
+        }
+
+        // ============================================
+        // FUNCIONS D'EXTRACCIÓ
+        // ============================================
+        function extractMunicipality(stationName) {
+            const parts = stationName.split(' - ');
+            return parts.length > 1 ? parts[0] : stationName;
+        }
+
+        function extractComarca(stationCode) {
+            const comarcasMap = {
+                'YT': 'Pallars Sobirà', 'Z1': 'Pallars Sobirà',
+                'X4': 'Barcelonès', 'DG': 'Ripollès',
+                'XJ': 'Gironès', 'UN': 'Gironès',
+                'MS': 'Berguedà', 'DP': 'Cerdanya',
+                'CD': 'Alt Urgell', 'Z2': 'Alta Ribagorça',
+                'Z3': 'Cerdanya', 'YB': 'Garrotxa'
+            };
+            return comarcasMap[stationCode] || 'Comarca desconeguda';
+        }
+
+        // ============================================
+        // FUNCIONS DEL PANEL ADMINISTRADOR
+        // ============================================
+        function setupAdminShortcuts() {
+            document.addEventListener('keydown', function(event) {
+                if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+                    event.preventDefault();
+                    toggleAdminPanel();
+                }
+            });
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            CONFIG.adminMode = !CONFIG.adminMode;
+            panel.style.display = CONFIG.adminMode ? 'block' : 'none';
+        }
+
+        function setRotationTime() {
+            const input = document.getElementById('rotationTime');
+            const seconds = parseInt(input.value);
+            
+            if (seconds >= 5 && seconds <= 300) {
+                CONFIG.stationRotationInterval = seconds * 1000;
+                if (CONFIG.rotationActive) {
+                    startStationRotation();
+                }
+                updateRotationStatus();
+                alert(`Interval canviat a ${seconds} segons`);
+            } else {
+                alert('Si us plau, introdueix un valor entre 5 i 300 segons');
+            }
+        }
+
+        function toggleRotation() {
+            CONFIG.rotationActive = !CONFIG.rotationActive;
+            const btn = document.getElementById('toggleRotationBtn');
+            
+            if (CONFIG.rotationActive) {
+                btn.textContent = '⏸️ Aturar Rotació';
+                startStationRotation();
+                console.log('🔄 Rotació activada');
+            } else {
+                btn.textContent = '▶️ Reprendre Rotació';
+                if (CONFIG.rotationInterval) {
+                    clearInterval(CONFIG.rotationInterval);
+                    CONFIG.rotationInterval = null;
+                }
+                console.log('⏸️ Rotació aturada');
+            }
+            
+            updateRotationStatus();
+        }
+
+        function changeStationManual() {
+            if (CONFIG.stations.length > 1) {
+                rotateToNextStation();
+                updateDataTimestamp();
+                startDataAnimation();
+            }
+        }
+
+        function showStationInfo() {
+            const station = CONFIG.stations[CONFIG.currentStationIndex] || {};
+            const info = `
+                Estació: ${station.code}
+                Nom: ${station.name}
+                Municipi: ${station.municipi || '--'}
+                Comarca: ${station.comarca || '--'}
+                Índex: ${CONFIG.currentStationIndex + 1} / ${CONFIG.stations.length}
+                Rotació: ${CONFIG.rotationActive ? 'ACTIVA' : 'INACTIVA'} (${CONFIG.stationRotationInterval/1000}s)
+            `;
+            alert(info);
+        }
+
+        // ============================================
+        // EXPOSAR FUNCIONS A WINDOW
+        // ============================================
+        window.toggleRotation = toggleRotation;
+        window.setRotationTime = setRotationTime;
+        window.changeStationManual = changeStationManual;
+        window.showStationInfo = showStationInfo;
+        window.toggleAdminPanel = toggleAdminPanel;
+        window.changeStationFromDropdown = changeStationFromDropdown;
+
+        console.log('✅ Script JavaScript carregat correctament!');
+    </script>
+</body>
+</html>
