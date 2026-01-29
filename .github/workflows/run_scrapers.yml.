@@ -1,0 +1,45 @@
+name: Executar Scrapers i Actualitzar Dades
+
+on:
+  schedule:
+    # S'executa cada hora als minuts 15 i 45 (ex: 08:15, 08:45, 09:15, 09:45...)
+    - cron: '15,45 * * * *'
+  workflow_dispatch: # Permet executar l'acció manualment des de la pestanya "Actions" de GitHub.
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Obtenir el codi del repositori
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Configurar Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Instal·lar dependències
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # 4. EXECUTAR ELS TEUS SCRAPERS
+      - name: Run meteo.cat scrapers
+        run: |
+          # Canvia al directori src si cal
+          # Executa tots els teus scripts Python.
+          cd src
+          python scraper_1.py
+          python scraper_2.py
+          echo "Scrapers executats!"
+
+      # 5. Pujar els canvis (els nous Excel) al repositori
+      - name: Commit and push updated data files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add src/data/*.xlsx
+          git commit -m "Automated update: data files [$(date +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
+          git push
