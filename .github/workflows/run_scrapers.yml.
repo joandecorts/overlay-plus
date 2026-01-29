@@ -1,11 +1,16 @@
 name: Executar Scrapers i Actualitzar Dades
 
 on:
-  schedule:
-    # S'executa cada hora als minuts 15 i 45 (ex: 08:15, 08:45, 09:15, 09:45...)
-    - cron: '15,45 * * * *'
+  # 1. CRON INTERN (GITHUB) - DESACTIVAT PER EVITAR CONFLICTES
+  # schedule:
+  #   - cron: '15,45 * * * *'  # (COMENTAT) - Ex: 08:15, 08:45, 09:15, 09:45...
+  
+  # 2. DISPARAT DES DE CRON-JOB.ORG (EXTERN)
+  repository_dispatch:
+    types: [trigger_scrapers]
+  
+  # 3. EXECUCIÓ MANUAL (GITHUB UI)
   workflow_dispatch: # Permet executar l'acció manualment des de la pestanya "Actions" de GitHub.
-
 jobs:
   update-data:
     runs-on: ubuntu-latest
