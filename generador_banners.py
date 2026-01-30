@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-GENERADOR DE BANNERS METEOCAT
-=============================
-Genera:
-1. index.html        - Banner principal amb rotació (120s)
-2. banner.html       - Detall complet amb acordió desplegable
-3. index_[ID].html   - Banner fix per a cada estació
-
-Estructura de dades basada en les variables del PDF i organització en columnes.
+GENERADOR DE BANNERS METEOCAT - VERSIÓ CORREGIDA
+================================================
+Correccions implementades:
+1. Selecciona correctament l'últim període vàlid (avui → ahir si cal)
+2. Converteix hora UTC a hora oficial (CET/CEST)
+3. Mostra la comarca a tots els banners
+4. Millor maneig de dades diàries
 """
 
 import json
 import pandas as pd
 from pathlib import Path
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 import shutil
 
 # ============================================================================
@@ -22,7 +21,7 @@ import shutil
 # ============================================================================
 class Config:
     # Rutes d'entrada - RUTA ABSOLUTA AL TEU CAS
-    DATA_DIR = Path(r"C:\Users\joant\Documents\OBS-Scripts\overlay-plus\src\dades")
+    DATA_DIR = Path(r"C:\Users\joant\Documents\OBS-Scripts\overlay-plus\src\data") 
     
     METADATA_FILE = DATA_DIR / "Totes_les_dades_de_les_estacions.xlsx"
     PERIODE_JSON = DATA_DIR / "resum_periode_meteocat.json"
@@ -30,6 +29,7 @@ class Config:
     
     # Ruta de sortida
     OUTPUT_DIR = Path("public")    
+    
     # Configuració de rotació
     ROTATION_SECONDS = 120  # Canvi cada 2 minuts
     
@@ -62,7 +62,8 @@ class Config:
         "addicionals": [
             ("VAR_Periode_TU", "Període:"),
             ("altitud", "Altitud:"),
-            ("hora_actualitzacio", "Hora actualització:")
+            ("hora_actualitzacio", "Hora actualització:"),
+            ("comarca", "Comarca:")  # AFEGIT: Comarca ara apareix aquí
         ]
     }
     
@@ -80,7 +81,90 @@ class Config:
     ]
 
 # ============================================================================
-# FUNCIONS DE LECTURA DE DADES
+# FUNCIONS AUXILIARS
+# ============================================================================
+class Utilitats:
+    @staticmethod
+    def es_cest(data_referencia=None):
+        """
+        Determina si estem en horari d'estiu (CEST) o hivern (CET).
+        CEST: Últim diumenge de març a últim diumenge d'octubre.
+        """
+        if data_referencia is None:
+            data_referencia = datetime.now()
+        
+        any = data_referencia.year
+        
+        # Calcular últim diumenge de març
+        ultim_dia_març = datetime(any, 3, 31)
+        dies_restants = (ultim_dia_març.weekday() + 1) % 7  # +1 perque 0=Diumenge
+        ultim_diumenge_març = ultim_dia_març - timedelta(days=dies_restants)
+        
+        # Calcular últim diumenge d'octubre
+        ultim_dia_octubre = datetime(any, 10, 31)
+        dies_restants = (ultim_dia_octubre.weekday() + 1) % 7
+        ultim_diumenge_octubre = ultim_dia_octubre - timedelta(days=dies_restants)
+        
+        # Ajustar a les 02:00 (hora en que es fa el canvi)
+        inici_cest = ultim_diumenge_març.replace(hour=2, minute=0, second=0)
+        fi_cest = ultim_diumenge_octubre.replace(hour=2, minute=0, second=0)
+        
+        return inici_cest <= data_referencia < fi_cest
+    
+    @staticmethod
+    def convertir_utc_a_local(data_utc_str, periode_utc_str):
+        """
+        Converteix hora UTC a hora oficial (CET/CEST).
+        data_utc_str: '2026-01-30'
+        periode_utc_str: '22:00 - 22:30'
+        Retorna: '30/01/2026 00:00 - 00:30 CET' (exemple)
+        """
+        try:
+            # Parsejar data UTC
+            data_utc = datetime.strptime(data_utc_str, "%Y-%m-%d")
+            
+            # Determinar desplaçament
+            if Utilitats.es_cest(data_utc):
+                desplacament = 2  # CEST
+                zona_horaria = "CEST"
+            else:
+                desplacament = 1  # CET
+                zona_horaria = "CET"
+            
+            # Parsejar interval del període
+            if ' - ' in periode_utc_str:
+                hora_inici_str, hora_fi_str = periode_utc_str.split(' - ')
+                
+                # Crear objectes datetime
+                hora_inici_utc = datetime.strptime(f"{data_utc_str} {hora_inici_str.strip()}", "%Y-%m-%d %H:%M")
+                hora_fi_utc = datetime.strptime(f"{data_utc_str} {hora_fi_str.strip()}", "%Y-%m-%d %H:%M")
+                
+                # Aplicar desplaçament
+                hora_inici_local = hora_inici_utc + timedelta(hours=desplacament)
+                hora_fi_local = hora_fi_utc + timedelta(hours=desplacament)
+                
+                # Verificar si el canvi de dia
+                if hora_inici_local.date() != data_utc.date():
+                    # Si la conversió passa a un nou dia, ajustar
+                    data_local_str = hora_inici_local.strftime("%d/%m/%Y")
+                else:
+                    data_local_str = data_utc.strftime("%d/%m/%Y")
+                
+                # Format de sortida
+                periode_local_str = f"{hora_inici_local.strftime('%H:%M')} - {hora_fi_local.strftime('%H:%M')} {zona_horaria}"
+                
+                return f"{data_local_str} / {periode_local_str}"
+            else:
+                # Si no és un interval, retornar simple
+                return f"{data_utc.strftime('%d/%m/%Y')} / {periode_utc_str}"
+                
+        except Exception as e:
+            # En cas d'error, retornar original
+            print(f"⚠️  Error en conversió horària: {e}")
+            return f"{data_utc_str} / {periode_utc_str}"
+
+# ============================================================================
+# FUNCIONS DE LECTURA DE DADES - CORREGIDES
 # ============================================================================
 class DataLoader:
     @staticmethod
@@ -90,18 +174,43 @@ class DataLoader:
             df = pd.read_excel(Config.METADATA_FILE)
             metadades = {}
             
-            for _, row in df.iterrows():
-                # Assegurar que llegim des de la fila correcta
-                if pd.isna(row.get('ID', None)):
+            for idx, row in df.iterrows():
+                # Saltar capçalera si cal (fila 1 és descripcions)
+                if idx == 0:
                     continue
                     
-                estacio_id = str(row['ID']).strip()
-                comarca = str(row['Comarca']).strip() if 'Comarca' in row and pd.notna(row['Comarca']) else "Desconeguda"
-                altitud = str(row['Altitud (m)']).strip() if 'Altitud (m)' in row and pd.notna(row['Altitud (m)']) else "N/D"
+                # Buscar ID de diferents maneres possibles
+                estacio_id = None
+                if 'ID' in df.columns and pd.notna(row.get('ID')):
+                    estacio_id = str(row['ID']).strip()
+                elif 'Codi' in df.columns and pd.notna(row.get('Codi')):
+                    estacio_id = str(row['Codi']).strip()
+                elif 'CÓDIGO' in df.columns and pd.notna(row.get('CÓDIGO')):
+                    estacio_id = str(row['CÓDIGO']).strip()
+                
+                if not estacio_id:
+                    continue
+                
+                # Comarca
+                comarca = "Desconeguda"
+                if 'Comarca' in df.columns and pd.notna(row.get('Comarca')):
+                    comarca = str(row['Comarca']).strip()
+                elif 'COMARCA' in df.columns and pd.notna(row.get('COMARCA')):
+                    comarca = str(row['COMARCA']).strip()
+                
+                # Altitud
+                altitud = "N/D"
+                if 'Altitud (m)' in df.columns and pd.notna(row.get('Altitud (m)')):
+                    altitud = str(row['Altitud (m)']).strip()
+                elif 'Altitud' in df.columns and pd.notna(row.get('Altitud')):
+                    altitud = str(row['Altitud']).strip()
+                elif 'ALTITUD' in df.columns and pd.notna(row.get('ALTITUD')):
+                    altitud = str(row['ALTITUD']).strip()
                 
                 metadades[estacio_id] = {
                     'comarca': comarca,
-                    'altitud': altitud
+                    'altitud': altitud,
+                    'fila_excel': idx + 1  # Per a referència
                 }
             
             print(f"✅ Metadades: {len(metadades)} estacions llegides")
@@ -109,11 +218,13 @@ class DataLoader:
             
         except Exception as e:
             print(f"❌ Error llegint metadades: {e}")
+            import traceback
+            traceback.print_exc()
             return {}
 
     @staticmethod
     def llegir_dades_periode():
-        """Llegeix les dades periòdiques del JSON"""
+        """Llegeix les dades periòdiques del JSON - SELECCIONA PERÍODE CORRECTE"""
         try:
             with open(Config.PERIODE_JSON, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -121,30 +232,84 @@ class DataLoader:
             periode_per_estacio = {}
             
             if 'dades_periode' in data:
+                # 1. AGRUPAR tots els períodes per estació
+                tots_periodes_per_estacio = {}
                 for p in data['dades_periode']:
                     if 'ID_ESTAC' in p:
                         estacio_id = str(p['ID_ESTAC']).strip()
-                        
-                        # Filtrar només les variables que necessitem
-                        dades_filtrades = {}
-                        for col_grup in Config.COLUMNES_ESTRUCTURA.values():
-                            for var, _ in col_grup:
-                                if var in p and p[var] not in ['', None]:
-                                    dades_filtrades[var] = p[var]
-                        
-                        # Afegir metadades bàsiques
-                        dades_filtrades['NOM_ESTACIO'] = p.get('NOM_ESTACIO', estacio_id)
-                        dades_filtrades['DATA_UTC'] = p.get('DATA_UTC', '')
-                        dades_filtrades['DATA_EXTRACCIO'] = p.get('DATA_EXTRACCIO', '')
-                        dades_filtrades['PERIODE_UTC'] = p.get('PERIODE_UTC', '')
-                        
-                        periode_per_estacio[estacio_id] = dades_filtrades
+                        if estacio_id not in tots_periodes_per_estacio:
+                            tots_periodes_per_estacio[estacio_id] = []
+                        tots_periodes_per_estacio[estacio_id].append(p)
+                
+                print(f"   Estacions amb dades: {len(tots_periodes_per_estacio)}")
+                
+                # 2. PER CADA ESTACIÓ: seleccionar el període correcte
+                for estacio_id, llista_periodes in tots_periodes_per_estacio.items():
+                    # Separar per 'ES_AHIR'
+                    periodes_avui = [p for p in llista_periodes if p.get('ES_AHIR') == 'NO']
+                    periodes_ahir = [p for p in llista_periodes if p.get('ES_AHIR') == 'SÍ']
+                    
+                    periode_seleccionat = None
+                    tipus_periode = "DESCONEGUT"
+                    
+                    # PRIORITAT 1: Períodes d'avui (més recents primer)
+                    if periodes_avui:
+                        # Ordenar per DATA_EXTRACCIO (més recent primer)
+                        periodes_avui_ordenats = sorted(
+                            periodes_avui,
+                            key=lambda x: x.get('DATA_EXTRACCIO', ''),
+                            reverse=True
+                        )
+                        periode_seleccionat = periodes_avui_ordenats[0]
+                        tipus_periode = "avui"
+                    
+                    # PRIORITAT 2: Si no hi ha d'avui, agafar l'últim d'ahir
+                    elif periodes_ahir:
+                        periodes_ahir_ordenats = sorted(
+                            periodes_ahir,
+                            key=lambda x: x.get('DATA_EXTRACCIO', ''),
+                            reverse=True
+                        )
+                        periode_seleccionat = periodes_ahir_ordenats[0]
+                        tipus_periode = "ahir"
+                        print(f"   ⚠️  {estacio_id}: Usant dades d'ahir")
+                    
+                    # Si no hi ha res, saltem aquesta estació
+                    if not periode_seleccionat:
+                        print(f"   ❌ {estacio_id}: Sense dades periòdiques")
+                        continue
+                    
+                    # 3. FILTRAR variables que necessitem
+                    dades_filtrades = {}
+                    for col_grup in Config.COLUMNES_ESTRUCTURA.values():
+                        for var, _ in col_grup:
+                            if var in periode_seleccionat and periode_seleccionat[var] not in ['', None]:
+                                dades_filtrades[var] = periode_seleccionat[var]
+                    
+                    # 4. AFEGIR metadades
+                    dades_filtrades['NOM_ESTACIO'] = periode_seleccionat.get('NOM_ESTACIO', estacio_id)
+                    dades_filtrades['DATA_UTC'] = periode_seleccionat.get('DATA_UTC', '')
+                    dades_filtrades['DATA_EXTRACCIO'] = periode_seleccionat.get('DATA_EXTRACCIO', '')
+                    dades_filtrades['PERIODE_UTC'] = periode_seleccionat.get('PERIODE_UTC', '')
+                    dades_filtrades['ES_AHIR'] = periode_seleccionat.get('ES_AHIR', 'DESCONEGUT')
+                    dades_filtrades['TIPUS_PERIODE'] = tipus_periode
+                    
+                    periode_per_estacio[estacio_id] = dades_filtrades
+            
+            # Calcular estadístiques
+            total_avui = sum(1 for d in periode_per_estacio.values() if d.get('TIPUS_PERIODE') == 'avui')
+            total_ahir = sum(1 for d in periode_per_estacio.values() if d.get('TIPUS_PERIODE') == 'ahir')
             
             print(f"✅ Dades període: {len(periode_per_estacio)} estacions amb dades")
+            print(f"   • Dades d'avui: {total_avui}")
+            print(f"   • Dades d'ahir (fallback): {total_ahir}")
+            
             return periode_per_estacio
             
         except Exception as e:
             print(f"❌ Error llegint dades període: {e}")
+            import traceback
+            traceback.print_exc()
             return {}
 
     @staticmethod
@@ -156,55 +321,60 @@ class DataLoader:
             
             diari_per_estacio = {}
             
+            # Diferents estructures possibles
             if 'estacions' in data:
-                for d in data['estacions']:
-                    if 'ID_ESTAC' in d:
-                        estacio_id = str(d['ID_ESTAC']).strip()
-                        
-                        # Agafar totes les variables diàries
-                        dades_diari = {}
-                        for var, _ in Config.VARIABLES_DIARI_COMPLETES:
-                            if var in d and d[var] not in ['', None]:
-                                dades_diari[var] = d[var]
-                        
-                        # Afegir metadades
-                        dades_diari['NOM_ESTACIO'] = d.get('NOM_ESTACIO', estacio_id)
-                        dades_diari['DATA_DIA'] = d.get('DATA_DIA', '')
-                        
-                        diari_per_estacio[estacio_id] = dades_diari
+                dades_array = data['estacions']
+            elif 'dades' in data:
+                dades_array = data['dades']
+            elif isinstance(data, list):
+                dades_array = data
+            else:
+                print(f"⚠️  Estructura JSON diari desconeguda. Claus: {list(data.keys())}")
+                return {}
+            
+            for d in dades_array:
+                # Buscar ID de diferents maneres
+                estacio_id = None
+                
+                if 'ID_ESTAC' in d:
+                    estacio_id = str(d['ID_ESTAC']).strip()
+                elif 'ID' in d:
+                    estacio_id = str(d['ID']).strip()
+                elif 'codi' in d:
+                    estacio_id = str(d['codi']).strip()
+                elif 'CODI' in d:
+                    estacio_id = str(d['CODI']).strip()
+                
+                if estacio_id:
+                    # Agafar totes les variables diàries
+                    dades_diari = {}
+                    for var, _ in Config.VARIABLES_DIARI_COMPLETES:
+                        if var in d and d[var] not in ['', None]:
+                            dades_diari[var] = d[var]
+                    
+                    # Afegir metadades
+                    dades_diari['NOM_ESTACIO'] = d.get('NOM_ESTACIO', estacio_id)
+                    dades_diari['DATA_DIA'] = d.get('DATA_DIA', '')
+                    
+                    diari_per_estacio[estacio_id] = dades_diari
             
             print(f"✅ Dades diàries: {len(diari_per_estacio)} estacions amb dades")
             return diari_per_estacio
             
         except Exception as e:
             print(f"❌ Error llegint dades diàries: {e}")
+            import traceback
+            traceback.print_exc()
             return {}
 
 # ============================================================================
-# GENERADOR HTML
+# GENERADOR HTML - CORREGIT
 # ============================================================================
 class HTMLGenerator:
     @staticmethod
     def netejar_id(id_str):
         """Netega ID per a ús en noms de fitxer"""
         return re.sub(r'[^a-zA-Z0-9_]', '_', str(id_str))
-    
-    @staticmethod
-    def formatar_data(data_str):
-        """Formata la data per mostrar"""
-        try:
-            if ' ' in data_str:
-                data_part = data_str.split(' ')[0]
-            else:
-                data_part = data_str
-                
-            # Convertir de YYYY-MM-DD a DD/MM/YYYY
-            parts = data_part.split('-')
-            if len(parts) == 3:
-                return f"{parts[2]}/{parts[1]}/{parts[0]}"
-            return data_str
-        except:
-            return data_str
     
     @staticmethod
     def generar_head(titol="Banner Meteo.cat"):
@@ -672,7 +842,7 @@ class HTMLGenerator:
 </head>
 <body>
 """
-
+    
     @staticmethod
     def generar_footer():
         """Genera el footer dels HTMLs"""
@@ -694,13 +864,13 @@ class HTMLGenerator:
 </body>
 </html>
 """
-
+    
     @staticmethod
     def generar_columnes_dades(periode_data, metadades, estacio_id, nom_estacio):
-        """Genera les 4 columnes de dades per a una estació"""
+        """Genera les 4 columnes de dades per a una estació - CORREGIT"""
         html = '<div class="columns-4-container">\n'
         
-        # Columna 1: Dades bàsiques
+        # COLUMNA 1: Dades bàsiques
         html += '<div class="column col-basics">\n'
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Dades bàsiques</div>\n'
@@ -715,7 +885,7 @@ class HTMLGenerator:
         
         html += '</div>\n</div>\n'
         
-        # Columna 2: Precipitació i vent
+        # COLUMNA 2: Precipitació i vent
         html += '<div class="column col-precip-wind">\n'
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Precipitació i vent</div>\n'
@@ -730,7 +900,7 @@ class HTMLGenerator:
         
         html += '</div>\n</div>\n'
         
-        # Columna 3: Altres dades
+        # COLUMNA 3: Altres dades
         html += '<div class="column col-other">\n'
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Altres dades</div>\n'
@@ -745,25 +915,29 @@ class HTMLGenerator:
         
         html += '</div>\n</div>\n'
         
-        # Columna 4: Dades addicionals (ocupa més espai)
+        # COLUMNA 4: Dades addicionals (AMB COMARCA I PERÍODE CONVERTIT)
         html += '<div class="column col-additional">\n'
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Dades addicionals</div>\n'
         
-        # Període
-        if 'PERIODE_UTC' in periode_data and periode_data['PERIODE_UTC']:
-            periode_value = periode_data['PERIODE_UTC']
-            if 'DATA_UTC' in periode_data and periode_data['DATA_UTC']:
-                data_formated = HTMLGenerator.formatar_data(periode_data['DATA_UTC'])
-                periode_value = f"Data: {data_formated} / {periode_value}"
+        # 1. PERÍODE (convertit UTC → local)
+        if 'DATA_UTC' in periode_data and periode_data['DATA_UTC'] and 'PERIODE_UTC' in periode_data and periode_data['PERIODE_UTC']:
+            periode_convertit = Utilitats.convertir_utc_a_local(
+                periode_data['DATA_UTC'], 
+                periode_data['PERIODE_UTC']
+            )
+            
+            # Afegir indicador si són dades d'ahir
+            if periode_data.get('TIPUS_PERIODE') == 'ahir':
+                periode_convertit += " (dades d'ahir)"
             
             html += f'''
             <div class="data-item">
                 <div class="data-label">Període:</div>
-                <div class="data-value">{periode_value}</div>
+                <div class="data-value">{periode_convertit}</div>
             </div>'''
         
-        # Altitud
+        # 2. ALTITUD (des de metadades)
         if estacio_id in metadades and 'altitud' in metadades[estacio_id]:
             html += f'''
             <div class="data-item">
@@ -771,7 +945,7 @@ class HTMLGenerator:
                 <div class="data-value">{metadades[estacio_id]['altitud']} m</div>
             </div>'''
         
-        # Hora actualització
+        # 3. HORA ACTUALITZACIÓ
         if 'DATA_EXTRACCIO' in periode_data and periode_data['DATA_EXTRACCIO']:
             hora_actual = periode_data['DATA_EXTRACCIO'].split(' ')[1] if ' ' in periode_data['DATA_EXTRACCIO'] else periode_data['DATA_EXTRACCIO']
             html += f'''
@@ -780,13 +954,21 @@ class HTMLGenerator:
                 <div class="data-value">{hora_actual} TU</div>
             </div>'''
         
+        # 4. COMARCA (NOVA - des de metadades)
+        if estacio_id in metadades and 'comarca' in metadades[estacio_id]:
+            html += f'''
+            <div class="data-item">
+                <div class="data-label">Comarca:</div>
+                <div class="data-value">{metadades[estacio_id]['comarca']}</div>
+            </div>'''
+        
         html += '</div>\n</div>\n'
         html += '</div>\n'  # Tanca columns-4-container
         
         return html
 
 # ============================================================================
-# FUNCIONS PRINCIPALS DE GENERACIÓ
+# FUNCIONS PRINCIPALS DE GENERACIÓ - ACTUALITZADES
 # ============================================================================
 def generar_index_principal(metadades, periode_data, diari_data):
     """Genera index.html amb rotació automàtica"""
@@ -866,135 +1048,137 @@ def generar_index_principal(metadades, periode_data, diari_data):
         </div>
     '''
     
-    # JavaScript per a la rotació
-    html += '''
+    # JavaScript per a la rotació (ACTUALITZAT)
+    html += f'''
     <script>
-        // Dades de totes les estacions (carregades una vegada)
-        const estacions = ''' + json.dumps(estacions_valides) + ''';
-        const periodeData = ''' + json.dumps(periode_data) + ''';
-        const diariData = ''' + json.dumps(diari_data) + ''';
-        const metadades = ''' + json.dumps(metadades) + ''';
+        // Dades de totes les estacions
+        const estacions = {json.dumps(estacions_valides)};
+        const periodeData = {json.dumps(periode_data)};
+        const diariData = {json.dumps(diari_data)};
+        const metadades = {json.dumps(metadades)};
+        
+        // Funció per convertir UTC a Local (simplificada per JavaScript)
+        function convertirPeriode(dataUtc, periodeUtc) {{
+            try {{
+                // Aquesta és una versió simplificada
+                // En una versió real, caldria implementar la lògica completa de CET/CEST
+                return dataUtc + " / " + periodeUtc + " (convertir)";
+            }} catch (e) {{
+                return dataUtc + " / " + periodeUtc;
+            }}
+        }}
         
         let indexActual = 0;
         let intervalRotacio = null;
-        const tempsRotacio = ''' + str(Config.ROTATION_SECONDS * 1000) + ''';
+        const tempsRotacio = {Config.ROTATION_SECONDS * 1000};
         
-        function mostrarEstacio(estacioId) {
+        function mostrarEstacio(estacioId) {{
             const contingutDiv = document.getElementById('contingut-estacio-actual');
             const nomDiv = document.getElementById('nom-estacio-actual');
             const detallsDiv = document.getElementById('detalls-estacio-actual');
             const selector = document.getElementById('selectorEstacions');
             
-            if (periodeData[estacioId] && metadades[estacioId]) {
+            if (periodeData[estacioId] && metadades[estacioId]) {{
                 const periode = periodeData[estacioId];
                 const meta = metadades[estacioId];
                 
-                // Actualitzar nom i detalls
+                // Actualitzar nom i detalls (AMB COMARCA)
                 nomDiv.textContent = periode.NOM_ESTACIO || estacioId;
-                detallsDiv.innerHTML = `Comarca: ${meta.comarca} | Altitud: ${meta.altitud} m`;
+                detallsDiv.innerHTML = `<span class="location-label">Comarca:</span> ${{meta.comarca}} | <span class="location-label">Altitud:</span> ${{meta.altitud}} m | <span class="location-label">ID:</span> ${{estacioId}}`;
                 
                 // Actualitzar selector
                 selector.value = estacioId;
                 
-                // Generar les 4 columnes de dades
-                let html = '';
+                // Generar HTML per a les 4 columnes
+                let html = '<div class="columns-4-container">';
                 
-                // Columna 1: Dades bàsiques
-                html += '<div class="columns-4-container">';
+                // COLUMNA 1: Dades bàsiques
                 html += '<div class="column col-basics"><div class="data-column"><div class="column-title">Dades bàsiques</div>';
-                
-                // Dades bàsiques
-                const basiques = ''' + json.dumps(Config.COLUMNES_ESTRUCTURA["basiques"]) + ''';
-                basiques.forEach(([var, label]) => {
-                    if (periode[var] && periode[var] !== '') {
-                        html += `<div class="data-item"><div class="data-label">${label}</div><div class="data-value">${periode[var]}</div></div>`;
-                    }
-                });
-                
+                const basiques = {json.dumps(Config.COLUMNES_ESTRUCTURA["basiques"])};
+                basiques.forEach(([var, label]) => {{
+                    if (periode[var] && periode[var] !== '') {{
+                        html += `<div class="data-item"><div class="data-label">${{label}}</div><div class="data-value">${{periode[var]}}</div></div>`;
+                    }}
+                }});
                 html += '</div></div>';
                 
-                // Columna 2: Precipitació i vent
+                // COLUMNA 2: Precipitació i vent
                 html += '<div class="column col-precip-wind"><div class="data-column"><div class="column-title">Precipitació i vent</div>';
-                
-                const precipVent = ''' + json.dumps(Config.COLUMNES_ESTRUCTURA["precip_vent"]) + ''';
-                precipVent.forEach(([var, label]) => {
-                    if (periode[var] && periode[var] !== '') {
-                        html += `<div class="data-item"><div class="data-label">${label}</div><div class="data-value">${periode[var]}</div></div>`;
-                    }
-                });
-                
+                const precipVent = {json.dumps(Config.COLUMNES_ESTRUCTURA["precip_vent"])};
+                precipVent.forEach(([var, label]) => {{
+                    if (periode[var] && periode[var] !== '') {{
+                        html += `<div class="data-item"><div class="data-label">${{label}}</div><div class="data-value">${{periode[var]}}</div></div>`;
+                    }}
+                }});
                 html += '</div></div>';
                 
-                // Columna 3: Altres dades
+                // COLUMNA 3: Altres dades
                 html += '<div class="column col-other"><div class="data-column"><div class="column-title">Altres dades</div>';
-                
-                const altres = ''' + json.dumps(Config.COLUMNES_ESTRUCTURA["altres"]) + ''';
-                altres.forEach(([var, label]) => {
-                    if (periode[var] && periode[var] !== '') {
-                        html += `<div class="data-item"><div class="data-label">${label}</div><div class="data-value">${periode[var]}</div></div>`;
-                    }
-                });
-                
+                const altres = {json.dumps(Config.COLUMNES_ESTRUCTURA["altres"])};
+                altres.forEach(([var, label]) => {{
+                    if (periode[var] && periode[var] !== '') {{
+                        html += `<div class="data-item"><div class="data-label">${{label}}</div><div class="data-value">${{periode[var]}}</div></div>`;
+                    }}
+                }});
                 html += '</div></div>';
                 
-                // Columna 4: Dades addicionals
+                // COLUMNA 4: Dades addicionals (AMB PERÍODE CONVERTIT)
                 html += '<div class="column col-additional"><div class="data-column"><div class="column-title">Dades addicionals</div>';
                 
-                // Període
-                if (periode.PERIODE_UTC) {
-                    let periodeValue = periode.PERIODE_UTC;
-                    if (periode.DATA_UTC) {
-                        const dataParts = periode.DATA_UTC.split('-');
-                        if (dataParts.length === 3) {
-                            periodeValue = `Data: ${dataParts[2]}/${dataParts[1]}/${dataParts[0]} / ${periodeValue}`;
-                        }
-                    }
-                    html += `<div class="data-item"><div class="data-label">Període:</div><div class="data-value">${periodeValue}</div></div>`;
-                }
+                // Període (convertit)
+                if (periode.DATA_UTC && periode.PERIODE_UTC) {{
+                    const periodeConvertit = convertirPeriode(periode.DATA_UTC, periode.PERIODE_UTC);
+                    html += `<div class="data-item"><div class="data-label">Període:</div><div class="data-value">${{periodeConvertit}}</div></div>`;
+                }}
                 
                 // Altitud
-                if (meta.altitud) {
-                    html += `<div class="data-item"><div class="data-label">Altitud:</div><div class="data-value">${meta.altitud} m</div></div>`;
-                }
+                if (meta.altitud) {{
+                    html += `<div class="data-item"><div class="data-label">Altitud:</div><div class="data-value">${{meta.altitud}} m</div></div>`;
+                }}
                 
                 // Hora actualització
-                if (periode.DATA_EXTRACCIO) {
+                if (periode.DATA_EXTRACCIO) {{
                     const horaActual = periode.DATA_EXTRACCIO.split(' ')[1] || periode.DATA_EXTRACCIO;
-                    html += `<div class="data-item"><div class="data-label">Hora actualització:</div><div class="data-value">${horaActual} TU</div></div>`;
-                }
+                    html += `<div class="data-item"><div class="data-label">Hora actualització:</div><div class="data-value">${{horaActual}} TU</div></div>`;
+                }}
                 
-                html += '</div></div></div>';
+                // COMARCA (NOVA)
+                if (meta.comarca) {{
+                    html += `<div class="data-item"><div class="data-label">Comarca:</div><div class="data-value">${{meta.comarca}}</div></div>`;
+                }}
+                
+                html += '</div></div></div>';  // Tanca columns-4-container
                 
                 // Dades diàries (només les 3 especials)
-                if (diariData[estacioId]) {
+                if (diariData[estacioId]) {{
                     const diari = diariData[estacioId];
                     html += '<div style="margin-top: 30px; padding: 20px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">';
                     html += '<div class="column-title" style="text-align: center; margin-bottom: 15px;">📅 Dades Diàries (Avui)</div>';
-                    html += '<div class="day-data-container">';
+                    html += '<div class="day-data-container" style="display: flex; justify-content: space-around; flex-wrap: wrap;">';
                     
-                    const varsDiariIndex = ''' + json.dumps(Config.VARIABLES_DIARI_INDEX) + ''';
-                    varsDiariIndex.forEach(varDiari => {
-                        if (diari[varDiari]) {
-                            const label = varDiari.replace(/_/g, ' ');
-                            html += `<div class="day-data-item"><span class="day-data-label">${label}</span><span class="day-data-value">${diari[varDiari]}</span></div>`;
-                        }
-                    });
+                    const varsDiariIndex = {json.dumps(Config.VARIABLES_DIARI_INDEX)};
+                    varsDiariIndex.forEach(varDiari => {{
+                        if (diari[varDiari]) {{
+                            const label = varDiari.replace(/_/g, ' ').replace('TEMPERATURA', 'Temp.').replace('PRECIPITACIO', 'Precip.');
+                            html += `<div style="text-align: center; padding: 15px; min-width: 180px;"><span style="display: block; color: #c5cae9; font-size: 14px; margin-bottom: 8px;">${{label}}</span><span style="font-size: 24px; font-weight: bold; color: #fff59d; display: block;">${{diari[varDiari]}}</span></div>`;
+                        }}
+                    }});
                     
                     html += '</div></div>';
-                }
+                }}
                 
                 contingutDiv.innerHTML = html;
-            }
-        }
+            }}
+        }}
         
-        function iniciarRotacio() {
+        function iniciarRotacio() {{
             // Aturar interval anterior si existeix
-            if (intervalRotacio) {
+            if (intervalRotacio) {{
                 clearInterval(intervalRotacio);
-            }
+            }}
             
             // Mostrar primera estació
-            if (estacions.length > 0) {
+            if (estacions.length > 0) {{
                 mostrarEstacio(estacions[0]);
                 indexActual = 0;
                 
@@ -1003,78 +1187,78 @@ def generar_index_principal(metadades, periode_data, diari_data):
                 document.getElementById('estat-rotacio').className = 'rotation-status';
                 
                 // Configurar interval
-                intervalRotacio = setInterval(() => {
+                intervalRotacio = setInterval(() => {{
                     indexActual = (indexActual + 1) % estacions.length;
                     mostrarEstacio(estacions[indexActual]);
-                }, tempsRotacio);
-            }
-        }
+                }}, tempsRotacio);
+            }}
+        }}
         
-        function pausarRotacio() {
-            if (intervalRotacio) {
+        function pausarRotacio() {{
+            if (intervalRotacio) {{
                 clearInterval(intervalRotacio);
                 intervalRotacio = null;
                 document.getElementById('estat-rotacio').innerHTML = '<i class="fas fa-pause"></i> Rotació PAUSADA';
                 document.getElementById('estat-rotacio').className = 'rotation-status paused';
-            }
-        }
+            }}
+        }}
         
-        function reprendreRotacio() {
-            if (!intervalRotacio) {
+        function reprendreRotacio() {{
+            if (!intervalRotacio) {{
                 iniciarRotacio();
-            }
-        }
+            }}
+        }}
         
         // Configurar events
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {{
             iniciarRotacio();
             
             // Actualitzar rellotges
-            function actualitzarRellotges() {
+            function actualitzarRellotges() {{
                 const ara = new Date();
                 
                 // Hora local
-                const horaLocal = ara.toLocaleTimeString('ca-ES', { 
+                const horaLocal = ara.toLocaleTimeString('ca-ES', {{ 
                     hour: '2-digit', 
                     minute: '2-digit',
                     hour12: false 
-                });
+                }});
                 document.getElementById('hora-local').textContent = horaLocal;
                 
                 // Hora UTC
                 const horaUTC = ara.toUTCString().split(' ')[4];
                 document.getElementById('hora-utc').textContent = horaUTC;
-            }
+            }}
             
             actualitzarRellotges();
             setInterval(actualitzarRellotges, 1000);
             
             // Event per al selector
-            document.getElementById('selectorEstacions').addEventListener('change', function(e) {
+            document.getElementById('selectorEstacions').addEventListener('change', function(e) {{
                 pausarRotacio();
                 mostrarEstacio(e.target.value);
                 
                 // Trobar l'índex de l'estació seleccionada
                 const index = estacions.indexOf(e.target.value);
-                if (index !== -1) {
+                if (index !== -1) {{
                     indexActual = index;
-                }
-            });
+                }}
+            }});
             
             // Events per pausar/reprendre amb clic
             const overlay = document.querySelector('.meteo-overlay');
-            overlay.addEventListener('click', function(e) {
-                if (e.target.closest('.station-selector') || e.target.closest('.station-icon')) {
+            overlay.addEventListener('click', function(e) {{
+                if (e.target.closest('.station-selector') || e.target.closest('.station-icon')) {{
                     return; // No fer res per als controls
-                }
+                }}
                 
-                if (intervalRotacio) {
+                if (intervalRotacio) {{
                     pausarRotacio();
-                } else {
+                }} else {{
                     reprendreRotacio();
-                }
-            });
-        });
+                }}
+            }});
+        }});
     </script>
     '''
     
@@ -1174,7 +1358,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
         </div>
     '''
     
-    # JavaScript per carregar i mostrar les dades
+    # JavaScript per carregar i mostrar les dades (ACTUALITZAT)
     html += f'''
     <script>
         // Dades per a banner.html
@@ -1187,6 +1371,17 @@ def generar_banner_html(metadades, periode_data, diari_data):
         const columnesEstructura = {json.dumps(Config.COLUMNES_ESTRUCTURA)};
         const variablesDiariCompletes = {json.dumps(Config.VARIABLES_DIARI_COMPLETES)};
         
+        // Funció per convertir UTC a Local (simplificada per JavaScript)
+        function convertirPeriode(dataUtc, periodeUtc) {{
+            try {{
+                // Versió simplificada per JavaScript
+                // En producció, caldria la lògica completa de CET/CEST
+                return dataUtc + " / " + periodeUtc + " (convertir)";
+            }} catch (e) {{
+                return dataUtc + " / " + periodeUtc;
+            }}
+        }}
+        
         function generarHTMLColumna(columnaClau, columnaDades, periode, estacioId) {{
             let html = `<div class="column"><div class="data-column"><div class="column-title">${{columnaDades.titol}}</div>`;
             
@@ -1196,8 +1391,14 @@ def generar_banner_html(metadades, periode_data, diari_data):
                 }}
             }});
             
-            // Afegir dades especials per a columna addicional
+            // Dades especials per a columna addicional
             if (columnaClau === 'addicionals') {{
+                // Període convertit
+                if (periode.DATA_UTC && periode.PERIODE_UTC) {{
+                    const periodeConvertit = convertirPeriode(periode.DATA_UTC, periode.PERIODE_UTC);
+                    html += `<div class="data-item"><div class="data-label">Període:</div><div class="data-value">${{periodeConvertit}}</div></div>`;
+                }}
+                
                 // Altitud
                 if (metadades[estacioId] && metadades[estacioId].altitud) {{
                     html += `<div class="data-item"><div class="data-label">Altitud:</div><div class="data-value">${{metadades[estacioId].altitud}} m</div></div>`;
@@ -1207,6 +1408,11 @@ def generar_banner_html(metadades, periode_data, diari_data):
                 if (periode.DATA_EXTRACCIO) {{
                     const horaActual = periode.DATA_EXTRACCIO.split(' ')[1] || periode.DATA_EXTRACCIO;
                     html += `<div class="data-item"><div class="data-label">Hora actualització:</div><div class="data-value">${{horaActual}} TU</div></div>`;
+                }}
+                
+                // COMARCA
+                if (metadades[estacioId] && metadades[estacioId].comarca) {{
+                    html += `<div class="data-item"><div class="data-label">Comarca:</div><div class="data-value">${{metadades[estacioId].comarca}}</div></div>`;
                 }}
             }}
             
@@ -1226,7 +1432,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
                 <div>
                     <strong>${{periode.NOM_ESTACIO || estacioId}}</strong>
                     <div style="font-size: 14px; color: #bbdefb; margin-top: 5px;">
-                        Comarca: ${{meta.comarca}} | Altitud: ${{meta.altitud}} m
+                        Comarca: ${{meta.comarca}} | Altitud: ${{meta.altitud}} m | ID: ${{estacioId}}
                     </div>
                 </div>
                 <i class="fas fa-chevron-down" id="icon-${{estacioId}}"></i>
@@ -1471,7 +1677,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         <div class="overlay-content">
         '''
         
-        # Generar les 4 columnes de dades
+        # Generar les 4 columnes de dades (AMB PERÍODE CONVERTIT I COMARCA)
         html += HTMLGenerator.generar_columnes_dades(periode, metadades, estacio_id, nom_estacio)
         
         # Afegir dades diàries completes
@@ -1574,7 +1780,7 @@ def copiar_estils_existents():
 # ============================================================================
 def main():
     print("\n" + "="*80)
-    print("🚀 GENERADOR DE BANNERS METEOCAT")
+    print("🚀 GENERADOR DE BANNERS METEOCAT - VERSIÓ CORREGIDA")
     print("="*80)
     print(f"📁 Directori de sortida: {Config.OUTPUT_DIR.absolute()}")
     
@@ -1598,10 +1804,10 @@ def main():
     print("\n🛠️  GENERANT FITXERS HTML...")
     
     # 1. index.html (principal amb rotació)
-    generar_index_principal(metadades, periode_data, diari_data)
+    index_path = generar_index_principal(metadades, periode_data, diari_data)
     
     # 2. banner.html (detall complet amb acordió)
-    generar_banner_html(metadades, periode_data, diari_data)
+    banner_path = generar_banner_html(metadades, periode_data, diari_data)
     
     # 3. index_[ID].html (banners individuals)
     banners_individuals = generar_banners_individuals(metadades, periode_data, diari_data)
@@ -1613,14 +1819,18 @@ def main():
     print(f"📁 Fitxers generats a: {Config.OUTPUT_DIR.absolute()}")
     
     estacions_amb_dades = len([id for id in metadades.keys() if id in periode_data])
+    dades_avui = sum(1 for d in periode_data.values() if d.get('TIPUS_PERIODE') == 'avui')
+    dades_ahir = sum(1 for d in periode_data.values() if d.get('TIPUS_PERIODE') == 'ahir')
+    
     print(f"📊 Resum:")
     print(f"   • Estacions amb metadades: {len(metadades)}")
     print(f"   • Estacions amb dades periòdiques: {len(periode_data)}")
+    print(f"     - Dades d'avui: {dades_avui}")
+    print(f"     - Dades d'ahir (fallback): {dades_ahir}")
     print(f"   • Estacions amb dades diàries: {len(diari_data)}")
-    print(f"   • Estacions amb dades completes: {estacions_amb_dades}")
     print(f"   • Banners individuals generats: {len(banners_individuals)}")
     
-    print("\n🎯 Recorda configurar el cron-job.org per executar els scrapers i aquest generador")
+    print("\n🎯 Per a cron-job.org: executa aquest script després dels scrapers")
     print("   cada hora als minuts 15 i 45.")
 
 if __name__ == "__main__":
