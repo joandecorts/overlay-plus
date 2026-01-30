@@ -85,7 +85,7 @@ def calcular_hora_inicial_avui():
     ara_utc = datetime.utcnow()
     
     # Ajustar: restem 40 minuts per al retard típic de publicació
-    hora_ajustada = ara_utc - timedelta(minutes=40)
+    hora_ajustada = ara_utc - timedelta(minutes=20)  # ← TORNA A L'ORIGINAL
     
     # Arrodonim cap avall a la mitja hora anterior
     # Ex: 13:50 → 13:30, 14:20 → 14:00
