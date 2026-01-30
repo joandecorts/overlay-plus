@@ -2,7 +2,7 @@
 CONFIGURACIÓ BANNER NEWS CHANNEL - VERSIÓ DADES REALS
 Configuració per al sistema de banner meteorològic amb dades reals de Meteocat
 Fitxer generat automàticament: 2026-01-08 18:07:32
-Total estacions: 189 (Actives: 33, Comentades: 156)
+Total estacions: 189 (Actives: 35, Comentades: 154)
 """
 
 import os
@@ -32,7 +32,7 @@ STATIONS = [
     # {'code': 'WU', 'name': 'BADALONA___MUSEU_WU', 'display_name': 'Badalona - Museu'},  # COM
     {'code': 'DJ', 'name': 'BANYOLES_DJ', 'display_name': 'Banyoles'},
     {'code': 'X4', 'name': 'BARCELONA___EL_RAVAL_X4', 'display_name': 'Barcelona - el Raval'},
-    # {'code': 'D5', 'name': 'BARCELONA___OBSERVATORI_FABRA_D5', 'display_name': 'Barcelona - Observatori Fabra'},  # COM
+    {'code': 'D5', 'name': 'BARCELONA___OBSERVATORI_FABRA_D5', 'display_name': 'Barcelona - Observatori Fabra'},  # COM
     # {'code': 'X8', 'name': 'BARCELONA___ZONA_UNIVERSITARIA_X8', 'display_name': 'Barcelona - Zona Universitària'},  # COM
     # {'code': 'YX', 'name': 'BATEA_YX', 'display_name': 'Batea'},  # COM
     # {'code': 'UF', 'name': 'BEGUES___PN_DEL_GARRAF___EL_RASCLER_UF', 'display_name': 'Begues - Pn del Garraf - el Rascler'},  # COM
@@ -70,13 +70,13 @@ STATIONS = [
     # {'code': 'XM', 'name': 'ELS_ALAMUS___ELS_ALAMUS_XM', 'display_name': 'Els Alamús - els Alamús'},  # COM
     # {'code': 'CE', 'name': 'ELS_HOSTALETS_DE_PIEROLA___ELS_HOSTALETS_DE_PIEROL', 'display_name': 'Els Hostalets de Pierola - els Hostalets de Pierola'},  # COM
     # {'code': 'VD', 'name': 'ELS_PLANS_DE_SIO___EL_CANOS_VD', 'display_name': 'Els Plans de Sió - el Canós'},  # COM
-    # {'code': 'VZ', 'name': 'ESPOLLA_VZ', 'display_name': 'Espolla'},  # COM
+    {'code': 'VZ', 'name': 'ESPOLLA_VZ', 'display_name': 'Espolla'},  # COM
     {'code': 'Z7', 'name': 'ESPOT_2519_M_Z7', 'display_name': 'Espot (2.519 m)'},
     # {'code': 'X1', 'name': 'FALSET_X1', 'display_name': 'Falset'},  # COM
     # {'code': 'KP', 'name': 'FOGARS_DE_LA_SELVA_KP', 'display_name': 'Fogars de la Selva'},  # COM
     # {'code': 'XK', 'name': 'FOGARS_DE_MONTCLUS___PUIG_SESOLLES_1668_M_XK', 'display_name': 'Fogars de Montclús - Puig Sesolles (1.668 m)'},  # COM
     # {'code': 'DI', 'name': 'FONT_RUBI_DI', 'display_name': 'Font-rubí'},  # COM
-    {'code': 'UO', 'name': 'FORNELLS_DE_LA_SELVA_UO', 'display_name': 'Fornells de la Selva'},
+    # {'code': 'UO', 'name': 'FORNELLS_DE_LA_SELVA_UO', 'display_name': 'Fornells de la Selva'},
     # {'code': 'Y4', 'name': 'FIGOLS_I_ALINYA___ALINYA_Y4', 'display_name': 'Fígols i Alinyà - Alinyà'},  # COM
     # {'code': 'XP', 'name': 'GANDESA_XP', 'display_name': 'Gandesa'},  # COM
     # {'code': 'VH', 'name': 'GIMENELLS_I_EL_PLA_DE_LA_FONT___GIMENELLS_VH', 'display_name': 'Gimenells i el Pla de la Font - Gimenells'},  # COM
@@ -142,7 +142,7 @@ STATIONS = [
     # {'code': 'XG', 'name': 'PARETS_DEL_VALLES_XG', 'display_name': 'Parets del Vallès'},  # COM
     # {'code': 'V5', 'name': 'PERAFITA_V5', 'display_name': 'Perafita'},  # COM
     # {'code': 'VP', 'name': 'PINOS_VP', 'display_name': 'Pinós'},  # COM
-    # {'code': 'D6', 'name': 'PORTBOU___COLL_DELS_BELITRES_D6', 'display_name': 'Portbou - Coll dels Belitres'},  # COM
+    {'code': 'D6', 'name': 'PORTBOU___COLL_DELS_BELITRES_D6', 'display_name': 'Portbou - Coll dels Belitres'},  # COM
     # {'code': 'XR', 'name': 'PRADES_XR', 'display_name': 'Prades'},  # COM
     {'code': 'YA', 'name': 'PUIGCERDA_YA', 'display_name': 'Puigcerdà'},
     # {'code': 'YH', 'name': 'PUJALT_YH', 'display_name': 'Pujalt'},  # COM
