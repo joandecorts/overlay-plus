@@ -234,6 +234,51 @@
             margin-right: 12px;
         }
         
+        /* ==== ICONA NOVA ==== */
+        .station-icon {
+            margin-left: 15px;
+        }
+        
+        .station-icon a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(145deg, #1a237e, #283593);
+            border: 2px solid #3949ab;
+            border-radius: 8px;
+            color: #bbdefb;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .station-icon a:hover {
+            background: linear-gradient(145deg, #283593, #1a237e);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+        }
+        
+        .icon-text {
+            display: inline;
+        }
+        
+        /* Per mòbils, només mostra la icona */
+        @media (max-width: 768px) {
+            .icon-text {
+                display: none;
+            }
+            
+            .station-icon a {
+                padding: 10px;
+                width: 42px;
+                justify-content: center;
+            }
+        }
+        
         /* ==== ROTACIÓ ACTIVA ALINEADA AMB EL DROPDOWN ==== */
         .rotation-status-container {
             display: flex;
@@ -522,6 +567,14 @@
                             <option value="">Carregant estacions...</option>
                         </select>
                     </div>
+                    
+                    <!-- ICONA NOVA -->
+                    <div class="station-icon">
+                        <a href="#" target="_blank" title="Veure totes les dades de l'estació" id="stationDetailsLink">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="icon-text">Dades</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="rotation-status-container">
                     <div class="rotation-status" id="rotationStatus">
@@ -562,12 +615,12 @@
                         
                         <div class="data-item" data-delay="0.2">
                             <span class="data-label">Temp. Màxima:</span>
-                            <span class="data-value" id="data-tempMax">{{VAR_TX_grausC}} °C</span>
+                            <span class="data-value" id="data-tempMax">1.1 °C</span>
                         </div>
                         
                         <div class="data-item" data-delay="0.3">
                             <span class="data-label">Temp. Mínima:</span>
-                            <span class="data-value" id="data-tempMin">{{VAR_TN_grausC}} °C</span>
+                            <span class="data-value" id="data-tempMin">-6.2 °C</span>
                         </div>
                         
                         <div class="data-item" data-delay="0.4">
@@ -584,7 +637,7 @@
                         
                         <div class="data-item" data-delay="0.1">
                             <span class="data-label">Precipitació:</span>
-                            <span class="data-value" id="data-precipitation">{{VAR_PPT_mm}} mm</span>
+                            <span class="data-value" id="data-precipitation">0.0 mm</span>
                         </div>
                         
                         <div class="data-item" data-delay="0.2">
@@ -657,17 +710,17 @@
             <div class="day-data-container">
                 <div class="day-data-item" data-delay="1.3">
                     <span class="day-data-label">Temp. màxima del dia</span>
-                    <span class="day-data-value" id="day-temp-max">{{TX_DIARIA_MAX}}°C</span>
+                    <span class="day-data-value" id="day-temp-max">1.1°C</span>
                     <span class="day-data-note">Des de les 00:00</span>
                 </div>
                 <div class="day-data-item" data-delay="1.4">
                     <span class="day-data-label">Temp. mínima del dia</span>
-                    <span class="day-data-value" id="day-temp-min">{{TN_DIARIA_MIN}}°C</span>
+                    <span class="day-data-value" id="day-temp-min">-6.2°C</span>
                     <span class="day-data-note">Des de les 00:00</span>
                 </div>
                 <div class="day-data-item" data-delay="1.5">
                     <span class="day-data-label">Pluja acumulada</span>
-                    <span class="day-data-value" id="day-precipitation">{{PPT_DIARIA_TOTAL}} mm</span>
+                    <span class="day-data-value" id="day-precipitation">0.0 mm</span>
                     <span class="day-data-note">Horari local</span>
                 </div>
             </div>
@@ -688,7 +741,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT COMPLET CORREGIT -->
+    <!-- JAVASCRIPT COMPLET MODIFICAT -->
     <script>
         // ============================================
         // CONFIGURACIÓ PRINCIPAL
@@ -905,6 +958,9 @@
             console.log(`🔄 Rotació automàtica: Canvi a estació ${station.code} - ${station.name}`);
         }
 
+        // ============================================
+        // FUNCIÓ MODIFICADA: ACTUALITZAR INFO ESTACIÓ
+        // ============================================
         function updateStationInfo(station) {
             document.getElementById('current-station-name').textContent = station.name;
             document.getElementById('current-municipality').textContent = station.municipi || extractMunicipality(station.name);
@@ -914,6 +970,13 @@
             const altitudeMatch = station.name.match(/\((\d+(?:\.\d+)?)\s*m\)/);
             if (altitudeMatch) {
                 document.getElementById('data-altitude').textContent = `${altitudeMatch[1]} m`;
+            }
+            
+            // ACTUALITZAR L'ENLLAÇ DE LA ICONA
+            const iconLink = document.getElementById('stationDetailsLink');
+            if (iconLink && station.code) {
+                iconLink.href = `estacions/${station.code}.html`;
+                iconLink.title = `Veure totes les dades de ${station.code}`;
             }
         }
 
