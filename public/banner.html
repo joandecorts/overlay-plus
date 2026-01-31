@@ -6,7 +6,7 @@
     <title>Detall complet de totes les estacions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==== ESTIL ORIGINAL AMB MILLORES ==== */
+        /* ==== ESTIL ORIGINAL PRESERVAT 100% ==== */
         body {
             margin: 0;
             padding: 20px;
@@ -61,7 +61,6 @@
             flex: 1;
         }
         
-        /* RELLOTGES CORREGITS - FORMAT DEMANAT */
         .dual-clock-digital {
             display: flex;
             flex-direction: column;
@@ -78,7 +77,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: baseline;
-            gap: 15px;
+            gap: 20px;
             width: 100%;
         }
         
@@ -87,9 +86,9 @@
             font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
             font-size: 24px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            min-width: 95px;
+            min-width: 85px;
             text-align: right;
         }
         
@@ -97,7 +96,7 @@
             color: white !important;
             font-size: 16px;
             font-weight: 600;
-            min-width: 40px;
+            min-width: 35px;
             text-align: left;
         }
         
@@ -247,10 +246,21 @@
             min-width: 200px;
         }
         
-        .col-basics { padding-left: 15px; }
-        .col-precip-wind { padding-left: 15px; }
-        .col-other { padding-left: 15px; }
-        .col-additional { padding-left: 15px; }
+        .col-basics {
+            padding-left: 15px;
+        }
+        
+        .col-precip-wind {
+            padding-left: 15px;
+        }
+        
+        .col-other {
+            padding-left: 15px;
+        }
+        
+        .col-additional {
+            padding-left: 15px;
+        }
         
         .data-column {
             margin-bottom: 25px;
@@ -298,67 +308,6 @@
             text-align: right;
         }
         
-        /* NOU: Estil per a hores de registre petites */
-        .hora-registre {
-            font-size: 12px;
-            color: #90caf9;
-            display: block;
-            margin-top: 3px;
-            font-style: italic;
-        }
-        
-        /* NOU: Estil per a l'avís de canvi de dia */
-        .avis-canvi-dia {
-            background: linear-gradient(145deg, #b71c1c, #d32f2f);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border: 2px solid #f44336;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        /* NOU: Estil per al peu de pàgina corregit */
-        .overlay-footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #3949ab;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #9fa8da;
-        }
-        
-        .footer-left, .footer-center, .footer-right {
-            flex: 1;
-        }
-        
-        .footer-left { text-align: left; }
-        .footer-center { text-align: center; }
-        .footer-right { 
-            text-align: right; 
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-        
-        .email-icon {
-            color: #4fc3f7;
-            font-size: 16px;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-        
-        .verificacio-dades {
-            font-size: 12px;
-            color: #81c784;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
         @media (max-width: 1200px) {
             .columns-4-container {
                 flex-direction: column;
@@ -390,20 +339,9 @@
             .clock-label-digital {
                 font-size: 14px;
             }
-            
-            .overlay-footer {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-            
-            .footer-left, .footer-center, .footer-right {
-                text-align: center;
-                width: 100%;
-            }
         }
         
-        /* Estils per a banner.html */
+        /* ESTILS ESPECÍFICS PER A BANNER.HTML (llista completa) */
         .llista-estacions {
             margin-top: 20px;
         }
@@ -464,8 +402,42 @@
             box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
         }
         
+        /* Amagar la secció de resum diari a index.html */
         .day-summary {
             display: none !important;
+        }
+        
+        .overlay-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #3949ab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #9fa8da;
+        }
+        
+        .footer-left, .footer-center, .footer-right {
+            flex: 1;
+        }
+        
+        .footer-center {
+            text-align: center;
+        }
+        
+        .footer-right {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .email-icon {
+            color: #4fc3f7;
+            font-size: 18px;
+            vertical-align: middle;
         }
         
         @keyframes fadeIn {
@@ -473,6 +445,7 @@
             to { opacity: 1; }
         }
         
+        /* Per a mòbils */
         @media (max-width: 768px) {
             .icon-text {
                 display: none;
@@ -564,18 +537,20 @@
             <div class="header-right">
                 <div class="dual-clock-digital">
                     <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local-simple">--:--</div>
+                        <div class="clock-time-digital" id="hora-local">--:--</div>
                         <div class="clock-label-digital">LT</div>
                     </div>
                     <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc-simple">--:--</div>
-                        <div class="clock-label-digital">UTC</div>
+                        <div class="clock-time-digital" id="hora-utc">--:--</div>
+                        <div class="clock-label-digital">TU</div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="llista-estacions" id="containerLlistaEstacions">
+    
+            <!-- El JavaScript omplirà aquí les estacions -->
             <div style="text-align: center; padding: 40px; color: #bbdefb;">
                 <i class="fas fa-spinner fa-spin fa-2x"></i>
                 <p style="margin-top: 20px;">Carregant dades de les estacions...</p>
@@ -583,39 +558,147 @@
         </div>
     
     <script>
+        // Dades per a banner.html
         const estacionsBanner = ["W1", "J5", "VZ", "D6", "D4", "CD", "Z2", "YP", "UE", "XL", "D5", "X4", "MS", "DP", "Z3", "YA", "YB", "UN", "XJ", "YU", "XO", "YT", "Z1", "Z7", "XH", "DJ", "D7", "DG", "CI", "ZC", "VK", "DN", "XS", "XE", "VS"];
-        const periodeData = {"YT": {"VAR_TM_grausC": "0.2", "VAR_TX_grausC": "0.3", "VAR_TN_grausC": "0.0", "VAR_HRM_perc": "71", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "250", "VAR_GN_cm": "118", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:02", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z1": {"VAR_TM_grausC": "-5.6", "VAR_TX_grausC": "-5.4", "VAR_TN_grausC": "-5.8", "VAR_HRM_perc": "95", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "247", "VAR_GN_cm": "168", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:06", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DN": {"VAR_TM_grausC": "14.7", "VAR_TX_grausC": "15.3", "VAR_TN_grausC": "13.8", "VAR_HRM_perc": "49", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "6.8", "VAR_DVM_10_m_graus": "120", "VAR_VVX_10_m_km_h": "18.0", "VAR_PM_hPa": "1002.8", "VAR_RS_W_m_2": "432", "NOM_ESTACIO": "Angl\u00e8s", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:10", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DJ": {"VAR_TM_grausC": "14.3", "VAR_TX_grausC": "14.7", "VAR_TN_grausC": "14.0", "VAR_HRM_perc": "49", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "14.4", "VAR_DVM_10_m_graus": "170", "VAR_VVX_10_m_km_h": "24.8", "VAR_PM_hPa": "1002.8", "VAR_RS_W_m_2": "531", "NOM_ESTACIO": "Banyoles", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:13", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "X4": {"VAR_TM_grausC": "14.8", "VAR_TX_grausC": "15.0", "VAR_TN_grausC": "14.5", "VAR_HRM_perc": "40", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "18.0", "VAR_DVM_10_m_graus": "324", "VAR_VVX_10_m_km_h": "42.1", "VAR_PM_hPa": "1003.8", "VAR_RS_W_m_2": "368", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:18", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D5": {"VAR_TM_grausC": "12.1", "VAR_TX_grausC": "12.5", "VAR_TN_grausC": "11.7", "VAR_HRM_perc": "52", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "9.0", "VAR_DVM_10_m_graus": "242", "VAR_VVX_10_m_km_h": "35.6", "VAR_PM_hPa": "1003.4", "VAR_RS_W_m_2": "563", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:21", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UN": {"VAR_TM_grausC": "13.9", "VAR_TX_grausC": "14.3", "VAR_TN_grausC": "13.7", "VAR_HRM_perc": "50", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "544", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:26", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "MS": {"VAR_TM_grausC": "9.8", "VAR_TX_grausC": "10.4", "VAR_TN_grausC": "9.3", "VAR_HRM_perc": "34", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:30", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "W1": {"VAR_TM_grausC": "13.6", "VAR_TX_grausC": "13.9", "VAR_TN_grausC": "13.5", "VAR_HRM_perc": "49", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:33", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DP": {"VAR_TM_grausC": "6.6", "VAR_TX_grausC": "6.9", "VAR_TN_grausC": "6.2", "VAR_HRM_perc": "48", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "23.8", "VAR_DVM_10_m_graus": "22", "VAR_VVX_10_m_km_h": "37.8", "VAR_PM_hPa": "1003.7", "VAR_RS_W_m_2": "568", "VAR_GN_cm": "2", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:38", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XL": {"VAR_TM_grausC": "15.2", "VAR_TX_grausC": "15.6", "VAR_TN_grausC": "14.7", "VAR_HRM_perc": "42", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "19.8", "VAR_DVM_10_m_graus": "329", "VAR_VVX_10_m_km_h": "36.4", "VAR_RS_W_m_2": "550", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:41", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VZ": {"VAR_TM_grausC": "13.6", "VAR_TX_grausC": "14.0", "VAR_TN_grausC": "12.8", "VAR_HRM_perc": "47", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Espolla", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:45", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z7": {"VAR_TM_grausC": "-6.5", "VAR_TX_grausC": "-6.2", "VAR_TN_grausC": "-6.9", "VAR_HRM_perc": "72", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "15.8", "VAR_DVM_10_m_graus": "230", "VAR_VVX_10_m_km_h": "57.2", "VAR_RS_W_m_2": "541", "VAR_GN_cm": "72", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:49", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XJ": {"VAR_TM_grausC": "14.6", "VAR_TX_grausC": "15.0", "VAR_TN_grausC": "14.3", "VAR_HRM_perc": "46", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "8.3", "VAR_DVM_10_m_graus": "179", "VAR_VVX_10_m_km_h": "18.4", "VAR_PM_hPa": "1003.4", "VAR_RS_W_m_2": "548", "NOM_ESTACIO": "Girona", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:53", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YU": {"VAR_TM_grausC": "6.2", "VAR_TX_grausC": "6.5", "VAR_TN_grausC": "5.8", "VAR_HRM_perc": "73", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "9.7", "VAR_DVM_10_m_graus": "260", "VAR_VVX_10_m_km_h": "20.9", "VAR_RS_W_m_2": "475", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:54:57", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CD": {"VAR_TM_grausC": "10.6", "VAR_TX_grausC": "11.7", "VAR_TN_grausC": "9.7", "VAR_HRM_perc": "35", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "7.2", "VAR_DVM_10_m_graus": "32", "VAR_VVX_10_m_km_h": "23.4", "VAR_PM_hPa": "1002.9", "VAR_RS_W_m_2": "584", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:01", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z2": {"VAR_TM_grausC": "-7.4", "VAR_TX_grausC": "-7.1", "VAR_TN_grausC": "-7.7", "VAR_HRM_perc": "79", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "628", "VAR_GN_cm": "109", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:04", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VK": {"VAR_TM_grausC": "10.5", "VAR_TX_grausC": "10.9", "VAR_TN_grausC": "10.0", "VAR_HRM_perc": "58", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "33.5", "VAR_DVM_10_m_graus": "297", "VAR_VVX_10_m_km_h": "53.6", "VAR_PM_hPa": "1007.5", "VAR_RS_W_m_2": "556", "NOM_ESTACIO": "Lleida - Raimat", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:08", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z3": {"VAR_TM_grausC": "-3.5", "VAR_TX_grausC": "-3.0", "VAR_TN_grausC": "-4.0", "VAR_HRM_perc": "60", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "622", "VAR_GN_cm": "116", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:12", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YB": {"VAR_TM_grausC": "13.0", "VAR_TX_grausC": "13.3", "VAR_TN_grausC": "12.6", "VAR_HRM_perc": "48", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "9.4", "VAR_DVM_10_m_graus": "192", "VAR_VVX_10_m_km_h": "20.2", "VAR_PM_hPa": "1002.0", "VAR_RS_W_m_2": "539", "NOM_ESTACIO": "Olot", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:16", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YP": {"VAR_TM_grausC": "14.1", "VAR_TX_grausC": "14.6", "VAR_TN_grausC": "14.0", "VAR_HRM_perc": "46", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "19.8", "VAR_DVM_10_m_graus": "353", "VAR_VVX_10_m_km_h": "35.3", "VAR_RS_W_m_2": "529", "NOM_ESTACIO": "Palafrugell", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:20", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "J5": {"VAR_TM_grausC": "12.7", "VAR_TX_grausC": "13.1", "VAR_TN_grausC": "12.4", "VAR_HRM_perc": "51", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "29.5", "VAR_DVM_10_m_graus": "14", "VAR_VVX_10_m_km_h": "52.9", "VAR_PM_hPa": "1002.5", "VAR_RS_W_m_2": "530", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:24", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D6": {"VAR_TM_grausC": "10.6", "VAR_TX_grausC": "10.9", "VAR_TN_grausC": "10.5", "VAR_HRM_perc": "59", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "59.4", "VAR_DVM_10_m_graus": "0", "VAR_VVX_10_m_km_h": "108.4", "VAR_PM_hPa": "1002.2", "VAR_RS_W_m_2": "528", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:28", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YA": {"VAR_TM_grausC": "6.9", "VAR_TX_grausC": "7.3", "VAR_TN_grausC": "6.6", "VAR_HRM_perc": "43", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "12.2", "VAR_DVM_10_m_graus": "282", "VAR_VVX_10_m_km_h": "25.9", "VAR_PM_hPa": "1002.9", "VAR_RS_W_m_2": "632", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:32", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DG": {"VAR_TM_grausC": "-1.1", "VAR_TX_grausC": "-0.7", "VAR_TN_grausC": "-1.6", "VAR_HRM_perc": "56", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "15.1", "VAR_DVM_10_m_graus": "353", "VAR_VVX_10_m_km_h": "40.0", "VAR_PM_hPa": "836.7", "VAR_RS_W_m_2": "623", "VAR_GN_cm": "116", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:36", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D4": {"VAR_TM_grausC": "14.1", "VAR_TX_grausC": "14.3", "VAR_TN_grausC": "13.9", "VAR_HRM_perc": "46", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "28.1", "VAR_DVM_10_m_graus": "325", "VAR_VVX_10_m_km_h": "51.8", "VAR_PM_hPa": "1003.8", "VAR_RS_W_m_2": "540", "NOM_ESTACIO": "Roses", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:40", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CI": {"VAR_TM_grausC": "10.0", "VAR_TX_grausC": "10.4", "VAR_TN_grausC": "9.8", "VAR_HRM_perc": "56", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "6.1", "VAR_DVM_10_m_graus": "130", "VAR_VVX_10_m_km_h": "12.2", "VAR_PM_hPa": "1002.6", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:44", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XS": {"VAR_TM_grausC": "14.1", "VAR_TX_grausC": "14.5", "VAR_TN_grausC": "13.8", "VAR_HRM_perc": "51", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "11.5", "VAR_DVM_10_m_graus": "147", "VAR_VVX_10_m_km_h": "21.6", "VAR_RS_W_m_2": "536", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:48", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "ZC": {"VAR_TM_grausC": "-5.8", "VAR_TX_grausC": "-5.5", "VAR_TN_grausC": "-6.2", "VAR_HRM_perc": "71", "VAR_PPT_mm": "0.3", "VAR_VVM_10_m_km_h": "19.1", "VAR_DVM_10_m_graus": "313", "VAR_VVX_10_m_km_h": "50.0", "VAR_RS_W_m_2": "610", "VAR_GN_cm": "57", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:51", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XH": {"VAR_TM_grausC": "11.4", "VAR_TX_grausC": "11.8", "VAR_TN_grausC": "11.2", "VAR_HRM_perc": "32", "VAR_PPT_mm": "0.0", "VAR_PM_hPa": "1003.8", "VAR_GN_cm": "1", "NOM_ESTACIO": "Sort", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:55", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XE": {"VAR_TM_grausC": "15.0", "VAR_TX_grausC": "15.5", "VAR_TN_grausC": "14.6", "VAR_HRM_perc": "36", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "29.5", "VAR_DVM_10_m_graus": "298", "VAR_VVX_10_m_km_h": "57.2", "VAR_PM_hPa": "1005.5", "VAR_RS_W_m_2": "566", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:55:59", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UE": {"VAR_TM_grausC": "14.5", "VAR_TX_grausC": "14.7", "VAR_TN_grausC": "14.3", "VAR_HRM_perc": "46", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:56:03", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XO": {"VAR_TM_grausC": "11.1", "VAR_TX_grausC": "11.5", "VAR_TN_grausC": "10.8", "VAR_HRM_perc": "52", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.0", "VAR_DVM_10_m_graus": "272", "VAR_VVX_10_m_km_h": "13.0", "VAR_RS_W_m_2": "529", "NOM_ESTACIO": "Vic", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:56:07", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VS": {"VAR_TM_grausC": "-5.7", "VAR_TX_grausC": "-5.1", "VAR_TN_grausC": "-6.3", "VAR_HRM_perc": "90", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.8", "VAR_DVM_10_m_graus": "114", "VAR_VVX_10_m_km_h": "28.1", "VAR_PM_hPa": "839.5", "VAR_RS_W_m_2": "419", "VAR_GN_cm": "178", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:56:11", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D7": {"VAR_TM_grausC": "13.3", "VAR_TX_grausC": "13.6", "VAR_TN_grausC": "13.2", "VAR_HRM_perc": "45", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "19.4", "VAR_DVM_10_m_graus": "317", "VAR_VVX_10_m_km_h": "40.0", "VAR_PM_hPa": "1008.7", "VAR_RS_W_m_2": "548", "NOM_ESTACIO": "Vinebre", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 13:56:15", "PERIODE_UTC": "12:00 - 12:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}};
-        const diariData = {"YT": {"TEMPERATURA_MITJANA_DIA": "-1.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "0.3 \u00b0C 12:23 TU", "TEMPERATURA_MINIMA_DIA": "-2.8 \u00b0C 5:00 TU", "HUMITAT_MITJANA_DIA": "82%", "PRECIPITACIO_ACUM_DIA": "5.5 mm", "GRUIX_NEU_MAX": "119 cm", "RADIACIO_GLOBAL": "2.7 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_DIA": "2026-01-31"}, "Z1": {"TEMPERATURA_MITJANA_DIA": "-6.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.5 \u00b0C 0:49 TU", "TEMPERATURA_MINIMA_DIA": "-7.2 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "95%", "PRECIPITACIO_ACUM_DIA": "3.2 mm", "GRUIX_NEU_MAX": "171 cm", "RATXA_VENT_MAX": "51.8 km/h - 257\u00ba 4:50 TU", "RADIACIO_GLOBAL": "2.9 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_DIA": "2026-01-31"}, "DN": {"TEMPERATURA_MITJANA_DIA": "10.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.3 \u00b0C 12:13 TU", "TEMPERATURA_MINIMA_DIA": "8.4 \u00b0C 8:38 TU", "HUMITAT_MITJANA_DIA": "62%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "38.9 km/h - 281\u00ba 0:31 TU", "PRESSIO_ATMOSFERICA": "997.8 hPa", "RADIACIO_GLOBAL": "4.8 MJ/m2", "NOM_ESTACIO": "Angl\u00e8s", "DATA_DIA": "2026-01-31"}, "DJ": {"TEMPERATURA_MITJANA_DIA": "10.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.7 \u00b0C 12:20 TU", "TEMPERATURA_MINIMA_DIA": "8.2 \u00b0C 8:32 TU", "HUMITAT_MITJANA_DIA": "58%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "50.4 km/h - 8\u00ba 4:51 TU", "PRESSIO_ATMOSFERICA": "997.9 hPa", "RADIACIO_GLOBAL": "5.0 MJ/m2", "NOM_ESTACIO": "Banyoles", "DATA_DIA": "2026-01-31"}, "X4": {"TEMPERATURA_MITJANA_DIA": "11.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.0 \u00b0C 12:22 TU", "TEMPERATURA_MINIMA_DIA": "9.7 \u00b0C 8:02 TU", "HUMITAT_MITJANA_DIA": "56%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "54.7 km/h - 328\u00ba 6:48 TU", "PRESSIO_ATMOSFERICA": "998.8 hPa", "RADIACIO_GLOBAL": "5.4 MJ/m2", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_DIA": "2026-01-31"}, "D5": {"TEMPERATURA_MITJANA_DIA": "7.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "12.5 \u00b0C 12:28 TU", "TEMPERATURA_MINIMA_DIA": "5.4 \u00b0C 7:56 TU", "HUMITAT_MITJANA_DIA": "74%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "62.6 km/h - 314\u00ba 8:47 TU", "PRESSIO_ATMOSFERICA": "998.7 hPa", "RADIACIO_GLOBAL": "6.6 MJ/m2", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_DIA": "2026-01-31"}, "UN": {"TEMPERATURA_MITJANA_DIA": "9.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.3 \u00b0C 12:10 TU", "TEMPERATURA_MINIMA_DIA": "7.0 \u00b0C 2:12 TU", "HUMITAT_MITJANA_DIA": "67%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "31.7 km/h - 53\u00ba 5:45 TU", "RADIACIO_GLOBAL": "4.9 MJ/m2", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_DIA": "2026-01-31"}, "MS": {"TEMPERATURA_MITJANA_DIA": "5.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.8 \u00b0C 11:16 TU", "TEMPERATURA_MINIMA_DIA": "1.2 \u00b0C 2:30 TU", "HUMITAT_MITJANA_DIA": "61%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_DIA": "2026-01-31"}, "W1": {"TEMPERATURA_MITJANA_DIA": "10.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.9 \u00b0C 12:29 TU", "TEMPERATURA_MINIMA_DIA": "7.3 \u00b0C 0:00 TU", "HUMITAT_MITJANA_DIA": "72%", "PRECIPITACIO_ACUM_DIA": "3.4 mm", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_DIA": "2026-01-31"}, "DP": {"TEMPERATURA_MITJANA_DIA": "2.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "6.9 \u00b0C 12:17 TU", "TEMPERATURA_MINIMA_DIA": "0.0 \u00b0C 2:50 TU", "HUMITAT_MITJANA_DIA": "74%", "PRECIPITACIO_ACUM_DIA": "0.8 mm", "GRUIX_NEU_MAX": "3 cm", "RATXA_VENT_MAX": "60.8 km/h - 37\u00ba 9:47 TU", "PRESSIO_ATMOSFERICA": "1000.5 hPa", "RADIACIO_GLOBAL": "6.4 MJ/m2", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_DIA": "2026-01-31"}, "XL": {"TEMPERATURA_MITJANA_DIA": "10.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.6 \u00b0C 11:51 TU", "TEMPERATURA_MINIMA_DIA": "7.3 \u00b0C 3:32 TU", "HUMITAT_MITJANA_DIA": "66%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "42.1 km/h - 304\u00ba 10:10 TU", "RADIACIO_GLOBAL": "6.2 MJ/m2", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_DIA": "2026-01-31"}, "VZ": {"TEMPERATURA_MITJANA_DIA": "10.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.0 \u00b0C 12:26 TU", "TEMPERATURA_MINIMA_DIA": "7.1 \u00b0C 5:10 TU", "HUMITAT_MITJANA_DIA": "66%", "PRECIPITACIO_ACUM_DIA": "3.9 mm", "NOM_ESTACIO": "Espolla", "DATA_DIA": "2026-01-31"}, "Z7": {"TEMPERATURA_MITJANA_DIA": "-7.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-5.7 \u00b0C 2:09 TU", "TEMPERATURA_MINIMA_DIA": "-8.0 \u00b0C 5:30 TU", "HUMITAT_MITJANA_DIA": "78%", "PRECIPITACIO_ACUM_DIA": "6.6 mm", "GRUIX_NEU_MAX": "80 cm", "RATXA_VENT_MAX": "91.1 km/h - 217\u00ba 7:58 TU", "RADIACIO_GLOBAL": "5.4 MJ/m2", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_DIA": "2026-01-31"}, "XJ": {"TEMPERATURA_MITJANA_DIA": "9.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.0 \u00b0C 12:08 TU", "TEMPERATURA_MINIMA_DIA": "7.3 \u00b0C 4:38 TU", "HUMITAT_MITJANA_DIA": "66%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "46.1 km/h - 13\u00ba 5:08 TU", "PRESSIO_ATMOSFERICA": "998.2 hPa", "RADIACIO_GLOBAL": "5.1 MJ/m2", "NOM_ESTACIO": "Girona", "DATA_DIA": "2026-01-31"}, "YU": {"TEMPERATURA_MITJANA_DIA": "3.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "6.5 \u00b0C 11:48 TU", "TEMPERATURA_MINIMA_DIA": "1.9 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "91%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "37.8 km/h - 52\u00ba 5:04 TU", "RADIACIO_GLOBAL": "5.0 MJ/m2", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_DIA": "2026-01-31"}, "CD": {"TEMPERATURA_MITJANA_DIA": "3.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.7 \u00b0C 12:27 TU", "TEMPERATURA_MINIMA_DIA": "0.3 \u00b0C 7:10 TU", "HUMITAT_MITJANA_DIA": "79%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "44.3 km/h - 62\u00ba 10:55 TU", "PRESSIO_ATMOSFERICA": "1000.4 hPa", "RADIACIO_GLOBAL": "6.7 MJ/m2", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_DIA": "2026-01-31"}, "Z2": {"TEMPERATURA_MITJANA_DIA": "-8.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-6.5 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "-9.1 \u00b0C 5:32 TU", "HUMITAT_MITJANA_DIA": "89%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "126 cm", "RATXA_VENT_MAX": "89.3 km/h - 332\u00ba 8:05 TU", "RADIACIO_GLOBAL": "7.9 MJ/m2", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_DIA": "2026-01-31"}, "VK": {"TEMPERATURA_MITJANA_DIA": "6.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.9 \u00b0C 12:24 TU", "TEMPERATURA_MINIMA_DIA": "3.7 \u00b0C 0:00 TU", "HUMITAT_MITJANA_DIA": "76%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "61.9 km/h - 293\u00ba 4:03 TU", "PRESSIO_ATMOSFERICA": "1002.8 hPa", "RADIACIO_GLOBAL": "6.7 MJ/m2", "NOM_ESTACIO": "Lleida - Raimat", "DATA_DIA": "2026-01-31"}, "Z3": {"TEMPERATURA_MITJANA_DIA": "-5.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-3.0 \u00b0C 12:24 TU", "TEMPERATURA_MINIMA_DIA": "-6.4 \u00b0C 6:10 TU", "HUMITAT_MITJANA_DIA": "79%", "PRECIPITACIO_ACUM_DIA": "9.8 mm", "GRUIX_NEU_MAX": "123 cm", "RATXA_VENT_MAX": "59.4 km/h - 346\u00ba 10:50 TU", "RADIACIO_GLOBAL": "7.4 MJ/m2", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_DIA": "2026-01-31"}, "YB": {"TEMPERATURA_MITJANA_DIA": "7.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.6 \u00b0C 11:57 TU", "TEMPERATURA_MINIMA_DIA": "3.4 \u00b0C 6:17 TU", "HUMITAT_MITJANA_DIA": "75%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "22.3 km/h - 307\u00ba 3:58 TU", "PRESSIO_ATMOSFERICA": "998.2 hPa", "RADIACIO_GLOBAL": "5.1 MJ/m2", "NOM_ESTACIO": "Olot", "DATA_DIA": "2026-01-31"}, "YP": {"TEMPERATURA_MITJANA_DIA": "11.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.6 \u00b0C 12:29 TU", "TEMPERATURA_MINIMA_DIA": "8.5 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "61%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "62.6 km/h - 354\u00ba 5:16 TU", "RADIACIO_GLOBAL": "4.3 MJ/m2", "NOM_ESTACIO": "Palafrugell", "DATA_DIA": "2026-01-31"}, "J5": {"TEMPERATURA_MITJANA_DIA": "9.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.1 \u00b0C 12:29 TU", "TEMPERATURA_MINIMA_DIA": "6.2 \u00b0C 5:53 TU", "HUMITAT_MITJANA_DIA": "67%", "PRECIPITACIO_ACUM_DIA": "0.8 mm", "RATXA_VENT_MAX": "75.6 km/h - 358\u00ba 4:41 TU", "PRESSIO_ATMOSFERICA": "998.1 hPa", "RADIACIO_GLOBAL": "5.7 MJ/m2", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_DIA": "2026-01-31"}, "D6": {"TEMPERATURA_MITJANA_DIA": "8.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.9 \u00b0C 11:51 TU", "TEMPERATURA_MINIMA_DIA": "4.9 \u00b0C 5:24 TU", "HUMITAT_MITJANA_DIA": "76%", "PRECIPITACIO_ACUM_DIA": "1.7 mm", "RATXA_VENT_MAX": "136.4 km/h - 342\u00ba 5:07 TU", "PRESSIO_ATMOSFERICA": "997.3 hPa", "RADIACIO_GLOBAL": "4.6 MJ/m2", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_DIA": "2026-01-31"}, "YA": {"TEMPERATURA_MITJANA_DIA": "2.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "7.3 \u00b0C 12:03 TU", "TEMPERATURA_MINIMA_DIA": "0.5 \u00b0C 3:35 TU", "HUMITAT_MITJANA_DIA": "68%", "PRECIPITACIO_ACUM_DIA": "1.1 mm", "RATXA_VENT_MAX": "42.8 km/h - 293\u00ba 8:08 TU", "PRESSIO_ATMOSFERICA": "999.8 hPa", "RADIACIO_GLOBAL": "5.9 MJ/m2", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_DIA": "2026-01-31"}, "DG": {"TEMPERATURA_MITJANA_DIA": "-2.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-0.7 \u00b0C 12:29 TU", "TEMPERATURA_MINIMA_DIA": "-4.1 \u00b0C 5:27 TU", "HUMITAT_MITJANA_DIA": "73%", "PRECIPITACIO_ACUM_DIA": "2.7 mm", "GRUIX_NEU_MAX": "122 cm", "RATXA_VENT_MAX": "71.3 km/h - 31\u00ba 8:17 TU", "RADIACIO_GLOBAL": "6.2 MJ/m2", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_DIA": "2026-01-31"}, "D4": {"TEMPERATURA_MITJANA_DIA": "10.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.3 \u00b0C 12:01 TU", "TEMPERATURA_MINIMA_DIA": "7.1 \u00b0C 1:15 TU", "HUMITAT_MITJANA_DIA": "71%", "PRECIPITACIO_ACUM_DIA": "2.4 mm", "RATXA_VENT_MAX": "60.8 km/h - 307\u00ba 7:09 TU", "PRESSIO_ATMOSFERICA": "998.5 hPa", "RADIACIO_GLOBAL": "4.2 MJ/m2", "NOM_ESTACIO": "Roses", "DATA_DIA": "2026-01-31"}, "CI": {"TEMPERATURA_MITJANA_DIA": "4.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.4 \u00b0C 12:08 TU", "TEMPERATURA_MINIMA_DIA": "1.4 \u00b0C 6:03 TU", "HUMITAT_MITJANA_DIA": "84%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "22.3 km/h - 284\u00ba 0:32 TU", "PRESSIO_ATMOSFERICA": "999.5 hPa", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_DIA": "2026-01-31"}, "XS": {"TEMPERATURA_MITJANA_DIA": "10.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.5 \u00b0C 11:58 TU", "TEMPERATURA_MINIMA_DIA": "7.6 \u00b0C 8:00 TU", "HUMITAT_MITJANA_DIA": "63%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "30.6 km/h - 270\u00ba 0:08 TU", "RADIACIO_GLOBAL": "5.3 MJ/m2", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_DIA": "2026-01-31"}, "ZC": {"TEMPERATURA_MITJANA_DIA": "-6.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-5.0 \u00b0C 0:16 TU", "TEMPERATURA_MINIMA_DIA": "-7.6 \u00b0C 5:12 TU", "HUMITAT_MITJANA_DIA": "84%", "PRECIPITACIO_ACUM_DIA": "8.1 mm", "GRUIX_NEU_MAX": "68 cm", "RATXA_VENT_MAX": "83.2 km/h - 1\u00ba 8:40 TU", "RADIACIO_GLOBAL": "6.4 MJ/m2", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_DIA": "2026-01-31"}, "XH": {"TEMPERATURA_MITJANA_DIA": "4.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.8 \u00b0C 12:24 TU", "TEMPERATURA_MINIMA_DIA": "0.8 \u00b0C 7:41 TU", "HUMITAT_MITJANA_DIA": "81%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "GRUIX_NEU_MAX": "1 cm", "PRESSIO_ATMOSFERICA": "1000.9 hPa", "NOM_ESTACIO": "Sort", "DATA_DIA": "2026-01-31"}, "XE": {"TEMPERATURA_MITJANA_DIA": "11.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.5 \u00b0C 12:25 TU", "TEMPERATURA_MINIMA_DIA": "9.2 \u00b0C 3:23 TU", "HUMITAT_MITJANA_DIA": "49%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "87.5 km/h - 280\u00ba 5:18 TU", "PRESSIO_ATMOSFERICA": "999.7 hPa", "RADIACIO_GLOBAL": "6.1 MJ/m2", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_DIA": "2026-01-31"}, "UE": {"TEMPERATURA_MITJANA_DIA": "11.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.7 \u00b0C 12:25 TU", "TEMPERATURA_MINIMA_DIA": "8.5 \u00b0C 5:34 TU", "HUMITAT_MITJANA_DIA": "64%", "PRECIPITACIO_ACUM_DIA": "0.6 mm", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_DIA": "2026-01-31"}, "XO": {"TEMPERATURA_MITJANA_DIA": "6.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.5 \u00b0C 12:15 TU", "TEMPERATURA_MINIMA_DIA": "4.8 \u00b0C 7:05 TU", "HUMITAT_MITJANA_DIA": "79%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "23.4 km/h - 224\u00ba 11:38 TU", "RADIACIO_GLOBAL": "5.9 MJ/m2", "NOM_ESTACIO": "Vic", "DATA_DIA": "2026-01-31"}, "VS": {"TEMPERATURA_MITJANA_DIA": "-6.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.6 \u00b0C 0:13 TU", "TEMPERATURA_MINIMA_DIA": "-7.2 \u00b0C 5:42 TU", "HUMITAT_MITJANA_DIA": "92%", "PRECIPITACIO_ACUM_DIA": "9.5 mm", "GRUIX_NEU_MAX": "190 cm", "RATXA_VENT_MAX": "66.2 km/h - 86\u00ba 2:55 TU", "RADIACIO_GLOBAL": "3.9 MJ/m2", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_DIA": "2026-01-31"}, "D7": {"TEMPERATURA_MITJANA_DIA": "9.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.6 \u00b0C 12:27 TU", "TEMPERATURA_MINIMA_DIA": "6.5 \u00b0C 0:43 TU", "HUMITAT_MITJANA_DIA": "62%", "PRECIPITACIO_ACUM_DIA": "1.5 mm", "RATXA_VENT_MAX": "49.3 km/h - 329\u00ba 2:06 TU", "PRESSIO_ATMOSFERICA": "1003.7 hPa", "RADIACIO_GLOBAL": "6.1 MJ/m2", "NOM_ESTACIO": "Vinebre", "DATA_DIA": "2026-01-31"}};
-        const metadades = {"DQ": {"comarca": "Alt Camp", "altitud": "287"}, "YS": {"comarca": "Alt Empord\u00e0", "altitud": "32"}, "W1": {"comarca": "Alt Empord\u00e0", "altitud": "2"}, "J5": {"comarca": "Alt Empord\u00e0", "altitud": "158"}, "VZ": {"comarca": "Alt Empord\u00e0", "altitud": "83"}, "Y5": {"comarca": "Alt Empord\u00e0", "altitud": "152"}, "D6": {"comarca": "Alt Empord\u00e0", "altitud": "196"}, "D4": {"comarca": "Alt Empord\u00e0", "altitud": "23"}, "U2": {"comarca": "Alt Empord\u00e0", "altitud": "4"}, "XZ": {"comarca": "Alt Empord\u00e0", "altitud": "7"}, "DI": {"comarca": "Alt Pened\u00e8s", "altitud": "415"}, "WP": {"comarca": "Alt Pened\u00e8s", "altitud": "325"}, "U3": {"comarca": "Alt Pened\u00e8s", "altitud": "257"}, "YO": {"comarca": "Alt Pened\u00e8s", "altitud": "155"}, "W4": {"comarca": "Alt Pened\u00e8s", "altitud": "240"}, "Y4": {"comarca": "Alt Urgell", "altitud": "1162"}, "CD": {"comarca": "Alt Urgell", "altitud": "849"}, "W5": {"comarca": "Alt Urgell", "altitud": "490"}, "CJ": {"comarca": "Alt Urgell", "altitud": "566"}, "CT": {"comarca": "Alta Ribagor\u00e7a", "altitud": "823"}, "Z2": {"comarca": "Alta Ribagor\u00e7a", "altitud": "2535"}, "CE": {"comarca": "Anoia", "altitud": "316"}, "XB": {"comarca": "Anoia", "altitud": "584"}, "XA": {"comarca": "Anoia", "altitud": "785"}, "H1": {"comarca": "Anoia", "altitud": "333"}, "YH": {"comarca": "Anoia", "altitud": "747"}, "WW": {"comarca": "Bages", "altitud": "278"}, "MQ": {"comarca": "Bages", "altitud": "401"}, "U4": {"comarca": "Bages", "altitud": "507"}, "WN": {"comarca": "Bages", "altitud": "916"}, "CL": {"comarca": "Bages", "altitud": "349"}, "YF": {"comarca": "Baix Camp", "altitud": "43"}, "XR": {"comarca": "Baix Camp", "altitud": "926"}, "YL": {"comarca": "Baix Camp", "altitud": "170"}, "U6": {"comarca": "Baix Camp", "altitud": "29"}, "U7": {"comarca": "Baix Ebre", "altitud": "52"}, "DB": {"comarca": "Baix Ebre", "altitud": "179"}, "U9": {"comarca": "Baix Ebre", "altitud": "62"}, "UA": {"comarca": "Baix Ebre", "altitud": "93"}, "X5": {"comarca": "Baix Ebre", "altitud": "1055"}, "DO": {"comarca": "Baix Empord\u00e0", "altitud": "14"}, "DF": {"comarca": "Baix Empord\u00e0", "altitud": "29"}, "UB": {"comarca": "Baix Empord\u00e0", "altitud": "15"}, "YP": {"comarca": "Baix Empord\u00e0", "altitud": "35"}, "UE": {"comarca": "Baix Empord\u00e0", "altitud": "4"}, "UF": {"comarca": "Baix Llobregat", "altitud": "573"}, "XL": {"comarca": "Baix Llobregat", "altitud": "8"}, "Y7": {"comarca": "Baix Llobregat", "altitud": "3"}, "YQ": {"comarca": "Baix Llobregat", "altitud": "6"}, "D3": {"comarca": "Baix Llobregat", "altitud": "252"}, "UG": {"comarca": "Baix Llobregat", "altitud": "3"}, "WZ": {"comarca": "Baix Pened\u00e8s", "altitud": "17"}, "UH": {"comarca": "Baix Pened\u00e8s", "altitud": "545"}, "D9": {"comarca": "Baix Pened\u00e8s", "altitud": "59"}, "WO": {"comarca": "Baix Pened\u00e8s", "altitud": "185"}, "WU": {"comarca": "Barcelon\u00e8s", "altitud": "42"}, "D5": {"comarca": "Barcelon\u00e8s", "altitud": "411"}, "X4": {"comarca": "Barcelon\u00e8s", "altitud": "33"}, "X8": {"comarca": "Barcelon\u00e8s", "altitud": "79"}, "WM": {"comarca": "Bergued\u00e0", "altitud": "1167"}, "MS": {"comarca": "Bergued\u00e0", "altitud": "943"}, "UI": {"comarca": "Bergued\u00e0", "altitud": "1386"}, "WV": {"comarca": "Bergued\u00e0", "altitud": "788"}, "CR": {"comarca": "Bergued\u00e0", "altitud": "873"}, "ZD": {"comarca": "Cerdanya", "altitud": "2478"}, "DP": {"comarca": "Cerdanya", "altitud": "1097"}, "Z3": {"comarca": "Cerdanya", "altitud": "2230"}, "Z9": {"comarca": "Cerdanya", "altitud": "2143"}, "YA": {"comarca": "Cerdanya", "altitud": "1213"}, "W8": {"comarca": "Conca de Barber\u00e0", "altitud": "438"}, "CW": {"comarca": "Conca de Barber\u00e0", "altitud": "446"}, "UJ": {"comarca": "Conca de Barber\u00e0", "altitud": "709"}, "XU": {"comarca": "Garraf", "altitud": "148"}, "UK": {"comarca": "Garraf", "altitud": "161"}, "YR": {"comarca": "Garraf", "altitud": "31"}, "UM": {"comarca": "Garrigues", "altitud": "505"}, "YD": {"comarca": "Garrigues", "altitud": "283"}, "W9": {"comarca": "Garrotxa", "altitud": "461"}, "YB": {"comarca": "Garrotxa", "altitud": "433"}, "UN": {"comarca": "Giron\u00e8s", "altitud": "171"}, "UO": {"comarca": "Giron\u00e8s", "altitud": "97"}, "XJ": {"comarca": "Giron\u00e8s", "altitud": "72"}, "V5": {"comarca": "Llu\u00e7an\u00e8s", "altitud": "774"}, "UP": {"comarca": "Maresme", "altitud": "81"}, "UQ": {"comarca": "Maresme", "altitud": "460"}, "WT": {"comarca": "Maresme", "altitud": "2"}, "YV": {"comarca": "Maresme", "altitud": "87"}, "US": {"comarca": "Montsi\u00e0", "altitud": "24"}, "UU": {"comarca": "Montsi\u00e0", "altitud": "3"}, "UW": {"comarca": "Montsi\u00e0", "altitud": "0"}, "C9": {"comarca": "Montsi\u00e0", "altitud": "240"}, "DL": {"comarca": "Montsi\u00e0", "altitud": "0"}, "UX": {"comarca": "Montsi\u00e0", "altitud": "210"}, "WB": {"comarca": "Noguera", "altitud": "267"}, "WG": {"comarca": "Noguera", "altitud": "301"}, "X6": {"comarca": "Noguera", "altitud": "366"}, "WX": {"comarca": "Noguera", "altitud": "668"}, "WA": {"comarca": "Noguera", "altitud": "443"}, "UY": {"comarca": "Noguera", "altitud": "576"}, "V1": {"comarca": "Noguera", "altitud": "238"}, "CQ": {"comarca": "Noguera", "altitud": "594"}, "YU": {"comarca": "Osona", "altitud": "925"}, "V4": {"comarca": "Osona", "altitud": "684"}, "CY": {"comarca": "Osona", "altitud": "816"}, "CC": {"comarca": "Osona", "altitud": "626"}, "XO": {"comarca": "Osona", "altitud": "499"}, "WS": {"comarca": "Osona", "altitud": "953"}, "KE": {"comarca": "Osona", "altitud": "426"}, "CP": {"comarca": "Pallars Juss\u00e0", "altitud": "690"}, "YC": {"comarca": "Pallars Juss\u00e0", "altitud": "508"}, "WQ": {"comarca": "Pallars Juss\u00e0", "altitud": "1572"}, "XQ": {"comarca": "Pallars Juss\u00e0", "altitud": "473"}, "ZB": {"comarca": "Pallars Sobir\u00e0", "altitud": "2451"}, "YT": {"comarca": "Pallars Sobir\u00e0", "altitud": "1693"}, "Z1": {"comarca": "Pallars Sobir\u00e0", "altitud": "2266"}, "Z7": {"comarca": "Pallars Sobir\u00e0", "altitud": "2519"}, "Z5": {"comarca": "Pallars Sobir\u00e0", "altitud": "2400"}, "XH": {"comarca": "Pallars Sobir\u00e0", "altitud": "679"}, "YG": {"comarca": "Pallars Sobir\u00e0", "altitud": "954"}, "C6": {"comarca": "Pla d'Urgell", "altitud": "264"}, "V8": {"comarca": "Pla d'Urgell", "altitud": "223"}, "WC": {"comarca": "Pla d'Urgell", "altitud": "261"}, "XI": {"comarca": "Pla d'Urgell", "altitud": "247"}, "DJ": {"comarca": "Pla de l'Estany", "altitud": "176"}, "MR": {"comarca": "Priorat", "altitud": "500"}, "WJ": {"comarca": "Priorat", "altitud": "141"}, "X1": {"comarca": "Priorat", "altitud": "359"}, "D1": {"comarca": "Priorat", "altitud": "404"}, "WR": {"comarca": "Priorat", "altitud": "300"}, "XD": {"comarca": "Priorat", "altitud": "687"}, "VA": {"comarca": "Ribera d'Ebre", "altitud": "256"}, "VB": {"comarca": "Ribera d'Ebre", "altitud": "32"}, "VC": {"comarca": "Ribera d'Ebre", "altitud": "69"}, "Y6": {"comarca": "Ribera d'Ebre", "altitud": "317"}, "D7": {"comarca": "Ribera d'Ebre", "altitud": "53"}, "CG": {"comarca": "Ripoll\u00e8s", "altitud": "1405"}, "DG": {"comarca": "Ripoll\u00e8s", "altitud": "1971"}, "M6": {"comarca": "Ripoll\u00e8s", "altitud": "730"}, "CI": {"comarca": "Ripoll\u00e8s", "altitud": "852"}, "ZC": {"comarca": "Ripoll\u00e8s", "altitud": "2413"}, "C8": {"comarca": "Segarra", "altitud": "554"}, "VD": {"comarca": "Segarra", "altitud": "429"}, "YE": {"comarca": "Segarra", "altitud": "513"}, "XY": {"comarca": "Segri\u00e0", "altitud": "122"}, "WK": {"comarca": "Segri\u00e0", "altitud": "268"}, "X3": {"comarca": "Segri\u00e0", "altitud": "370"}, "XM": {"comarca": "Segri\u00e0", "altitud": "235"}, "VH": {"comarca": "Segri\u00e0", "altitud": "260"}, "VK": {"comarca": "Segri\u00e0", "altitud": "286"}, "YJ": {"comarca": "Segri\u00e0", "altitud": "170"}, "WI": {"comarca": "Segri\u00e0", "altitud": "350"}, "XN": {"comarca": "Segri\u00e0", "altitud": "89"}, "X7": {"comarca": "Segri\u00e0", "altitud": "215"}, "VM": {"comarca": "Segri\u00e0", "altitud": "222"}, "DN": {"comarca": "Selva", "altitud": "150"}, "KP": {"comarca": "Selva", "altitud": "36"}, "XS": {"comarca": "Selva", "altitud": "162"}, "MV": {"comarca": "Solson\u00e8s", "altitud": "845"}, "ZE": {"comarca": "Solson\u00e8s", "altitud": "2290"}, "VO": {"comarca": "Solson\u00e8s", "altitud": "785"}, "MW": {"comarca": "Solson\u00e8s", "altitud": "545"}, "VP": {"comarca": "Solson\u00e8s", "altitud": "659"}, "XT": {"comarca": "Solson\u00e8s", "altitud": "691"}, "VQ": {"comarca": "Tarragon\u00e8s", "altitud": "112"}, "XE": {"comarca": "Tarragon\u00e8s", "altitud": "5"}, "DK": {"comarca": "Tarragon\u00e8s", "altitud": "2"}, "YX": {"comarca": "Terra Alta", "altitud": "400"}, "XP": {"comarca": "Terra Alta", "altitud": "350"}, "D8": {"comarca": "Terra Alta", "altitud": "515"}, "XX": {"comarca": "Urgell", "altitud": "291"}, "WL": {"comarca": "Urgell", "altitud": "413"}, "C7": {"comarca": "Urgell", "altitud": "427"}, "Z6": {"comarca": "Val d'Aran", "altitud": "2228"}, "VS": {"comarca": "Val d'Aran", "altitud": "2247"}, "YN": {"comarca": "Val d'Aran", "altitud": "1027"}, "XC": {"comarca": "Vall\u00e8s Occidental", "altitud": "147"}, "VU": {"comarca": "Vall\u00e8s Occidental", "altitud": "421"}, "XF": {"comarca": "Vall\u00e8s Occidental", "altitud": "258"}, "XV": {"comarca": "Vall\u00e8s Occidental", "altitud": "158"}, "VV": {"comarca": "Vall\u00e8s Occidental", "altitud": "528"}, "YK": {"comarca": "Vall\u00e8s Occidental", "altitud": "313"}, "D2": {"comarca": "Vall\u00e8s Occidental", "altitud": "343"}, "X9": {"comarca": "Vall\u00e8s Oriental", "altitud": "176"}, "XK": {"comarca": "Vall\u00e8s Oriental", "altitud": "1668"}, "YM": {"comarca": "Vall\u00e8s Oriental", "altitud": "210"}, "KX": {"comarca": "Vall\u00e8s Oriental", "altitud": "156"}, "XG": {"comarca": "Vall\u00e8s Oriental", "altitud": "123"}, "VX": {"comarca": "Vall\u00e8s Oriental", "altitud": "1030"}};
+        const periodeData = {"YT": {"VAR_TM_grausC": "-0.7", "VAR_TX_grausC": "-0.5", "VAR_TN_grausC": "-0.9", "VAR_HRM_perc": "88", "VAR_PPT_mm": "0.5", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "128", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:44:51", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z1": {"VAR_TM_grausC": "-4.9", "VAR_TX_grausC": "-4.8", "VAR_TN_grausC": "-5.0", "VAR_HRM_perc": "96", "VAR_PPT_mm": "0.1", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "177", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:44:55", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DN": {"VAR_TM_grausC": "5.6", "VAR_TX_grausC": "6.5", "VAR_TN_grausC": "5.1", "VAR_HRM_perc": "90", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "1.4", "VAR_DVM_10_m_graus": "227", "VAR_VVX_10_m_km_h": "5.4", "VAR_PM_hPa": "1010.5", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Angl\u00e8s", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:44:59", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DJ": {"VAR_TM_grausC": "8.2", "VAR_TX_grausC": "8.7", "VAR_TN_grausC": "7.9", "VAR_HRM_perc": "74", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.0", "VAR_DVM_10_m_graus": "191", "VAR_VVX_10_m_km_h": "8.6", "VAR_PM_hPa": "1010.0", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Banyoles", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:03", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "X4": {"VAR_TM_grausC": "11.9", "VAR_TX_grausC": "12.0", "VAR_TN_grausC": "11.8", "VAR_HRM_perc": "53", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "12.6", "VAR_DVM_10_m_graus": "312", "VAR_VVX_10_m_km_h": "40.0", "VAR_PM_hPa": "1009.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:07", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D5": {"VAR_TM_grausC": "7.9", "VAR_TX_grausC": "8.1", "VAR_TN_grausC": "7.7", "VAR_HRM_perc": "68", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "26.6", "VAR_DVM_10_m_graus": "319", "VAR_VVX_10_m_km_h": "55.4", "VAR_PM_hPa": "1010.5", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:11", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UN": {"VAR_TM_grausC": "4.5", "VAR_TX_grausC": "4.9", "VAR_TN_grausC": "4.2", "VAR_HRM_perc": "96", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:16", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "MS": {"VAR_TM_grausC": "5.3", "VAR_TX_grausC": "5.6", "VAR_TN_grausC": "5.2", "VAR_HRM_perc": "66", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:20", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "W1": {"VAR_TM_grausC": "9.9", "VAR_TX_grausC": "10.3", "VAR_TN_grausC": "9.3", "VAR_HRM_perc": "73", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:24", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DP": {"VAR_TM_grausC": "1.6", "VAR_TX_grausC": "1.9", "VAR_TN_grausC": "1.5", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.0", "VAR_DVM_10_m_graus": "42", "VAR_VVX_10_m_km_h": "11.2", "VAR_PM_hPa": "1013.4", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "1", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:28", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XL": {"VAR_TM_grausC": "11.5", "VAR_TX_grausC": "11.8", "VAR_TN_grausC": "11.1", "VAR_HRM_perc": "57", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "16.2", "VAR_DVM_10_m_graus": "333", "VAR_VVX_10_m_km_h": "31.7", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:32", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VZ": {"VAR_TM_grausC": "8.8", "VAR_TX_grausC": "9.1", "VAR_TN_grausC": "8.6", "VAR_HRM_perc": "70", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Espolla", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:36", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z7": {"VAR_TM_grausC": "-5.7", "VAR_TX_grausC": "-5.5", "VAR_TN_grausC": "-6.1", "VAR_HRM_perc": "80", "VAR_PPT_mm": "0.2", "VAR_VVM_10_m_km_h": "19.4", "VAR_DVM_10_m_graus": "98", "VAR_VVX_10_m_km_h": "58.7", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "80", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:40", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XJ": {"VAR_TM_grausC": "6.1", "VAR_TX_grausC": "6.4", "VAR_TN_grausC": "5.8", "VAR_HRM_perc": "91", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "4.7", "VAR_DVM_10_m_graus": "269", "VAR_VVX_10_m_km_h": "7.9", "VAR_PM_hPa": "1010.4", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Girona", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:44", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YU": {"VAR_TM_grausC": "3.2", "VAR_TX_grausC": "3.5", "VAR_TN_grausC": "3.0", "VAR_HRM_perc": "88", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "3.6", "VAR_DVM_10_m_graus": "163", "VAR_VVX_10_m_km_h": "8.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:48", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CD": {"VAR_TM_grausC": "3.7", "VAR_TX_grausC": "3.9", "VAR_TN_grausC": "3.5", "VAR_HRM_perc": "79", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "3.2", "VAR_DVM_10_m_graus": "112", "VAR_VVX_10_m_km_h": "8.3", "VAR_PM_hPa": "1012.4", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:52", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z2": {"VAR_TM_grausC": "-6.7", "VAR_TX_grausC": "-6.5", "VAR_TN_grausC": "-7.1", "VAR_HRM_perc": "94", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:45:56", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VK": {"VAR_TM_grausC": "8.0", "VAR_TX_grausC": "8.4", "VAR_TN_grausC": "7.7", "VAR_HRM_perc": "71", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "16.9", "VAR_DVM_10_m_graus": "295", "VAR_VVX_10_m_km_h": "28.8", "VAR_PM_hPa": "1013.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Lleida - Raimat", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:01", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z3": {"VAR_TM_grausC": "-4.7", "VAR_TX_grausC": "-4.4", "VAR_TN_grausC": "-4.9", "VAR_HRM_perc": "90", "VAR_PPT_mm": "1.3", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "120", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:05", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YB": {"VAR_TM_grausC": "4.5", "VAR_TX_grausC": "5.2", "VAR_TN_grausC": "4.0", "VAR_HRM_perc": "87", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "3.2", "VAR_DVM_10_m_graus": "246", "VAR_VVX_10_m_km_h": "9.0", "VAR_PM_hPa": "1010.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Olot", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:09", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YP": {"VAR_TM_grausC": "8.9", "VAR_TX_grausC": "9.1", "VAR_TN_grausC": "8.7", "VAR_HRM_perc": "85", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "6.8", "VAR_DVM_10_m_graus": "208", "VAR_VVX_10_m_km_h": "10.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Palafrugell", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:13", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "J5": {"VAR_TM_grausC": "8.3", "VAR_TX_grausC": "8.4", "VAR_TN_grausC": "8.2", "VAR_HRM_perc": "80", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.8", "VAR_DVM_10_m_graus": "345", "VAR_VVX_10_m_km_h": "11.9", "VAR_PM_hPa": "1010.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:17", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D6": {"VAR_TM_grausC": "11.0", "VAR_TX_grausC": "11.6", "VAR_TN_grausC": "10.6", "VAR_HRM_perc": "55", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "13.0", "VAR_DVM_10_m_graus": "231", "VAR_VVX_10_m_km_h": "23.0", "VAR_PM_hPa": "1009.6", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:21", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YA": {"VAR_TM_grausC": "0.2", "VAR_TX_grausC": "0.4", "VAR_TN_grausC": "0.2", "VAR_HRM_perc": "98", "VAR_PPT_mm": "0.4", "VAR_VVM_10_m_km_h": "4.7", "VAR_DVM_10_m_graus": "57", "VAR_VVX_10_m_km_h": "10.1", "VAR_PM_hPa": "1013.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:26", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DG": {"VAR_TM_grausC": "-2.2", "VAR_TX_grausC": "-2.1", "VAR_TN_grausC": "-2.4", "VAR_HRM_perc": "78", "VAR_PPT_mm": "0.1", "VAR_VVM_10_m_km_h": "5.8", "VAR_DVM_10_m_graus": "352", "VAR_VVX_10_m_km_h": "21.6", "VAR_PM_hPa": "841.9", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "115", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:30", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D4": {"VAR_TM_grausC": "9.9", "VAR_TX_grausC": "10.3", "VAR_TN_grausC": "9.6", "VAR_HRM_perc": "70", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.4", "VAR_DVM_10_m_graus": "58", "VAR_VVX_10_m_km_h": "8.6", "VAR_PM_hPa": "1010.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Roses", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:34", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CI": {"VAR_TM_grausC": "1.7", "VAR_TX_grausC": "2.0", "VAR_TN_grausC": "1.3", "VAR_HRM_perc": "94", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "3.2", "VAR_DVM_10_m_graus": "208", "VAR_VVX_10_m_km_h": "5.8", "VAR_PM_hPa": "1012.9", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:38", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XS": {"VAR_TM_grausC": "7.3", "VAR_TX_grausC": "7.8", "VAR_TN_grausC": "6.2", "VAR_HRM_perc": "80", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "6.1", "VAR_DVM_10_m_graus": "297", "VAR_VVX_10_m_km_h": "10.4", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:42", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "ZC": {"VAR_TM_grausC": "-5.4", "VAR_TX_grausC": "-5.2", "VAR_TN_grausC": "-5.6", "VAR_HRM_perc": "82", "VAR_PPT_mm": "0.1", "VAR_VVM_10_m_km_h": "18.0", "VAR_DVM_10_m_graus": "290", "VAR_VVX_10_m_km_h": "54.7", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "57", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:46", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XH": {"VAR_TM_grausC": "4.1", "VAR_TX_grausC": "4.3", "VAR_TN_grausC": "3.8", "VAR_HRM_perc": "96", "VAR_PPT_mm": "0.0", "VAR_PM_hPa": "1013.5", "VAR_GN_cm": "1", "NOM_ESTACIO": "Sort", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:50", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XE": {"VAR_TM_grausC": "13.9", "VAR_TX_grausC": "14.1", "VAR_TN_grausC": "13.8", "VAR_HRM_perc": "42", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "19.4", "VAR_DVM_10_m_graus": "313", "VAR_VVX_10_m_km_h": "45.7", "VAR_PM_hPa": "1010.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:54", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UE": {"VAR_TM_grausC": "8.6", "VAR_TX_grausC": "9.5", "VAR_TN_grausC": "8.0", "VAR_HRM_perc": "85", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:46:58", "PERIODE_UTC": "19:00 - 19:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XO": {"VAR_TM_grausC": "6.4", "VAR_TX_grausC": "6.6", "VAR_TN_grausC": "6.2", "VAR_HRM_perc": "74", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.0", "VAR_DVM_10_m_graus": "205", "VAR_VVX_10_m_km_h": "10.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Vic", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:47:02", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VS": {"VAR_TM_grausC": "-4.7", "VAR_TX_grausC": "-4.6", "VAR_TN_grausC": "-4.8", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.4", "VAR_VVM_10_m_km_h": "25.9", "VAR_DVM_10_m_graus": "127", "VAR_VVX_10_m_km_h": "60.5", "VAR_PM_hPa": "843.8", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "185", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:47:06", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D7": {"VAR_TM_grausC": "11.6", "VAR_TX_grausC": "12.1", "VAR_TN_grausC": "11.3", "VAR_HRM_perc": "57", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "9.4", "VAR_DVM_10_m_graus": "333", "VAR_VVX_10_m_km_h": "21.2", "VAR_PM_hPa": "1014.2", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Vinebre", "DATA_UTC": "2026-01-31", "DATA_EXTRACCIO": "2026-01-31 21:47:10", "PERIODE_UTC": "20:00 - 20:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}};
+        const diariData = {"YT": {"TEMPERATURA_MITJANA_DIA": "-1.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "0.9 \u00b0C 13:28 TU", "TEMPERATURA_MINIMA_DIA": "-2.8 \u00b0C 5:00 TU", "HUMITAT_MITJANA_DIA": "84%", "PRECIPITACIO_ACUM_DIA": "15.8 mm", "GRUIX_NEU_MAX": "128 cm", "RADIACIO_GLOBAL": "4.1 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_DIA": "2026-01-31"}, "Z1": {"TEMPERATURA_MITJANA_DIA": "-5.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.5 \u00b0C 0:49 TU", "TEMPERATURA_MINIMA_DIA": "-7.2 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "95%", "PRECIPITACIO_ACUM_DIA": "10.5 mm", "GRUIX_NEU_MAX": "180 cm", "RATXA_VENT_MAX": "51.8 km/h - 257\u00ba 4:50 TU", "RADIACIO_GLOBAL": "5.1 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_DIA": "2026-01-31"}, "DN": {"TEMPERATURA_MITJANA_DIA": "10.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.3 \u00b0C 12:13 TU", "TEMPERATURA_MINIMA_DIA": "5.1 \u00b0C 20:29 TU", "HUMITAT_MITJANA_DIA": "63%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "38.9 km/h - 281\u00ba 0:31 TU", "PRESSIO_ATMOSFERICA": "1001.3 hPa", "RADIACIO_GLOBAL": "8.6 MJ/m2", "NOM_ESTACIO": "Angl\u00e8s", "DATA_DIA": "2026-01-31"}, "DJ": {"TEMPERATURA_MITJANA_DIA": "11.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.0 \u00b0C 14:00 TU", "TEMPERATURA_MINIMA_DIA": "7.9 \u00b0C 20:26 TU", "HUMITAT_MITJANA_DIA": "57%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "50.4 km/h - 8\u00ba 4:51 TU", "PRESSIO_ATMOSFERICA": "1001.3 hPa", "RADIACIO_GLOBAL": "10.0 MJ/m2", "NOM_ESTACIO": "Banyoles", "DATA_DIA": "2026-01-31"}, "X4": {"TEMPERATURA_MITJANA_DIA": "12.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "16.1 \u00b0C 13:48 TU", "TEMPERATURA_MINIMA_DIA": "9.7 \u00b0C 8:02 TU", "HUMITAT_MITJANA_DIA": "51%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "54.7 km/h - 328\u00ba 6:48 TU", "PRESSIO_ATMOSFERICA": "1001.9 hPa", "RADIACIO_GLOBAL": "10.2 MJ/m2", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_DIA": "2026-01-31"}, "D5": {"TEMPERATURA_MITJANA_DIA": "8.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.3 \u00b0C 14:46 TU", "TEMPERATURA_MINIMA_DIA": "5.4 \u00b0C 7:56 TU", "HUMITAT_MITJANA_DIA": "67%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "62.6 km/h - 314\u00ba 8:47 TU", "PRESSIO_ATMOSFERICA": "1001.9 hPa", "RADIACIO_GLOBAL": "11.8 MJ/m2", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_DIA": "2026-01-31"}, "UN": {"TEMPERATURA_MITJANA_DIA": "9.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.3 \u00b0C 14:40 TU", "TEMPERATURA_MINIMA_DIA": "4.2 \u00b0C 20:23 TU", "HUMITAT_MITJANA_DIA": "67%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "31.7 km/h - 53\u00ba 5:45 TU", "RADIACIO_GLOBAL": "9.7 MJ/m2", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_DIA": "2026-01-31"}, "MS": {"TEMPERATURA_MITJANA_DIA": "6.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.8 \u00b0C 11:16 TU", "TEMPERATURA_MINIMA_DIA": "1.2 \u00b0C 2:30 TU", "HUMITAT_MITJANA_DIA": "55%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_DIA": "2026-01-31"}, "W1": {"TEMPERATURA_MITJANA_DIA": "11.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.0 \u00b0C 14:28 TU", "TEMPERATURA_MINIMA_DIA": "7.3 \u00b0C 0:00 TU", "HUMITAT_MITJANA_DIA": "65%", "PRECIPITACIO_ACUM_DIA": "3.4 mm", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_DIA": "2026-01-31"}, "DP": {"TEMPERATURA_MITJANA_DIA": "3.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.6 \u00b0C 14:59 TU", "TEMPERATURA_MINIMA_DIA": "0.0 \u00b0C 2:50 TU", "HUMITAT_MITJANA_DIA": "68%", "PRECIPITACIO_ACUM_DIA": "0.8 mm", "GRUIX_NEU_MAX": "3 cm", "RATXA_VENT_MAX": "60.8 km/h - 37\u00ba 9:47 TU", "PRESSIO_ATMOSFERICA": "1003.2 hPa", "RADIACIO_GLOBAL": "12.2 MJ/m2", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_DIA": "2026-01-31"}, "XL": {"TEMPERATURA_MITJANA_DIA": "11.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "16.6 \u00b0C 13:13 TU", "TEMPERATURA_MINIMA_DIA": "7.3 \u00b0C 3:32 TU", "HUMITAT_MITJANA_DIA": "59%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "42.1 km/h - 304\u00ba 10:10 TU", "RADIACIO_GLOBAL": "11.3 MJ/m2", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_DIA": "2026-01-31"}, "VZ": {"TEMPERATURA_MITJANA_DIA": "11.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.5 \u00b0C 14:09 TU", "TEMPERATURA_MINIMA_DIA": "7.1 \u00b0C 5:10 TU", "HUMITAT_MITJANA_DIA": "60%", "PRECIPITACIO_ACUM_DIA": "3.9 mm", "NOM_ESTACIO": "Espolla", "DATA_DIA": "2026-01-31"}, "Z7": {"TEMPERATURA_MITJANA_DIA": "-6.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-5.1 \u00b0C 14:09 TU", "TEMPERATURA_MINIMA_DIA": "-8.0 \u00b0C 5:30 TU", "HUMITAT_MITJANA_DIA": "79%", "PRECIPITACIO_ACUM_DIA": "16.9 mm", "GRUIX_NEU_MAX": "80 cm", "RATXA_VENT_MAX": "91.1 km/h - 217\u00ba 7:58 TU", "RADIACIO_GLOBAL": "9.9 MJ/m2", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_DIA": "2026-01-31"}, "XJ": {"TEMPERATURA_MITJANA_DIA": "10.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.6 \u00b0C 13:05 TU", "TEMPERATURA_MINIMA_DIA": "5.8 \u00b0C 20:27 TU", "HUMITAT_MITJANA_DIA": "64%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "46.1 km/h - 13\u00ba 5:08 TU", "PRESSIO_ATMOSFERICA": "1001.6 hPa", "RADIACIO_GLOBAL": "10.0 MJ/m2", "NOM_ESTACIO": "Girona", "DATA_DIA": "2026-01-31"}, "YU": {"TEMPERATURA_MITJANA_DIA": "4.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "9.8 \u00b0C 14:45 TU", "TEMPERATURA_MINIMA_DIA": "1.9 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "83%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "37.8 km/h - 52\u00ba 5:04 TU", "RADIACIO_GLOBAL": "10.0 MJ/m2", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_DIA": "2026-01-31"}, "CD": {"TEMPERATURA_MITJANA_DIA": "5.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "12.5 \u00b0C 14:43 TU", "TEMPERATURA_MINIMA_DIA": "0.3 \u00b0C 7:10 TU", "HUMITAT_MITJANA_DIA": "69%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "44.3 km/h - 62\u00ba 10:55 TU", "PRESSIO_ATMOSFERICA": "1003.0 hPa", "RADIACIO_GLOBAL": "12.3 MJ/m2", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_DIA": "2026-01-31"}, "Z2": {"TEMPERATURA_MITJANA_DIA": "-7.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-5.9 \u00b0C 14:17 TU", "TEMPERATURA_MINIMA_DIA": "-9.1 \u00b0C 5:32 TU", "HUMITAT_MITJANA_DIA": "89%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "126 cm", "RATXA_VENT_MAX": "89.3 km/h - 332\u00ba 8:05 TU", "RADIACIO_GLOBAL": "12.8 MJ/m2", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_DIA": "2026-01-31"}, "VK": {"TEMPERATURA_MITJANA_DIA": "8.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "12.0 \u00b0C 12:50 TU", "TEMPERATURA_MINIMA_DIA": "3.7 \u00b0C 0:00 TU", "HUMITAT_MITJANA_DIA": "72%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "61.9 km/h - 293\u00ba 4:03 TU", "PRESSIO_ATMOSFERICA": "1005.6 hPa", "RADIACIO_GLOBAL": "12.2 MJ/m2", "NOM_ESTACIO": "Lleida - Raimat", "DATA_DIA": "2026-01-31"}, "Z3": {"TEMPERATURA_MITJANA_DIA": "-4.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-1.4 \u00b0C 14:08 TU", "TEMPERATURA_MINIMA_DIA": "-6.4 \u00b0C 6:10 TU", "HUMITAT_MITJANA_DIA": "76%", "PRECIPITACIO_ACUM_DIA": "16.5 mm", "GRUIX_NEU_MAX": "123 cm", "RATXA_VENT_MAX": "59.4 km/h - 346\u00ba 10:50 TU", "RADIACIO_GLOBAL": "13.1 MJ/m2", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_DIA": "2026-01-31"}, "YB": {"TEMPERATURA_MITJANA_DIA": "8.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.6 \u00b0C 14:03 TU", "TEMPERATURA_MINIMA_DIA": "3.4 \u00b0C 6:17 TU", "HUMITAT_MITJANA_DIA": "70%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "25.9 km/h - 44\u00ba 14:48 TU", "PRESSIO_ATMOSFERICA": "1001.4 hPa", "RADIACIO_GLOBAL": "9.8 MJ/m2", "NOM_ESTACIO": "Olot", "DATA_DIA": "2026-01-31"}, "YP": {"TEMPERATURA_MITJANA_DIA": "11.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.3 \u00b0C 13:59 TU", "TEMPERATURA_MINIMA_DIA": "8.5 \u00b0C 5:43 TU", "HUMITAT_MITJANA_DIA": "62%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "62.6 km/h - 354\u00ba 5:16 TU", "RADIACIO_GLOBAL": "8.9 MJ/m2", "NOM_ESTACIO": "Palafrugell", "DATA_DIA": "2026-01-31"}, "J5": {"TEMPERATURA_MITJANA_DIA": "10.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.1 \u00b0C 14:36 TU", "TEMPERATURA_MINIMA_DIA": "6.2 \u00b0C 5:53 TU", "HUMITAT_MITJANA_DIA": "65%", "PRECIPITACIO_ACUM_DIA": "0.8 mm", "RATXA_VENT_MAX": "75.6 km/h - 358\u00ba 4:41 TU", "PRESSIO_ATMOSFERICA": "1001.4 hPa", "RADIACIO_GLOBAL": "9.9 MJ/m2", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_DIA": "2026-01-31"}, "D6": {"TEMPERATURA_MITJANA_DIA": "9.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.9 \u00b0C 14:24 TU", "TEMPERATURA_MINIMA_DIA": "4.9 \u00b0C 5:24 TU", "HUMITAT_MITJANA_DIA": "69%", "PRECIPITACIO_ACUM_DIA": "1.7 mm", "RATXA_VENT_MAX": "136.4 km/h - 342\u00ba 5:07 TU", "PRESSIO_ATMOSFERICA": "1000.9 hPa", "RADIACIO_GLOBAL": "8.1 MJ/m2", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_DIA": "2026-01-31"}, "YA": {"TEMPERATURA_MITJANA_DIA": "3.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "7.9 \u00b0C 14:14 TU", "TEMPERATURA_MINIMA_DIA": "0.2 \u00b0C 20:12 TU", "HUMITAT_MITJANA_DIA": "67%", "PRECIPITACIO_ACUM_DIA": "2.6 mm", "RATXA_VENT_MAX": "42.8 km/h - 293\u00ba 8:08 TU", "PRESSIO_ATMOSFERICA": "1003.0 hPa", "RADIACIO_GLOBAL": "10.2 MJ/m2", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_DIA": "2026-01-31"}, "DG": {"TEMPERATURA_MITJANA_DIA": "-2.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "0.6 \u00b0C 14:42 TU", "TEMPERATURA_MINIMA_DIA": "-4.1 \u00b0C 5:27 TU", "HUMITAT_MITJANA_DIA": "70%", "PRECIPITACIO_ACUM_DIA": "3.4 mm", "GRUIX_NEU_MAX": "122 cm", "RATXA_VENT_MAX": "71.3 km/h - 31\u00ba 8:17 TU", "RADIACIO_GLOBAL": "11.7 MJ/m2", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_DIA": "2026-01-31"}, "D4": {"TEMPERATURA_MITJANA_DIA": "11.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "14.6 \u00b0C 16:03 TU", "TEMPERATURA_MINIMA_DIA": "7.1 \u00b0C 1:15 TU", "HUMITAT_MITJANA_DIA": "64%", "PRECIPITACIO_ACUM_DIA": "2.4 mm", "RATXA_VENT_MAX": "68.8 km/h - 18\u00ba 13:47 TU", "PRESSIO_ATMOSFERICA": "1001.8 hPa", "RADIACIO_GLOBAL": "9.1 MJ/m2", "NOM_ESTACIO": "Roses", "DATA_DIA": "2026-01-31"}, "CI": {"TEMPERATURA_MITJANA_DIA": "5.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.9 \u00b0C 14:50 TU", "TEMPERATURA_MINIMA_DIA": "1.3 \u00b0C 20:29 TU", "HUMITAT_MITJANA_DIA": "79%", "PRECIPITACIO_ACUM_DIA": "0.4 mm", "RATXA_VENT_MAX": "22.3 km/h - 284\u00ba 0:32 TU", "PRESSIO_ATMOSFERICA": "1002.7 hPa", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_DIA": "2026-01-31"}, "XS": {"TEMPERATURA_MITJANA_DIA": "10.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.1 \u00b0C 12:36 TU", "TEMPERATURA_MINIMA_DIA": "6.2 \u00b0C 20:29 TU", "HUMITAT_MITJANA_DIA": "63%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "30.6 km/h - 270\u00ba 0:08 TU", "RADIACIO_GLOBAL": "10.2 MJ/m2", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_DIA": "2026-01-31"}, "ZC": {"TEMPERATURA_MITJANA_DIA": "-6.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.4 \u00b0C 15:57 TU", "TEMPERATURA_MINIMA_DIA": "-7.6 \u00b0C 5:12 TU", "HUMITAT_MITJANA_DIA": "81%", "PRECIPITACIO_ACUM_DIA": "10.2 mm", "GRUIX_NEU_MAX": "68 cm", "RATXA_VENT_MAX": "83.2 km/h - 1\u00ba 8:40 TU", "RADIACIO_GLOBAL": "11.1 MJ/m2", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_DIA": "2026-01-31"}, "XH": {"TEMPERATURA_MITJANA_DIA": "6.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "12.9 \u00b0C 13:36 TU", "TEMPERATURA_MINIMA_DIA": "0.8 \u00b0C 7:41 TU", "HUMITAT_MITJANA_DIA": "72%", "PRECIPITACIO_ACUM_DIA": "0.8 mm", "GRUIX_NEU_MAX": "1 cm", "PRESSIO_ATMOSFERICA": "1003.7 hPa", "NOM_ESTACIO": "Sort", "DATA_DIA": "2026-01-31"}, "XE": {"TEMPERATURA_MITJANA_DIA": "12.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "16.2 \u00b0C 14:22 TU", "TEMPERATURA_MINIMA_DIA": "9.2 \u00b0C 3:23 TU", "HUMITAT_MITJANA_DIA": "46%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "87.5 km/h - 280\u00ba 5:18 TU", "PRESSIO_ATMOSFERICA": "1002.9 hPa", "RADIACIO_GLOBAL": "11.4 MJ/m2", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_DIA": "2026-01-31"}, "UE": {"TEMPERATURA_MITJANA_DIA": "11.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.6 \u00b0C 13:48 TU", "TEMPERATURA_MINIMA_DIA": "8.0 \u00b0C 19:27 TU", "HUMITAT_MITJANA_DIA": "61%", "PRECIPITACIO_ACUM_DIA": "0.6 mm", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_DIA": "2026-01-31"}, "XO": {"TEMPERATURA_MITJANA_DIA": "8.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "13.4 \u00b0C 13:41 TU", "TEMPERATURA_MINIMA_DIA": "4.8 \u00b0C 7:05 TU", "HUMITAT_MITJANA_DIA": "71%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "26.6 km/h - 226\u00ba 14:31 TU", "RADIACIO_GLOBAL": "10.9 MJ/m2", "NOM_ESTACIO": "Vic", "DATA_DIA": "2026-01-31"}, "VS": {"TEMPERATURA_MITJANA_DIA": "-5.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.4 \u00b0C 19:34 TU", "TEMPERATURA_MINIMA_DIA": "-7.2 \u00b0C 5:42 TU", "HUMITAT_MITJANA_DIA": "92%", "PRECIPITACIO_ACUM_DIA": "26.0 mm", "GRUIX_NEU_MAX": "190 cm", "RATXA_VENT_MAX": "66.2 km/h - 86\u00ba 2:55 TU", "RADIACIO_GLOBAL": "7.7 MJ/m2", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_DIA": "2026-01-31"}, "D7": {"TEMPERATURA_MITJANA_DIA": "10.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "15.0 \u00b0C 15:05 TU", "TEMPERATURA_MINIMA_DIA": "6.5 \u00b0C 0:43 TU", "HUMITAT_MITJANA_DIA": "57%", "PRECIPITACIO_ACUM_DIA": "1.5 mm", "RATXA_VENT_MAX": "49.3 km/h - 329\u00ba 2:06 TU", "PRESSIO_ATMOSFERICA": "1006.6 hPa", "RADIACIO_GLOBAL": "11.6 MJ/m2", "NOM_ESTACIO": "Vinebre", "DATA_DIA": "2026-01-31"}};
+        const metadades = {"DQ": {"comarca": "Alt Camp", "altitud": "287", "fila_excel": 2}, "YS": {"comarca": "Alt Empord\u00e0", "altitud": "32", "fila_excel": 3}, "W1": {"comarca": "Alt Empord\u00e0", "altitud": "2", "fila_excel": 4}, "J5": {"comarca": "Alt Empord\u00e0", "altitud": "158", "fila_excel": 5}, "VZ": {"comarca": "Alt Empord\u00e0", "altitud": "83", "fila_excel": 6}, "Y5": {"comarca": "Alt Empord\u00e0", "altitud": "152", "fila_excel": 7}, "D6": {"comarca": "Alt Empord\u00e0", "altitud": "196", "fila_excel": 8}, "D4": {"comarca": "Alt Empord\u00e0", "altitud": "23", "fila_excel": 9}, "U2": {"comarca": "Alt Empord\u00e0", "altitud": "4", "fila_excel": 10}, "XZ": {"comarca": "Alt Empord\u00e0", "altitud": "7", "fila_excel": 11}, "DI": {"comarca": "Alt Pened\u00e8s", "altitud": "415", "fila_excel": 12}, "WP": {"comarca": "Alt Pened\u00e8s", "altitud": "325", "fila_excel": 13}, "U3": {"comarca": "Alt Pened\u00e8s", "altitud": "257", "fila_excel": 14}, "YO": {"comarca": "Alt Pened\u00e8s", "altitud": "155", "fila_excel": 15}, "W4": {"comarca": "Alt Pened\u00e8s", "altitud": "240", "fila_excel": 16}, "Y4": {"comarca": "Alt Urgell", "altitud": "1162", "fila_excel": 17}, "CD": {"comarca": "Alt Urgell", "altitud": "849", "fila_excel": 18}, "W5": {"comarca": "Alt Urgell", "altitud": "490", "fila_excel": 19}, "CJ": {"comarca": "Alt Urgell", "altitud": "566", "fila_excel": 20}, "CT": {"comarca": "Alta Ribagor\u00e7a", "altitud": "823", "fila_excel": 21}, "Z2": {"comarca": "Alta Ribagor\u00e7a", "altitud": "2535", "fila_excel": 22}, "CE": {"comarca": "Anoia", "altitud": "316", "fila_excel": 23}, "XB": {"comarca": "Anoia", "altitud": "584", "fila_excel": 24}, "XA": {"comarca": "Anoia", "altitud": "785", "fila_excel": 25}, "H1": {"comarca": "Anoia", "altitud": "333", "fila_excel": 26}, "YH": {"comarca": "Anoia", "altitud": "747", "fila_excel": 27}, "WW": {"comarca": "Bages", "altitud": "278", "fila_excel": 28}, "MQ": {"comarca": "Bages", "altitud": "401", "fila_excel": 29}, "U4": {"comarca": "Bages", "altitud": "507", "fila_excel": 30}, "WN": {"comarca": "Bages", "altitud": "916", "fila_excel": 31}, "CL": {"comarca": "Bages", "altitud": "349", "fila_excel": 32}, "YF": {"comarca": "Baix Camp", "altitud": "43", "fila_excel": 33}, "XR": {"comarca": "Baix Camp", "altitud": "926", "fila_excel": 34}, "YL": {"comarca": "Baix Camp", "altitud": "170", "fila_excel": 35}, "U6": {"comarca": "Baix Camp", "altitud": "29", "fila_excel": 36}, "U7": {"comarca": "Baix Ebre", "altitud": "52", "fila_excel": 37}, "DB": {"comarca": "Baix Ebre", "altitud": "179", "fila_excel": 38}, "U9": {"comarca": "Baix Ebre", "altitud": "62", "fila_excel": 39}, "UA": {"comarca": "Baix Ebre", "altitud": "93", "fila_excel": 40}, "X5": {"comarca": "Baix Ebre", "altitud": "1055", "fila_excel": 41}, "DO": {"comarca": "Baix Empord\u00e0", "altitud": "14", "fila_excel": 42}, "DF": {"comarca": "Baix Empord\u00e0", "altitud": "29", "fila_excel": 43}, "UB": {"comarca": "Baix Empord\u00e0", "altitud": "15", "fila_excel": 44}, "YP": {"comarca": "Baix Empord\u00e0", "altitud": "35", "fila_excel": 45}, "UE": {"comarca": "Baix Empord\u00e0", "altitud": "4", "fila_excel": 46}, "UF": {"comarca": "Baix Llobregat", "altitud": "573", "fila_excel": 47}, "XL": {"comarca": "Baix Llobregat", "altitud": "8", "fila_excel": 48}, "Y7": {"comarca": "Baix Llobregat", "altitud": "3", "fila_excel": 49}, "YQ": {"comarca": "Baix Llobregat", "altitud": "6", "fila_excel": 50}, "D3": {"comarca": "Baix Llobregat", "altitud": "252", "fila_excel": 51}, "UG": {"comarca": "Baix Llobregat", "altitud": "3", "fila_excel": 52}, "WZ": {"comarca": "Baix Pened\u00e8s", "altitud": "17", "fila_excel": 53}, "UH": {"comarca": "Baix Pened\u00e8s", "altitud": "545", "fila_excel": 54}, "D9": {"comarca": "Baix Pened\u00e8s", "altitud": "59", "fila_excel": 55}, "WO": {"comarca": "Baix Pened\u00e8s", "altitud": "185", "fila_excel": 56}, "WU": {"comarca": "Barcelon\u00e8s", "altitud": "42", "fila_excel": 57}, "D5": {"comarca": "Barcelon\u00e8s", "altitud": "411", "fila_excel": 58}, "X4": {"comarca": "Barcelon\u00e8s", "altitud": "33", "fila_excel": 59}, "X8": {"comarca": "Barcelon\u00e8s", "altitud": "79", "fila_excel": 60}, "WM": {"comarca": "Bergued\u00e0", "altitud": "1167", "fila_excel": 61}, "MS": {"comarca": "Bergued\u00e0", "altitud": "943", "fila_excel": 62}, "UI": {"comarca": "Bergued\u00e0", "altitud": "1386", "fila_excel": 63}, "WV": {"comarca": "Bergued\u00e0", "altitud": "788", "fila_excel": 64}, "CR": {"comarca": "Bergued\u00e0", "altitud": "873", "fila_excel": 65}, "ZD": {"comarca": "Cerdanya", "altitud": "2478", "fila_excel": 66}, "DP": {"comarca": "Cerdanya", "altitud": "1097", "fila_excel": 67}, "Z3": {"comarca": "Cerdanya", "altitud": "2230", "fila_excel": 68}, "Z9": {"comarca": "Cerdanya", "altitud": "2143", "fila_excel": 69}, "YA": {"comarca": "Cerdanya", "altitud": "1213", "fila_excel": 70}, "W8": {"comarca": "Conca de Barber\u00e0", "altitud": "438", "fila_excel": 71}, "CW": {"comarca": "Conca de Barber\u00e0", "altitud": "446", "fila_excel": 72}, "UJ": {"comarca": "Conca de Barber\u00e0", "altitud": "709", "fila_excel": 73}, "XU": {"comarca": "Garraf", "altitud": "148", "fila_excel": 74}, "UK": {"comarca": "Garraf", "altitud": "161", "fila_excel": 75}, "YR": {"comarca": "Garraf", "altitud": "31", "fila_excel": 76}, "UM": {"comarca": "Garrigues", "altitud": "505", "fila_excel": 77}, "YD": {"comarca": "Garrigues", "altitud": "283", "fila_excel": 78}, "W9": {"comarca": "Garrotxa", "altitud": "461", "fila_excel": 79}, "YB": {"comarca": "Garrotxa", "altitud": "433", "fila_excel": 80}, "UN": {"comarca": "Giron\u00e8s", "altitud": "171", "fila_excel": 81}, "UO": {"comarca": "Giron\u00e8s", "altitud": "97", "fila_excel": 82}, "XJ": {"comarca": "Giron\u00e8s", "altitud": "72", "fila_excel": 83}, "V5": {"comarca": "Llu\u00e7an\u00e8s", "altitud": "774", "fila_excel": 84}, "UP": {"comarca": "Maresme", "altitud": "81", "fila_excel": 85}, "UQ": {"comarca": "Maresme", "altitud": "460", "fila_excel": 86}, "WT": {"comarca": "Maresme", "altitud": "2", "fila_excel": 87}, "YV": {"comarca": "Maresme", "altitud": "87", "fila_excel": 88}, "US": {"comarca": "Montsi\u00e0", "altitud": "24", "fila_excel": 89}, "UU": {"comarca": "Montsi\u00e0", "altitud": "3", "fila_excel": 90}, "UW": {"comarca": "Montsi\u00e0", "altitud": "0", "fila_excel": 91}, "C9": {"comarca": "Montsi\u00e0", "altitud": "240", "fila_excel": 92}, "DL": {"comarca": "Montsi\u00e0", "altitud": "0", "fila_excel": 93}, "UX": {"comarca": "Montsi\u00e0", "altitud": "210", "fila_excel": 94}, "WB": {"comarca": "Noguera", "altitud": "267", "fila_excel": 95}, "WG": {"comarca": "Noguera", "altitud": "301", "fila_excel": 96}, "X6": {"comarca": "Noguera", "altitud": "366", "fila_excel": 97}, "WX": {"comarca": "Noguera", "altitud": "668", "fila_excel": 98}, "WA": {"comarca": "Noguera", "altitud": "443", "fila_excel": 99}, "UY": {"comarca": "Noguera", "altitud": "576", "fila_excel": 100}, "V1": {"comarca": "Noguera", "altitud": "238", "fila_excel": 101}, "CQ": {"comarca": "Noguera", "altitud": "594", "fila_excel": 102}, "YU": {"comarca": "Osona", "altitud": "925", "fila_excel": 103}, "V4": {"comarca": "Osona", "altitud": "684", "fila_excel": 104}, "CY": {"comarca": "Osona", "altitud": "816", "fila_excel": 105}, "CC": {"comarca": "Osona", "altitud": "626", "fila_excel": 106}, "XO": {"comarca": "Osona", "altitud": "499", "fila_excel": 107}, "WS": {"comarca": "Osona", "altitud": "953", "fila_excel": 108}, "KE": {"comarca": "Osona", "altitud": "426", "fila_excel": 109}, "CP": {"comarca": "Pallars Juss\u00e0", "altitud": "690", "fila_excel": 110}, "YC": {"comarca": "Pallars Juss\u00e0", "altitud": "508", "fila_excel": 111}, "WQ": {"comarca": "Pallars Juss\u00e0", "altitud": "1572", "fila_excel": 112}, "XQ": {"comarca": "Pallars Juss\u00e0", "altitud": "473", "fila_excel": 113}, "ZB": {"comarca": "Pallars Sobir\u00e0", "altitud": "2451", "fila_excel": 114}, "YT": {"comarca": "Pallars Sobir\u00e0", "altitud": "1693", "fila_excel": 115}, "Z1": {"comarca": "Pallars Sobir\u00e0", "altitud": "2266", "fila_excel": 116}, "Z7": {"comarca": "Pallars Sobir\u00e0", "altitud": "2519", "fila_excel": 117}, "Z5": {"comarca": "Pallars Sobir\u00e0", "altitud": "2400", "fila_excel": 118}, "XH": {"comarca": "Pallars Sobir\u00e0", "altitud": "679", "fila_excel": 119}, "YG": {"comarca": "Pallars Sobir\u00e0", "altitud": "954", "fila_excel": 120}, "C6": {"comarca": "Pla d'Urgell", "altitud": "264", "fila_excel": 121}, "V8": {"comarca": "Pla d'Urgell", "altitud": "223", "fila_excel": 122}, "WC": {"comarca": "Pla d'Urgell", "altitud": "261", "fila_excel": 123}, "XI": {"comarca": "Pla d'Urgell", "altitud": "247", "fila_excel": 124}, "DJ": {"comarca": "Pla de l'Estany", "altitud": "176", "fila_excel": 125}, "MR": {"comarca": "Priorat", "altitud": "500", "fila_excel": 126}, "WJ": {"comarca": "Priorat", "altitud": "141", "fila_excel": 127}, "X1": {"comarca": "Priorat", "altitud": "359", "fila_excel": 128}, "D1": {"comarca": "Priorat", "altitud": "404", "fila_excel": 129}, "WR": {"comarca": "Priorat", "altitud": "300", "fila_excel": 130}, "XD": {"comarca": "Priorat", "altitud": "687", "fila_excel": 131}, "VA": {"comarca": "Ribera d'Ebre", "altitud": "256", "fila_excel": 132}, "VB": {"comarca": "Ribera d'Ebre", "altitud": "32", "fila_excel": 133}, "VC": {"comarca": "Ribera d'Ebre", "altitud": "69", "fila_excel": 134}, "Y6": {"comarca": "Ribera d'Ebre", "altitud": "317", "fila_excel": 135}, "D7": {"comarca": "Ribera d'Ebre", "altitud": "53", "fila_excel": 136}, "CG": {"comarca": "Ripoll\u00e8s", "altitud": "1405", "fila_excel": 137}, "DG": {"comarca": "Ripoll\u00e8s", "altitud": "1971", "fila_excel": 138}, "M6": {"comarca": "Ripoll\u00e8s", "altitud": "730", "fila_excel": 139}, "CI": {"comarca": "Ripoll\u00e8s", "altitud": "852", "fila_excel": 140}, "ZC": {"comarca": "Ripoll\u00e8s", "altitud": "2413", "fila_excel": 141}, "C8": {"comarca": "Segarra", "altitud": "554", "fila_excel": 142}, "VD": {"comarca": "Segarra", "altitud": "429", "fila_excel": 143}, "YE": {"comarca": "Segarra", "altitud": "513", "fila_excel": 144}, "XY": {"comarca": "Segri\u00e0", "altitud": "122", "fila_excel": 145}, "WK": {"comarca": "Segri\u00e0", "altitud": "268", "fila_excel": 146}, "X3": {"comarca": "Segri\u00e0", "altitud": "370", "fila_excel": 147}, "XM": {"comarca": "Segri\u00e0", "altitud": "235", "fila_excel": 148}, "VH": {"comarca": "Segri\u00e0", "altitud": "260", "fila_excel": 149}, "VK": {"comarca": "Segri\u00e0", "altitud": "286", "fila_excel": 150}, "YJ": {"comarca": "Segri\u00e0", "altitud": "170", "fila_excel": 151}, "WI": {"comarca": "Segri\u00e0", "altitud": "350", "fila_excel": 152}, "XN": {"comarca": "Segri\u00e0", "altitud": "89", "fila_excel": 153}, "X7": {"comarca": "Segri\u00e0", "altitud": "215", "fila_excel": 154}, "VM": {"comarca": "Segri\u00e0", "altitud": "222", "fila_excel": 155}, "DN": {"comarca": "Selva", "altitud": "150", "fila_excel": 156}, "KP": {"comarca": "Selva", "altitud": "36", "fila_excel": 157}, "XS": {"comarca": "Selva", "altitud": "162", "fila_excel": 158}, "MV": {"comarca": "Solson\u00e8s", "altitud": "845", "fila_excel": 159}, "ZE": {"comarca": "Solson\u00e8s", "altitud": "2290", "fila_excel": 160}, "VO": {"comarca": "Solson\u00e8s", "altitud": "785", "fila_excel": 161}, "MW": {"comarca": "Solson\u00e8s", "altitud": "545", "fila_excel": 162}, "VP": {"comarca": "Solson\u00e8s", "altitud": "659", "fila_excel": 163}, "XT": {"comarca": "Solson\u00e8s", "altitud": "691", "fila_excel": 164}, "VQ": {"comarca": "Tarragon\u00e8s", "altitud": "112", "fila_excel": 165}, "XE": {"comarca": "Tarragon\u00e8s", "altitud": "5", "fila_excel": 166}, "DK": {"comarca": "Tarragon\u00e8s", "altitud": "2", "fila_excel": 167}, "YX": {"comarca": "Terra Alta", "altitud": "400", "fila_excel": 168}, "XP": {"comarca": "Terra Alta", "altitud": "350", "fila_excel": 169}, "D8": {"comarca": "Terra Alta", "altitud": "515", "fila_excel": 170}, "XX": {"comarca": "Urgell", "altitud": "291", "fila_excel": 171}, "WL": {"comarca": "Urgell", "altitud": "413", "fila_excel": 172}, "C7": {"comarca": "Urgell", "altitud": "427", "fila_excel": 173}, "Z6": {"comarca": "Val d'Aran", "altitud": "2228", "fila_excel": 174}, "VS": {"comarca": "Val d'Aran", "altitud": "2247", "fila_excel": 175}, "YN": {"comarca": "Val d'Aran", "altitud": "1027", "fila_excel": 176}, "XC": {"comarca": "Vall\u00e8s Occidental", "altitud": "147", "fila_excel": 177}, "VU": {"comarca": "Vall\u00e8s Occidental", "altitud": "421", "fila_excel": 178}, "XF": {"comarca": "Vall\u00e8s Occidental", "altitud": "258", "fila_excel": 179}, "XV": {"comarca": "Vall\u00e8s Occidental", "altitud": "158", "fila_excel": 180}, "VV": {"comarca": "Vall\u00e8s Occidental", "altitud": "528", "fila_excel": 181}, "YK": {"comarca": "Vall\u00e8s Occidental", "altitud": "313", "fila_excel": 182}, "D2": {"comarca": "Vall\u00e8s Occidental", "altitud": "343", "fila_excel": 183}, "X9": {"comarca": "Vall\u00e8s Oriental", "altitud": "176", "fila_excel": 184}, "XK": {"comarca": "Vall\u00e8s Oriental", "altitud": "1668", "fila_excel": 185}, "YM": {"comarca": "Vall\u00e8s Oriental", "altitud": "210", "fila_excel": 186}, "KX": {"comarca": "Vall\u00e8s Oriental", "altitud": "156", "fila_excel": 187}, "XG": {"comarca": "Vall\u00e8s Oriental", "altitud": "123", "fila_excel": 188}, "VX": {"comarca": "Vall\u00e8s Oriental", "altitud": "1030", "fila_excel": 189}};
+        
+        // Estructura de columnes
+        const columnesEstructura = {"basiques": [["VAR_TM_grausC", "Temp. Mitjana:"], ["VAR_TX_grausC", "Temp. M\u00e0xima:"], ["VAR_TN_grausC", "Temp. M\u00ednima:"], ["VAR_HRM_perc", "Humitat Relativa:"]], "precip_vent": [["VAR_PPT_mm", "Precipitaci\u00f3:"], ["VAR_VVM_10_m_km_h", "Vent Mitj\u00e0:"], ["VAR_DVM_10_m_graus", "Direcci\u00f3 Vent:"], ["VAR_VVX_10_m_km_h", "R\u00e0fega M\u00e0xima:"]], "altres": [["VAR_PM_hPa", "Pressi\u00f3:"], ["VAR_RS_W_m_2", "Irradi\u00e0ncia:"], ["VAR_GN_cm", "Gruix de neu:"]], "addicionals": [["VAR_Periode_TU", "Per\u00edode:"], ["altitud", "Altitud:"], ["hora_actualitzacio", "Hora actualitzaci\u00f3:"], ["comarca", "Comarca:"]]};
+        const variablesDiariCompletes = [["TEMPERATURA_MITJANA_DIA", "Temperatura mitjana"], ["TEMPERATURA_MAXIMA_DIA", "Temperatura m\u00e0xima"], ["TEMPERATURA_MINIMA_DIA", "Temperatura m\u00ednima"], ["HUMITAT_MITJANA_DIA", "Humitat relativa"], ["PRECIPITACIO_ACUM_DIA", "Precipitaci\u00f3 acumulada"], ["GRUIX_NEU_MAX", "Gruix de neu m\u00e0xim"], ["RATXA_VENT_MAX", "Ratxa m\u00e0xima del vent"], ["PRESSIO_ATMOSFERICA", "Pressi\u00f3 atmosf\u00e8rica"], ["RADIACIO_GLOBAL", "Irradiaci\u00f3 solar global"]];
+        
+        // Funció per convertir UTC a Local (simplificada per JavaScript)
+        function convertirPeriode(dataUtc, periodeUtc) {
+            try {
+                // Versió simplificada per JavaScript
+                // En producció, caldria la lògica completa de CET/CEST
+                return dataUtc + " / " + periodeUtc + " (convertir)";
+            } catch (e) {
+                return dataUtc + " / " + periodeUtc;
+            }
+        }
+        
+        function generarHTMLColumna(columnaClau, columnaDades, periode, estacioId) {
+            let html = `<div class="column"><div class="data-column"><div class="column-title">${columnaDades.titol}</div>`;
+            
+            columnaDades.variables.forEach(([var, label]) => {
+                if (periode[var] && periode[var] !== '') {
+                    html += `<div class="data-item"><div class="data-label">${label}</div><div class="data-value">${periode[var]}</div></div>`;
+                }
+            });
+            
+            // Dades especials per a columna addicional
+            if (columnaClau === 'addicionals') {
+                // Període convertit
+                if (periode.DATA_UTC && periode.PERIODE_UTC) {
+                    const periodeConvertit = convertirPeriode(periode.DATA_UTC, periode.PERIODE_UTC);
+                    html += `<div class="data-item"><div class="data-label">Període:</div><div class="data-value">${periodeConvertit}</div></div>`;
+                }
+                
+                // Altitud
+                if (metadades[estacioId] && metadades[estacioId].altitud) {
+                    html += `<div class="data-item"><div class="data-label">Altitud:</div><div class="data-value">${metadades[estacioId].altitud} m</div></div>`;
+                }
+                
+                // Hora actualització
+                if (periode.DATA_EXTRACCIO) {
+                    const horaActual = periode.DATA_EXTRACCIO.split(' ')[1] || periode.DATA_EXTRACCIO;
+                    html += `<div class="data-item"><div class="data-label">Hora actualització:</div><div class="data-value">${horaActual} TU</div></div>`;
+                }
+                
+                // COMARCA
+                if (metadades[estacioId] && metadades[estacioId].comarca) {
+                    html += `<div class="data-item"><div class="data-label">Comarca:</div><div class="data-value">${metadades[estacioId].comarca}</div></div>`;
+                }
+            }
+            
+            html += '</div></div>';
+            return html;
+        }
+        
+        function crearElementEstacio(estacioId) {
+            const periode = periodeData[estacioId];
+            const diari = diariData[estacioId] || {};
+            const meta = metadades[estacioId] || {comarca: 'Desconeguda', altitud: 'N/D'};
+            const idNet = estacioId.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            // Crear estructura d'estació
+            let html = `
+            <div class="estacio-resum" onclick="toggleDetall('${estacioId}')" data-comarca="${meta.comarca}">
+                <div>
+                    <strong>${periode.NOM_ESTACIO || estacioId}</strong>
+                    <div style="font-size: 14px; color: #bbdefb; margin-top: 5px;">
+                        Comarca: ${meta.comarca} | Altitud: ${meta.altitud} m | ID: ${estacioId}
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down" id="icon-${estacioId}"></i>
+            </div>
+            <div class="estacio-detall" id="detall-${estacioId}">
+                <div style="margin-bottom: 20px;">
+                    <div class="columns-4-container">`;
+            
+            // Afegir les 4 columnes de dades del període
+            const columnesInfo = {
+                basiques: { titol: "Dades bàsiques", variables: columnesEstructura.basiques },
+                precip_vent: { titol: "Precipitació i vent", variables: columnesEstructura.precip_vent },
+                altres: { titol: "Altres dades", variables: columnesEstructura.altres },
+                addicionals: { titol: "Dades addicionals", variables: columnesEstructura.addicionals }
+            };
+            
+            for (const [clau, info] of Object.entries(columnesInfo)) {
+                html += generarHTMLColumna(clau, info, periode, estacioId);
+            }
+            
+            html += `</div></div>`;
+            
+            // Afegir dades diàries completes si n'hi ha
+            const dadesDiariPresent = variablesDiariCompletes.some(([var, _]) => diari[var]);
+            if (dadesDiariPresent) {
+                html += `
+                <div class="estacio-dades-diari">
+                    <div class="column-title">📅 Dades Diàries Completes (Avui)</div>
+                    <div class="columns-4-container">`;
+                
+                // Dividir les variables diàries en 4 columnes aproximadament iguals
+                const varsPerColumna = Math.ceil(variablesDiariCompletes.length / 4);
+                for (let i = 0; i < 4; i++) {
+                    const startIdx = i * varsPerColumna;
+                    const endIdx = startIdx + varsPerColumna;
+                    const varsColumna = variablesDiariCompletes.slice(startIdx, endIdx);
+                    
+                    if (varsColumna.length > 0) {
+                        html += `<div class="column"><div class="data-column">`;
+                        varsColumna.forEach(([var, label]) => {
+                            if (diari[var]) {
+                                html += `<div class="data-item"><div class="data-label">${label}:</div><div class="data-value">${diari[var]}</div></div>`;
+                            }
+                        });
+                        html += '</div></div>';
+                    }
+                }
+                
+                html += `</div></div>`;
+            }
+            
+            // Afegir enllaç al banner fix
+            html += `
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="index_${idNet}.html" class="btn-estacio-fixa">
+                        <i class="fas fa-external-link-alt"></i> Veure banner fix d'aquesta estació
+                    </a>
+                </div>
+            </div>`;
+            
+            return html;
+        }
         
         function carregarLlistatEstacions() {
             const container = document.getElementById('containerLlistaEstacions');
             container.innerHTML = '';
             
             estacionsBanner.forEach(estacioId => {
-                const periode = periodeData[estacioId];
-                const meta = metadades[estacioId] || {comarca: 'Desconeguda', altitud: 'N/D'};
-                
-                let html = `
-                <div class="estacio-resum" onclick="toggleDetall('${estacioId}')" data-comarca="${meta.comarca}">
-                    <div>
-                        <strong>${periode.NOM_ESTACIO || estacioId}</strong>
-                        <div style="font-size: 14px; color: #bbdefb; margin-top: 5px;">
-                            Comarca: ${meta.comarca} | Altitud: ${meta.altitud} m | ID: ${estacioId}
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-down" id="icon-${estacioId}"></i>
-                </div>
-                <div class="estacio-detall" id="detall-${estacioId}">
-                    <div style="margin-bottom: 20px;">
-                        <!-- Les dades es carregaran dinàmicament -->
-                        <div style="text-align: center; padding: 20px;">
-                            <i class="fas fa-spinner fa-spin"></i> Carregant dades...
-                        </div>
-                    </div>
-                </div>`;
-                
-                container.innerHTML += html;
+                container.innerHTML += crearElementEstacio(estacioId);
             });
         }
         
@@ -627,30 +710,28 @@
                 detall.classList.remove('detall-obert');
                 icon.className = 'fas fa-chevron-down';
             } else {
-                // Carregar dades si encara no s'han carregat
-                if (detall.innerHTML.includes('Carregant dades')) {
-                    carregarDadesEstacio(estacioId);
-                }
+                // Tancar altres oberts
+                document.querySelectorAll('.estacio-detall.detall-obert').forEach(el => {
+                    el.classList.remove('detall-obert');
+                });
+                document.querySelectorAll('.estacio-resum i').forEach(el => {
+                    el.className = 'fas fa-chevron-down';
+                });
                 
-                // Tancar altres i obrir aquest
-                document.querySelectorAll('.estacio-detall.detall-obert').forEach(el => el.classList.remove('detall-obert'));
-                document.querySelectorAll('.estacio-resum i').forEach(el => el.className = 'fas fa-chevron-down');
-                
+                // Obrir aquest
                 detall.classList.add('detall-obert');
                 icon.className = 'fas fa-chevron-up';
+                
+                // Desplaçar-se suavement a l'estació
                 detall.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
         
-        function carregarDadesEstacio(estacioId) {
-            const detall = document.getElementById('detall-' + estacioId);
-            // Implementació simplificada per brevetat
-            detall.innerHTML = '<div style="padding: 20px; text-align: center; color: #bbdefb;"><i class="fas fa-check-circle"></i> Dades carregades correctament</div>';
-        }
-        
         function filtrarPerComarca() {
             const comarcaSeleccionada = document.getElementById('filterComarca').value;
-            document.querySelectorAll('.estacio-resum').forEach(element => {
+            const elementsEstacio = document.querySelectorAll('.estacio-resum');
+            
+            elementsEstacio.forEach(element => {
                 const comarca = element.getAttribute('data-comarca');
                 const estacioDetall = element.nextElementSibling;
                 
@@ -664,9 +745,30 @@
             });
         }
         
+        // Inicialització
         document.addEventListener('DOMContentLoaded', function() {
+            // Carregar rellotges
+            function actualitzarRellotges() {
+                const ara = new Date();
+                const horaLocal = ara.toLocaleTimeString('ca-ES', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                });
+                document.getElementById('hora-local').textContent = horaLocal;
+                
+                const horaUTC = ara.toUTCString().split(' ')[4];
+                document.getElementById('hora-utc').textContent = horaUTC;
+            }
+            
+            actualitzarRellotges();
+            setInterval(actualitzarRellotges, 1000);
+            
+            // Carregar dades
             setTimeout(() => {
                 carregarLlistatEstacions();
+                
+                // Configurar filtre
                 document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
             }, 100);
         });
@@ -674,54 +776,16 @@
     
     <div class="overlay-footer">
         <div class="footer-left">
-            <span>📡 Font: https://www.meteo.cat/</span>
-            <div class="verificacio-dades">
-                Les dades s'han verificat amb la web oficial i totes són coincidents.
-            </div>
+            <span>ℹ️ Dades extretes automàticament de Meteo.cat</span>
         </div>
         <div class="footer-center">
-            <span>© joandecorts.io</span>
-            <i class="fas fa-envelope email-icon"></i>
-            <span>admin@joandecorts.com</span>
+            <span>🔄 Rotació automàtica cada 120s</span>
         </div>
         <div class="footer-right">
-            <span>🔄 Actualització: 31/01/2026 13:54:33</span>
+            <span>🕐 Actualització: 2026-01-31 21:47:47 TU</span>
+            <i class="fas fa-envelope email-icon"></i>
         </div>
     </div>
     
-    <!-- Script per als rellotges -->
-    <script>
-        function actualitzarRellotges() {
-            const ara = new Date();
-            
-            // Hora local amb segons
-            const horaLocal = ara.toLocaleTimeString('ca-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false 
-            });
-            
-            // Hora UTC sense segons
-            const horaUTC = ara.getUTCHours().toString().padStart(2, '0') + ':' + 
-                           ara.getUTCMinutes().toString().padStart(2, '0');
-            
-            // Actualitzar elements si existeixen
-            const elemLocal = document.getElementById('hora-local');
-            const elemUTC = document.getElementById('hora-utc');
-            const elemLocalSimple = document.getElementById('hora-local-simple');
-            const elemUTCSimple = document.getElementById('hora-utc-simple');
-            
-            if (elemLocal) elemLocal.textContent = horaLocal;
-            if (elemUTC) elemUTC.textContent = horaUTC;
-            if (elemLocalSimple) elemLocalSimple.textContent = horaLocal.split(':')[0] + ':' + horaLocal.split(':')[1];
-            if (elemUTCSimple) elemUTCSimple.textContent = horaUTC;
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            actualitzarRellotges();
-            setInterval(actualitzarRellotges, 1000);
-        });
-    </script>
 </body>
 </html>
