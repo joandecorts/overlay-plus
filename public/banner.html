@@ -13,7 +13,7 @@
             --text-light: #ffffff;
             --text-muted: #bbdefb;
         }
-        
+
         body {
             margin: 0;
             padding: 0;
@@ -21,7 +21,7 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             color: var(--text-light);
         }
-        
+
         .header {
             background: rgba(10, 25, 49, 0.95);
             padding: 25px 20px;
@@ -29,26 +29,26 @@
             border-bottom: 3px solid var(--accent);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        
+
         h1 {
             color: var(--accent);
             margin: 0 0 10px 0;
             font-size: 2.2em;
             font-weight: 700;
         }
-        
+
         .subtitle {
             color: var(--text-muted);
             margin: 0;
             font-size: 1.1em;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         .controls {
             background: rgba(26, 35, 126, 0.9);
             padding: 20px;
@@ -61,13 +61,13 @@
             justify-content: space-between;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        
+
         .search-box {
             flex: 1;
             min-width: 300px;
             position: relative;
         }
-        
+
         .search-box input {
             width: 100%;
             padding: 14px 20px 14px 45px;
@@ -78,14 +78,14 @@
             font-size: 16px;
             transition: all 0.3s ease;
         }
-        
+
         .search-box input:focus {
             outline: none;
             border-color: var(--accent);
             background: rgba(255, 255, 255, 0.18);
             box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
         }
-        
+
         .search-box::before {
             content: "🔍";
             position: absolute;
@@ -95,7 +95,7 @@
             font-size: 18px;
             color: var(--text-muted);
         }
-        
+
         .stats {
             display: flex;
             gap: 20px;
@@ -103,13 +103,13 @@
             color: var(--text-muted);
             font-size: 14px;
         }
-        
+
         .stat-item {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
+
         .tornar-btn {
             background: linear-gradient(145deg, var(--warning), #e56b00);
             color: var(--text-light);
@@ -124,20 +124,20 @@
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(255, 123, 0, 0.3);
         }
-        
+
         .tornar-btn:hover {
             background: linear-gradient(145deg, #ff9d4d, var(--warning));
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(255, 123, 0, 0.4);
         }
-        
+
         .estacions-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
-        
+
         .estacio-card {
             background: linear-gradient(145deg, var(--secondary), #283593);
             border-radius: 12px;
@@ -149,7 +149,7 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(79, 195, 247, 0.1);
         }
-        
+
         .estacio-card::before {
             content: '';
             position: absolute;
@@ -159,25 +159,25 @@
             height: 4px;
             background: linear-gradient(90deg, var(--accent), var(--warning));
         }
-        
+
         .estacio-card:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
             border-color: rgba(79, 195, 247, 0.3);
         }
-        
+
         .estacio-header {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
             margin-bottom: 15px;
         }
-        
+
         .estacio-icon {
             font-size: 24px;
             color: var(--accent);
         }
-        
+
         .estacio-id {
             background: rgba(79, 195, 247, 0.2);
             color: var(--accent);
@@ -187,7 +187,7 @@
             font-weight: 700;
             letter-spacing: 0.5px;
         }
-        
+
         .estacio-nom {
             font-weight: 700;
             font-size: 18px;
@@ -195,7 +195,7 @@
             margin-bottom: 10px;
             color: var(--text-light);
         }
-        
+
         .estacio-comarca {
             color: var(--text-muted);
             font-size: 14px;
@@ -204,19 +204,19 @@
             gap: 8px;
             margin-bottom: 5px;
         }
-        
+
         .estacio-comarca::before {
             content: "📍";
             font-size: 12px;
         }
-        
+
         .loading {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-muted);
             grid-column: 1 / -1;
         }
-        
+
         .loading-spinner {
             display: inline-block;
             width: 40px;
@@ -227,42 +227,42 @@
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
         .no-results {
             text-align: center;
             padding: 40px;
             color: var(--text-muted);
             grid-column: 1 / -1;
         }
-        
+
         @media (max-width: 768px) {
             .estacions-container {
                 grid-template-columns: 1fr;
             }
-            
+
             .controls {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
+
             .search-box {
                 min-width: 100%;
             }
-            
+
             .stats {
                 justify-content: center;
                 flex-wrap: wrap;
             }
-            
+
             h1 {
                 font-size: 1.8em;
             }
         }
-        
+
         .comarca-badge {
             display: inline-block;
             background: rgba(255, 123, 0, 0.15);
@@ -280,13 +280,13 @@
         <h1>📋 TOTES LES ESTACIONS METEOROLÒGIQUES</h1>
         <p class="subtitle">Clica a qualsevol estació per veure les dades en temps real</p>
     </div>
-    
+
     <div class="container">
         <div class="controls">
             <div class="search-box">
                 <input type="text" id="search" placeholder="Cercar per nom d'estació, comarca o ID...">
             </div>
-            
+
             <div class="stats">
                 <div class="stat-item" id="total-estacions">
                     <span>📊</span>
@@ -297,10 +297,10 @@
                     <span>Comarques: ...</span>
                 </div>
             </div>
-            
-            <a href="index.html" class="tornar-btn">↩️ TORNAR A LA ROTACIÓ</a>
+
+            <a href="public/index.html" class="tornar-btn">↩️ TORNAR A LA ROTACIÓ</a>
         </div>
-        
+
         <div class="estacions-container" id="estacions-container">
             <div class="loading">
                 <div class="loading-spinner"></div>
@@ -310,7 +310,7 @@
     </div>
 
     <script>
-    // DADES D'ESTACIONS (seran injectades pel generador)
+    // DADES D'ESTACIONS (SENSE DUPLICATS)
     window.estacionsOrdenades = [
   {
     "id": "YT",
@@ -319,81 +319,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "YT",
-    "idNet": "YT",
-    "nom": "Alt Àneu - Bonabé (1.693 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YT",
-    "idNet": "YT",
-    "nom": "Alt Àneu - Bonabé (1.693 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YT",
-    "idNet": "YT",
-    "nom": "Alt Àneu - Bonabé (1.693 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YT",
-    "idNet": "YT",
-    "nom": "Alt Àneu - Bonabé (1.693 m)",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "Z1",
     "idNet": "Z1",
     "nom": "Alt Àneu - Bonaigua (2.266 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z1",
-    "idNet": "Z1",
-    "nom": "Alt Àneu - Bonaigua (2.266 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z1",
-    "idNet": "Z1",
-    "nom": "Alt Àneu - Bonaigua (2.266 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z1",
-    "idNet": "Z1",
-    "nom": "Alt Àneu - Bonaigua (2.266 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z1",
-    "idNet": "Z1",
-    "nom": "Alt Àneu - Bonaigua (2.266 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DN",
-    "idNet": "DN",
-    "nom": "Anglès",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DN",
-    "idNet": "DN",
-    "nom": "Anglès",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DN",
-    "idNet": "DN",
-    "nom": "Anglès",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DN",
-    "idNet": "DN",
-    "nom": "Anglès",
     "comarca": "Desconeguda"
   },
   {
@@ -409,81 +337,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "DJ",
-    "idNet": "DJ",
-    "nom": "Banyoles",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DJ",
-    "idNet": "DJ",
-    "nom": "Banyoles",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DJ",
-    "idNet": "DJ",
-    "nom": "Banyoles",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DJ",
-    "idNet": "DJ",
-    "nom": "Banyoles",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "X4",
     "idNet": "X4",
     "nom": "Barcelona - el Raval",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "X4",
-    "idNet": "X4",
-    "nom": "Barcelona - el Raval",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "X4",
-    "idNet": "X4",
-    "nom": "Barcelona - el Raval",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "X4",
-    "idNet": "X4",
-    "nom": "Barcelona - el Raval",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "X4",
-    "idNet": "X4",
-    "nom": "Barcelona - el Raval",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D5",
-    "idNet": "D5",
-    "nom": "Barcelona - Observatori Fabra",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D5",
-    "idNet": "D5",
-    "nom": "Barcelona - Observatori Fabra",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D5",
-    "idNet": "D5",
-    "nom": "Barcelona - Observatori Fabra",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D5",
-    "idNet": "D5",
-    "nom": "Barcelona - Observatori Fabra",
     "comarca": "Desconeguda"
   },
   {
@@ -499,81 +355,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "UN",
-    "idNet": "UN",
-    "nom": "Cassà de la Selva",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UN",
-    "idNet": "UN",
-    "nom": "Cassà de la Selva",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UN",
-    "idNet": "UN",
-    "nom": "Cassà de la Selva",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UN",
-    "idNet": "UN",
-    "nom": "Cassà de la Selva",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "MS",
     "idNet": "MS",
     "nom": "Castellar de N'hug - el Clot del Moro",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "MS",
-    "idNet": "MS",
-    "nom": "Castellar de N'hug - el Clot del Moro",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "MS",
-    "idNet": "MS",
-    "nom": "Castellar de N'hug - el Clot del Moro",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "MS",
-    "idNet": "MS",
-    "nom": "Castellar de N'hug - el Clot del Moro",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "MS",
-    "idNet": "MS",
-    "nom": "Castellar de N'hug - el Clot del Moro",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "W1",
-    "idNet": "W1",
-    "nom": "Castelló D'empúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "W1",
-    "idNet": "W1",
-    "nom": "Castelló D'empúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "W1",
-    "idNet": "W1",
-    "nom": "Castelló D'empúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "W1",
-    "idNet": "W1",
-    "nom": "Castelló D'empúries",
     "comarca": "Desconeguda"
   },
   {
@@ -589,81 +373,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "DP",
-    "idNet": "DP",
-    "nom": "Das - Aeròdrom",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DP",
-    "idNet": "DP",
-    "nom": "Das - Aeròdrom",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DP",
-    "idNet": "DP",
-    "nom": "Das - Aeròdrom",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DP",
-    "idNet": "DP",
-    "nom": "Das - Aeròdrom",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "XL",
     "idNet": "XL",
     "nom": "El Prat de Llobregat - el Prat de Llobregat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XL",
-    "idNet": "XL",
-    "nom": "El Prat de Llobregat - el Prat de Llobregat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XL",
-    "idNet": "XL",
-    "nom": "El Prat de Llobregat - el Prat de Llobregat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XL",
-    "idNet": "XL",
-    "nom": "El Prat de Llobregat - el Prat de Llobregat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XL",
-    "idNet": "XL",
-    "nom": "El Prat de Llobregat - el Prat de Llobregat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VZ",
-    "idNet": "VZ",
-    "nom": "Espolla",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VZ",
-    "idNet": "VZ",
-    "nom": "Espolla",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VZ",
-    "idNet": "VZ",
-    "nom": "Espolla",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VZ",
-    "idNet": "VZ",
-    "nom": "Espolla",
     "comarca": "Desconeguda"
   },
   {
@@ -679,81 +391,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "Z7",
-    "idNet": "Z7",
-    "nom": "Espot (2.519 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z7",
-    "idNet": "Z7",
-    "nom": "Espot (2.519 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z7",
-    "idNet": "Z7",
-    "nom": "Espot (2.519 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z7",
-    "idNet": "Z7",
-    "nom": "Espot (2.519 m)",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "XJ",
     "idNet": "XJ",
     "nom": "Girona",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XJ",
-    "idNet": "XJ",
-    "nom": "Girona",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XJ",
-    "idNet": "XJ",
-    "nom": "Girona",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XJ",
-    "idNet": "XJ",
-    "nom": "Girona",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XJ",
-    "idNet": "XJ",
-    "nom": "Girona",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YU",
-    "idNet": "YU",
-    "nom": "L'esquirol - Cantonigròs",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YU",
-    "idNet": "YU",
-    "nom": "L'esquirol - Cantonigròs",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YU",
-    "idNet": "YU",
-    "nom": "L'esquirol - Cantonigròs",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YU",
-    "idNet": "YU",
-    "nom": "L'esquirol - Cantonigròs",
     "comarca": "Desconeguda"
   },
   {
@@ -769,81 +409,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "CD",
-    "idNet": "CD",
-    "nom": "La Seu D'urgell - la Seu D'urgell - Bellestar",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CD",
-    "idNet": "CD",
-    "nom": "La Seu D'urgell - la Seu D'urgell - Bellestar",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CD",
-    "idNet": "CD",
-    "nom": "La Seu D'urgell - la Seu D'urgell - Bellestar",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CD",
-    "idNet": "CD",
-    "nom": "La Seu D'urgell - la Seu D'urgell - Bellestar",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "Z2",
     "idNet": "Z2",
     "nom": "La Vall de Boí - Boí (2.535 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z2",
-    "idNet": "Z2",
-    "nom": "La Vall de Boí - Boí (2.535 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z2",
-    "idNet": "Z2",
-    "nom": "La Vall de Boí - Boí (2.535 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z2",
-    "idNet": "Z2",
-    "nom": "La Vall de Boí - Boí (2.535 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z2",
-    "idNet": "Z2",
-    "nom": "La Vall de Boí - Boí (2.535 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VK",
-    "idNet": "VK",
-    "nom": "Lleida - Raimat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VK",
-    "idNet": "VK",
-    "nom": "Lleida - Raimat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VK",
-    "idNet": "VK",
-    "nom": "Lleida - Raimat",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VK",
-    "idNet": "VK",
-    "nom": "Lleida - Raimat",
     "comarca": "Desconeguda"
   },
   {
@@ -859,81 +427,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "Z3",
-    "idNet": "Z3",
-    "nom": "Meranges - Malniu (2.230 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z3",
-    "idNet": "Z3",
-    "nom": "Meranges - Malniu (2.230 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z3",
-    "idNet": "Z3",
-    "nom": "Meranges - Malniu (2.230 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "Z3",
-    "idNet": "Z3",
-    "nom": "Meranges - Malniu (2.230 m)",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "YB",
     "idNet": "YB",
     "nom": "Olot",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YB",
-    "idNet": "YB",
-    "nom": "Olot",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YB",
-    "idNet": "YB",
-    "nom": "Olot",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YB",
-    "idNet": "YB",
-    "nom": "Olot",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YB",
-    "idNet": "YB",
-    "nom": "Olot",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YP",
-    "idNet": "YP",
-    "nom": "Palafrugell",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YP",
-    "idNet": "YP",
-    "nom": "Palafrugell",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YP",
-    "idNet": "YP",
-    "nom": "Palafrugell",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YP",
-    "idNet": "YP",
-    "nom": "Palafrugell",
     "comarca": "Desconeguda"
   },
   {
@@ -949,81 +445,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "J5",
-    "idNet": "J5",
-    "nom": "Pantà de Darnius - Boadella",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "J5",
-    "idNet": "J5",
-    "nom": "Pantà de Darnius - Boadella",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "J5",
-    "idNet": "J5",
-    "nom": "Pantà de Darnius - Boadella",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "J5",
-    "idNet": "J5",
-    "nom": "Pantà de Darnius - Boadella",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "D6",
     "idNet": "D6",
     "nom": "Portbou - Coll dels Belitres",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D6",
-    "idNet": "D6",
-    "nom": "Portbou - Coll dels Belitres",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D6",
-    "idNet": "D6",
-    "nom": "Portbou - Coll dels Belitres",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D6",
-    "idNet": "D6",
-    "nom": "Portbou - Coll dels Belitres",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D6",
-    "idNet": "D6",
-    "nom": "Portbou - Coll dels Belitres",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YA",
-    "idNet": "YA",
-    "nom": "Puigcerdà",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YA",
-    "idNet": "YA",
-    "nom": "Puigcerdà",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YA",
-    "idNet": "YA",
-    "nom": "Puigcerdà",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "YA",
-    "idNet": "YA",
-    "nom": "Puigcerdà",
     "comarca": "Desconeguda"
   },
   {
@@ -1039,81 +463,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "DG",
-    "idNet": "DG",
-    "nom": "Queralbs - Núria (1.971 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DG",
-    "idNet": "DG",
-    "nom": "Queralbs - Núria (1.971 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DG",
-    "idNet": "DG",
-    "nom": "Queralbs - Núria (1.971 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "DG",
-    "idNet": "DG",
-    "nom": "Queralbs - Núria (1.971 m)",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "D4",
     "idNet": "D4",
     "nom": "Roses",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D4",
-    "idNet": "D4",
-    "nom": "Roses",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D4",
-    "idNet": "D4",
-    "nom": "Roses",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D4",
-    "idNet": "D4",
-    "nom": "Roses",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D4",
-    "idNet": "D4",
-    "nom": "Roses",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CI",
-    "idNet": "CI",
-    "nom": "Sant Pau de Segúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CI",
-    "idNet": "CI",
-    "nom": "Sant Pau de Segúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CI",
-    "idNet": "CI",
-    "nom": "Sant Pau de Segúries",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "CI",
-    "idNet": "CI",
-    "nom": "Sant Pau de Segúries",
     "comarca": "Desconeguda"
   },
   {
@@ -1129,81 +481,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "XS",
-    "idNet": "XS",
-    "nom": "Santa Coloma de Farners",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XS",
-    "idNet": "XS",
-    "nom": "Santa Coloma de Farners",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XS",
-    "idNet": "XS",
-    "nom": "Santa Coloma de Farners",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XS",
-    "idNet": "XS",
-    "nom": "Santa Coloma de Farners",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "ZC",
     "idNet": "ZC",
     "nom": "Setcases - Ulldeter (2.413 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "ZC",
-    "idNet": "ZC",
-    "nom": "Setcases - Ulldeter (2.413 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "ZC",
-    "idNet": "ZC",
-    "nom": "Setcases - Ulldeter (2.413 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "ZC",
-    "idNet": "ZC",
-    "nom": "Setcases - Ulldeter (2.413 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "ZC",
-    "idNet": "ZC",
-    "nom": "Setcases - Ulldeter (2.413 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XH",
-    "idNet": "XH",
-    "nom": "Sort",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XH",
-    "idNet": "XH",
-    "nom": "Sort",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XH",
-    "idNet": "XH",
-    "nom": "Sort",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XH",
-    "idNet": "XH",
-    "nom": "Sort",
     "comarca": "Desconeguda"
   },
   {
@@ -1219,54 +499,6 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "XE",
-    "idNet": "XE",
-    "nom": "Tarragona - Complex Educatiu",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XE",
-    "idNet": "XE",
-    "nom": "Tarragona - Complex Educatiu",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XE",
-    "idNet": "XE",
-    "nom": "Tarragona - Complex Educatiu",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XE",
-    "idNet": "XE",
-    "nom": "Tarragona - Complex Educatiu",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UE",
-    "idNet": "UE",
-    "nom": "Torroella de Montgrí",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UE",
-    "idNet": "UE",
-    "nom": "Torroella de Montgrí",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UE",
-    "idNet": "UE",
-    "nom": "Torroella de Montgrí",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "UE",
-    "idNet": "UE",
-    "nom": "Torroella de Montgrí",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "UE",
     "idNet": "UE",
     "nom": "Torroella de Montgrí",
@@ -1279,81 +511,9 @@
     "comarca": "Desconeguda"
   },
   {
-    "id": "XO",
-    "idNet": "XO",
-    "nom": "Vic",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XO",
-    "idNet": "XO",
-    "nom": "Vic",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XO",
-    "idNet": "XO",
-    "nom": "Vic",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "XO",
-    "idNet": "XO",
-    "nom": "Vic",
-    "comarca": "Desconeguda"
-  },
-  {
     "id": "VS",
     "idNet": "VS",
     "nom": "Vielha e Mijaran - Lac Redon (2.247 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VS",
-    "idNet": "VS",
-    "nom": "Vielha e Mijaran - Lac Redon (2.247 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VS",
-    "idNet": "VS",
-    "nom": "Vielha e Mijaran - Lac Redon (2.247 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VS",
-    "idNet": "VS",
-    "nom": "Vielha e Mijaran - Lac Redon (2.247 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "VS",
-    "idNet": "VS",
-    "nom": "Vielha e Mijaran - Lac Redon (2.247 m)",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D7",
-    "idNet": "D7",
-    "nom": "Vinebre",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D7",
-    "idNet": "D7",
-    "nom": "Vinebre",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D7",
-    "idNet": "D7",
-    "nom": "Vinebre",
-    "comarca": "Desconeguda"
-  },
-  {
-    "id": "D7",
-    "idNet": "D7",
-    "nom": "Vinebre",
     "comarca": "Desconeguda"
   },
   {
@@ -1363,108 +523,90 @@
     "comarca": "Desconeguda"
   }
 ];
-    
+
     // FUNCIONS PRINCIPALS
     function initBanner() {
         console.log("🎯 Iniciant llistat d'estacions...");
-        
+
         const container = document.getElementById("estacions-container");
         const searchInput = document.getElementById("search");
         const totalElem = document.getElementById("total-estacions");
         const comarquesElem = document.getElementById("comarques-count");
-        
+
         // Calcular estadístiques
         function calcularEstadistiques(estacions) {
             const comarquesUniques = [...new Set(estacions
                 .filter(e => e.comarca && e.comarca !== 'Desconeguda')
                 .map(e => e.comarca))];
-            
+
             return {
                 total: estacions.length,
                 comarques: comarquesUniques.length
             };
         }
-        
+
         // Renderitzar estacions
         function renderEstacions(estacions) {
-            const stats = calcularEstadistiques(estacions);
-            
-            // Actualitzar estadístiques
-            totalElem.innerHTML = `<span>📊</span><span>${stats.total} estacions</span>`;
-            comarquesElem.innerHTML = `<span>🗺️</span><span>Comarques: ${stats.comarques}</span>`;
+            container.innerHTML = '';
             
             if (estacions.length === 0) {
                 container.innerHTML = `
                     <div class="no-results">
-                        <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
-                        <h3>No s'han trobat estacions</h3>
-                        <p>Prova amb altres termes de cerca</p>
+                        <p>No s'han trobat estacions.</p>
                     </div>
                 `;
                 return;
             }
-            
-            // Crear HTML per a cada estació
-            container.innerHTML = estacions.map(estacio => `
-                <div class="estacio-card" onclick="window.location.href='index_${estacio.idNet}.html'">
+
+            estacions.forEach(estacio => {
+                const card = document.createElement('div');
+                card.className = 'estacio-card';
+                card.onclick = () => {
+                    console.log("📍 Seleccionant estació:", estacio.id);
+                    // Guardar selecció
+                    localStorage.setItem('estacioSeleccionada', JSON.stringify(estacio));
+                    // CORREGIT: Carregar el fitxer individual CORRECTE
+                    window.location.href = 'index_' + estacio.id + '.html';
+                };
+
+                card.innerHTML = `
                     <div class="estacio-header">
-                        <div class="estacio-icon">🏔️</div>
+                        <div class="estacio-icon">🌤️</div>
                         <div class="estacio-id">${estacio.id}</div>
                     </div>
-                    
                     <div class="estacio-nom">${estacio.nom}</div>
-                    
-                    <div class="estacio-comarca">
-                        ${estacio.comarca || 'Comarca no disponible'}
-                    </div>
-                    
-                    ${estacio.comarca && estacio.comarca !== 'Desconeguda' ? 
-                        `<div class="comarca-badge">${estacio.comarca}</div>` : ''}
-                    
-                    <div style="margin-top: 15px; font-size: 12px; color: #9fa8da;">
-                        Clica per veure dades completes →
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        // Filtrar estacions
-        function filtrarEstacions() {
-            const cerca = searchInput.value.toLowerCase().trim();
-            
-            if (!cerca) {
-                renderEstacions(window.estacionsOrdenades);
-                return;
-            }
-            
-            const estacionsFiltrades = window.estacionsOrdenades.filter(estacio => {
-                return (
-                    estacio.nom.toLowerCase().includes(cerca) ||
-                    (estacio.comarca && estacio.comarca.toLowerCase().includes(cerca)) ||
-                    estacio.id.toLowerCase().includes(cerca) ||
-                    estacio.idNet.toLowerCase().includes(cerca)
-                );
+                    <div class="estacio-comarca">${estacio.comarca}</div>
+                    <div class="comarca-badge">${estacio.comarca}</div>
+                `;
+
+                container.appendChild(card);
             });
-            
-            renderEstacions(estacionsFiltrades);
         }
-        
-        // Event listeners
-        searchInput.addEventListener('input', filtrarEstacions);
-        
-        // Carregar inicialment
+
+        // Inicialitzar
+        const stats = calcularEstadistiques(window.estacionsOrdenades);
+        totalElem.innerHTML = `<span>📊</span><span>Estacions: ${stats.total}</span>`;
+        comarquesElem.innerHTML = `<span>🗺️</span><span>Comarques: ${stats.comarques}</span>`;
         renderEstacions(window.estacionsOrdenades);
-        
-        console.log(`✅ ${window.estacionsOrdenades.length} estacions carregades`);
+
+        // Cerca
+        searchInput.addEventListener('input', (e) => {
+            const terme = e.target.value.toLowerCase().trim();
+            const filtrades = window.estacionsOrdenades.filter(estacio => 
+                estacio.nom.toLowerCase().includes(terme) ||
+                estacio.comarca.toLowerCase().includes(terme) ||
+                estacio.id.toLowerCase().includes(terme)
+            );
+            
+            const statsFiltrades = calcularEstadistiques(filtrades);
+            totalElem.innerHTML = `<span>📊</span><span>Estacions: ${statsFiltrades.total}</span>`;
+            comarquesElem.innerHTML = `<span>🗺️</span><span>Comarques: ${statsFiltrades.comarques}</span>`;
+            renderEstacions(filtrades);
+        });
     }
-    
-    // Executar
+
+    // Iniciar quan la pàgina es carregui
     document.addEventListener('DOMContentLoaded', initBanner);
-    
-    // Backup
-    if (document.readyState !== 'loading') {
-        setTimeout(initBanner, 100);
-    }
     </script>
 </body>
 </html>
