@@ -1,8 +1,5 @@
 {
-  "last_update": "2024-03-15 10:30:00",
-  "stations": [
-    {
-  "last_update": "2024-03-15 10:30:00",
+  "last_update": "2024-03-16 12:00:00",
   "stations": [
     {"code": "YT", "name": "ALT_ANEU___BONABE_1693_M_YT", "display_name": "Alt Àneu - Bonabé (1.693 m)"},
     {"code": "Z1", "name": "ALT_ANEU___BONAIGUA_2266_M_Z1", "display_name": "Alt Àneu - Bonaigua (2.266 m)"},
@@ -39,8 +36,5 @@
     {"code": "XO", "name": "VIC_XO", "display_name": "Vic"},
     {"code": "VS", "name": "VIELHA_E_MIJARAN___LAC_REDON_2247_M_VS", "display_name": "Vielha e Mijaran - Lac Redon (2.247 m)"},
     {"code": "D7", "name": "VINEBRE_D7", "display_name": "Vinebre"}
-  ]
-}
-    
   ]
 }
