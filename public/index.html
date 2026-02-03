@@ -150,74 +150,105 @@
     // ============================================
     // FUNCIÓ PRINCIPAL: DETECTAR FITXERS DES DE JSON
     // ============================================
-    async function detectStationFiles() {
-        console.log("🔍 Intentant carregar llista d'estacions...");
-        const detectedFiles = [];
+   async function detectStationFiles() {
+    console.log("🔍 Intentant carregar llista d'estacions...");
+    const detectedFiles = [];
 
-        try {
-            // MÈTODE PRINCIPAL: Llegir la llista des d'un JSON generat pel servidor/integrador
-            const response = await fetch('station_list.json');
+    try {
+        const response = await fetch('station_list.json');      
+        if (!response.ok) throw new Error(`No s'ha trobat el fitxer (${response.status})`);
+        
+        const data = await response.json();
+        if (!data.stations || !Array.isArray(data.stations)) {
+            throw new Error("Format incorrecte (falta l'array 'stations')");
+        }
+        
+        console.log(`📊 JSON carregat: ${data.stations.length} estacions`);
+        
+        // **CANVI CLAU**: Ara accepta TOTS els formats que tens
+        data.stations.forEach((station, index) => {
+            let fileName = '';
             
-            if (!response.ok) {
-                throw new Error(`No s'ha trobat station_list.json (${response.status})`);
+            // 1. FORMAT PREFERIT: Ja té 'file' complet
+            if (station.file && typeof station.file === 'string') {
+                // Assegurar que acaba en .html
+                fileName = station.file.endsWith('.html') ? station.file : `${station.file}.html`;
+            }
+            // 2. FORMAT DEL TEU JSON: Té 'code' → crear 'index_XX.html'
+            else if (station.code && typeof station.code === 'string') {
+                fileName = `index_${station.code}.html`;
+            }
+            // 3. FORMAT EXTRA: El nom és l'ID directe (ex: 'XJ')
+            else if (station.id && typeof station.id === 'string') {
+                fileName = `index_${station.id}.html`;
+            }
+            // 4. FORMAT DEL GENERADOR: El 'name' conté el codi al final
+            else if (station.name && typeof station.name === 'string') {
+                // Exemple: "GIRONA_XJ" → extreure "_XJ"
+                const matches = station.name.match(/_([A-Z0-9]{2})$/);
+                if (matches && matches[1]) {
+                    fileName = `index_${matches[1]}.html`;
+                }
             }
             
-            const data = await response.json();
-            
-            // Esperem un array amb la clau 'stations'
-            if (data.stations && Array.isArray(data.stations)) {
-                data.stations.forEach(station => {
-                    // Afegim el nom del fitxer (ex: 'index_XJ.html')
-                    if (station.file && station.file.startsWith('index_')) {
-                        detectedFiles.push(station.file);
-                        console.log(`   ✅ Afegint: ${station.file}`);
-                    }
-                });
+            // Verificar que hem obtingut un nom vàlid i que no estigui repetit
+            if (fileName && fileName.startsWith('index_') && fileName.endsWith('.html')) {
+                if (!detectedFiles.includes(fileName)) {
+                    detectedFiles.push(fileName);
+                    console.log(`   ✅ [${index + 1}] Afegint: ${fileName}`);
+                }
+            } else if (fileName) {
+                console.warn(`   ⚠️ [${index + 1}] Format inesperat: "${fileName}"`);
             } else {
-                throw new Error("Format de station_list.json incorrecte");
+                console.warn(`   ⚠️ [${index + 1}] No s'ha pogut determinar el fitxer per:`, station);
             }
+        });
 
-        } catch (jsonError) {
-            console.warn("❌ Error llegint station_list.json:", jsonError);
-            console.log("⚠️  Provant detecció alternativa per entorn local...");
+    } catch (jsonError) {
+        console.error("❌ Error llegint station_list.json:", jsonError);
+        
+        // MÈTODE DE FALLBACK: Provar de llegir el directori (només funciona en local)
+        try {
+            console.log("⚠️  Provant detecció per entorn local...");
+            const response = await fetch('.');
+            if (!response.ok) throw new Error('No es pot llegir directori');
             
-            // MÈTODE ALTERNATIU: Només per entorn local de desenvolupament
-            // Això funcionarà amb python -m http.server però NO a GitHub Pages
-            try {
-                const response = await fetch('.');
-                if (!response.ok) throw new Error('No es pot llegir directori');
-                
-                const htmlText = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
 
-                const allLinks = Array.from(doc.querySelectorAll('a'));
-                const htmlLinks = allLinks
-                    .map(link => link.getAttribute('href'))
-                    .filter(href => href && href.endsWith('.html'));
+            const allLinks = Array.from(doc.querySelectorAll('a'));
+            const htmlLinks = allLinks
+                .map(link => link.getAttribute('href'))
+                .filter(href => href && href.endsWith('.html'));
 
-                console.log(`📄 Enllaços .html trobats: ${htmlLinks.length}`);
+            console.log(`📄 Enllaços .html trobats: ${htmlLinks.length}`);
 
-                for (const fileLink of htmlLinks) {
-                    if (fileLink.startsWith('index_') && fileLink.length === 13) {
-                        const finalFileName = fileLink; // Ja està bé
-                        if (!detectedFiles.includes(finalFileName)) {
-                            detectedFiles.push(finalFileName);
-                            console.log(`   ✅ Afegint: ${finalFileName}`);
-                        }
+            for (const fileLink of htmlLinks) {
+                // Acceptar qualsevol index_*.html (no només de 2 caràcters)
+                if (fileLink.startsWith('index_') && fileLink.endsWith('.html')) {
+                    if (!detectedFiles.includes(fileLink)) {
+                        detectedFiles.push(fileLink);
+                        console.log(`   ✅ Afegint: ${fileLink}`);
                     }
                 }
-            } catch (dirError) {
-                console.error("❌ Tots els mètodes han fallat:", dirError);
-                // Aquí podríem afegir una llista de fallback molt bàsica si cal
             }
+        } catch (dirError) {
+            console.error("❌ Tots els mètodes han fallat.");
         }
-
-        // Ordenar i retornar
-        detectedFiles.sort();
-        console.log(`🎯 Detecció finalitzada. Fitxers a carregar: ${detectedFiles.length}`);
-        return detectedFiles;
     }
+
+    // Ordenar alfabèticament
+    detectedFiles.sort();
+    console.log(`🎯 Total fitxers a carregar: ${detectedFiles.length}`);
+    
+    // Mostrar llista per depuració (opcional)
+    if (detectedFiles.length > 0) {
+        console.log("📋 Llista final:", detectedFiles.join(', '));
+    }
+    
+    return detectedFiles;
+}
 
     // ============================================
     // INICIALITZACIÓ (igual que abans)
