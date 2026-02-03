@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
-        /* (ES PASTEM ELS MATEIXOS ESTILS RESPONSIVE DE L'ÚLTIMA VERSIÓ PER NO REPETIR) */
         :root {
             --primary-blue: #1a237e;
             --secondary-blue: #00bcd4;
@@ -37,7 +36,7 @@
             position: relative;
         }
         
-        /* BANNER SUPERIOR - TÍTOL ACTUALITZAT */
+        /* BANNER SUPERIOR */
         .banner {
             background: linear-gradient(90deg, var(--primary-blue), #283593);
             color: var(--text-light);
@@ -54,10 +53,10 @@
             flex-shrink: 0;
         }
         
-        /* LÍNIA DE FONT DE DADES - TEXT ACTUALITZAT */
+        /* LÍNIA DE FONT DE DADES */
         .data-source {
             font-size: clamp(0.7rem, 2vw, 0.85rem);
-            color: #4caf50; /* VERD */
+            color: #4caf50;
             font-style: italic;
             text-align: center;
             padding: 6px 10px;
@@ -76,18 +75,257 @@
             text-decoration: underline;
         }
         
-        /* (LA RESTA D'ESTILS ES MANTÉ IGUAL QUE A LA DARRERA VERSIÓ RESPONSIVE) */
-        /* [Inserció del mateix codi CSS responsive de l'anterior resposta] */
+        /* CONTENIDOR CENTRAL */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
         
+        /* COMPTE ENRERE INICIAL */
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: clamp(20px, 4vw, 30px) clamp(15px, 4vw, 40px);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--secondary-blue);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+        
+        #countdown {
+            font-size: clamp(3.5rem, 10vw, 5rem);
+            font-weight: bold;
+            color: var(--secondary-blue);
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        
+        .countdown-label {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-muted);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        /* BOTONS */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        button {
+            padding: 12px 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            flex: 1;
+            min-width: 140px;
+            max-width: 200px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        #goButton {
+            background: linear-gradient(to right, var(--secondary-blue), #0097a7);
+            color: white;
+        }
+        
+        #stopButton {
+            background: linear-gradient(to right, var(--accent-orange), #f57c00);
+            color: white;
+        }
+        
+        #resetButton {
+            background: linear-gradient(to right, #4caf50, #388e3c);
+            color: white;
+        }
+        
+        /* COMPTE ENRERE PER CANVI D'ESTACIÓ */
+        .station-countdown {
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            border: 2px solid var(--accent-orange);
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            animation: pulse 2s infinite;
+        }
+        
+        .station-countdown.active {
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0% { border-color: var(--accent-orange); }
+            50% { border-color: #ffcc80; box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+            100% { border-color: var(--accent-orange); }
+        }
+        
+        #stationTimer {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            font-weight: bold;
+            color: var(--accent-orange);
+            font-family: 'Courier New', monospace;
+            margin-left: 8px;
+        }
+        
+        /* VISUALITZADOR D'ESTACIONS */
+        #viewer {
+            width: 100%;
+            height: 60vh;
+            min-height: 300px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            background: white;
+            display: none;
+            margin-top: 15px;
+            border: 2px solid var(--primary-blue);
+            flex: 1;
+        }
+        
+        .viewer-active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* INFO DE ROTACIÓ */
+        .rotation-info {
+            background: rgba(26, 35, 126, 0.85);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: center;
+            border-left: 3px solid var(--secondary-blue);
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .info-active {
+            display: block;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #aaa;
+            border-top: 2px solid #333;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+        
+        .footer strong {
+            color: var(--secondary-blue);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 10px;
+            }
+            
+            .countdown-container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            #countdown {
+                font-size: 4rem;
+                margin: 5px 0;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            button {
+                min-width: 120px;
+                padding: 10px 15px;
+            }
+            
+            #viewer {
+                height: 50vh;
+                min-height: 250px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .banner {
+                padding: 12px 8px;
+                font-size: 1.4rem;
+            }
+            
+            #countdown {
+                font-size: 3.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 90%;
+                max-width: none;
+            }
+            
+            .station-countdown {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            #stationTimer {
+                font-size: 1.4rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- BANNER SUPERIOR - TÍTOL NOU -->
+    <!-- BANNER SUPERIOR -->
     <div class="banner">
         🏔️ Banner Scroll Meteorològic joandecorts.io 🏔️
     </div>
     
-   
+    <!-- LÍNIA DE FONT DE DADES -->
     <div class="data-source">
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
@@ -112,12 +350,7 @@
         </div>
         
         <!-- VISUALITZADOR D'ESTACIONS -->
-        <iframe 
-            id="viewer" 
-            title="Visualitzador d'Estacions" 
-            sandbox="allow-scripts allow-same-origin"
-            loading="lazy">
-        </iframe>
+        <iframe id="viewer" title="Visualitzador d'Estacions"></iframe>
         
         <!-- INFO DE ROTACIÓ -->
         <div class="rotation-info" id="rotationInfo">
@@ -134,157 +367,251 @@
     </div>
 
     <script>
-    // ============================================
-    // CONFIGURACIÓ
-    // ============================================
-    const STATION_CHANGE_TIME = 120;
-    let stationTimeLeft = STATION_CHANGE_TIME;
-    let stationTimerInterval = null;
-    let countdownValue = 10;
-    let countdownInterval = null;
-    let isCountdownStopped = false;
-    let stationFiles = [];
-    let currentStationIndex = 0;
-    let stationInterval = null;
+        // ============================================
+        // CONFIGURACIÓ
+        // ============================================
+        const STATION_CHANGE_TIME = 120;
+        let stationTimeLeft = STATION_CHANGE_TIME;
+        let stationTimerInterval = null;
+        let countdownValue = 10;
+        let countdownInterval = null;
+        let isCountdownStopped = false;
+        let stationFiles = [];
+        let currentStationIndex = 0;
+        let stationInterval = null;
 
-    // ============================================
-    // FUNCIÓ PRINCIPAL: DETECTAR FITXERS DES DE JSON
-    // ============================================
-   async function detectStationFiles() {
-    console.log("🔍 Intentant carregar llista d'estacions...");
-    const detectedFiles = [];
-
-    try {
-        const response = await fetch('station_list.json');      
-        if (!response.ok) throw new Error(`No s'ha trobat el fitxer (${response.status})`);
-        
-        const data = await response.json();
-        if (!data.stations || !Array.isArray(data.stations)) {
-            throw new Error("Format incorrecte (falta l'array 'stations')");
-        }
-        
-        console.log(`📊 JSON carregat: ${data.stations.length} estacions`);
-        
-        // **CANVI CLAU**: Ara accepta TOTS els formats que tens
-        data.stations.forEach((station, index) => {
-            let fileName = '';
+        // ============================================
+        // FUNCIÓ: DETECTAR FITXERS
+        // ============================================
+        async function detectStationFiles() {
+            console.log("🔍 Carregant llista d'estacions...");
             
-            // 1. FORMAT PREFERIT: Ja té 'file' complet
-            if (station.file && typeof station.file === 'string') {
-                // Assegurar que acaba en .html
-                fileName = station.file.endsWith('.html') ? station.file : `${station.file}.html`;
-            }
-            // 2. FORMAT DEL TEU JSON: Té 'code' → crear 'index_XX.html'
-            else if (station.code && typeof station.code === 'string') {
-                fileName = `index_${station.code}.html`;
-            }
-            // 3. FORMAT EXTRA: El nom és l'ID directe (ex: 'XJ')
-            else if (station.id && typeof station.id === 'string') {
-                fileName = `index_${station.id}.html`;
-            }
-            // 4. FORMAT DEL GENERADOR: El 'name' conté el codi al final
-            else if (station.name && typeof station.name === 'string') {
-                // Exemple: "GIRONA_XJ" → extreure "_XJ"
-                const matches = station.name.match(/_([A-Z0-9]{2})$/);
-                if (matches && matches[1]) {
-                    fileName = `index_${matches[1]}.html`;
-                }
-            }
+            // LLISTA DIRECTA AL CODI (35 estacions)
+            const stationFiles = [
+                'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
+                'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
+                'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
+                'index_UO.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
+                'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
+                'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
+                'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
+                'index_XO.html', 'index_VS.html', 'index_D7.html'
+            ];
             
-            // Verificar que hem obtingut un nom vàlid i que no estigui repetit
-            if (fileName && fileName.startsWith('index_') && fileName.endsWith('.html')) {
-                if (!detectedFiles.includes(fileName)) {
-                    detectedFiles.push(fileName);
-                    console.log(`   ✅ [${index + 1}] Afegint: ${fileName}`);
-                }
-            } else if (fileName) {
-                console.warn(`   ⚠️ [${index + 1}] Format inesperat: "${fileName}"`);
-            } else {
-                console.warn(`   ⚠️ [${index + 1}] No s'ha pogut determinar el fitxer per:`, station);
-            }
-        });
-
-    } catch (jsonError) {
-        console.error("❌ Error llegint station_list.json:", jsonError);
-        
-        // MÈTODE DE FALLBACK: Provar de llegir el directori (només funciona en local)
-        try {
-            console.log("⚠️  Provant detecció per entorn local...");
-            const response = await fetch('.');
-            if (!response.ok) throw new Error('No es pot llegir directori');
+            console.log(`🎯 Total fitxers a carregar: ${stationFiles.length}`);
             
-            const htmlText = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlText, 'text/html');
-
-            const allLinks = Array.from(doc.querySelectorAll('a'));
-            const htmlLinks = allLinks
-                .map(link => link.getAttribute('href'))
-                .filter(href => href && href.endsWith('.html'));
-
-            console.log(`📄 Enllaços .html trobats: ${htmlLinks.length}`);
-
-            for (const fileLink of htmlLinks) {
-                // Acceptar qualsevol index_*.html (no només de 2 caràcters)
-                if (fileLink.startsWith('index_') && fileLink.endsWith('.html')) {
-                    if (!detectedFiles.includes(fileLink)) {
-                        detectedFiles.push(fileLink);
-                        console.log(`   ✅ Afegint: ${fileLink}`);
+            // Mode local: verificar fitxers
+            if (window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')) {
+                console.log("🌐 Mode local: verificant fitxers...");
+                const existingFiles = [];
+                
+                for (const file of stationFiles) {
+                    try {
+                        const response = await fetch(file, { method: 'HEAD' });
+                        if (response.ok) {
+                            existingFiles.push(file);
+                            console.log(`   ✅ Existeix: ${file}`);
+                        } else {
+                            console.log(`   ❌ No existeix: ${file}`);
+                        }
+                    } catch {
+                        console.log(`   ⚠️  Error verificant: ${file}`);
                     }
                 }
+                
+                if (existingFiles.length > 0) {
+                    console.log(`📋 ${existingFiles.length} fitxers trobats localment`);
+                    return existingFiles;
+                }
             }
-        } catch (dirError) {
-            console.error("❌ Tots els mètodes han fallat.");
+            
+            // Mode GitHub: retornar llista completa
+            console.log("🌍 Mode GitHub: usant llista completa");
+            return stationFiles;
         }
-    }
 
-    // Ordenar alfabèticament
-    detectedFiles.sort();
-    console.log(`🎯 Total fitxers a carregar: ${detectedFiles.length}`);
-    
-    // Mostrar llista per depuració (opcional)
-    if (detectedFiles.length > 0) {
-        console.log("📋 Llista final:", detectedFiles.join(', '));
-    }
-    
-    return detectedFiles;
-}
+        // ============================================
+        // INICIALITZACIÓ
+        // ============================================
+        window.onload = async function() {
+            console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
+            
+            // Carregar fitxers
+            stationFiles = await detectStationFiles();
+            
+            // Si no hi ha fitxers
+            if (stationFiles.length === 0) {
+                document.getElementById('errorContainer').innerHTML = `
+                    <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
+                        <p><strong>⚠️ No s'han detectat fitxers d'estació</strong></p>
+                    </div>
+                `;
+                document.getElementById('countdown').textContent = "0";
+                return;
+            }
+            
+            console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+            
+            // Iniciar compte enrere
+            startCountdown();
+        };
 
-    // ============================================
-    // INICIALITZACIÓ (igual que abans)
-    // ============================================
-    window.onload = async function() {
-        console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
-        
-        // DETECTAR FITXERS
-        stationFiles = await detectStationFiles();
-        
-        // SI NO N'HEM TROBAT CAP
-        if (stationFiles.length === 0) {
-            document.getElementById('errorContainer').innerHTML = `
-                <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
-                    <p><strong>⚠️ No s'han detectat fitxers d'estació</strong></p>
-                    <p style="font-size:0.9em;">Assegura't que hi hagi un fitxer <code>station_list.json</code> a la carpeta.</p>
-                    <p style="font-size:0.8em; margin-top:5px;">El teu integrador.py ha de generar aquest fitxer.</p>
-                </div>
-            `;
-            document.getElementById('countdown').textContent = "0";
-            return;
+        // ============================================
+        // FUNCIONS DE COMPTE ENRERE
+        // ============================================
+        function startCountdown() {
+            console.log("⏱️  Iniciant compte enrere...");
+            
+            // Aturar interval anterior
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            
+            // Reset valors
+            countdownValue = 10;
+            isCountdownStopped = false;
+            
+            // Actualitzar display
+            document.getElementById('countdown').textContent = countdownValue;
+            document.getElementById('stopButton').textContent = "ATURAR";
+            
+            // Amagar elements de rotació
+            document.getElementById('viewer').classList.remove('viewer-active');
+            document.getElementById('rotationInfo').classList.remove('info-active');
+            document.getElementById('stationCountdown').classList.remove('active');
+            document.getElementById('viewer').style.display = 'none';
+            
+            // Mostrar contenidor compte enrere
+            document.querySelector('.countdown-container').style.display = 'block';
+            
+            // Iniciar nou interval
+            countdownInterval = setInterval(function() {
+                if (!isCountdownStopped) {
+                    countdownValue--;
+                    document.getElementById('countdown').textContent = countdownValue;
+                    
+                    if (countdownValue <= 0) {
+                        console.log("⏰ Compte enrere finalitzat, iniciant rotació...");
+                        clearInterval(countdownInterval);
+                        startStationRotation();
+                    }
+                }
+            }, 1000);
+            
+            console.log("✅ Compte enrere iniciat correctament");
         }
         
-        console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+        function stopCountdown() {
+            isCountdownStopped = !isCountdownStopped;
+            document.getElementById('stopButton').textContent = isCountdownStopped ? "REPRENDRE" : "ATURAR";
+        }
         
-        // INICIAR EL COMPTE ENRERE
-        startCountdown();
-        adjustViewerSize();
-        window.addEventListener('resize', adjustViewerSize);
-    };
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            startCountdown();
+        }
+        
+        function goToBanner() {
+            clearAllIntervals();
+            window.location.href = "banner.html";
+        }
+        
+        function clearAllIntervals() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (stationInterval) clearInterval(stationInterval);
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+        }
 
-    // ============================================
-    // LA RESTA DE FUNCIONS ES QUEDA IGUAL
-    // (startCountdown, stopCountdown, resetCountdown, goToBanner,
-    //  startStationRotation, loadCurrentStation, etc.)
-    // ============================================
-</script>
+        // ============================================
+        // FUNCIONS DE ROTACIÓ D'ESTACIONS
+        // ============================================
+        function startStationRotation() {
+            console.log("🔄 Iniciant rotació d'estacions...");
+            
+            if (stationFiles.length === 0) {
+                console.error("❌ No hi ha fitxers per carregar!");
+                return;
+            }
+            
+            // Amagar compte enrere inicial
+            document.querySelector('.countdown-container').style.display = 'none';
+            
+            // Mostrar visualitzador
+            const viewer = document.getElementById('viewer');
+            viewer.style.display = 'block';
+            viewer.classList.add('viewer-active');
+            
+            // Mostrar informació
+            document.getElementById('rotationInfo').classList.add('info-active');
+            
+            // Iniciar compte enrere per canvi
+            startStationCountdown();
+            
+            // Carregar primera estació
+            loadCurrentStation();
+            
+            // Iniciar rotació automàtica
+            stationInterval = setInterval(() => {
+                currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
+                loadCurrentStation();
+                resetStationCountdown();
+            }, STATION_CHANGE_TIME * 1000);
+            
+            console.log(`🔄 Rotació iniciada amb ${stationFiles.length} estacions`);
+        }
+        
+        function startStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+            document.getElementById('stationCountdown').classList.add('active');
+            
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+            
+            stationTimerInterval = setInterval(() => {
+                stationTimeLeft--;
+                document.getElementById('stationTimer').textContent = stationTimeLeft;
+                if (stationTimeLeft <= 0) stationTimeLeft = STATION_CHANGE_TIME;
+            }, 1000);
+        }
+        
+        function resetStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+        }
+        
+        function loadCurrentStation() {
+            if (stationFiles.length === 0) return;
+            
+            const currentFile = stationFiles[currentStationIndex];
+            const totalFiles = stationFiles.length;
+            const stationNumber = currentStationIndex + 1;
+            
+            console.log(`📡 Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
+            
+            // Actualitzar iframe
+            const viewer = document.getElementById('viewer');
+            viewer.src = currentFile;
+            
+            // Actualitzar informació
+            document.getElementById('rotationInfo').innerHTML = 
+                `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
+            
+            // Actualitzar peu
+            updateFooter(currentFile, stationNumber, totalFiles);
+        }
+        
+        function updateFooter(currentFile, stationNumber, totalFiles) {
+            const nextIndex = (currentStationIndex + 1) % totalFiles;
+            const nextFile = stationFiles[nextIndex];
+            const nextChange = new Date(Date.now() + (stationTimeLeft * 1000));
+            const hours = nextChange.getHours().toString().padStart(2, '0');
+            const minutes = nextChange.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('footer').innerHTML = 
+                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi: ${hours}:${minutes}`;
+        }
+    </script>
 </body>
 </html>
