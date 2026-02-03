@@ -3,794 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banner Principal - Rotació Automàtica</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
-        /* ==== ESTIL ORIGINAL AMB MILLORES ==== */
-        body {
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #007BFF;
-            min-height: 100vh;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        
-        .meteo-overlay {
-            background: rgba(10, 25, 49, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            max-width: 1400px;
-            margin: 0 auto;
-            cursor: pointer;
-        }
-        
-        .overlay-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3949ab;
-        }
-        
-        .station-info {
-            flex: 1;
-        }
-        
-        .station-name {
-            font-size: 24px;
-            color: #4fc3f7;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .location-details {
-            font-size: 14px;
-            color: #bbdefb;
-        }
-        
-        .location-label {
-            color: #7986cb;
-            margin-right: 5px;
-        }
-        
-        .header-right {
-            text-align: right;
-            flex: 1;
-        }
-        
-        /* RELLOTGES CORREGITS - FORMAT DEMANAT */
-        .dual-clock-digital {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            background: transparent !important;
             padding: 0;
-            border: none !important;
-            min-width: 180px;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-            align-items: flex-end;
+            box-sizing: border-box;
         }
-        
-        .clock-row-digital {
-            display: flex;
-            justify-content: flex-end;
-            align-items: baseline;
-            gap: 15px;
-            width: 100%;
-        }
-        
-        .clock-time-digital {
-            color: white !important;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            min-width: 95px;
-            text-align: right;
-        }
-        
-        .clock-label-digital {
-            color: white !important;
-            font-size: 16px;
-            font-weight: 600;
-            min-width: 40px;
-            text-align: left;
-        }
-        
-        .header-center {
-            text-align: center;
-            flex: 2;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a2d5e, #1a5f7a);
+            color: white;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 12px;
+            overflow: hidden;
         }
         
-        .station-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .station-selector select {
-            background: linear-gradient(145deg, #1a237e, #283593) !important;
-            color: #bbdefb !important;
-            border: 2px solid #3949ab !important;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 14px;
-            font-weight: 600;
-            min-width: 300px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-        
-        .station-selector select:hover {
-            border-color: #4fc3f7 !important;
-            background: linear-gradient(145deg, #283593, #1a237e) !important;
-        }
-        
-        .station-selector select:focus {
-            outline: none;
-            border-color: #2ecc71 !important;
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
-        }
-        
-        .station-selector select option {
-            background: white !important;
-            color: black !important;
-            font-weight: 500;
-            padding: 12px 15px;
-            font-size: 14px;
-        }
-        
-        .station-selector select option:hover {
-            background: #f0f0f0 !important;
-            color: #1a237e !important;
-        }
-        
-        .station-selector select option:checked {
-            background: #e3f2fd !important;
-            color: #1a237e !important;
-            font-weight: 600;
-        }
-        
-        .station-selector label {
-            color: #bbdefb;
-            font-size: 16px;
-            font-weight: bold;
-            margin-right: 12px;
-        }
-        
-        .station-icon {
-            margin-left: 15px;
-        }
-        
-        .station-icon a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border: 2px solid #3949ab;
-            border-radius: 8px;
-            color: #bbdefb;
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .station-icon a:hover {
-            background: linear-gradient(145deg, #283593, #1a237e);
-            border-color: #4fc3f7;
-            color: #4fc3f7;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
-        }
-        
-        .icon-text {
-            display: inline;
-        }
-        
-        .rotation-status-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        
-        .rotation-status {
-            font-size: 13px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: rgba(46, 204, 113, 0.15);
-            color: #2ecc71;
-            border: 1px solid #2ecc71;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .rotation-status.paused {
-            background: rgba(231, 76, 60, 0.15);
-            color: #e74c3c;
-            border-color: #e74c3c;
-        }
-        
-        .overlay-content {
-            margin: 30px 0;
-        }
-        
-        .columns-4-container {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .column {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        .col-basics { padding-left: 15px; }
-        .col-precip-wind { padding-left: 15px; }
-        .col-other { padding-left: 15px; }
-        .col-additional { padding-left: 15px; }
-        
-        .data-column {
-            margin-bottom: 25px;
-        }
-        
-        .column-title {
-            color: #bbdefb;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #3949ab;
-        }
-        
-        .data-item {
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            border: 2px solid #3949ab;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-left: 4px solid #ff7b00;
-        }
-        
-        .data-item:hover {
-            transform: translateY(-3px);
-            box-shadow: -8px 0 20px rgba(255, 123, 0, 0.6), 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-left-color: #ff9d4d;
-        }
-        
-        .data-label {
-            color: #bbdefb;
-            font-weight: bold;
-            font-size: 15px;
-        }
-        
-        .data-value {
-            color: #ffcc80;
-            font-weight: bold;
-            font-size: 17px;
-            text-align: right;
-        }
-        
-        /* NOU: Estil per a hores de registre petites */
-        .hora-registre {
-            font-size: 12px;
-            color: #90caf9;
-            display: block;
-            margin-top: 3px;
-            font-style: italic;
-        }
-        
-        /* NOU: Estil per a l'avís de canvi de dia */
-        .avis-canvi-dia {
-            background: linear-gradient(145deg, #b71c1c, #d32f2f);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border: 2px solid #f44336;
+        /* BANNER SUPERIOR - MÉS PETIT */
+        .banner {
+            background: linear-gradient(90deg, #1a237e, #283593);
             color: white;
             text-align: center;
+            padding: 18px 0; /* REDUÏT */
+            font-size: 2.2em; /* REDUÏT */
             font-weight: bold;
+            letter-spacing: 1.2px;
+            border-bottom: 4px solid #00bcd4;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            width: 100%;
+            z-index: 1000;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
-        /* NOU: Estil per al peu de pàgina corregit */
-        .overlay-footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #3949ab;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #9fa8da;
-        }
-        
-        .footer-left, .footer-center, .footer-right {
-            flex: 1;
-        }
-        
-        .footer-left { text-align: left; }
-        .footer-center { text-align: center; }
-        .footer-right { 
-            text-align: right; 
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-        
-        .email-icon {
-            color: #4fc3f7;
-            font-size: 16px;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-        
-        .verificacio-dades {
-            font-size: 12px;
-            color: #81c784;
-            margin-top: 5px;
+        /* LÍNIA PETITA VERDA CURSIVA SOTA EL TÍTOL */
+        .data-source {
+            font-size: 0.8em;
+            color: #4caf50;
             font-style: italic;
+            text-align: center;
+            margin-top: 5px;
+            padding: 4px 0;
+            background: rgba(0, 0, 0, 0.2);
         }
         
-        @media (max-width: 1200px) {
-            .columns-4-container {
-                flex-direction: column;
-            }
-            .column {
-                min-width: 100%;
-                margin-bottom: 20px;
-            }
-            
-            .header-center {
-                order: 3;
-                width: 100%;
-                margin-top: 15px;
-            }
-            
-            .station-controls {
-                flex-direction: column;
-            }
-            
-            .dual-clock-digital {
-                min-width: 160px;
-            }
-            
-            .clock-time-digital {
-                font-size: 20px;
-                letter-spacing: 1px;
-            }
-            
-            .clock-label-digital {
-                font-size: 14px;
-            }
-            
-            .overlay-footer {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-            
-            .footer-left, .footer-center, .footer-right {
-                text-align: center;
-                width: 100%;
-            }
-        }
-        
-        /* Estils per a banner.html */
-        .llista-estacions {
-            margin-top: 20px;
-        }
-        
-        .estacio-resum {
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-left: 4px solid #4fc3f7;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        
-        .estacio-resum:hover {
-            border-left-color: #ff7b00;
-            transform: translateX(5px);
-        }
-        
-        .estacio-detall {
-            background: rgba(26, 35, 126, 0.5);
-            border-radius: 0 0 10px 10px;
-            padding: 20px;
-            display: none;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .detall-obert {
-            display: block;
-        }
-        
-        .estacio-dades-diari {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #3949ab;
-        }
-        
-        .btn-estacio-fixa {
-            display: inline-block;
-            background: linear-gradient(145deg, #ff7b00, #e56b00);
-            color: white;
+        .data-source a {
+            color: #80e27e;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+        }
+        
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+        
+        /* CONTENIDOR CENTRAL - REAJUSTAT */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* CANVIAT */
+            align-items: center;
+            padding: 20px; /* REDUÏT */
+            position: relative;
+            overflow-y: auto; /* PER SI SOBRA */
+        }
+        
+        /* COMPTE ENRERE - MÉS PETIT */
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 25px 50px; /* REDUÏT */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border: 2px solid #00bcd4;
+            margin-bottom: 20px; /* REDUÏT */
+            min-width: 300px; /* REDUÏT */
+            backdrop-filter: blur(5px);
+        }
+        
+        #countdown {
+            font-size: 4.5em; /* REDUÏT */
             font-weight: bold;
-            margin-top: 15px;
+            color: #00bcd4;
+            text-shadow: 0 0 20px rgba(0, 188, 212, 0.8);
+            margin: 15px 0; /* REDUÏT */
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px; /* REDUÏT */
+        }
+        
+        .countdown-label {
+            font-size: 1.3em; /* REDUÏT */
+            color: #b0e0e6;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        /* BOTONS - MÉS PETITS */
+        .controls {
+            display: flex;
+            gap: 20px; /* REDUÏT */
+            margin-top: 20px; /* REDUÏT */
+        }
+        
+        button {
+            padding: 12px 30px; /* REDUÏT */
+            font-size: 1.1em; /* REDUÏT */
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
         
-        .btn-estacio-fixa:hover {
-            background: linear-gradient(145deg, #ff9d4d, #ff7b00);
+        #goButton {
+            background: linear-gradient(to right, #00bcd4, #0097a7);
+            color: white;
+        }
+        
+        #goButton:hover {
+            background: linear-gradient(to right, #00acc1, #00838f);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
         }
         
-        .day-summary {
-            display: none !important;
+        #stopButton {
+            background: linear-gradient(to right, #ff9800, #f57c00);
+            color: white;
+        }
+        
+        #stopButton:hover {
+            background: linear-gradient(to right, #fb8c00, #ef6c00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        #resetButton {
+            background: linear-gradient(to right, #4caf50, #388e3c);
+            color: white;
+        }
+        
+        #resetButton:hover {
+            background: linear-gradient(to right, #43a047, #2e7d32);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        /* COMPTE ENRERE PER CANVI D'ESTACIÓ */
+        .station-countdown {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.3em;
+            border: 2px solid #ff9800;
+            display: none;
+        }
+        
+        .station-countdown.active {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { border-color: #ff9800; }
+            50% { border-color: #ffcc80; }
+            100% { border-color: #ff9800; }
+        }
+        
+        #stationTimer {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff9800; /* TARONJA */
+            font-family: 'Courier New', monospace;
+            margin-left: 10px;
+        }
+        
+        /* VISUALITZADOR D'ESTACIONS - MÉS PETIT */
+        #viewer {
+            width: 92%; /* REDUÏT */
+            height: 60vh; /* REDUÏT */
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+            background: white;
+            display: none;
+            margin-top: 15px;
+            border: 2px solid #1a237e;
+        }
+        
+        .viewer-active {
+            display: block !important;
+            animation: fadeIn 0.8s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        @media (max-width: 768px) {
-            .icon-text {
-                display: none;
-            }
-            
-            .station-icon a {
-                padding: 10px;
-                width: 42px;
-                justify-content: center;
-            }
+        /* INFO DE ROTACIÓ */
+        .rotation-info {
+            background: rgba(26, 35, 126, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            text-align: center;
+            border-left: 4px solid #00bcd4;
+            display: none;
+        }
+        
+        .info-active {
+            display: block;
+            animation: slideIn 0.6s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* FOOTER - MÉS PETIT */
+        .footer {
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.85);
+            font-size: 0.9em;
+            color: #aaa;
+            border-top: 2px solid #333;
+            font-family: monospace;
+        }
+        
+        .footer strong {
+            color: #00bcd4;
+        }
+        
+        /* Estils per als errors */
+        .error-message {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            border-left: 4px solid #ff5252;
+            font-size: 0.9em;
+        }
+        
+        /* Llista de fitxers detectats */
+        .files-list {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            max-height: 100px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .files-list.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-
-    <div class="meteo-overlay">
-        <div class="overlay-header">
-            <div class="station-info">
-                <div class="station-name" id="nom-estacio-actual">🏔️ BANNER PRINCIPAL</div>
-                <div class="location-details" id="detalls-estacio-actual">Rotació automàtica cada 120s</div>
-            </div>
-            
-            <div class="header-center">
-                <div class="station-controls">
-                    <div class="station-selector">
-                        <label for="selectorEstacions">Estació actual:</label>
-                        <select id="selectorEstacions">
-    <option value="W1">Castelló D'empúries</option>
-<option value="J5">Pantà de Darnius - Boadella</option>
-<option value="VZ">Espolla</option>
-<option value="D6">Portbou - Coll dels Belitres</option>
-<option value="D4">Roses</option>
-<option value="CD">La Seu D'urgell - la Seu D'urgell - Bellestar</option>
-<option value="Z2">La Vall de Boí - Boí (2.535 m)</option>
-<option value="YP">Palafrugell</option>
-<option value="UE">Torroella de Montgrí</option>
-<option value="XL">El Prat de Llobregat - el Prat de Llobregat</option>
-<option value="D5">Barcelona - Observatori Fabra</option>
-<option value="X4">Barcelona - el Raval</option>
-<option value="MS">Castellar de N'hug - el Clot del Moro</option>
-<option value="DP">Das - Aeròdrom</option>
-<option value="Z3">Meranges - Malniu (2.230 m)</option>
-<option value="YA">Puigcerdà</option>
-<option value="YB">Olot</option>
-<option value="UN">Cassà de la Selva</option>
-<option value="XJ">Girona</option>
-<option value="YU">L'esquirol - Cantonigròs</option>
-<option value="XO">Vic</option>
-<option value="YT">Alt Àneu - Bonabé (1.693 m)</option>
-<option value="Z1">Alt Àneu - Bonaigua (2.266 m)</option>
-<option value="Z7">Espot (2.519 m)</option>
-<option value="XH">Sort</option>
-<option value="DJ">Banyoles</option>
-<option value="D7">Vinebre</option>
-<option value="DG">Queralbs - Núria (1.971 m)</option>
-<option value="CI">Sant Pau de Segúries</option>
-<option value="ZC">Setcases - Ulldeter (2.413 m)</option>
-<option value="VK">Lleida - Raimat</option>
-<option value="DN">Anglès</option>
-<option value="XS">Santa Coloma de Farners</option>
-<option value="XE">Tarragona - Complex Educatiu</option>
-<option value="VS">Vielha e Mijaran - Lac Redon (2.247 m)</option>
-
-                        </select>
-                    </div>
-                    <div class="station-icon">
-                        <a href="banner.html" title="Veure totes les estacions">
-                            <i class="fas fa-list"></i>
-                            <span class="icon-text">Detall</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="rotation-status-container">
-                    <div class="rotation-status" id="estat-rotacio">
-                        <i class="fas fa-sync-alt"></i>
-                        Rotació ACTIVA (120s)
-                    </div>
-                </div>
-            </div>
-            
-            <div class="header-right">
-                <!-- RELLOTGES CORREGITS -->
-                <div class="dual-clock-digital">
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local">--:--</div>
-                        <div class="clock-label-digital">LT</div>
-                    </div>
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc">--:--</div>
-                        <div class="clock-label-digital">UTC</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="overlay-content">
-            <div id="contingut-estacio-actual">
-                <p>Carregant dades de les estacions...</p>
-            </div>
-        </div>
-    
-    <script>
-        const estacions = ["W1", "J5", "VZ", "D6", "D4", "CD", "Z2", "YP", "UE", "XL", "D5", "X4", "MS", "DP", "Z3", "YA", "YB", "UN", "XJ", "YU", "XO", "YT", "Z1", "Z7", "XH", "DJ", "D7", "DG", "CI", "ZC", "VK", "DN", "XS", "XE", "VS"];
-        const periodeData = {"YT": {"VAR_TM_grausC": "-2.6", "VAR_TX_grausC": "-2.5", "VAR_TN_grausC": "-2.9", "VAR_HRM_perc": "98", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "112", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:11", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z1": {"VAR_TM_grausC": "-5.9", "VAR_TX_grausC": "-4.8", "VAR_TN_grausC": "-6.5", "VAR_HRM_perc": "82", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "176", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:16", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DN": {"VAR_TM_grausC": "4.1", "VAR_TX_grausC": "4.6", "VAR_TN_grausC": "3.9", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.4", "VAR_DVM_10_m_graus": "98", "VAR_VVX_10_m_km_h": "11.5", "VAR_PM_hPa": "1001.0", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Angl\u00e8s", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:20", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DJ": {"VAR_TM_grausC": "6.9", "VAR_TX_grausC": "8.4", "VAR_TN_grausC": "5.0", "VAR_HRM_perc": "75", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "6.8", "VAR_DVM_10_m_graus": "294", "VAR_VVX_10_m_km_h": "13.0", "VAR_PM_hPa": "1000.6", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Banyoles", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:24", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "X4": {"VAR_TM_grausC": "9.4", "VAR_TX_grausC": "9.6", "VAR_TN_grausC": "9.1", "VAR_HRM_perc": "65", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "2.5", "VAR_DVM_10_m_graus": "236", "VAR_VVX_10_m_km_h": "4.7", "VAR_PM_hPa": "1001.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:29", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D5": {"VAR_TM_grausC": "7.8", "VAR_TX_grausC": "8.0", "VAR_TN_grausC": "7.7", "VAR_HRM_perc": "61", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "31.3", "VAR_DVM_10_m_graus": "270", "VAR_VVX_10_m_km_h": "37.1", "VAR_PM_hPa": "1001.7", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:33", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UN": {"VAR_TM_grausC": "2.1", "VAR_TX_grausC": "2.2", "VAR_TN_grausC": "1.9", "VAR_HRM_perc": "99", "VAR_PPT_mm": "0.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:37", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "MS": {"VAR_TM_grausC": "-0.7", "VAR_TX_grausC": "-0.7", "VAR_TN_grausC": "-0.8", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:41", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "W1": {"VAR_TM_grausC": "4.3", "VAR_TX_grausC": "4.9", "VAR_TN_grausC": "3.7", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:45", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DP": {"VAR_TM_grausC": "1.8", "VAR_TX_grausC": "2.4", "VAR_TN_grausC": "1.0", "VAR_HRM_perc": "77", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "10.1", "VAR_DVM_10_m_graus": "198", "VAR_VVX_10_m_km_h": "16.2", "VAR_PM_hPa": "1001.9", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "1", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:50", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XL": {"VAR_TM_grausC": "2.6", "VAR_TX_grausC": "3.3", "VAR_TN_grausC": "1.7", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.4", "VAR_DVM_10_m_graus": "300", "VAR_VVX_10_m_km_h": "8.6", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:54", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VZ": {"VAR_TM_grausC": "2.7", "VAR_TX_grausC": "3.0", "VAR_TN_grausC": "2.5", "VAR_HRM_perc": "96", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Espolla", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:52:58", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z7": {"VAR_TM_grausC": "-7.6", "VAR_TX_grausC": "-7.5", "VAR_TN_grausC": "-7.6", "VAR_HRM_perc": "80", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "17.3", "VAR_DVM_10_m_graus": "240", "VAR_VVX_10_m_km_h": "36.4", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "71", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:02", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XJ": {"VAR_TM_grausC": "5.1", "VAR_TX_grausC": "6.3", "VAR_TN_grausC": "4.3", "VAR_HRM_perc": "87", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "4.3", "VAR_DVM_10_m_graus": "95", "VAR_VVX_10_m_km_h": "9.0", "VAR_PM_hPa": "1001.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Girona", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:06", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YU": {"VAR_TM_grausC": "2.0", "VAR_TX_grausC": "2.2", "VAR_TN_grausC": "2.0", "VAR_HRM_perc": "98", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "5.4", "VAR_DVM_10_m_graus": "255", "VAR_VVX_10_m_km_h": "13.0", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:10", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CD": {"VAR_TM_grausC": "1.2", "VAR_TX_grausC": "1.3", "VAR_TN_grausC": "1.1", "VAR_HRM_perc": "98", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "4.3", "VAR_DVM_10_m_graus": "55", "VAR_VVX_10_m_km_h": "9.7", "VAR_PM_hPa": "1002.5", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:15", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z2": {"VAR_TM_grausC": "-8.2", "VAR_TX_grausC": "-8.1", "VAR_TN_grausC": "-8.3", "VAR_HRM_perc": "93", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "110", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:19", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VK": {"VAR_TM_grausC": "1.8", "VAR_TX_grausC": "2.4", "VAR_TN_grausC": "0.8", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "7.2", "VAR_DVM_10_m_graus": "140", "VAR_VVX_10_m_km_h": "9.0", "VAR_PM_hPa": "1002.5", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Lleida - Raimat", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:23", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "Z3": {"VAR_TM_grausC": "-7.2", "VAR_TX_grausC": "-7.1", "VAR_TN_grausC": "-7.4", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "117", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:27", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YB": {"VAR_TM_grausC": "5.0", "VAR_TX_grausC": "6.0", "VAR_TN_grausC": "3.8", "VAR_HRM_perc": "80", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "10.4", "VAR_DVM_10_m_graus": "255", "VAR_VVX_10_m_km_h": "24.5", "VAR_PM_hPa": "1001.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Olot", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:31", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YP": {"VAR_TM_grausC": "9.5", "VAR_TX_grausC": "9.7", "VAR_TN_grausC": "9.4", "VAR_HRM_perc": "65", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "16.2", "VAR_DVM_10_m_graus": "233", "VAR_VVX_10_m_km_h": "24.8", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Palafrugell", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:36", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "J5": {"VAR_TM_grausC": "5.5", "VAR_TX_grausC": "5.9", "VAR_TN_grausC": "5.0", "VAR_HRM_perc": "96", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "7.2", "VAR_DVM_10_m_graus": "26", "VAR_VVX_10_m_km_h": "12.6", "VAR_PM_hPa": "1000.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:40", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D6": {"VAR_TM_grausC": "8.1", "VAR_TX_grausC": "8.4", "VAR_TN_grausC": "7.9", "VAR_HRM_perc": "85", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "20.5", "VAR_DVM_10_m_graus": "200", "VAR_VVX_10_m_km_h": "28.8", "VAR_PM_hPa": "999.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:44", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "YA": {"VAR_TM_grausC": "0.8", "VAR_TX_grausC": "1.0", "VAR_TN_grausC": "0.5", "VAR_HRM_perc": "84", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "2.9", "VAR_DVM_10_m_graus": "152", "VAR_VVX_10_m_km_h": "9.0", "VAR_PM_hPa": "1001.7", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:48", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "DG": {"VAR_TM_grausC": "-3.4", "VAR_TX_grausC": "-3.2", "VAR_TN_grausC": "-3.6", "VAR_HRM_perc": "68", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "10.1", "VAR_DVM_10_m_graus": "338", "VAR_VVX_10_m_km_h": "26.3", "VAR_PM_hPa": "832.9", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "113", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:53", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D4": {"VAR_TM_grausC": "4.7", "VAR_TX_grausC": "4.9", "VAR_TN_grausC": "4.2", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "2.5", "VAR_DVM_10_m_graus": "353", "VAR_VVX_10_m_km_h": "7.2", "VAR_PM_hPa": "1000.7", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Roses", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:53:57", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "CI": {"VAR_TM_grausC": "2.3", "VAR_TX_grausC": "2.5", "VAR_TN_grausC": "2.2", "VAR_HRM_perc": "93", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "7.9", "VAR_DVM_10_m_graus": "241", "VAR_VVX_10_m_km_h": "19.8", "VAR_PM_hPa": "1002.5", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:02", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XS": {"VAR_TM_grausC": "3.4", "VAR_TX_grausC": "3.8", "VAR_TN_grausC": "3.0", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "7.2", "VAR_DVM_10_m_graus": "295", "VAR_VVX_10_m_km_h": "11.9", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:06", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "ZC": {"VAR_TM_grausC": "-4.3", "VAR_TX_grausC": "-4.0", "VAR_TN_grausC": "-4.7", "VAR_HRM_perc": "41", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "24.5", "VAR_DVM_10_m_graus": "282", "VAR_VVX_10_m_km_h": "41.4", "VAR_RS_W_m_2": "0", "VAR_GN_cm": "57", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:10", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XH": {"VAR_TM_grausC": "3.4", "VAR_TX_grausC": "3.7", "VAR_TN_grausC": "2.5", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "VAR_PM_hPa": "1002.2", "VAR_GN_cm": "0", "NOM_ESTACIO": "Sort", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:14", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XE": {"VAR_TM_grausC": "6.3", "VAR_TX_grausC": "6.6", "VAR_TN_grausC": "6.0", "VAR_HRM_perc": "75", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "9.0", "VAR_DVM_10_m_graus": "25", "VAR_VVX_10_m_km_h": "19.1", "VAR_PM_hPa": "1001.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:18", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "UE": {"VAR_TM_grausC": "5.4", "VAR_TX_grausC": "5.9", "VAR_TN_grausC": "5.0", "VAR_HRM_perc": "92", "VAR_PPT_mm": "0.0", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:22", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "XO": {"VAR_TM_grausC": "3.9", "VAR_TX_grausC": "4.3", "VAR_TN_grausC": "3.7", "VAR_HRM_perc": "86", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "4.3", "VAR_DVM_10_m_graus": "234", "VAR_VVX_10_m_km_h": "8.3", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Vic", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:26", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "VS": {"VAR_TM_grausC": "-5.8", "VAR_TX_grausC": "-5.8", "VAR_TN_grausC": "-5.9", "VAR_HRM_perc": "93", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "0.0", "VAR_DVM_10_m_graus": "0", "VAR_VVX_10_m_km_h": "0.0", "VAR_PM_hPa": "833.1", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:30", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}, "D7": {"VAR_TM_grausC": "0.6", "VAR_TX_grausC": "0.8", "VAR_TN_grausC": "0.3", "VAR_HRM_perc": "100", "VAR_PPT_mm": "0.0", "VAR_VVM_10_m_km_h": "0.7", "VAR_DVM_10_m_graus": "29", "VAR_VVX_10_m_km_h": "4.3", "VAR_PM_hPa": "1002.7", "VAR_RS_W_m_2": "0", "NOM_ESTACIO": "Vinebre", "DATA_UTC": "2026-02-03", "DATA_EXTRACCIO": "2026-02-03 10:54:34", "PERIODE_UTC": "06:00 - 06:30", "ES_AHIR": "NO", "TIPUS_PERIODE": "avui"}};
-        const diariData = {"YT": {"TEMPERATURA_MITJANA_DIA": "-2.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-1.3 \u00b0C 0:06 TU", "TEMPERATURA_MINIMA_DIA": "-2.9 \u00b0C 6:00 TU", "HUMITAT_MITJANA_DIA": "99%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "112 cm", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonab\u00e9 (1.693 m)", "DATA_DIA": "2026-02-03"}, "Z1": {"TEMPERATURA_MITJANA_DIA": "-5.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.2 \u00b0C 0:23 TU", "TEMPERATURA_MINIMA_DIA": "-6.5 \u00b0C 6:29 TU", "HUMITAT_MITJANA_DIA": "77%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "178 cm", "RATXA_VENT_MAX": "38.5 km/h - 253\u00ba 0:04 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Alt \u00c0neu - Bonaigua (2.266 m)", "DATA_DIA": "2026-02-03"}, "DN": {"TEMPERATURA_MITJANA_DIA": "8.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.9 \u00b0C 1:05 TU", "TEMPERATURA_MINIMA_DIA": "3.1 \u00b0C 5:24 TU", "HUMITAT_MITJANA_DIA": "73%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "39.6 km/h - 262\u00ba 0:13 TU", "PRESSIO_ATMOSFERICA": "998.3 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Angl\u00e8s", "DATA_DIA": "2026-02-03"}, "DJ": {"TEMPERATURA_MITJANA_DIA": "8.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.7 \u00b0C 0:51 TU", "TEMPERATURA_MINIMA_DIA": "4.3 \u00b0C 5:30 TU", "HUMITAT_MITJANA_DIA": "74%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "40.3 km/h - 253\u00ba 0:42 TU", "PRESSIO_ATMOSFERICA": "998.3 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Banyoles", "DATA_DIA": "2026-02-03"}, "X4": {"TEMPERATURA_MITJANA_DIA": "10.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "12.0 \u00b0C 0:15 TU", "TEMPERATURA_MINIMA_DIA": "9.1 \u00b0C 6:06 TU", "HUMITAT_MITJANA_DIA": "59%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "26.6 km/h - 259\u00ba 2:13 TU", "PRESSIO_ATMOSFERICA": "999.9 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Barcelona - el Raval", "DATA_DIA": "2026-02-03"}, "D5": {"TEMPERATURA_MITJANA_DIA": "7.2 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "8.0 \u00b0C 6:29 TU", "TEMPERATURA_MINIMA_DIA": "6.2 \u00b0C 3:33 TU", "HUMITAT_MITJANA_DIA": "68%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "53.6 km/h - 272\u00ba 0:34 TU", "PRESSIO_ATMOSFERICA": "999.8 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Barcelona - Observatori Fabra", "DATA_DIA": "2026-02-03"}, "UN": {"TEMPERATURA_MITJANA_DIA": "4.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "8.9 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "1.9 \u00b0C 6:29 TU", "HUMITAT_MITJANA_DIA": "94%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "11.9 km/h - 211\u00ba 0:09 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Cass\u00e0 de la Selva", "DATA_DIA": "2026-02-03"}, "MS": {"TEMPERATURA_MITJANA_DIA": "0.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "1.5 \u00b0C 0:59 TU", "TEMPERATURA_MINIMA_DIA": "-0.8 \u00b0C 6:16 TU", "HUMITAT_MITJANA_DIA": "100%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro", "DATA_DIA": "2026-02-03"}, "W1": {"TEMPERATURA_MITJANA_DIA": "7.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.3 \u00b0C 1:13 TU", "TEMPERATURA_MINIMA_DIA": "3.7 \u00b0C 6:29 TU", "HUMITAT_MITJANA_DIA": "92%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "NOM_ESTACIO": "Castell\u00f3 D'emp\u00faries", "DATA_DIA": "2026-02-03"}, "DP": {"TEMPERATURA_MITJANA_DIA": "2.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "2.6 \u00b0C 3:39 TU", "TEMPERATURA_MINIMA_DIA": "0.9 \u00b0C 5:55 TU", "HUMITAT_MITJANA_DIA": "82%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "1 cm", "RATXA_VENT_MAX": "29.5 km/h - 180\u00ba 0:22 TU", "PRESSIO_ATMOSFERICA": "999.7 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Das - Aer\u00f2drom", "DATA_DIA": "2026-02-03"}, "XL": {"TEMPERATURA_MITJANA_DIA": "6.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.5 \u00b0C 0:59 TU", "TEMPERATURA_MINIMA_DIA": "1.7 \u00b0C 6:07 TU", "HUMITAT_MITJANA_DIA": "84%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "31.7 km/h - 278\u00ba 0:57 TU", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat", "DATA_DIA": "2026-02-03"}, "VZ": {"TEMPERATURA_MITJANA_DIA": "5.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "8.9 \u00b0C 0:26 TU", "TEMPERATURA_MINIMA_DIA": "2.5 \u00b0C 6:22 TU", "HUMITAT_MITJANA_DIA": "91%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "NOM_ESTACIO": "Espolla", "DATA_DIA": "2026-02-03"}, "Z7": {"TEMPERATURA_MITJANA_DIA": "-7.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-6.4 \u00b0C 0:13 TU", "TEMPERATURA_MINIMA_DIA": "-7.7 \u00b0C 5:53 TU", "HUMITAT_MITJANA_DIA": "80%", "PRECIPITACIO_ACUM_DIA": "0.6 mm", "GRUIX_NEU_MAX": "75 cm", "RATXA_VENT_MAX": "56.9 km/h - 214\u00ba 0:40 TU", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Espot (2.519 m)", "DATA_DIA": "2026-02-03"}, "XJ": {"TEMPERATURA_MITJANA_DIA": "6.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.2 \u00b0C 0:33 TU", "TEMPERATURA_MINIMA_DIA": "3.7 \u00b0C 4:33 TU", "HUMITAT_MITJANA_DIA": "84%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "21.6 km/h - 193\u00ba 0:03 TU", "PRESSIO_ATMOSFERICA": "998.7 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Girona", "DATA_DIA": "2026-02-03"}, "YU": {"TEMPERATURA_MITJANA_DIA": "2.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "4.0 \u00b0C 0:07 TU", "TEMPERATURA_MINIMA_DIA": "2.0 \u00b0C 6:27 TU", "HUMITAT_MITJANA_DIA": "96%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "43.9 km/h - 258\u00ba 0:53 TU", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "L'esquirol - Cantonigr\u00f2s", "DATA_DIA": "2026-02-03"}, "CD": {"TEMPERATURA_MITJANA_DIA": "2.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "3.6 \u00b0C 2:24 TU", "TEMPERATURA_MINIMA_DIA": "1.1 \u00b0C 6:13 TU", "HUMITAT_MITJANA_DIA": "96%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "10.1 km/h - 310\u00ba 5:59 TU", "PRESSIO_ATMOSFERICA": "1000.1 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar", "DATA_DIA": "2026-02-03"}, "Z2": {"TEMPERATURA_MITJANA_DIA": "-7.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-7.4 \u00b0C 0:21 TU", "TEMPERATURA_MINIMA_DIA": "-8.3 \u00b0C 6:27 TU", "HUMITAT_MITJANA_DIA": "93%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "121 cm", "RATXA_VENT_MAX": "42.8 km/h - 305\u00ba 0:49 TU", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "La Vall de Bo\u00ed - Bo\u00ed (2.535 m)", "DATA_DIA": "2026-02-03"}, "VK": {"TEMPERATURA_MITJANA_DIA": "1.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "4.8 \u00b0C 0:05 TU", "TEMPERATURA_MINIMA_DIA": "0.1 \u00b0C 4:04 TU", "HUMITAT_MITJANA_DIA": "100%", "PRECIPITACIO_ACUM_DIA": "0.1 mm", "RATXA_VENT_MAX": "12.6 km/h - 48\u00ba 2:12 TU", "PRESSIO_ATMOSFERICA": "1001.1 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Lleida - Raimat", "DATA_DIA": "2026-02-03"}, "Z3": {"TEMPERATURA_MITJANA_DIA": "-5.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-3.5 \u00b0C 0:53 TU", "TEMPERATURA_MINIMA_DIA": "-7.4 \u00b0C 6:03 TU", "HUMITAT_MITJANA_DIA": "77%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "120 cm", "RATXA_VENT_MAX": "51.1 km/h - 240\u00ba 0:48 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Meranges - Malniu (2.230 m)", "DATA_DIA": "2026-02-03"}, "YB": {"TEMPERATURA_MITJANA_DIA": "5.5 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "8.7 \u00b0C 1:40 TU", "TEMPERATURA_MINIMA_DIA": "2.4 \u00b0C 4:49 TU", "HUMITAT_MITJANA_DIA": "80%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "33.8 km/h - 309\u00ba 0:29 TU", "PRESSIO_ATMOSFERICA": "998.7 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Olot", "DATA_DIA": "2026-02-03"}, "YP": {"TEMPERATURA_MITJANA_DIA": "9.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.3 \u00b0C 0:21 TU", "TEMPERATURA_MINIMA_DIA": "5.9 \u00b0C 5:23 TU", "HUMITAT_MITJANA_DIA": "73%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "24.8 km/h - 231\u00ba 6:09 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Palafrugell", "DATA_DIA": "2026-02-03"}, "J5": {"TEMPERATURA_MITJANA_DIA": "7.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "9.6 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "5.0 \u00b0C 6:25 TU", "HUMITAT_MITJANA_DIA": "92%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "22.7 km/h - 24\u00ba 0:50 TU", "PRESSIO_ATMOSFERICA": "998.4 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Pant\u00e0 de Darnius - Boadella", "DATA_DIA": "2026-02-03"}, "D6": {"TEMPERATURA_MITJANA_DIA": "8.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "8.8 \u00b0C 4:54 TU", "TEMPERATURA_MINIMA_DIA": "7.4 \u00b0C 2:05 TU", "HUMITAT_MITJANA_DIA": "85%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "42.8 km/h - 2\u00ba 0:01 TU", "PRESSIO_ATMOSFERICA": "997.8 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Portbou - Coll dels Belitres", "DATA_DIA": "2026-02-03"}, "YA": {"TEMPERATURA_MITJANA_DIA": "1.3 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "2.3 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "0.5 \u00b0C 6:17 TU", "HUMITAT_MITJANA_DIA": "86%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "32.8 km/h - 193\u00ba 0:12 TU", "PRESSIO_ATMOSFERICA": "999.4 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Puigcerd\u00e0", "DATA_DIA": "2026-02-03"}, "DG": {"TEMPERATURA_MITJANA_DIA": "-3.1 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-1.8 \u00b0C 4:23 TU", "TEMPERATURA_MINIMA_DIA": "-6.1 \u00b0C 5:35 TU", "HUMITAT_MITJANA_DIA": "71%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "114 cm", "RATXA_VENT_MAX": "38.5 km/h - 264\u00ba 0:53 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Queralbs - N\u00faria (1.971 m)", "DATA_DIA": "2026-02-03"}, "D4": {"TEMPERATURA_MITJANA_DIA": "8.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.9 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "4.2 \u00b0C 6:07 TU", "HUMITAT_MITJANA_DIA": "87%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "22.0 km/h - 19\u00ba 1:16 TU", "PRESSIO_ATMOSFERICA": "998.4 hPa", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Roses", "DATA_DIA": "2026-02-03"}, "CI": {"TEMPERATURA_MITJANA_DIA": "2.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "3.8 \u00b0C 1:48 TU", "TEMPERATURA_MINIMA_DIA": "1.7 \u00b0C 4:43 TU", "HUMITAT_MITJANA_DIA": "93%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "34.6 km/h - 270\u00ba 1:31 TU", "PRESSIO_ATMOSFERICA": "1000.1 hPa", "NOM_ESTACIO": "Sant Pau de Seg\u00faries", "DATA_DIA": "2026-02-03"}, "XS": {"TEMPERATURA_MITJANA_DIA": "6.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.2 \u00b0C 0:01 TU", "TEMPERATURA_MINIMA_DIA": "3.0 \u00b0C 6:28 TU", "HUMITAT_MITJANA_DIA": "81%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "51.1 km/h - 251\u00ba 1:02 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Santa Coloma de Farners", "DATA_DIA": "2026-02-03"}, "ZC": {"TEMPERATURA_MITJANA_DIA": "-4.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-4.0 \u00b0C 6:09 TU", "TEMPERATURA_MINIMA_DIA": "-5.5 \u00b0C 5:04 TU", "HUMITAT_MITJANA_DIA": "56%", "PRECIPITACIO_ACUM_DIA": "0.6 mm", "GRUIX_NEU_MAX": "57 cm", "RATXA_VENT_MAX": "73.4 km/h - 300\u00ba 1:28 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)", "DATA_DIA": "2026-02-03"}, "XH": {"TEMPERATURA_MITJANA_DIA": "3.9 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "4.4 \u00b0C 3:03 TU", "TEMPERATURA_MINIMA_DIA": "2.5 \u00b0C 6:29 TU", "HUMITAT_MITJANA_DIA": "98%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "1 cm", "PRESSIO_ATMOSFERICA": "1000.1 hPa", "NOM_ESTACIO": "Sort", "DATA_DIA": "2026-02-03"}, "XE": {"TEMPERATURA_MITJANA_DIA": "7.7 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "11.3 \u00b0C 0:36 TU", "TEMPERATURA_MINIMA_DIA": "4.6 \u00b0C 5:41 TU", "HUMITAT_MITJANA_DIA": "71%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "19.1 km/h - 14\u00ba 6:25 TU", "PRESSIO_ATMOSFERICA": "999.9 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Tarragona - Complex Educatiu", "DATA_DIA": "2026-02-03"}, "UE": {"TEMPERATURA_MITJANA_DIA": "8.0 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "10.7 \u00b0C 0:35 TU", "TEMPERATURA_MINIMA_DIA": "5.0 \u00b0C 6:27 TU", "HUMITAT_MITJANA_DIA": "83%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "NOM_ESTACIO": "Torroella de Montgr\u00ed", "DATA_DIA": "2026-02-03"}, "XO": {"TEMPERATURA_MITJANA_DIA": "5.8 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "7.7 \u00b0C 0:02 TU", "TEMPERATURA_MINIMA_DIA": "3.7 \u00b0C 6:17 TU", "HUMITAT_MITJANA_DIA": "81%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "41.8 km/h - 237\u00ba 0:00 TU", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Vic", "DATA_DIA": "2026-02-03"}, "VS": {"TEMPERATURA_MITJANA_DIA": "-5.4 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "-5.0 \u00b0C 0:00 TU", "TEMPERATURA_MINIMA_DIA": "-6.0 \u00b0C 5:47 TU", "HUMITAT_MITJANA_DIA": "93%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "GRUIX_NEU_MAX": "202 cm", "RATXA_VENT_MAX": "0.0 km/h - 0\u00ba 0:00 TU", "RADIACIO_GLOBAL": "0.0 MJ/m2", "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)", "DATA_DIA": "2026-02-03"}, "D7": {"TEMPERATURA_MITJANA_DIA": "2.6 \u00b0C", "TEMPERATURA_MAXIMA_DIA": "5.3 \u00b0C 0:10 TU", "TEMPERATURA_MINIMA_DIA": "0.3 \u00b0C 6:27 TU", "HUMITAT_MITJANA_DIA": "99%", "PRECIPITACIO_ACUM_DIA": "0.0 mm", "RATXA_VENT_MAX": "8.3 km/h - 49\u00ba 3:48 TU", "PRESSIO_ATMOSFERICA": "1001.2 hPa", "RADIACIO_GLOBAL": "-0.1 MJ/m2", "NOM_ESTACIO": "Vinebre", "DATA_DIA": "2026-02-03"}};
-        const metadades = {"DQ": {"comarca": "Alt Camp", "altitud": "287"}, "YS": {"comarca": "Alt Empord\u00e0", "altitud": "32"}, "W1": {"comarca": "Alt Empord\u00e0", "altitud": "2"}, "J5": {"comarca": "Alt Empord\u00e0", "altitud": "158"}, "VZ": {"comarca": "Alt Empord\u00e0", "altitud": "83"}, "Y5": {"comarca": "Alt Empord\u00e0", "altitud": "152"}, "D6": {"comarca": "Alt Empord\u00e0", "altitud": "196"}, "D4": {"comarca": "Alt Empord\u00e0", "altitud": "23"}, "U2": {"comarca": "Alt Empord\u00e0", "altitud": "4"}, "XZ": {"comarca": "Alt Empord\u00e0", "altitud": "7"}, "DI": {"comarca": "Alt Pened\u00e8s", "altitud": "415"}, "WP": {"comarca": "Alt Pened\u00e8s", "altitud": "325"}, "U3": {"comarca": "Alt Pened\u00e8s", "altitud": "257"}, "YO": {"comarca": "Alt Pened\u00e8s", "altitud": "155"}, "W4": {"comarca": "Alt Pened\u00e8s", "altitud": "240"}, "Y4": {"comarca": "Alt Urgell", "altitud": "1162"}, "CD": {"comarca": "Alt Urgell", "altitud": "849"}, "W5": {"comarca": "Alt Urgell", "altitud": "490"}, "CJ": {"comarca": "Alt Urgell", "altitud": "566"}, "CT": {"comarca": "Alta Ribagor\u00e7a", "altitud": "823"}, "Z2": {"comarca": "Alta Ribagor\u00e7a", "altitud": "2535"}, "CE": {"comarca": "Anoia", "altitud": "316"}, "XB": {"comarca": "Anoia", "altitud": "584"}, "XA": {"comarca": "Anoia", "altitud": "785"}, "H1": {"comarca": "Anoia", "altitud": "333"}, "YH": {"comarca": "Anoia", "altitud": "747"}, "WW": {"comarca": "Bages", "altitud": "278"}, "MQ": {"comarca": "Bages", "altitud": "401"}, "U4": {"comarca": "Bages", "altitud": "507"}, "WN": {"comarca": "Bages", "altitud": "916"}, "CL": {"comarca": "Bages", "altitud": "349"}, "YF": {"comarca": "Baix Camp", "altitud": "43"}, "XR": {"comarca": "Baix Camp", "altitud": "926"}, "YL": {"comarca": "Baix Camp", "altitud": "170"}, "U6": {"comarca": "Baix Camp", "altitud": "29"}, "U7": {"comarca": "Baix Ebre", "altitud": "52"}, "DB": {"comarca": "Baix Ebre", "altitud": "179"}, "U9": {"comarca": "Baix Ebre", "altitud": "62"}, "UA": {"comarca": "Baix Ebre", "altitud": "93"}, "X5": {"comarca": "Baix Ebre", "altitud": "1055"}, "DO": {"comarca": "Baix Empord\u00e0", "altitud": "14"}, "DF": {"comarca": "Baix Empord\u00e0", "altitud": "29"}, "UB": {"comarca": "Baix Empord\u00e0", "altitud": "15"}, "YP": {"comarca": "Baix Empord\u00e0", "altitud": "35"}, "UE": {"comarca": "Baix Empord\u00e0", "altitud": "4"}, "UF": {"comarca": "Baix Llobregat", "altitud": "573"}, "XL": {"comarca": "Baix Llobregat", "altitud": "8"}, "Y7": {"comarca": "Baix Llobregat", "altitud": "3"}, "YQ": {"comarca": "Baix Llobregat", "altitud": "6"}, "D3": {"comarca": "Baix Llobregat", "altitud": "252"}, "UG": {"comarca": "Baix Llobregat", "altitud": "3"}, "WZ": {"comarca": "Baix Pened\u00e8s", "altitud": "17"}, "UH": {"comarca": "Baix Pened\u00e8s", "altitud": "545"}, "D9": {"comarca": "Baix Pened\u00e8s", "altitud": "59"}, "WO": {"comarca": "Baix Pened\u00e8s", "altitud": "185"}, "WU": {"comarca": "Barcelon\u00e8s", "altitud": "42"}, "D5": {"comarca": "Barcelon\u00e8s", "altitud": "411"}, "X4": {"comarca": "Barcelon\u00e8s", "altitud": "33"}, "X8": {"comarca": "Barcelon\u00e8s", "altitud": "79"}, "WM": {"comarca": "Bergued\u00e0", "altitud": "1167"}, "MS": {"comarca": "Bergued\u00e0", "altitud": "943"}, "UI": {"comarca": "Bergued\u00e0", "altitud": "1386"}, "WV": {"comarca": "Bergued\u00e0", "altitud": "788"}, "CR": {"comarca": "Bergued\u00e0", "altitud": "873"}, "ZD": {"comarca": "Cerdanya", "altitud": "2478"}, "DP": {"comarca": "Cerdanya", "altitud": "1097"}, "Z3": {"comarca": "Cerdanya", "altitud": "2230"}, "Z9": {"comarca": "Cerdanya", "altitud": "2143"}, "YA": {"comarca": "Cerdanya", "altitud": "1213"}, "W8": {"comarca": "Conca de Barber\u00e0", "altitud": "438"}, "CW": {"comarca": "Conca de Barber\u00e0", "altitud": "446"}, "UJ": {"comarca": "Conca de Barber\u00e0", "altitud": "709"}, "XU": {"comarca": "Garraf", "altitud": "148"}, "UK": {"comarca": "Garraf", "altitud": "161"}, "YR": {"comarca": "Garraf", "altitud": "31"}, "UM": {"comarca": "Garrigues", "altitud": "505"}, "YD": {"comarca": "Garrigues", "altitud": "283"}, "W9": {"comarca": "Garrotxa", "altitud": "461"}, "YB": {"comarca": "Garrotxa", "altitud": "433"}, "UN": {"comarca": "Giron\u00e8s", "altitud": "171"}, "UO": {"comarca": "Giron\u00e8s", "altitud": "97"}, "XJ": {"comarca": "Giron\u00e8s", "altitud": "72"}, "V5": {"comarca": "Llu\u00e7an\u00e8s", "altitud": "774"}, "UP": {"comarca": "Maresme", "altitud": "81"}, "UQ": {"comarca": "Maresme", "altitud": "460"}, "WT": {"comarca": "Maresme", "altitud": "2"}, "YV": {"comarca": "Maresme", "altitud": "87"}, "US": {"comarca": "Montsi\u00e0", "altitud": "24"}, "UU": {"comarca": "Montsi\u00e0", "altitud": "3"}, "UW": {"comarca": "Montsi\u00e0", "altitud": "0"}, "C9": {"comarca": "Montsi\u00e0", "altitud": "240"}, "DL": {"comarca": "Montsi\u00e0", "altitud": "0"}, "UX": {"comarca": "Montsi\u00e0", "altitud": "210"}, "WB": {"comarca": "Noguera", "altitud": "267"}, "WG": {"comarca": "Noguera", "altitud": "301"}, "X6": {"comarca": "Noguera", "altitud": "366"}, "WX": {"comarca": "Noguera", "altitud": "668"}, "WA": {"comarca": "Noguera", "altitud": "443"}, "UY": {"comarca": "Noguera", "altitud": "576"}, "V1": {"comarca": "Noguera", "altitud": "238"}, "CQ": {"comarca": "Noguera", "altitud": "594"}, "YU": {"comarca": "Osona", "altitud": "925"}, "V4": {"comarca": "Osona", "altitud": "684"}, "CY": {"comarca": "Osona", "altitud": "816"}, "CC": {"comarca": "Osona", "altitud": "626"}, "XO": {"comarca": "Osona", "altitud": "499"}, "WS": {"comarca": "Osona", "altitud": "953"}, "KE": {"comarca": "Osona", "altitud": "426"}, "CP": {"comarca": "Pallars Juss\u00e0", "altitud": "690"}, "YC": {"comarca": "Pallars Juss\u00e0", "altitud": "508"}, "WQ": {"comarca": "Pallars Juss\u00e0", "altitud": "1572"}, "XQ": {"comarca": "Pallars Juss\u00e0", "altitud": "473"}, "ZB": {"comarca": "Pallars Sobir\u00e0", "altitud": "2451"}, "YT": {"comarca": "Pallars Sobir\u00e0", "altitud": "1693"}, "Z1": {"comarca": "Pallars Sobir\u00e0", "altitud": "2266"}, "Z7": {"comarca": "Pallars Sobir\u00e0", "altitud": "2519"}, "Z5": {"comarca": "Pallars Sobir\u00e0", "altitud": "2400"}, "XH": {"comarca": "Pallars Sobir\u00e0", "altitud": "679"}, "YG": {"comarca": "Pallars Sobir\u00e0", "altitud": "954"}, "C6": {"comarca": "Pla d'Urgell", "altitud": "264"}, "V8": {"comarca": "Pla d'Urgell", "altitud": "223"}, "WC": {"comarca": "Pla d'Urgell", "altitud": "261"}, "XI": {"comarca": "Pla d'Urgell", "altitud": "247"}, "DJ": {"comarca": "Pla de l'Estany", "altitud": "176"}, "MR": {"comarca": "Priorat", "altitud": "500"}, "WJ": {"comarca": "Priorat", "altitud": "141"}, "X1": {"comarca": "Priorat", "altitud": "359"}, "D1": {"comarca": "Priorat", "altitud": "404"}, "WR": {"comarca": "Priorat", "altitud": "300"}, "XD": {"comarca": "Priorat", "altitud": "687"}, "VA": {"comarca": "Ribera d'Ebre", "altitud": "256"}, "VB": {"comarca": "Ribera d'Ebre", "altitud": "32"}, "VC": {"comarca": "Ribera d'Ebre", "altitud": "69"}, "Y6": {"comarca": "Ribera d'Ebre", "altitud": "317"}, "D7": {"comarca": "Ribera d'Ebre", "altitud": "53"}, "CG": {"comarca": "Ripoll\u00e8s", "altitud": "1405"}, "DG": {"comarca": "Ripoll\u00e8s", "altitud": "1971"}, "M6": {"comarca": "Ripoll\u00e8s", "altitud": "730"}, "CI": {"comarca": "Ripoll\u00e8s", "altitud": "852"}, "ZC": {"comarca": "Ripoll\u00e8s", "altitud": "2413"}, "C8": {"comarca": "Segarra", "altitud": "554"}, "VD": {"comarca": "Segarra", "altitud": "429"}, "YE": {"comarca": "Segarra", "altitud": "513"}, "XY": {"comarca": "Segri\u00e0", "altitud": "122"}, "WK": {"comarca": "Segri\u00e0", "altitud": "268"}, "X3": {"comarca": "Segri\u00e0", "altitud": "370"}, "XM": {"comarca": "Segri\u00e0", "altitud": "235"}, "VH": {"comarca": "Segri\u00e0", "altitud": "260"}, "VK": {"comarca": "Segri\u00e0", "altitud": "286"}, "YJ": {"comarca": "Segri\u00e0", "altitud": "170"}, "WI": {"comarca": "Segri\u00e0", "altitud": "350"}, "XN": {"comarca": "Segri\u00e0", "altitud": "89"}, "X7": {"comarca": "Segri\u00e0", "altitud": "215"}, "VM": {"comarca": "Segri\u00e0", "altitud": "222"}, "DN": {"comarca": "Selva", "altitud": "150"}, "KP": {"comarca": "Selva", "altitud": "36"}, "XS": {"comarca": "Selva", "altitud": "162"}, "MV": {"comarca": "Solson\u00e8s", "altitud": "845"}, "ZE": {"comarca": "Solson\u00e8s", "altitud": "2290"}, "VO": {"comarca": "Solson\u00e8s", "altitud": "785"}, "MW": {"comarca": "Solson\u00e8s", "altitud": "545"}, "VP": {"comarca": "Solson\u00e8s", "altitud": "659"}, "XT": {"comarca": "Solson\u00e8s", "altitud": "691"}, "VQ": {"comarca": "Tarragon\u00e8s", "altitud": "112"}, "XE": {"comarca": "Tarragon\u00e8s", "altitud": "5"}, "DK": {"comarca": "Tarragon\u00e8s", "altitud": "2"}, "YX": {"comarca": "Terra Alta", "altitud": "400"}, "XP": {"comarca": "Terra Alta", "altitud": "350"}, "D8": {"comarca": "Terra Alta", "altitud": "515"}, "XX": {"comarca": "Urgell", "altitud": "291"}, "WL": {"comarca": "Urgell", "altitud": "413"}, "C7": {"comarca": "Urgell", "altitud": "427"}, "Z6": {"comarca": "Val d'Aran", "altitud": "2228"}, "VS": {"comarca": "Val d'Aran", "altitud": "2247"}, "YN": {"comarca": "Val d'Aran", "altitud": "1027"}, "XC": {"comarca": "Vall\u00e8s Occidental", "altitud": "147"}, "VU": {"comarca": "Vall\u00e8s Occidental", "altitud": "421"}, "XF": {"comarca": "Vall\u00e8s Occidental", "altitud": "258"}, "XV": {"comarca": "Vall\u00e8s Occidental", "altitud": "158"}, "VV": {"comarca": "Vall\u00e8s Occidental", "altitud": "528"}, "YK": {"comarca": "Vall\u00e8s Occidental", "altitud": "313"}, "D2": {"comarca": "Vall\u00e8s Occidental", "altitud": "343"}, "X9": {"comarca": "Vall\u00e8s Oriental", "altitud": "176"}, "XK": {"comarca": "Vall\u00e8s Oriental", "altitud": "1668"}, "YM": {"comarca": "Vall\u00e8s Oriental", "altitud": "210"}, "KX": {"comarca": "Vall\u00e8s Oriental", "altitud": "156"}, "XG": {"comarca": "Vall\u00e8s Oriental", "altitud": "123"}, "VX": {"comarca": "Vall\u00e8s Oriental", "altitud": "1030"}};
-        
-        let indexActual = 0;
-        let intervalRotacio = null;
-        const tempsRotacio = 120000;
-        
-        function iniciarRotacio() {
-            if (intervalRotacio) clearInterval(intervalRotacio);
-            
-            if (estacions.length > 0) {
-                mostrarEstacio(estacions[0]);
-                indexActual = 0;
-                
-                document.getElementById('estat-rotacio').innerHTML = '<i class="fas fa-sync-alt"></i> Rotació ACTIVA (120s)';
-                document.getElementById('estat-rotacio').className = 'rotation-status';
-                
-                intervalRotacio = setInterval(() => {
-                    indexActual = (indexActual + 1) % estacions.length;
-                    mostrarEstacio(estacions[indexActual]);
-                }, tempsRotacio);
-            }
-        }
-        
-        function pausarRotacio() {
-            if (intervalRotacio) {
-                clearInterval(intervalRotacio);
-                intervalRotacio = null;
-                document.getElementById('estat-rotacio').innerHTML = '<i class="fas fa-pause"></i> Rotació PAUSADA';
-                document.getElementById('estat-rotacio').className = 'rotation-status paused';
-            }
-        }
-        
-        // Funció per afegir unitats (versió JavaScript)
-        function afegirUnitatsJS(varName, value) {
-            if (!value) return '';
-            
-            const unitats = {
-                'TM': 'ºC', 'TX': 'ºC', 'TN': 'ºC',
-                'HR': '%', 'HRM': '%',
-                'PPT': 'mm',
-                'VVM': 'Km/h', 'VVX': 'Km/h',
-                'PM': 'hPa',
-                'RS': 'W/m²',
-                'GN': 'cm'
-            };
-            
-            for (const [key, unitat] of Object.entries(unitats)) {
-                if (varName.includes(key)) {
-                    if (key === 'DVM' && !isNaN(value)) {
-                        return value + 'º';
-                    }
-                    return value + ' ' + unitat;
-                }
-            }
-            
-            return value;
-        }
-        
-        function mostrarEstacio(estacioId) {
-            const contingutDiv = document.getElementById('contingut-estacio-actual');
-            const nomDiv = document.getElementById('nom-estacio-actual');
-            const detallsDiv = document.getElementById('detalls-estacio-actual');
-            const selector = document.getElementById('selectorEstacions');
-            
-            if (periodeData[estacioId] && metadades[estacioId]) {
-                const periode = periodeData[estacioId];
-                const meta = metadades[estacioId];
-                const diari = diariData[estacioId] || {};
-                
-                // Actualitzar nom i detalls
-                nomDiv.textContent = periode.NOM_ESTACIO || estacioId;
-                detallsDiv.innerHTML = `<span class="location-label">Comarca:</span> ${meta.comarca} | <span class="location-label">Altitud:</span> ${meta.altitud} m | <span class="location-label">ID:</span> ${estacioId}`;
-                selector.value = estacioId;
-                
-                // Generar contingut amb totes les correccions
-                let html = '';
-                
-                // Utilitzar la funció per generar columnes (simplificada per JS)
-                const columnesEstructura = {"basiques": [["VAR_TM_grausC", "Temp. Mitjana:"], ["VAR_TX_grausC", "Temp. M\u00e0xima:"], ["VAR_TN_grausC", "Temp. M\u00ednima:"], ["VAR_HRM_perc", "Humitat Relativa:"]], "precip_vent": [["VAR_PPT_mm", "Precipitaci\u00f3:"], ["VAR_VVM_10_m_km_h", "Vent Mitj\u00e0:"], ["VAR_DVM_10_m_graus", "Direcci\u00f3 Vent:"], ["VAR_VVX_10_m_km_h", "R\u00e0fega M\u00e0xima:"]], "altres": [["VAR_PM_hPa", "Pressi\u00f3:"], ["VAR_RS_W_m_2", "Irradi\u00e0ncia:"], ["VAR_GN_cm", "Gruix de neu:"]], "addicionals": [["VAR_Periode_TU", "Per\u00edode:"], ["altitud", "Altitud:"], ["hora_actualitzacio", "Hora actualitzaci\u00f3:"], ["comarca", "Comarca:"]]};
-                
-                // Aquí aniria la lògica per generar les 4 columnes similar a la de Python
-                // Per brevetat, es mostra una versió simplificada
-                html += '<div class="columns-4-container">';
-                
-                // Columnes amb unitats
-                for (const [clau, variables] of Object.entries(columnesEstructura)) {
-                    html += `<div class="column"><div class="data-column"><div class="column-title">${clau === 'basiques' ? 'Dades bàsiques' : clau === 'precip_vent' ? 'Precipitació i vent' : clau === 'altres' ? 'Altres dades' : 'Dades addicionals'}</div>`;
-                    
-                    variables.forEach(([var, label]) => {
-                        if (periode[var] && periode[var] !== '') {
-                            const valorAmbUnitats = afegirUnitatsJS(var, periode[var]);
-                            html += `<div class="data-item"><div class="data-label">${label}</div><div class="data-value">${valorAmbUnitats}</div></div>`;
-                        }
-                    });
-                    
-                    // Dades addicionals especials
-                    if (clau === 'addicionals') {
-                        // Període convertit
-                        if (periode.DATA_UTC && periode.PERIODE_UTC) {
-                            // Simulació de conversió (en realitat es faria amb JavaScript)
-                            html += `<div class="data-item"><div class="data-label">Període:</div><div class="data-value"><div style="line-height: 1.3;"><div style="font-size: 16px;">31/01/2026</div><div style="font-size: 14px; color: #ffcc80;">06:30-07:30 CET</div></div></div></div>`;
-                        }
-                        
-                        // Altitud
-                        if (meta.altitud) {
-                            html += `<div class="data-item"><div class="data-label">Altitud:</div><div class="data-value">${meta.altitud} m</div></div>`;
-                        }
-                        
-                        // Comarca
-                        if (meta.comarca) {
-                            html += `<div class="data-item"><div class="data-label">Comarca:</div><div class="data-value">${meta.comarca}</div></div>`;
-                        }
-                    }
-                    
-                    html += '</div></div>';
-                }
-                
-                html += '</div>';
-                
-                // Dades diàries
-                if (Object.keys(diari).length > 0) {
-                    html += `<div style="margin-top: 30px; padding: 25px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">`;
-                    html += `<div class="column-title" style="text-align: center; margin-bottom: 20px;">📅 Dades Diàries (Avui)</div>`;
-                    html += `<div class="columns-4-container">`;
-                    
-                    const varsDiari = ["TEMPERATURA_MITJANA_DIA", "TEMPERATURA_MAXIMA_DIA", "PRECIPITACIO_ACUM_DIA"];
-                    varsDiari.forEach(varDiari => {
-                        if (diari[varDiari]) {
-                            const label = varDiari.replace(/_/g, ' ');
-                            const valorAmbUnitats = afegirUnitatsJS(varDiari, diari[varDiari]);
-                            html += `<div class="column"><div class="data-column"><div class="data-item"><div class="data-label">${label}:</div><div class="data-value">${valorAmbUnitats}</div></div></div></div>`;
-                        }
-                    });
-                    
-                    html += '</div></div>';
-                }
-                
-                contingutDiv.innerHTML = html;
-            }
-        }
-        
-        // Configurar events
-        document.addEventListener('DOMContentLoaded', function() {
-            iniciarRotacio();
-            
-            document.getElementById('selectorEstacions').addEventListener('change', function(e) {
-                pausarRotacio();
-                mostrarEstacio(e.target.value);
-                const index = estacions.indexOf(e.target.value);
-                if (index !== -1) indexActual = index;
-            });
-            
-            const overlay = document.querySelector('.meteo-overlay');
-            overlay.addEventListener('click', function(e) {
-                if (e.target.closest('.station-selector') || e.target.closest('.station-icon')) return;
-                if (intervalRotacio) pausarRotacio();
-                else iniciarRotacio();
-            });
-        });
-    </script>
-    
-    <div class="overlay-footer">
-        <div class="footer-left">
-            <span>📡 Font: https://www.meteo.cat/</span>
-            <div class="verificacio-dades">
-                Les dades s'han verificat amb la web oficial i totes són coincidents.
-            </div>
-        </div>
-        <div class="footer-center">
-            <span>© joandecorts.io</span>
-            <a href="mailto:admin@joandecorts.com">
-                <i class="fas fa-envelope email-icon"></i>
-               
-            </a>
-        </div>
-        <div class="footer-right">
-            <span>🔄 Actualització: 03/02/2026 10:52:45</span>
-        </div>
+    <!-- BANNER SUPERIOR -->
+    <div class="banner">
+        🏔️ Banner Scroll Meteorològic joandecorts.io 🏔️
     </div>
     
-    <!-- Script per als rellotges -->
+    <!-- LÍNIA DE FONT DE DADES -->
+    <div class="data-source">
+        Dades obtingudes amb scrapers propis. Font oficiial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
+    </div>
+    
+    <!-- CONTINGUT PRINCIPAL -->
+    <div class="main-container">
+        <div class="countdown-container">
+            <div class="countdown-label">Inici presentació automàtica en...</div>
+            <div id="countdown">10</div>
+            <div class="countdown-label">segons</div>
+            
+            <div class="controls">
+                <button id="goButton" onclick="goToBanner()">BANNER.HTML</button>
+                <button id="stopButton" onclick="stopCountdown()">ATURAR TEMPORITZADOR</button>
+                <button id="resetButton" onclick="resetCountdown()">REINICIAR (10s)</button>
+            </div>
+        </div>
+        
+        <!-- COMPTE ENRERE PER CANVI D'ESTACIÓ -->
+        <div class="station-countdown" id="stationCountdown">
+            Proper canvi d'estació en: <span id="stationTimer">120</span> segons
+        </div>
+        
+        <!-- VISUALITZADOR D'ESTACIONS -->
+        <iframe id="viewer" title="Visualitzador d'Estacions"></iframe>
+        
+        <!-- INFO DE ROTACIÓ -->
+        <div class="rotation-info" id="rotationInfo">
+            Carregant estacions...
+        </div>
+        
+        <!-- LLISTA DE FITXERS DETECTATS (per depuració) -->
+        <div class="files-list" id="filesList"></div>
+        
+        <!-- MISSATGE D'ERROR -->
+        <div id="errorContainer"></div>
+    </div>
+    
+    <!-- PEU DE PÀGINA -->
+    <div class="footer" id="footer">
+        Sistema de visualització automàtica • Estacions Meteo.cat
+    </div>
+
     <script>
-        function actualitzarRellotges() {
-            const ara = new Date();
-            
-            // Hora local amb segons
-            const horaLocal = ara.toLocaleTimeString('ca-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false 
-            });
-            
-            // Hora UTC sense segons
-            const horaUTC = ara.getUTCHours().toString().padStart(2, '0') + ':' + 
-                           ara.getUTCMinutes().toString().padStart(2, '0');
-            
-            // Actualitzar elements si existeixen
-            const elemLocal = document.getElementById('hora-local');
-            const elemUTC = document.getElementById('hora-utc');
-            const elemLocalSimple = document.getElementById('hora-local-simple');
-            const elemUTCSimple = document.getElementById('hora-utc-simple');
-            
-            if (elemLocal) elemLocal.textContent = horaLocal;
-            if (elemUTC) elemUTC.textContent = horaUTC;
-            if (elemLocalSimple) elemLocalSimple.textContent = horaLocal.split(':')[0] + ':' + horaLocal.split(':')[1];
-            if (elemUTCSimple) elemUTCSimple.textContent = horaUTC;
+        // ============================================
+        // CONFIGURACIÓ
+        // ============================================
+        
+        // Temps entre canvis d'estació (120 segons = 2 minuts)
+        const STATION_CHANGE_TIME = 120; // segons
+        let stationTimeLeft = STATION_CHANGE_TIME;
+        let stationTimerInterval = null;
+        
+        // ============================================
+        // VARIABLES GLOBALS
+        // ============================================
+        let countdownValue = 10;
+        let countdownInterval = null;
+        let isCountdownStopped = false;
+        let stationFiles = [];
+        let currentStationIndex = 0;
+        let stationInterval = null;
+        
+        // ============================================
+        // FUNCIÓ PER DETECTAR FITXERS DINÀMICAMENT
+        // ============================================
+        
+        async function detectStationFiles() {
+            try {
+                // Aquesta és la part nova: intentem obtenir la llista de fitxers
+                // Nota: Això SOLS funciona amb un servidor web que permeti llistar directoris
+                // En entorn local, podem intentar una tècnica diferent
+                
+                console.log("Detectant fitxers d'estació...");
+                
+                // Mètode 1: Intentar obtenir via API si estem en servidor
+                // Mètode 2: Fer peticions individuals (el que farem)
+                
+                // Llista de possibles prefixes que esperem
+                const prefixes = ['index_X', 'index_W', 'index_D', 'index_Z', 'index_Y', 'index_U'];
+                const suffixes = ['J', '1', '4', '3', 'A', '7', 'J', 'G', 'N', 'B', 'P', 'E', '4'];
+                
+                // Provem combinacions comunes
+                const testFiles = [];
+                
+                // Provem els que ja coneixem
+                const knownFiles = [
+                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html', 
+                    'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
+                    'index_UN.html', 'index_YB.html', 'index_YP.html', 'index_UE.html',
+                    'index_X4.html'
+                ];
+                
+                // Provem també altres combinacions comunes
+                for (let i = 1; i <= 20; i++) {
+                    testFiles.push(`index_${i}.html`);
+                    testFiles.push(`index_${String.fromCharCode(64 + i)}.html`);
+                }
+                
+                // Combinem totes les possibilitats
+                const allTestFiles = [...knownFiles, ...testFiles];
+                
+                // Intentem verificar quins existeixen
+                const existingFiles = [];
+                
+                // Fem les comprovacions en paral·lel (limitades a 10 per no sobrecarregar)
+                for (let i = 0; i < Math.min(allTestFiles.length, 30); i++) {
+                    const filename = allTestFiles[i];
+                    
+                    // Provem amb una imatge invisible per veure si l'arxiu existeix
+                    await new Promise(resolve => {
+                        const tester = new Image();
+                        tester.onload = function() {
+                            existingFiles.push(filename);
+                            console.log(`✓ Detectat: ${filename}`);
+                            resolve();
+                        };
+                        tester.onerror = function() {
+                            // Provem també amb fetch per HTML
+                            fetch(filename, { method: 'HEAD' })
+                                .then(response => {
+                                    if (response.ok) {
+                                        existingFiles.push(filename);
+                                        console.log(`✓ Detectat via HEAD: ${filename}`);
+                                    }
+                                })
+                                .catch(() => {})
+                                .finally(resolve);
+                        };
+                        tester.src = filename + '?t=' + Date.now();
+                    });
+                    
+                    // Petita pausa per no sobrecarregar
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+                
+                // Si no hem detectat res, tornem a la llista predefinida
+                if (existingFiles.length === 0) {
+                    console.log("No s'han detectat fitxers. Usant llista predefinida.");
+                    return knownFiles.filter(file => knownFiles.includes(file));
+                }
+                
+                // Ordenem alfabèticament
+                existingFiles.sort();
+                
+                // Mostrem la llista per depuració
+                const filesList = document.getElementById('filesList');
+                if (filesList && existingFiles.length > 0) {
+                    filesList.innerHTML = `<strong>Fitxers detectats (${existingFiles.length}):</strong> ` + 
+                                          existingFiles.join(', ');
+                    filesList.classList.add('active');
+                }
+                
+                return existingFiles;
+                
+            } catch (error) {
+                console.error("Error detectant fitxers:", error);
+                // Tornem a la llista predefinida en cas d'error
+                return [
+                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html',
+                    'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
+                    'index_UN.html', 'index_YB.html', 'index_YP.html', 'index_UE.html',
+                    'index_X4.html'
+                ];
+            }
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            actualitzarRellotges();
-            setInterval(actualitzarRellotges, 1000);
-        });
+        // ============================================
+        // INICIALITZACIÓ
+        // ============================================
+        
+        window.onload = async function() {
+            console.log("Banner Scroll Estacions Meteo.cat - Inicialitzant");
+            
+            // Intentem detectar fitxers dinàmicament
+            stationFiles = await detectStationFiles();
+            console.log(`S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+            
+            startCountdown();
+        };
+        
+        // ============================================
+        // FUNCIONS PRINCIPALS
+        // ============================================
+        
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownValue = 10;
+            isCountdownStopped = false;
+            document.getElementById('countdown').textContent = countdownValue;
+            document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+            
+            // Amagar elements de visualització
+            document.getElementById('viewer').classList.remove('viewer-active');
+            document.getElementById('rotationInfo').classList.remove('info-active');
+            document.getElementById('stationCountdown').classList.remove('active');
+            document.getElementById('viewer').style.display = 'none';
+            
+            countdownInterval = setInterval(() => {
+                if (!isCountdownStopped) {
+                    countdownValue--;
+                    document.getElementById('countdown').textContent = countdownValue;
+                    
+                    if (countdownValue <= 0) {
+                        clearInterval(countdownInterval);
+                        startStationRotation();
+                    }
+                }
+            }, 1000);
+        }
+        
+        function stopCountdown() {
+            if (isCountdownStopped) {
+                isCountdownStopped = false;
+                document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+            } else {
+                isCountdownStopped = true;
+                document.getElementById('stopButton').textContent = "REPRENDRE TEMPORITZADOR";
+            }
+        }
+        
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            startCountdown();
+        }
+        
+        function goToBanner() {
+            clearAllIntervals();
+            window.location.href = "banner.html";
+        }
+        
+        function clearAllIntervals() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (stationInterval) clearInterval(stationInterval);
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+        }
+        
+        // ============================================
+        // ROTACIÓ D'ESTACIONS
+        // ============================================
+        
+        function startStationRotation() {
+            console.log("Iniciant rotació d'estacions...");
+            
+            if (stationFiles.length === 0) {
+                showError("No s'han trobat fitxers d'estació.");
+                return;
+            }
+            
+            // Amagar el compte enrere inicial
+            document.querySelector('.countdown-container').style.display = 'none';
+            
+            // Mostrar el visualitzador
+            const viewer = document.getElementById('viewer');
+            viewer.style.display = 'block';
+            viewer.classList.add('viewer-active');
+            
+            // Mostrar informació
+            document.getElementById('rotationInfo').classList.add('info-active');
+            
+            // Iniciar compte enrere per canvi d'estació
+            startStationCountdown();
+            
+            // Carregar la primera estació
+            loadCurrentStation();
+            
+            // Iniciar rotació automàtica
+            stationInterval = setInterval(() => {
+                currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
+                loadCurrentStation();
+                // Reiniciar compte enrere després de canviar
+                resetStationCountdown();
+            }, STATION_CHANGE_TIME * 1000);
+            
+            console.log(`Rotació iniciada amb ${stationFiles.length} estacions`);
+        }
+        
+        function startStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+            document.getElementById('stationCountdown').classList.add('active');
+            
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+            
+            stationTimerInterval = setInterval(() => {
+                stationTimeLeft--;
+                document.getElementById('stationTimer').textContent = stationTimeLeft;
+                
+                if (stationTimeLeft <= 0) {
+                    stationTimeLeft = STATION_CHANGE_TIME;
+                }
+            }, 1000);
+        }
+        
+        function resetStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+        }
+        
+        function loadCurrentStation() {
+            if (stationFiles.length === 0) return;
+            
+            const currentFile = stationFiles[currentStationIndex];
+            const totalFiles = stationFiles.length;
+            const stationNumber = currentStationIndex + 1;
+            
+            console.log(`Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
+            
+            // Actualitzar l'iframe
+            const viewer = document.getElementById('viewer');
+            viewer.src = currentFile;
+            
+            // Configurar observadors d'errors
+            viewer.onload = function() {
+                console.log(`✓ Estació carregada: ${currentFile}`);
+            };
+            
+            viewer.onerror = function() {
+                console.log(`✗ Error carregant: ${currentFile}`);
+                // No mostrem error cada vegada per no ser molest
+            };
+            
+            // Actualitzar informació
+            document.getElementById('rotationInfo').innerHTML = 
+                `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
+            
+            // Actualitzar peu
+            updateFooter(currentFile, stationNumber, totalFiles);
+        }
+        
+        function updateFooter(currentFile, stationNumber, totalFiles) {
+            const nextIndex = (currentStationIndex + 1) % totalFiles;
+            const nextFile = stationFiles[nextIndex];
+            const now = new Date();
+            const nextChange = new Date(now.getTime() + (stationTimeLeft * 1000));
+            
+            const hours = nextChange.getHours().toString().padStart(2, '0');
+            const minutes = nextChange.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('footer').innerHTML = 
+                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi a les ${hours}:${minutes}`;
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <h3>⚠️ Error</h3>
+                    <p>${message}</p>
+                    <p><small>Assegura't que:</small></p>
+                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                        <li>Els fitxers index_*.html existeixen</li>
+                        <li>Estàs executant un servidor local</li>
+                    </ul>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>

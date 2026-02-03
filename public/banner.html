@@ -3,314 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Totes les Estacions - Meteo.cat</title>
+    <title>Llistat d'Estacions - Meteo.cat</title>
     <style>
-        :root {
-            --primary: #007BFF;
-            --secondary: #1a237e;
-            --accent: #4fc3f7;
-            --warning: #ff7b00;
-            --text-light: #ffffff;
-            --text-muted: #bbdefb;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background: var(--primary);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            color: var(--text-light);
-        }
-
-        .header {
-            background: rgba(10, 25, 49, 0.95);
-            padding: 25px 20px;
-            text-align: center;
-            border-bottom: 3px solid var(--accent);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            color: var(--accent);
-            margin: 0 0 10px 0;
-            font-size: 2.2em;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 1.1em;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .controls {
-            background: rgba(26, 35, 126, 0.9);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 25px 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 20px 14px 45px;
-            border: 2px solid #3949ab;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.12);
-            color: var(--text-light);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
-        }
-
-        .search-box::before {
-            content: "🔍";
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: var(--text-muted);
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tornar-btn {
-            background: linear-gradient(145deg, var(--warning), #e56b00);
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 4px 8px rgba(255, 123, 0, 0.3);
-        }
-
-        .tornar-btn:hover {
-            background: linear-gradient(145deg, #ff9d4d, var(--warning));
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255, 123, 0, 0.4);
-        }
-
-        .estacions-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .estacio-card {
-            background: linear-gradient(145deg, var(--secondary), #283593);
-            border-radius: 12px;
-            padding: 25px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(79, 195, 247, 0.1);
-        }
-
-        .estacio-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--warning));
-        }
-
-        .estacio-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-            border-color: rgba(79, 195, 247, 0.3);
-        }
-
-        .estacio-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .estacio-icon {
-            font-size: 24px;
-            color: var(--accent);
-        }
-
-        .estacio-id {
-            background: rgba(79, 195, 247, 0.2);
-            color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .estacio-nom {
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 1.4;
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
-
-        .estacio-comarca {
-            color: var(--text-muted);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .estacio-comarca::before {
-            content: "📍";
-            font-size: 12px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-            grid-column: 1 / -1;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--accent);
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-            grid-column: 1 / -1;
-        }
-
-        @media (max-width: 768px) {
-            .estacions-container {
-                grid-template-columns: 1fr;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-box {
-                min-width: 100%;
-            }
-
-            .stats {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-        }
-
-        .comarca-badge {
-            display: inline-block;
-            background: rgba(255, 123, 0, 0.15);
-            color: #ffcc80;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-top: 10px;
-            border: 1px solid rgba(255, 123, 0, 0.3);
-        }
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .titol { color: #1a237e; text-align: center; }
+        .estacio { background: white; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
+        .estacio:hover { background: #e3f2fd; }
+        .controls { text-align: center; margin: 30px 0; }
+        .btn-tornar { background: #ff7b00; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📋 TOTES LES ESTACIONS METEOROLÒGIQUES</h1>
-        <p class="subtitle">Clica a qualsevol estació per veure les dades en temps real</p>
-    </div>
+    <h1 class="titol">📋 LLISTAT COMPLET D'ESTACIONS</h1>
+    <p style="text-align: center;">Tens <strong>35</strong> estacions disponibles.</p>
+    <div id="llistat"></div>
 
-    <div class="container">
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" id="search" placeholder="Cercar per nom d'estació, comarca o ID...">
-            </div>
-
-            <div class="stats">
-                <div class="stat-item" id="total-estacions">
-                    <span>📊</span>
-                    <span>Carregant...</span>
-                </div>
-                <div class="stat-item" id="comarques-count">
-                    <span>🗺️</span>
-                    <span>Comarques: ...</span>
-                </div>
-            </div>
-
-            <a href="public/index.html" class="tornar-btn">↩️ TORNAR A LA ROTACIÓ</a>
-        </div>
-
-        <div class="estacions-container" id="estacions-container">
-            <div class="loading">
-                <div class="loading-spinner"></div>
-                <p>Carregant estacions meteorològiques...</p>
-            </div>
-        </div>
+    <div class="controls">
+        <!-- ENLLAÇ CORREGIT: Ara torna al nou index.html (el rotador) -->
+        <a href="index.html" class="btn-tornar">↩️ TORNAR AL ROTADOR AUTOMÀTIC</a>
     </div>
 
     <script>
-    // DADES D'ESTACIONS (SENSE DUPLICATS)
     window.estacionsOrdenades = [
   {
     "id": "YT",
@@ -524,89 +237,23 @@
   }
 ];
 
-    // FUNCIONS PRINCIPALS
-    function initBanner() {
-        console.log("🎯 Iniciant llistat d'estacions...");
-
-        const container = document.getElementById("estacions-container");
-        const searchInput = document.getElementById("search");
-        const totalElem = document.getElementById("total-estacions");
-        const comarquesElem = document.getElementById("comarques-count");
-
-        // Calcular estadístiques
-        function calcularEstadistiques(estacions) {
-            const comarquesUniques = [...new Set(estacions
-                .filter(e => e.comarca && e.comarca !== 'Desconeguda')
-                .map(e => e.comarca))];
-
-            return {
-                total: estacions.length,
-                comarques: comarquesUniques.length
+    function renderLlistat() {
+        const contenidor = document.getElementById('llistat');
+        contenidor.innerHTML = '';
+        window.estacionsOrdenades.forEach(estacio => {
+            const div = document.createElement('div');
+            div.className = 'estacio';
+            div.innerHTML = `
+                <strong>${estacio.id}</strong>: ${estacio.nom}
+                <br><small>Comarca: ${estacio.comarca}</small>
+            `;
+            div.onclick = () => {
+                window.location.href = 'index_' + estacio.id + '.html';
             };
-        }
-
-        // Renderitzar estacions
-        function renderEstacions(estacions) {
-            container.innerHTML = '';
-            
-            if (estacions.length === 0) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <p>No s'han trobat estacions.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            estacions.forEach(estacio => {
-                const card = document.createElement('div');
-                card.className = 'estacio-card';
-                card.onclick = () => {
-                    console.log("📍 Seleccionant estació:", estacio.id);
-                    // Guardar selecció
-                    localStorage.setItem('estacioSeleccionada', JSON.stringify(estacio));
-                    // CORREGIT: Carregar el fitxer individual CORRECTE
-                    window.location.href = 'index_' + estacio.id + '.html';
-                };
-
-                card.innerHTML = `
-                    <div class="estacio-header">
-                        <div class="estacio-icon">🌤️</div>
-                        <div class="estacio-id">${estacio.id}</div>
-                    </div>
-                    <div class="estacio-nom">${estacio.nom}</div>
-                    <div class="estacio-comarca">${estacio.comarca}</div>
-                    <div class="comarca-badge">${estacio.comarca}</div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        // Inicialitzar
-        const stats = calcularEstadistiques(window.estacionsOrdenades);
-        totalElem.innerHTML = `<span>📊</span><span>Estacions: ${stats.total}</span>`;
-        comarquesElem.innerHTML = `<span>🗺️</span><span>Comarques: ${stats.comarques}</span>`;
-        renderEstacions(window.estacionsOrdenades);
-
-        // Cerca
-        searchInput.addEventListener('input', (e) => {
-            const terme = e.target.value.toLowerCase().trim();
-            const filtrades = window.estacionsOrdenades.filter(estacio => 
-                estacio.nom.toLowerCase().includes(terme) ||
-                estacio.comarca.toLowerCase().includes(terme) ||
-                estacio.id.toLowerCase().includes(terme)
-            );
-            
-            const statsFiltrades = calcularEstadistiques(filtrades);
-            totalElem.innerHTML = `<span>📊</span><span>Estacions: ${statsFiltrades.total}</span>`;
-            comarquesElem.innerHTML = `<span>🗺️</span><span>Comarques: ${statsFiltrades.comarques}</span>`;
-            renderEstacions(filtrades);
+            contenidor.appendChild(div);
         });
     }
-
-    // Iniciar quan la pàgina es carregui
-    document.addEventListener('DOMContentLoaded', initBanner);
+    document.addEventListener('DOMContentLoaded', renderLlistat);
     </script>
 </body>
 </html>
