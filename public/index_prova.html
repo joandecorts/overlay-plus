@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Scroll Estacions Meteo.cat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a2d5e, #1a5f7a);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* BANNER SUPERIOR - MÉS PETIT */
+        .banner {
+            background: linear-gradient(90deg, #1a237e, #283593);
+            color: white;
+            text-align: center;
+            padding: 18px 0; /* REDUÏT */
+            font-size: 2.2em; /* REDUÏT */
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            border-bottom: 4px solid #00bcd4;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            width: 100%;
+            z-index: 1000;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* LÍNIA PETITA VERDA CURSIVA SOTA EL TÍTOL */
+        .data-source {
+            font-size: 0.8em;
+            color: #4caf50;
+            font-style: italic;
+            text-align: center;
+            margin-top: 5px;
+            padding: 4px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .data-source a {
+            color: #80e27e;
+            text-decoration: none;
+        }
+        
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+        
+        /* CONTENIDOR CENTRAL - REAJUSTAT */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* CANVIAT */
+            align-items: center;
+            padding: 20px; /* REDUÏT */
+            position: relative;
+            overflow-y: auto; /* PER SI SOBRA */
+        }
+        
+        /* COMPTE ENRERE - MÉS PETIT */
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 25px 50px; /* REDUÏT */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border: 2px solid #00bcd4;
+            margin-bottom: 20px; /* REDUÏT */
+            min-width: 300px; /* REDUÏT */
+            backdrop-filter: blur(5px);
+        }
+        
+        #countdown {
+            font-size: 4.5em; /* REDUÏT */
+            font-weight: bold;
+            color: #00bcd4;
+            text-shadow: 0 0 20px rgba(0, 188, 212, 0.8);
+            margin: 15px 0; /* REDUÏT */
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px; /* REDUÏT */
+        }
+        
+        .countdown-label {
+            font-size: 1.3em; /* REDUÏT */
+            color: #b0e0e6;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        /* BOTONS - MÉS PETITS */
+        .controls {
+            display: flex;
+            gap: 20px; /* REDUÏT */
+            margin-top: 20px; /* REDUÏT */
+        }
+        
+        button {
+            padding: 12px 30px; /* REDUÏT */
+            font-size: 1.1em; /* REDUÏT */
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        
+        #goButton {
+            background: linear-gradient(to right, #00bcd4, #0097a7);
+            color: white;
+        }
+        
+        #goButton:hover {
+            background: linear-gradient(to right, #00acc1, #00838f);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+        }
+        
+        #stopButton {
+            background: linear-gradient(to right, #ff9800, #f57c00);
+            color: white;
+        }
+        
+        #stopButton:hover {
+            background: linear-gradient(to right, #fb8c00, #ef6c00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        #resetButton {
+            background: linear-gradient(to right, #4caf50, #388e3c);
+            color: white;
+        }
+        
+        #resetButton:hover {
+            background: linear-gradient(to right, #43a047, #2e7d32);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        /* COMPTE ENRERE PER CANVI D'ESTACIÓ */
+        .station-countdown {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.3em;
+            border: 2px solid #ff9800;
+            display: none;
+        }
+        
+        .station-countdown.active {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { border-color: #ff9800; }
+            50% { border-color: #ffcc80; }
+            100% { border-color: #ff9800; }
+        }
+        
+        #stationTimer {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff9800; /* TARONJA */
+            font-family: 'Courier New', monospace;
+            margin-left: 10px;
+        }
+        
+        /* VISUALITZADOR D'ESTACIONS - MÉS PETIT */
+        #viewer {
+            width: 92%; /* REDUÏT */
+            height: 60vh; /* REDUÏT */
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+            background: white;
+            display: none;
+            margin-top: 15px;
+            border: 2px solid #1a237e;
+        }
+        
+        .viewer-active {
+            display: block !important;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* INFO DE ROTACIÓ */
+        .rotation-info {
+            background: rgba(26, 35, 126, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            text-align: center;
+            border-left: 4px solid #00bcd4;
+            display: none;
+        }
+        
+        .info-active {
+            display: block;
+            animation: slideIn 0.6s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* FOOTER - MÉS PETIT */
+        .footer {
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.85);
+            font-size: 0.9em;
+            color: #aaa;
+            border-top: 2px solid #333;
+            font-family: monospace;
+        }
+        
+        .footer strong {
+            color: #00bcd4;
+        }
+        
+        /* Estils per als errors */
+        .error-message {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            border-left: 4px solid #ff5252;
+            font-size: 0.9em;
+        }
+        
+        /* Llista de fitxers detectats */
+        .files-list {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            max-height: 100px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .files-list.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- BANNER SUPERIOR -->
+    <div class="banner">
+        🏔️ Banner Scroll Estacions Meteo.cat 🏔️
+    </div>
+    
+    <!-- LÍNIA DE FONT DE DADES -->
+    <div class="data-source">
+        Fons de dades obtingudes amb scraper propis: <a href="https://meteo.cat/" target="_blank">https://meteo.cat/</a>
+    </div>
+    
+    <!-- CONTINGUT PRINCIPAL -->
+    <div class="main-container">
+        <div class="countdown-container">
+            <div class="countdown-label">Inici presentació automàtica en...</div>
+            <div id="countdown">10</div>
+            <div class="countdown-label">segons</div>
+            
+            <div class="controls">
+                <button id="goButton" onclick="goToBanner()">BANNER.HTML</button>
+                <button id="stopButton" onclick="stopCountdown()">ATURAR TEMPORITZADOR</button>
+                <button id="resetButton" onclick="resetCountdown()">REINICIAR (10s)</button>
+            </div>
+        </div>
+        
+        <!-- COMPTE ENRERE PER CANVI D'ESTACIÓ -->
+        <div class="station-countdown" id="stationCountdown">
+            Proper canvi d'estació en: <span id="stationTimer">120</span> segons
+        </div>
+        
+        <!-- VISUALITZADOR D'ESTACIONS -->
+        <iframe id="viewer" title="Visualitzador d'Estacions"></iframe>
+        
+        <!-- INFO DE ROTACIÓ -->
+        <div class="rotation-info" id="rotationInfo">
+            Carregant estacions...
+        </div>
+        
+        <!-- LLISTA DE FITXERS DETECTATS (per depuració) -->
+        <div class="files-list" id="filesList"></div>
+        
+        <!-- MISSATGE D'ERROR -->
+        <div id="errorContainer"></div>
+    </div>
+    
+    <!-- PEU DE PÀGINA -->
+    <div class="footer" id="footer">
+        Sistema de visualització automàtica • Estacions Meteo.cat
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓ
+        // ============================================
+        
+        // Temps entre canvis d'estació (120 segons = 2 minuts)
+        const STATION_CHANGE_TIME = 120; // segons
+        let stationTimeLeft = STATION_CHANGE_TIME;
+        let stationTimerInterval = null;
+        
+        // ============================================
+        // VARIABLES GLOBALS
+        // ============================================
+        let countdownValue = 10;
+        let countdownInterval = null;
+        let isCountdownStopped = false;
+        let stationFiles = [];
+        let currentStationIndex = 0;
+        let stationInterval = null;
+        
+        // ============================================
+        // FUNCIÓ PER DETECTAR FITXERS DINÀMICAMENT
+        // ============================================
+        
+        async function detectStationFiles() {
+            try {
+                // Aquesta és la part nova: intentem obtenir la llista de fitxers
+                // Nota: Això SOLS funciona amb un servidor web que permeti llistar directoris
+                // En entorn local, podem intentar una tècnica diferent
+                
+                console.log("Detectant fitxers d'estació...");
+                
+                // Mètode 1: Intentar obtenir via API si estem en servidor
+                // Mètode 2: Fer peticions individuals (el que farem)
+                
+                // Llista de possibles prefixes que esperem
+                const prefixes = ['index_X', 'index_W', 'index_D', 'index_Z', 'index_Y', 'index_U'];
+                const suffixes = ['J', '1', '4', '3', 'A', '7', 'J', 'G', 'N', 'B', 'P', 'E', '4'];
+                
+                // Provem combinacions comunes
+                const testFiles = [];
+                
+                // Provem els que ja coneixem
+                const knownFiles = [
+                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html', 
+                    'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
+                    'index_UN.html', 'index_YB.html', 'index_YP.html', 'index_UE.html',
+                    'index_X4.html'
+                ];
+                
+                // Provem també altres combinacions comunes
+                for (let i = 1; i <= 20; i++) {
+                    testFiles.push(`index_${i}.html`);
+                    testFiles.push(`index_${String.fromCharCode(64 + i)}.html`);
+                }
+                
+                // Combinem totes les possibilitats
+                const allTestFiles = [...knownFiles, ...testFiles];
+                
+                // Intentem verificar quins existeixen
+                const existingFiles = [];
+                
+                // Fem les comprovacions en paral·lel (limitades a 10 per no sobrecarregar)
+                for (let i = 0; i < Math.min(allTestFiles.length, 30); i++) {
+                    const filename = allTestFiles[i];
+                    
+                    // Provem amb una imatge invisible per veure si l'arxiu existeix
+                    await new Promise(resolve => {
+                        const tester = new Image();
+                        tester.onload = function() {
+                            existingFiles.push(filename);
+                            console.log(`✓ Detectat: ${filename}`);
+                            resolve();
+                        };
+                        tester.onerror = function() {
+                            // Provem també amb fetch per HTML
+                            fetch(filename, { method: 'HEAD' })
+                                .then(response => {
+                                    if (response.ok) {
+                                        existingFiles.push(filename);
+                                        console.log(`✓ Detectat via HEAD: ${filename}`);
+                                    }
+                                })
+                                .catch(() => {})
+                                .finally(resolve);
+                        };
+                        tester.src = filename + '?t=' + Date.now();
+                    });
+                    
+                    // Petita pausa per no sobrecarregar
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+                
+                // Si no hem detectat res, tornem a la llista predefinida
+                if (existingFiles.length === 0) {
+                    console.log("No s'han detectat fitxers. Usant llista predefinida.");
+                    return knownFiles.filter(file => knownFiles.includes(file));
+                }
+                
+                // Ordenem alfabèticament
+                existingFiles.sort();
+                
+                // Mostrem la llista per depuració
+                const filesList = document.getElementById('filesList');
+                if (filesList && existingFiles.length > 0) {
+                    filesList.innerHTML = `<strong>Fitxers detectats (${existingFiles.length}):</strong> ` + 
+                                          existingFiles.join(', ');
+                    filesList.classList.add('active');
+                }
+                
+                return existingFiles;
+                
+            } catch (error) {
+                console.error("Error detectant fitxers:", error);
+                // Tornem a la llista predefinida en cas d'error
+                return [
+                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html',
+                    'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
+                    'index_UN.html', 'index_YB.html', 'index_YP.html', 'index_UE.html',
+                    'index_X4.html'
+                ];
+            }
+        }
+        
+        // ============================================
+        // INICIALITZACIÓ
+        // ============================================
+        
+        window.onload = async function() {
+            console.log("Banner Scroll Estacions Meteo.cat - Inicialitzant");
+            
+            // Intentem detectar fitxers dinàmicament
+            stationFiles = await detectStationFiles();
+            console.log(`S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+            
+            startCountdown();
+        };
+        
+        // ============================================
+        // FUNCIONS PRINCIPALS
+        // ============================================
+        
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownValue = 10;
+            isCountdownStopped = false;
+            document.getElementById('countdown').textContent = countdownValue;
+            document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+            
+            // Amagar elements de visualització
+            document.getElementById('viewer').classList.remove('viewer-active');
+            document.getElementById('rotationInfo').classList.remove('info-active');
+            document.getElementById('stationCountdown').classList.remove('active');
+            document.getElementById('viewer').style.display = 'none';
+            
+            countdownInterval = setInterval(() => {
+                if (!isCountdownStopped) {
+                    countdownValue--;
+                    document.getElementById('countdown').textContent = countdownValue;
+                    
+                    if (countdownValue <= 0) {
+                        clearInterval(countdownInterval);
+                        startStationRotation();
+                    }
+                }
+            }, 1000);
+        }
+        
+        function stopCountdown() {
+            if (isCountdownStopped) {
+                isCountdownStopped = false;
+                document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+            } else {
+                isCountdownStopped = true;
+                document.getElementById('stopButton').textContent = "REPRENDRE TEMPORITZADOR";
+            }
+        }
+        
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            startCountdown();
+        }
+        
+        function goToBanner() {
+            clearAllIntervals();
+            window.location.href = "banner.html";
+        }
+        
+        function clearAllIntervals() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (stationInterval) clearInterval(stationInterval);
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+        }
+        
+        // ============================================
+        // ROTACIÓ D'ESTACIONS
+        // ============================================
+        
+        function startStationRotation() {
+            console.log("Iniciant rotació d'estacions...");
+            
+            if (stationFiles.length === 0) {
+                showError("No s'han trobat fitxers d'estació.");
+                return;
+            }
+            
+            // Amagar el compte enrere inicial
+            document.querySelector('.countdown-container').style.display = 'none';
+            
+            // Mostrar el visualitzador
+            const viewer = document.getElementById('viewer');
+            viewer.style.display = 'block';
+            viewer.classList.add('viewer-active');
+            
+            // Mostrar informació
+            document.getElementById('rotationInfo').classList.add('info-active');
+            
+            // Iniciar compte enrere per canvi d'estació
+            startStationCountdown();
+            
+            // Carregar la primera estació
+            loadCurrentStation();
+            
+            // Iniciar rotació automàtica
+            stationInterval = setInterval(() => {
+                currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
+                loadCurrentStation();
+                // Reiniciar compte enrere després de canviar
+                resetStationCountdown();
+            }, STATION_CHANGE_TIME * 1000);
+            
+            console.log(`Rotació iniciada amb ${stationFiles.length} estacions`);
+        }
+        
+        function startStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+            document.getElementById('stationCountdown').classList.add('active');
+            
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+            
+            stationTimerInterval = setInterval(() => {
+                stationTimeLeft--;
+                document.getElementById('stationTimer').textContent = stationTimeLeft;
+                
+                if (stationTimeLeft <= 0) {
+                    stationTimeLeft = STATION_CHANGE_TIME;
+                }
+            }, 1000);
+        }
+        
+        function resetStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+        }
+        
+        function loadCurrentStation() {
+            if (stationFiles.length === 0) return;
+            
+            const currentFile = stationFiles[currentStationIndex];
+            const totalFiles = stationFiles.length;
+            const stationNumber = currentStationIndex + 1;
+            
+            console.log(`Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
+            
+            // Actualitzar l'iframe
+            const viewer = document.getElementById('viewer');
+            viewer.src = currentFile;
+            
+            // Configurar observadors d'errors
+            viewer.onload = function() {
+                console.log(`✓ Estació carregada: ${currentFile}`);
+            };
+            
+            viewer.onerror = function() {
+                console.log(`✗ Error carregant: ${currentFile}`);
+                // No mostrem error cada vegada per no ser molest
+            };
+            
+            // Actualitzar informació
+            document.getElementById('rotationInfo').innerHTML = 
+                `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
+            
+            // Actualitzar peu
+            updateFooter(currentFile, stationNumber, totalFiles);
+        }
+        
+        function updateFooter(currentFile, stationNumber, totalFiles) {
+            const nextIndex = (currentStationIndex + 1) % totalFiles;
+            const nextFile = stationFiles[nextIndex];
+            const now = new Date();
+            const nextChange = new Date(now.getTime() + (stationTimeLeft * 1000));
+            
+            const hours = nextChange.getHours().toString().padStart(2, '0');
+            const minutes = nextChange.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('footer').innerHTML = 
+                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi a les ${hours}:${minutes}`;
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <h3>⚠️ Error</h3>
+                    <p>${message}</p>
+                    <p><small>Assegura't que:</small></p>
+                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                        <li>Els fitxers index_*.html existeixen</li>
+                        <li>Estàs executant un servidor local</li>
+                    </ul>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
