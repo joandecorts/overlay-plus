@@ -2,140 +2,160 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banner Scroll Meteorològic joandecorts.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Banner Scroll Estacions Meteo.cat</title>
     <style>
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #00bcd4;
+            --accent-orange: #ff9800;
+            --dark-bg: #0a2d5e;
+            --light-bg: #1a5f7a;
+            --text-light: #ffffff;
+            --text-muted: #b0e0e6;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a2d5e, #1a5f7a);
-            color: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+        
+        html, body {
+            height: 100%;
             overflow: hidden;
         }
         
-        /* BANNER SUPERIOR - MÉS PETIT */
-        .banner {
-            background: linear-gradient(90deg, #1a237e, #283593);
-            color: white;
-            text-align: center;
-            padding: 18px 0; /* REDUÏT */
-            font-size: 2.2em; /* REDUÏT */
-            font-weight: bold;
-            letter-spacing: 1.2px;
-            border-bottom: 4px solid #00bcd4;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            width: 100%;
-            z-index: 1000;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), var(--light-bg));
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
         }
         
-        /* LÍNIA PETITA VERDA CURSIVA SOTA EL TÍTOL */
+        /* BANNER SUPERIOR - RESPONSIVE */
+        .banner {
+            background: linear-gradient(90deg, var(--primary-blue), #283593);
+            color: var(--text-light);
+            text-align: center;
+            padding: 15px 10px;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid var(--secondary-blue);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            z-index: 1000;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        
+        /* LÍNEA DE CRÈDITS */
         .data-source {
-            font-size: 0.8em;
+            font-size: clamp(0.7rem, 2vw, 0.85rem);
             color: #4caf50;
             font-style: italic;
             text-align: center;
-            margin-top: 5px;
-            padding: 4px 0;
-            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            flex-shrink: 0;
+            line-height: 1.3;
         }
         
         .data-source a {
             color: #80e27e;
             text-decoration: none;
+            word-break: break-all;
         }
         
         .data-source a:hover {
             text-decoration: underline;
         }
         
-        /* CONTENIDOR CENTRAL - REAJUSTAT */
+        /* CONTENIDOR PRINCIPAL - FLEXIBLE */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* CANVIAT */
             align-items: center;
-            padding: 20px; /* REDUÏT */
-            position: relative;
-            overflow-y: auto; /* PER SI SOBRA */
+            padding: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
         
-        /* COMPTE ENRERE - MÉS PETIT */
+        /* COMPTE ENRERE INICIAL */
         .countdown-container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 25px 50px; /* REDUÏT */
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            border: 2px solid #00bcd4;
-            margin-bottom: 20px; /* REDUÏT */
-            min-width: 300px; /* REDUÏT */
+            background: rgba(0, 0, 0, 0.7);
+            padding: clamp(20px, 4vw, 30px) clamp(15px, 4vw, 40px);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--secondary-blue);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
             backdrop-filter: blur(5px);
         }
         
         #countdown {
-            font-size: 4.5em; /* REDUÏT */
+            font-size: clamp(3.5rem, 10vw, 5rem);
             font-weight: bold;
-            color: #00bcd4;
-            text-shadow: 0 0 20px rgba(0, 188, 212, 0.8);
-            margin: 15px 0; /* REDUÏT */
+            color: var(--secondary-blue);
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+            margin: 10px 0;
             font-family: 'Courier New', monospace;
-            letter-spacing: 3px; /* REDUÏT */
+            letter-spacing: 2px;
         }
         
         .countdown-label {
-            font-size: 1.3em; /* REDUÏT */
-            color: #b0e0e6;
-            margin-top: 8px;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-muted);
+            margin-top: 5px;
             font-weight: 500;
         }
         
-        /* BOTONS - MÉS PETITS */
+        /* BOTONS - RESPONSIVE */
         .controls {
             display: flex;
-            gap: 20px; /* REDUÏT */
-            margin-top: 20px; /* REDUÏT */
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
         }
         
         button {
-            padding: 12px 30px; /* REDUÏT */
-            font-size: 1.1em; /* REDUÏT */
+            padding: 12px 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             font-weight: bold;
             border: none;
-            border-radius: 40px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            flex: 1;
+            min-width: 140px;
+            max-width: 200px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         
         #goButton {
-            background: linear-gradient(to right, #00bcd4, #0097a7);
+            background: linear-gradient(to right, var(--secondary-blue), #0097a7);
             color: white;
-        }
-        
-        #goButton:hover {
-            background: linear-gradient(to right, #00acc1, #00838f);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
         }
         
         #stopButton {
-            background: linear-gradient(to right, #ff9800, #f57c00);
+            background: linear-gradient(to right, var(--accent-orange), #f57c00);
             color: white;
-        }
-        
-        #stopButton:hover {
-            background: linear-gradient(to right, #fb8c00, #ef6c00);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
         }
         
         #resetButton {
@@ -143,143 +163,192 @@
             color: white;
         }
         
-        #resetButton:hover {
-            background: linear-gradient(to right, #43a047, #2e7d32);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-        
         /* COMPTE ENRERE PER CANVI D'ESTACIÓ */
         .station-countdown {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.75);
             color: white;
             text-align: center;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 10px;
             margin: 15px 0;
-            font-size: 1.3em;
-            border: 2px solid #ff9800;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            border: 2px solid var(--accent-orange);
             display: none;
+            width: 100%;
+            max-width: 500px;
+            animation: pulse 2s infinite;
         }
         
         .station-countdown.active {
             display: block;
-            animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
-            0% { border-color: #ff9800; }
-            50% { border-color: #ffcc80; }
-            100% { border-color: #ff9800; }
+            0% { border-color: var(--accent-orange); }
+            50% { border-color: #ffcc80; box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+            100% { border-color: var(--accent-orange); }
         }
         
         #stationTimer {
-            font-size: 1.8em;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             font-weight: bold;
-            color: #ff9800; /* TARONJA */
+            color: var(--accent-orange);
             font-family: 'Courier New', monospace;
-            margin-left: 10px;
+            margin-left: 8px;
         }
         
-        /* VISUALITZADOR D'ESTACIONS - MÉS PETIT */
+        /* VISUALITZADOR D'ESTACIONS - RESPONSIVE */
         #viewer {
-            width: 92%; /* REDUÏT */
-            height: 60vh; /* REDUÏT */
+            width: 100%;
+            height: 60vh;
+            min-height: 300px;
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
             background: white;
             display: none;
             margin-top: 15px;
-            border: 2px solid #1a237e;
+            border: 2px solid var(--primary-blue);
+            flex: 1;
         }
         
         .viewer-active {
-            display: block !important;
-            animation: fadeIn 0.8s ease;
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         /* INFO DE ROTACIÓ */
         .rotation-info {
-            background: rgba(26, 35, 126, 0.9);
+            background: rgba(26, 35, 126, 0.85);
             color: white;
-            padding: 12px 25px;
+            padding: 10px 15px;
             border-radius: 8px;
             margin-top: 15px;
-            font-size: 1.1em;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             text-align: center;
-            border-left: 4px solid #00bcd4;
+            border-left: 3px solid var(--secondary-blue);
             display: none;
+            width: 100%;
+            max-width: 500px;
         }
         
         .info-active {
             display: block;
-            animation: slideIn 0.6s ease;
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        /* FOOTER - MÉS PETIT */
+        /* FOOTER */
         .footer {
             text-align: center;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.85);
-            font-size: 0.9em;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             color: #aaa;
             border-top: 2px solid #333;
-            font-family: monospace;
+            flex-shrink: 0;
+            line-height: 1.4;
         }
         
         .footer strong {
-            color: #00bcd4;
+            color: var(--secondary-blue);
         }
         
-        /* Estils per als errors */
-        .error-message {
-            background: rgba(211, 47, 47, 0.9);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-            border-left: 4px solid #ff5252;
-            font-size: 0.9em;
+        /* ESTILS PER MÒBIL */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 10px;
+            }
+            
+            .countdown-container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            #countdown {
+                font-size: 4rem;
+                margin: 5px 0;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            button {
+                min-width: 120px;
+                padding: 10px 15px;
+            }
+            
+            #viewer {
+                height: 50vh;
+                min-height: 250px;
+            }
         }
         
-        /* Llista de fitxers detectats */
+        @media (max-width: 480px) {
+            .banner {
+                padding: 12px 8px;
+                font-size: 1.4rem;
+            }
+            
+            #countdown {
+                font-size: 3.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 90%;
+                max-width: none;
+            }
+            
+            .station-countdown {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            #stationTimer {
+                font-size: 1.4rem;
+            }
+        }
+        
+        /* ESTIL PER IPHONE NOTCH */
+        @supports (padding: max(0px)) {
+            .banner, .data-source, .footer {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+            }
+            
+            .banner {
+                padding-top: max(15px, env(safe-area-inset-top));
+            }
+            
+            .footer {
+                padding-bottom: max(10px, env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* OCULTAR LLISTA DE FITXERS */
         .files-list {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 0.85em;
-            max-height: 100px;
-            overflow-y: auto;
-            display: none;
-        }
-        
-        .files-list.active {
-            display: block;
+            display: none !important;
         }
     </style>
 </head>
 <body>
     <!-- BANNER SUPERIOR -->
     <div class="banner">
-        🏔️ Banner Scroll Meteorològic joandecorts.io 🏔️
+        🏔️ Banner Scroll Estacions Meteo.cat 🏔️
     </div>
     
-    <!-- LÍNIA DE FONT DE DADES -->
+    <!-- LÍNEA DE CRÈDITS -->
     <div class="data-source">
-        Dades obtingudes amb scrapers propis. Font oficiial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
+        Font de dades: observacions automàtiques i manual de l'<a href="https://www.meteo.cat" target="_blank">Servei Meteorològic de Catalunya</a>
     </div>
     
     <!-- CONTINGUT PRINCIPAL -->
@@ -291,8 +360,8 @@
             
             <div class="controls">
                 <button id="goButton" onclick="goToBanner()">BANNER.HTML</button>
-                <button id="stopButton" onclick="stopCountdown()">ATURAR TEMPORITZADOR</button>
-                <button id="resetButton" onclick="resetCountdown()">REINICIAR (10s)</button>
+                <button id="stopButton" onclick="stopCountdown()">ATURAR</button>
+                <button id="resetButton" onclick="resetCountdown()">REINICIAR</button>
             </div>
         </div>
         
@@ -302,14 +371,14 @@
         </div>
         
         <!-- VISUALITZADOR D'ESTACIONS -->
-        <iframe id="viewer" title="Visualitzador d'Estacions"></iframe>
+        <iframe id="viewer" title="Visualitzador d'Estacions" sandbox="allow-scripts allow-same-origin"></iframe>
         
         <!-- INFO DE ROTACIÓ -->
         <div class="rotation-info" id="rotationInfo">
             Carregant estacions...
         </div>
         
-        <!-- LLISTA DE FITXERS DETECTATS (per depuració) -->
+        <!-- LLISTA DE FITXERS (OCULTA) -->
         <div class="files-list" id="filesList"></div>
         
         <!-- MISSATGE D'ERROR -->
@@ -326,7 +395,6 @@
         // CONFIGURACIÓ
         // ============================================
         
-        // Temps entre canvis d'estació (120 segons = 2 minuts)
         const STATION_CHANGE_TIME = 120; // segons
         let stationTimeLeft = STATION_CHANGE_TIME;
         let stationTimerInterval = null;
@@ -342,100 +410,145 @@
         let stationInterval = null;
         
         // ============================================
-        // FUNCIÓ PER DETECTAR FITXERS DINÀMICAMENT
+        // DETECCIÓ REAL DE FITXERS
         // ============================================
         
         async function detectStationFiles() {
             try {
-                // Aquesta és la part nova: intentem obtenir la llista de fitxers
-                // Nota: Això SOLS funciona amb un servidor web que permeti llistar directoris
-                // En entorn local, podem intentar una tècnica diferent
+                console.log("Cercant fitxers d'estació...");
                 
-                console.log("Detectant fitxers d'estació...");
+                // MÈTODE 1: Intentem obtenir la llista del servidor
+                // Això SOLS funciona si el servidor té un endpoint que retorni la llista
+                // o si podem llegir el directori
                 
-                // Mètode 1: Intentar obtenir via API si estem en servidor
-                // Mètode 2: Fer peticions individuals (el que farem)
+                // Primer, provem amb una petició a un endpoint especial
+                // (Aquest seria el mètode ideal si controles el servidor)
                 
-                // Llista de possibles prefixes que esperem
-                const prefixes = ['index_X', 'index_W', 'index_D', 'index_Z', 'index_Y', 'index_U'];
-                const suffixes = ['J', '1', '4', '3', 'A', '7', 'J', 'G', 'N', 'B', 'P', 'E', '4'];
+                // MÈTODE 2: Provem d'obtenir index.html i analitzar enllaços
+                // Això pot funcionar si tenim un index amb tots els enllaços
                 
-                // Provem combinacions comunes
-                const testFiles = [];
+                // MÈTODE 3: Fer peticions a patrons coneguts
+                // Aquest és el que farem com a fallback
                 
-                // Provem els que ja coneixem
+                // Llista de possibles estacions basades en codis comuns
+                const stationCodes = [
+                    'XJ', 'W1', 'D4', 'Z3', 'YA', 'Z7', 'DJ', 'DG', 
+                    'UN', 'YB', 'YP', 'UE', 'X4', 'AN', 'OR', 'EN',
+                    'AR', 'PA', 'GR', 'VA', 'CA', 'PO', 'LL', 'FO',
+                    'MN', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7',
+                    'C8', 'C9', 'D1', 'D2', 'D3', 'D5', 'D6', 'D7',
+                    'D8', 'D9', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6'
+                ];
+                
                 const knownFiles = [
-                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html', 
+                    'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html',
                     'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
                     'index_UN.html', 'index_YB.html', 'index_YP.html', 'index_UE.html',
                     'index_X4.html'
                 ];
                 
-                // Provem també altres combinacions comunes
-                for (let i = 1; i <= 20; i++) {
-                    testFiles.push(`index_${i}.html`);
-                    testFiles.push(`index_${String.fromCharCode(64 + i)}.html`);
-                }
+                // Creem una llista de tots els possibles fitxers
+                const allPossibleFiles = knownFiles.slice(); // Copiem els coneguts
                 
-                // Combinem totes les possibilitats
-                const allTestFiles = [...knownFiles, ...testFiles];
+                // Afegim combinacions basades en codis
+                stationCodes.forEach(code => {
+                    allPossibleFiles.push(`index_${code}.html`);
+                });
                 
-                // Intentem verificar quins existeixen
+                // Eliminem duplicats
+                const uniqueFiles = [...new Set(allPossibleFiles)];
+                
+                // Ara intentem verificar quins existeixen REALMENT
+                // Ho farem de manera més eficient
                 const existingFiles = [];
+                const checkPromises = [];
                 
-                // Fem les comprovacions en paral·lel (limitades a 10 per no sobrecarregar)
-                for (let i = 0; i < Math.min(allTestFiles.length, 30); i++) {
-                    const filename = allTestFiles[i];
-                    
-                    // Provem amb una imatge invisible per veure si l'arxiu existeix
-                    await new Promise(resolve => {
-                        const tester = new Image();
-                        tester.onload = function() {
-                            existingFiles.push(filename);
-                            console.log(`✓ Detectat: ${filename}`);
-                            resolve();
-                        };
-                        tester.onerror = function() {
-                            // Provem també amb fetch per HTML
-                            fetch(filename, { method: 'HEAD' })
-                                .then(response => {
-                                    if (response.ok) {
+                // Limitem a 40 verificacions per no sobrecarregar
+                const filesToCheck = uniqueFiles.slice(0, 40);
+                
+                for (const filename of filesToCheck) {
+                    // Creem una promesa per cada verificació
+                    const checkPromise = new Promise(resolve => {
+                        // Provem amb HEAD request (més lleuger)
+                        fetch(filename, { method: 'HEAD', cache: 'no-cache' })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log(`✓ Trobat: ${filename}`);
+                                    existingFiles.push(filename);
+                                }
+                                resolve();
+                            })
+                            .catch(() => {
+                                // Si HEAD falla, provem amb una petició GET reduïda
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('GET', filename);
+                                xhr.timeout = 2000;
+                                
+                                xhr.onload = function() {
+                                    if (xhr.status === 200) {
+                                        console.log(`✓ Trobat (via GET): ${filename}`);
                                         existingFiles.push(filename);
-                                        console.log(`✓ Detectat via HEAD: ${filename}`);
                                     }
-                                })
-                                .catch(() => {})
-                                .finally(resolve);
-                        };
-                        tester.src = filename + '?t=' + Date.now();
+                                    resolve();
+                                };
+                                
+                                xhr.onerror = xhr.ontimeout = resolve;
+                                
+                                try {
+                                    xhr.send();
+                                } catch {
+                                    resolve();
+                                }
+                            });
                     });
                     
-                    // Petita pausa per no sobrecarregar
+                    checkPromises.push(checkPromise);
+                    
+                    // Petita pausa entre peticions
                     await new Promise(resolve => setTimeout(resolve, 50));
                 }
                 
-                // Si no hem detectat res, tornem a la llista predefinida
+                // Esperem que totes les verificacions acabin
+                await Promise.allSettled(checkPromises);
+                
+                // Si no hem trobat res, tornem als coneguts
                 if (existingFiles.length === 0) {
                     console.log("No s'han detectat fitxers. Usant llista predefinida.");
-                    return knownFiles.filter(file => knownFiles.includes(file));
+                    return knownFiles;
                 }
                 
-                // Ordenem alfabèticament
+                // Ordenem i retornem
                 existingFiles.sort();
+                console.log(`S'han detectat ${existingFiles.length} fitxers d'estació`);
                 
-                // Mostrem la llista per depuració
-                const filesList = document.getElementById('filesList');
-                if (filesList && existingFiles.length > 0) {
-                    filesList.innerHTML = `<strong>Fitxers detectats (${existingFiles.length}):</strong> ` + 
-                                          existingFiles.join(', ');
-                    filesList.classList.add('active');
+                // Opcional: Guardem a localStorage per futures càrregues més ràpides
+                try {
+                    localStorage.setItem('detectedStationFiles', JSON.stringify(existingFiles));
+                    localStorage.setItem('detectionTime', Date.now());
+                } catch (e) {
+                    console.log("No s'ha pogut guardar a localStorage");
                 }
                 
                 return existingFiles;
                 
             } catch (error) {
                 console.error("Error detectant fitxers:", error);
-                // Tornem a la llista predefinida en cas d'error
+                
+                // Provem de recuperar de localStorage
+                try {
+                    const savedTime = localStorage.getItem('detectionTime');
+                    const savedFiles = JSON.parse(localStorage.getItem('detectedStationFiles'));
+                    
+                    // Si la detecció és de fa menys de 1 hora, la usem
+                    if (savedFiles && savedTime && (Date.now() - savedTime < 3600000)) {
+                        console.log("Usant fitxers desats a localStorage");
+                        return savedFiles;
+                    }
+                } catch (e) {
+                    console.log("No s'han pogut recuperar fitxers de localStorage");
+                }
+                
+                // Fallback a la llista predefinida
                 return [
                     'index_XJ.html', 'index_W1.html', 'index_D4.html', 'index_Z3.html',
                     'index_YA.html', 'index_Z7.html', 'index_DJ.html', 'index_DG.html',
@@ -452,12 +565,38 @@
         window.onload = async function() {
             console.log("Banner Scroll Estacions Meteo.cat - Inicialitzant");
             
-            // Intentem detectar fitxers dinàmicament
+            // Detectem fitxers (realment ara)
             stationFiles = await detectStationFiles();
             console.log(`S'utilitzaran ${stationFiles.length} fitxers d'estació`);
             
+            // Iniciem el compte enrere
             startCountdown();
+            
+            // Ajustem la mida del visualitzador segons la pantalla
+            adjustViewerSize();
+            window.addEventListener('resize', adjustViewerSize);
         };
+        
+        function adjustViewerSize() {
+            const viewer = document.getElementById('viewer');
+            const container = document.querySelector('.main-container');
+            
+            if (viewer && container) {
+                // Calculem una alçada que s'ajusti bé
+                const windowHeight = window.innerHeight;
+                const bannerHeight = document.querySelector('.banner').offsetHeight;
+                const dataSourceHeight = document.querySelector('.data-source').offsetHeight;
+                const footerHeight = document.querySelector('.footer').offsetHeight;
+                
+                // Alçada disponible per al visualitzador
+                const availableHeight = windowHeight - bannerHeight - dataSourceHeight - footerHeight - 100;
+                
+                // Establim una alçada mínima i màxima
+                const newHeight = Math.max(300, Math.min(availableHeight, windowHeight * 0.7));
+                
+                viewer.style.height = newHeight + 'px';
+            }
+        }
         
         // ============================================
         // FUNCIONS PRINCIPALS
@@ -469,7 +608,7 @@
             countdownValue = 10;
             isCountdownStopped = false;
             document.getElementById('countdown').textContent = countdownValue;
-            document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+            document.getElementById('stopButton').textContent = "ATURAR";
             
             // Amagar elements de visualització
             document.getElementById('viewer').classList.remove('viewer-active');
@@ -493,10 +632,10 @@
         function stopCountdown() {
             if (isCountdownStopped) {
                 isCountdownStopped = false;
-                document.getElementById('stopButton').textContent = "ATURAR TEMPORITZADOR";
+                document.getElementById('stopButton').textContent = "ATURAR";
             } else {
                 isCountdownStopped = true;
-                document.getElementById('stopButton').textContent = "REPRENDRE TEMPORITZADOR";
+                document.getElementById('stopButton').textContent = "REPRENDRE";
             }
         }
         
@@ -549,7 +688,6 @@
             stationInterval = setInterval(() => {
                 currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
                 loadCurrentStation();
-                // Reiniciar compte enrere després de canviar
                 resetStationCountdown();
             }, STATION_CHANGE_TIME * 1000);
             
@@ -591,27 +729,26 @@
             const viewer = document.getElementById('viewer');
             viewer.src = currentFile;
             
-            // Configurar observadors d'errors
+            // Configurar observadors
             viewer.onload = function() {
                 console.log(`✓ Estació carregada: ${currentFile}`);
             };
             
             viewer.onerror = function() {
                 console.log(`✗ Error carregant: ${currentFile}`);
-                // No mostrem error cada vegada per no ser molest
             };
             
             // Actualitzar informació
             document.getElementById('rotationInfo').innerHTML = 
                 `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
             
-            // Actualitzar peu
             updateFooter(currentFile, stationNumber, totalFiles);
         }
         
         function updateFooter(currentFile, stationNumber, totalFiles) {
             const nextIndex = (currentStationIndex + 1) % totalFiles;
             const nextFile = stationFiles[nextIndex];
+            
             const now = new Date();
             const nextChange = new Date(now.getTime() + (stationTimeLeft * 1000));
             
@@ -619,20 +756,15 @@
             const minutes = nextChange.getMinutes().toString().padStart(2, '0');
             
             document.getElementById('footer').innerHTML = 
-                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi a les ${hours}:${minutes}`;
+                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi: ${hours}:${minutes}`;
         }
         
         function showError(message) {
             const errorContainer = document.getElementById('errorContainer');
             errorContainer.innerHTML = `
-                <div class="error-message">
-                    <h3>⚠️ Error</h3>
+                <div style="background: rgba(211, 47, 47, 0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
+                    <h3 style="margin-bottom: 8px;">⚠️ Error</h3>
                     <p>${message}</p>
-                    <p><small>Assegura't que:</small></p>
-                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                        <li>Els fitxers index_*.html existeixen</li>
-                        <li>Estàs executant un servidor local</li>
-                    </ul>
                 </div>
             `;
         }
