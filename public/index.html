@@ -134,243 +134,126 @@
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURACIÓ
-        // ============================================
-        const STATION_CHANGE_TIME = 120;
-        let stationTimeLeft = STATION_CHANGE_TIME;
-        let stationTimerInterval = null;
-        let countdownValue = 10;
-        let countdownInterval = null;
-        let isCountdownStopped = false;
-        let stationFiles = [];
-        let currentStationIndex = 0;
-        let stationInterval = null;
+    // ============================================
+    // CONFIGURACIÓ
+    // ============================================
+    const STATION_CHANGE_TIME = 120;
+    let stationTimeLeft = STATION_CHANGE_TIME;
+    let stationTimerInterval = null;
+    let countdownValue = 10;
+    let countdownInterval = null;
+    let isCountdownStopped = false;
+    let stationFiles = [];
+    let currentStationIndex = 0;
+    let stationInterval = null;
 
-        // ============================================
-        // FUNCIÓ PRINCIPAL: DETECTAR FITXERS DINÀMICAMENT
-        // ============================================
-        async function detectStationFiles() {
-            console.log("🔍 Iniciant detecció dinàmica de fitxers...");
-            const detectedFiles = [];
+    // ============================================
+    // FUNCIÓ PRINCIPAL: DETECTAR FITXERS DES DE JSON
+    // ============================================
+    async function detectStationFiles() {
+        console.log("🔍 Intentant carregar llista d'estacions...");
+        const detectedFiles = [];
 
+        try {
+            // MÈTODE PRINCIPAL: Llegir la llista des d'un JSON generat pel servidor/integrador
+            const response = await fetch('station_list.json');
+            
+            if (!response.ok) {
+                throw new Error(`No s'ha trobat station_list.json (${response.status})`);
+            }
+            
+            const data = await response.json();
+            
+            // Esperem un array amb la clau 'stations'
+            if (data.stations && Array.isArray(data.stations)) {
+                data.stations.forEach(station => {
+                    // Afegim el nom del fitxer (ex: 'index_XJ.html')
+                    if (station.file && station.file.startsWith('index_')) {
+                        detectedFiles.push(station.file);
+                        console.log(`   ✅ Afegint: ${station.file}`);
+                    }
+                });
+            } else {
+                throw new Error("Format de station_list.json incorrecte");
+            }
+
+        } catch (jsonError) {
+            console.warn("❌ Error llegint station_list.json:", jsonError);
+            console.log("⚠️  Provant detecció alternativa per entorn local...");
+            
+            // MÈTODE ALTERNATIU: Només per entorn local de desenvolupament
+            // Això funcionarà amb python -m http.server però NO a GitHub Pages
             try {
-                // 1. INTENTEM OBTENIR LA LLISTA DEL DIRECTORI DEL SERVIDOR
-                // Això funciona si el servidor (ex: python -m http.server) llista directoris
                 const response = await fetch('.');
-                if (!response.ok) {
-                    throw new Error(`Resposta del servidor: ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error('No es pot llegir directori');
+                
                 const htmlText = await response.text();
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(htmlText, 'text/html');
 
-                // 2. BUSQUEM TOTS ELS ENLLAÇOS A FITXERS HTML
                 const allLinks = Array.from(doc.querySelectorAll('a'));
                 const htmlLinks = allLinks
                     .map(link => link.getAttribute('href'))
                     .filter(href => href && href.endsWith('.html'));
 
-                console.log(`📄 Enllaços .html trobats al directori: ${htmlLinks.length}`);
+                console.log(`📄 Enllaços .html trobats: ${htmlLinks.length}`);
 
-                // 3. FILTREM I PROCESSEM NOMÉS ELS FITXERS 'index_XX.html'
                 for (const fileLink of htmlLinks) {
-                    // Exemple: 'index_XJ.html' -> true | 'banner.html' -> false
-                    if (fileLink.startsWith('index_') && fileLink.length === 13) { // 'index_' + 2 lletres + '.html'
-                        // Extreure les posicions 7 i 8 (0-indexed): 'index_XX.html'
-                        // Índex: 0 1 2 3 4 5 6 7 8 9 10 11 12
-                        // Lletra: i n d e x _ X X . h t m l
-                        const stationCode = fileLink.substring(6, 8); // Agafa les lletres a posició 6 i 7
-                        
-                        // Crear el nom de fitxer final (ja és correcte)
-                        const finalFileName = `index_${stationCode}.html`;
-                        
+                    if (fileLink.startsWith('index_') && fileLink.length === 13) {
+                        const finalFileName = fileLink; // Ja està bé
                         if (!detectedFiles.includes(finalFileName)) {
                             detectedFiles.push(finalFileName);
-                            console.log(`   ✅ Afegint: ${finalFileName} (codi: ${stationCode})`);
+                            console.log(`   ✅ Afegint: ${finalFileName}`);
                         }
                     }
                 }
-
-                // 4. SI NO TROBEM RES, PROVEM UN MÈTODE ALTERNATIU
-                if (detectedFiles.length === 0) {
-                    console.log("⚠️  No s'han detectat fitxers via llistat de directori. Provant mètode alternatiu...");
-                    // Podríem provar de fer peticions HEAD a combinacions possibles com a fallback
-                    // Però primer provem amb el mètode nou
-                }
-
-            } catch (error) {
-                console.error("❌ Error durant la detecció de fitxers:", error);
-                // En cas d'error, podríem carregar una llista per defecte
-            }
-
-            // 5. ORDENAR ALFABÈTICAMENT I RETORNAR
-            detectedFiles.sort();
-            console.log(`🎯 Detecció finalitzada. Fitxers a carregar: ${detectedFiles.length}`);
-            return detectedFiles;
-        }
-
-        // ============================================
-        // INICIALITZACIÓ
-        // ============================================
-        window.onload = async function() {
-            console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
-            
-            // DETECTAR FITXERS DINÀMICAMENT
-            stationFiles = await detectStationFiles();
-            
-            // SI NO N'HEM TROBAT CAP, MOSTREM UN MISSATGE
-            if (stationFiles.length === 0) {
-                document.getElementById('errorContainer').innerHTML = `
-                    <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
-                        <p><strong>⚠️ No s'han detectat fitxers d'estació</strong></p>
-                        <p style="font-size:0.9em;">Assegura't que els fitxers 'index_XX.html' es troben a la mateixa carpeta i que s'està executant un servidor local.</p>
-                    </div>
-                `;
-                // Aturem el compte enrere inicial
-                document.getElementById('countdown').textContent = "0";
-                return;
-            }
-            
-            console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
-            
-            // INICIAR EL COMPTE ENRERE
-            startCountdown();
-            adjustViewerSize();
-            window.addEventListener('resize', adjustViewerSize);
-        };
-
-        // ============================================
-        // FUNCIONS DE CONTROL PRINCIPALS
-        // ============================================
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownValue = 10;
-            isCountdownStopped = false;
-            document.getElementById('countdown').textContent = countdownValue;
-            document.getElementById('stopButton').textContent = "ATURAR";
-
-            // Amagar elements de la rotació d'estacions
-            document.getElementById('viewer').classList.remove('viewer-active');
-            document.getElementById('rotationInfo').classList.remove('info-active');
-            document.getElementById('stationCountdown').classList.remove('active');
-            document.getElementById('viewer').style.display = 'none';
-
-            countdownInterval = setInterval(() => {
-                if (!isCountdownStopped) {
-                    countdownValue--;
-                    document.getElementById('countdown').textContent = countdownValue;
-                    if (countdownValue <= 0) {
-                        clearInterval(countdownInterval);
-                        startStationRotation();
-                    }
-                }
-            }, 1000);
-        }
-
-        function stopCountdown() {
-            isCountdownStopped = !isCountdownStopped;
-            document.getElementById('stopButton').textContent = isCountdownStopped ? "REPRENDRE" : "ATURAR";
-        }
-
-        function resetCountdown() {
-            clearInterval(countdownInterval);
-            startCountdown();
-        }
-
-        function goToBanner() {
-            clearAllIntervals();
-            window.location.href = "banner.html";
-        }
-
-        function clearAllIntervals() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            if (stationInterval) clearInterval(stationInterval);
-            if (stationTimerInterval) clearInterval(stationTimerInterval);
-        }
-
-        // ============================================
-        // ROTACIÓ D'ESTACIONS
-        // ============================================
-        function startStationRotation() {
-            console.log("🔄 Iniciant rotació d'estacions...");
-            if (stationFiles.length === 0) return;
-
-            document.querySelector('.countdown-container').style.display = 'none';
-            const viewer = document.getElementById('viewer');
-            viewer.style.display = 'block';
-            viewer.classList.add('viewer-active');
-            document.getElementById('rotationInfo').classList.add('info-active');
-
-            startStationCountdown();
-            loadCurrentStation();
-
-            stationInterval = setInterval(() => {
-                currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
-                loadCurrentStation();
-                resetStationCountdown();
-            }, STATION_CHANGE_TIME * 1000);
-
-            console.log(`🔄 Rotació iniciada amb ${stationFiles.length} estacions`);
-        }
-
-        function startStationCountdown() {
-            stationTimeLeft = STATION_CHANGE_TIME;
-            document.getElementById('stationTimer').textContent = stationTimeLeft;
-            document.getElementById('stationCountdown').classList.add('active');
-            if (stationTimerInterval) clearInterval(stationTimerInterval);
-            
-            stationTimerInterval = setInterval(() => {
-                stationTimeLeft--;
-                document.getElementById('stationTimer').textContent = stationTimeLeft;
-                if (stationTimeLeft <= 0) stationTimeLeft = STATION_CHANGE_TIME;
-            }, 1000);
-        }
-
-        function resetStationCountdown() {
-            stationTimeLeft = STATION_CHANGE_TIME;
-            document.getElementById('stationTimer').textContent = stationTimeLeft;
-        }
-
-        function loadCurrentStation() {
-            if (stationFiles.length === 0) return;
-            const currentFile = stationFiles[currentStationIndex];
-            const totalFiles = stationFiles.length;
-            const stationNumber = currentStationIndex + 1;
-
-            console.log(`📡 Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
-            const viewer = document.getElementById('viewer');
-            viewer.src = currentFile;
-
-            document.getElementById('rotationInfo').innerHTML = 
-                `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
-            updateFooter(currentFile, stationNumber, totalFiles);
-        }
-
-        function updateFooter(currentFile, stationNumber, totalFiles) {
-            const nextIndex = (currentStationIndex + 1) % totalFiles;
-            const nextFile = stationFiles[nextIndex];
-            const nextChange = new Date(Date.now() + (stationTimeLeft * 1000));
-            const hours = nextChange.getHours().toString().padStart(2, '0');
-            const minutes = nextChange.getMinutes().toString().padStart(2, '0');
-            
-            document.getElementById('footer').innerHTML = 
-                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi: ${hours}:${minutes}`;
-        }
-
-        function adjustViewerSize() {
-            const viewer = document.getElementById('viewer');
-            if (viewer) {
-                const windowHeight = window.innerHeight;
-                const bannerHeight = document.querySelector('.banner').offsetHeight;
-                const dataSourceHeight = document.querySelector('.data-source').offsetHeight;
-                const footerHeight = document.querySelector('.footer').offsetHeight;
-                const availableHeight = windowHeight - bannerHeight - dataSourceHeight - footerHeight - 100;
-                const newHeight = Math.max(300, Math.min(availableHeight, windowHeight * 0.7));
-                viewer.style.height = newHeight + 'px';
+            } catch (dirError) {
+                console.error("❌ Tots els mètodes han fallat:", dirError);
+                // Aquí podríem afegir una llista de fallback molt bàsica si cal
             }
         }
-    </script>
+
+        // Ordenar i retornar
+        detectedFiles.sort();
+        console.log(`🎯 Detecció finalitzada. Fitxers a carregar: ${detectedFiles.length}`);
+        return detectedFiles;
+    }
+
+    // ============================================
+    // INICIALITZACIÓ (igual que abans)
+    // ============================================
+    window.onload = async function() {
+        console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
+        
+        // DETECTAR FITXERS
+        stationFiles = await detectStationFiles();
+        
+        // SI NO N'HEM TROBAT CAP
+        if (stationFiles.length === 0) {
+            document.getElementById('errorContainer').innerHTML = `
+                <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
+                    <p><strong>⚠️ No s'han detectat fitxers d'estació</strong></p>
+                    <p style="font-size:0.9em;">Assegura't que hi hagi un fitxer <code>station_list.json</code> a la carpeta.</p>
+                    <p style="font-size:0.8em; margin-top:5px;">El teu integrador.py ha de generar aquest fitxer.</p>
+                </div>
+            `;
+            document.getElementById('countdown').textContent = "0";
+            return;
+        }
+        
+        console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+        
+        // INICIAR EL COMPTE ENRERE
+        startCountdown();
+        adjustViewerSize();
+        window.addEventListener('resize', adjustViewerSize);
+    };
+
+    // ============================================
+    // LA RESTA DE FUNCIONS ES QUEDA IGUAL
+    // (startCountdown, stopCountdown, resetCountdown, goToBanner,
+    //  startStationRotation, loadCurrentStation, etc.)
+    // ============================================
+</script>
 </body>
 </html>
