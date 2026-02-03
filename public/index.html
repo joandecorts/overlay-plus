@@ -256,67 +256,6 @@
         .footer strong {
             color: var(--secondary-blue);
         }
-        
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 10px;
-            }
-            
-            .countdown-container {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            #countdown {
-                font-size: 4rem;
-                margin: 5px 0;
-            }
-            
-            .controls {
-                gap: 8px;
-            }
-            
-            button {
-                min-width: 120px;
-                padding: 10px 15px;
-            }
-            
-            #viewer {
-                height: 50vh;
-                min-height: 250px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .banner {
-                padding: 12px 8px;
-                font-size: 1.4rem;
-            }
-            
-            #countdown {
-                font-size: 3.2rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            button {
-                width: 90%;
-                max-width: none;
-            }
-            
-            .station-countdown {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-            
-            #stationTimer {
-                font-size: 1.4rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -386,8 +325,7 @@
         async function detectStationFiles() {
             console.log("🔍 Carregant llista d'estacions...");
             
-            // LLISTA DIRECTA AL CODI (35 estacions)
-            const stationFiles = [
+            const stationFilesList = [
                 'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
                 'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
                 'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
@@ -399,36 +337,113 @@
                 'index_XO.html', 'index_VS.html', 'index_D7.html'
             ];
             
-            console.log(`🎯 Total fitxers a carregar: ${stationFiles.length}`);
+            console.log(`🎯 Total fitxers a carregar: ${stationFilesList.length}`);
+            return stationFilesList;
+        }
+
+        // ============================================
+        // 🎯 FUNCIÓ PER REFRESCAR LA PÀGINA
+        // ============================================
+        function goToBanner() {
+            console.log("✅ HOME CLICAT - Refrescant pàgina...");
+            window.location.reload(true);
+        }
+
+        // ============================================
+        // 🔧 MODIFICAR ELS ENLLAÇOS HOME DINS L'IFRAME
+        // ============================================
+        function fixHomeLinksInIframe() {
+            const iframe = document.getElementById('viewer');
+            if (!iframe) return;
             
-            // Mode local: verificar fitxers
-            if (window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')) {
-                console.log("🌐 Mode local: verificant fitxers...");
-                const existingFiles = [];
+            iframe.onload = function() {
+                console.log("🔧 Buscant enllaços Home dins l'iframe...");
                 
-                for (const file of stationFiles) {
-                    try {
-                        const response = await fetch(file, { method: 'HEAD' });
-                        if (response.ok) {
-                            existingFiles.push(file);
-                            console.log(`   ✅ Existeix: ${file}`);
-                        } else {
-                            console.log(`   ❌ No existeix: ${file}`);
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const allLinks = iframeDoc.querySelectorAll('a, button, [onclick*="index"]');
+                    
+                    let linksModified = 0;
+                    
+                    allLinks.forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        const text = link.textContent || link.innerHTML || '';
+                        const onclick = link.getAttribute('onclick') || '';
+                        
+                        const isHomeLink = 
+                            text.includes('🏠') || 
+                            text.includes('Home') || 
+                            text.toLowerCase().includes('home') ||
+                            href.includes('index.html') ||
+                            onclick.includes('index.html');
+                        
+                        if (isHomeLink) {
+                            console.log(`🔗 Trobat enllaç Home: "${text.substring(0, 20)}..."`);
+                            
+                            // ELIMINAR comportament antic
+                            link.removeAttribute('href');
+                            link.removeAttribute('onclick');
+                            link.removeAttribute('target');
+                            
+                            // AFEGIR comportament nou
+                            link.onclick = function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log("🖱️ Clic interceptat! Refrescant...");
+                                goToBanner();
+                                return false;
+                            };
+                            
+                            // Marcar visualment
+                            link.style.cursor = 'pointer';
+                            link.title = 'Clica per reiniciar';
+                            
+                            linksModified++;
                         }
-                    } catch {
-                        console.log(`   ⚠️  Error verificant: ${file}`);
+                    });
+                    
+                    console.log(`✅ Modificats ${linksModified} enllaços Home`);
+                    
+                    if (linksModified === 0) {
+                        console.log("⚠️ No s'han trobat enllaços Home, provant mètode alternatiu");
+                        setupGlobalClickInterceptor();
                     }
+                    
+                } catch (error) {
+                    console.error("❌ Error accedint a l'iframe:", error);
+                    setupGlobalClickInterceptor();
                 }
-                
-                if (existingFiles.length > 0) {
-                    console.log(`📋 ${existingFiles.length} fitxers trobats localment`);
-                    return existingFiles;
-                }
-            }
+            };
+        }
+
+        // ============================================
+        // 🌍 INTERCEPTOR GLOBAL DE CLIECS
+        // ============================================
+        function setupGlobalClickInterceptor() {
+            console.log("🌍 Configurant interceptor global...");
             
-            // Mode GitHub: retornar llista completa
-            console.log("🌍 Mode GitHub: usant llista completa");
-            return stationFiles;
+            // Interceptar window.open
+            const originalWindowOpen = window.open;
+            window.open = function(url, target, features) {
+                if (url && (url.includes('index.html') || url.includes('index_'))) {
+                    console.log("🔄 Interceptat window.open a index.html");
+                    goToBanner();
+                    return null;
+                }
+                return originalWindowOpen.call(this, url, target, features);
+            };
+            
+            // Interceptar clics a enllaços
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && link.href && link.href.includes('index.html')) {
+                    console.log("🔄 Interceptat clic a enllaç index.html");
+                    e.preventDefault();
+                    goToBanner();
+                }
+            }, true);
+            
+            console.log("✅ Interceptor global activat");
         }
 
         // ============================================
@@ -437,10 +452,8 @@
         window.onload = async function() {
             console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
             
-            // Carregar fitxers
             stationFiles = await detectStationFiles();
             
-            // Si no hi ha fitxers
             if (stationFiles.length === 0) {
                 document.getElementById('errorContainer').innerHTML = `
                     <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
@@ -453,7 +466,9 @@
             
             console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
             
-            // Iniciar compte enrere
+            // Activar interceptor global per si de cas
+            setupGlobalClickInterceptor();
+            
             startCountdown();
         };
 
@@ -463,30 +478,20 @@
         function startCountdown() {
             console.log("⏱️  Iniciant compte enrere...");
             
-            // Aturar interval anterior
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
+            if (countdownInterval) clearInterval(countdownInterval);
             
-            // Reset valors
             countdownValue = 10;
             isCountdownStopped = false;
-            
-            // Actualitzar display
             document.getElementById('countdown').textContent = countdownValue;
             document.getElementById('stopButton').textContent = "ATURAR";
             
-            // Amagar elements de rotació
             document.getElementById('viewer').classList.remove('viewer-active');
             document.getElementById('rotationInfo').classList.remove('info-active');
             document.getElementById('stationCountdown').classList.remove('active');
             document.getElementById('viewer').style.display = 'none';
             
-            // Mostrar contenidor compte enrere
             document.querySelector('.countdown-container').style.display = 'block';
             
-            // Iniciar nou interval
             countdownInterval = setInterval(function() {
                 if (!isCountdownStopped) {
                     countdownValue--;
@@ -500,7 +505,7 @@
                 }
             }, 1000);
             
-            console.log("✅ Compte enrere iniciat correctament");
+            console.log("✅ Compte enrere iniciat");
         }
         
         function stopCountdown() {
@@ -511,17 +516,6 @@
         function resetCountdown() {
             clearInterval(countdownInterval);
             startCountdown();
-        }
-        
-        function goToBanner() {
-            clearAllIntervals();
-            window.location.href = "banner.html";
-        }
-        
-        function clearAllIntervals() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            if (stationInterval) clearInterval(stationInterval);
-            if (stationTimerInterval) clearInterval(stationTimerInterval);
         }
 
         // ============================================
@@ -535,24 +529,21 @@
                 return;
             }
             
-            // Amagar compte enrere inicial
             document.querySelector('.countdown-container').style.display = 'none';
             
-            // Mostrar visualitzador
             const viewer = document.getElementById('viewer');
             viewer.style.display = 'block';
             viewer.classList.add('viewer-active');
             
-            // Mostrar informació
             document.getElementById('rotationInfo').classList.add('info-active');
             
-            // Iniciar compte enrere per canvi
             startStationCountdown();
             
-            // Carregar primera estació
+            // IMPORTANT: Activar el fix d'enllaços Home
+            fixHomeLinksInIframe();
+            
             loadCurrentStation();
             
-            // Iniciar rotació automàtica
             stationInterval = setInterval(() => {
                 currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
                 loadCurrentStation();
@@ -590,15 +581,12 @@
             
             console.log(`📡 Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
             
-            // Actualitzar iframe
             const viewer = document.getElementById('viewer');
             viewer.src = currentFile;
             
-            // Actualitzar informació
             document.getElementById('rotationInfo').innerHTML = 
                 `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
             
-            // Actualitzar peu
             updateFooter(currentFile, stationNumber, totalFiles);
         }
         
