@@ -24,7 +24,7 @@ import shutil
 # ============================================================================
 class Config:
     # Rutes d'entrada - MODIFICA SEGONS EL TEU ENTORN
-    DATA_DIR = Path(r"C:\Users\joant\Documents\OBS-Scripts\overlay-plus\src\data") 
+    DATA_DIR = Path("src/data")
     
     METADATA_FILE = DATA_DIR / "Totes_les_dades_de_les_estacions.xlsx"
     PERIODE_JSON = DATA_DIR / "resum_periode_meteocat.json"
@@ -1811,4 +1811,5 @@ def main():
     print("\n🎯 Per a cron-job.org: executa aquest script després dels scrapers")
 
 if __name__ == "__main__":
+
     main()
