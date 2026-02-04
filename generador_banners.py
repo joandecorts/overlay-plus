@@ -1090,23 +1090,41 @@ class HTMLGenerator:
                 <div class="data-value">{metadades[estacio_id]['altitud']} m</div>
             </div>'''
         
-        # 3. HORA ACTUALITZACIÓ (hora local, sense TU)
+       # 3. HORA ACTUALITZACIÓ (CONVERTIDA A HORA LOCAL, sense TU)
         if 'DATA_EXTRACCIO' in periode_data and periode_data['DATA_EXTRACCIO']:
             try:
-                # Convertir "2026-01-31 07:26:48" a "07:26"
-                hora_str = periode_data['DATA_EXTRACCIO']
-                if ' ' in hora_str:
-                    hora_part = hora_str.split(' ')[1]
-                    hora_formatted = hora_part[:5]  # HH:MM
+                # 1. Agafar la data i hora de les dades (assumim que és UTC)
+                # Exemple: "2026-01-31 07:26:48"
+                data_hora_utc_str = periode_data['DATA_EXTRACCIO']
+                
+                # 2. Convertir-la a objecte datetime
+                from datetime import datetime
+                # Assegura't que el format coincideix amb el que guarda el scraper
+                data_hora_utc = datetime.strptime(data_hora_utc_str, "%Y-%m-%d %H:%M:%S")
+                
+                # 3. Utilitzar la teva funció per convertir a local
+                # Necessitem la zona horària. Pots usar una data de referència de periode_data si la tens,
+                # o assumir que és avui. Un exemple simple:
+                if Utilitats.es_cest(data_hora_utc):
+                    desplacament = 2  # CEST
+                    zona = "CEST"
                 else:
-                    hora_formatted = hora_str
+                    desplacament = 1  # CET
+                    zona = "CET"
+                
+                data_hora_local = data_hora_utc + timedelta(hours=desplacament)
+                
+                # 4. Formatar per a la visualització: "HH:MM CET"
+                hora_formatted = data_hora_local.strftime("%H:%M") + " " + zona
                 
                 html += f'''
                 <div class="data-item">
                     <div class="data-label">Hora actualització:</div>
                     <div class="data-value" style="text-align: right;">{hora_formatted}</div>
                 </div>'''
-            except:
+            except Exception as e:
+                # Per depurar, pots imprimir l'error temporalment
+                # print(f"Error convertint hora: {e}")
                 pass
         
         # 4. COMARCA
@@ -1813,3 +1831,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
