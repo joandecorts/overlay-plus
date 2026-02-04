@@ -216,9 +216,10 @@ VARIABLES = {
 # ============================================================================
 # CONFIGURACIÓ DE RUTES
 # ============================================================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# 🔧 BASE_DIR ha de ser l'arrel del projecte (overlay-plus/), no la carpeta config/
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Fitxers de dades
+# Fitxers de dades - Ara sí: overlay-plus/src/data/
 DATA_DIR = os.path.join(BASE_DIR, 'src', 'data')
 os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -226,9 +227,9 @@ LATEST_DATA_FILE = os.path.join(DATA_DIR, 'latest_weather.json')
 HISTORICAL_DIR = os.path.join(DATA_DIR, 'historical')
 os.makedirs(HISTORICAL_DIR, exist_ok=True)
 
-# Fitxers HTML
+# Fitxers HTML - Ara sí: overlay-plus/public/
 HTML_TEMPLATE = os.path.join(BASE_DIR, 'banner_news_channel.html')
-OUTPUT_HTML = os.path.join(BASE_DIR, 'banner_output.html')
+OUTPUT_HTML = os.path.join(BASE_DIR, 'public', 'banner_output.html')  # Ajusta si cal
 
 # ============================================================================
 # CONFIGURACIÓ API METEOCAT
