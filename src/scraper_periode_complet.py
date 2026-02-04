@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 # scraper_periode_intelligent.py - Estratègia intel·ligent: 1 període avui + 4 períodes ahir
 
-# 🔧 1. PRIMER: Importar els mòduls bàsics i configurar el camí PER TROBAR config_banner
+# --- 1. TOTES LES IMPORTACIONS DE LLIBRERIES ESTÀNDARD ---
 import sys
+import time
+import json
+import re
 from pathlib import Path
+from datetime import datetime, timedelta
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# --- 2. CONFIGURAR EL CAMÍ PER TROBAR EL NOSTRE MÒDUL ---
 sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
 
-# 🔧 2. ARA SÍ: Importar la configuració central
+# --- 3. IMPORTAR LA NOSTRA CONFIGURACIÓ CENTRAL ---
 try:
     from config_banner import STATIONS, TODAY, DATA_DIR
     print("✅ Configuració importada correctament des de 'config_banner.py'")
@@ -569,3 +578,4 @@ if __name__ == "__main__":
     else:
 
         print("\n❌ No s'han obtingut dades.")
+
