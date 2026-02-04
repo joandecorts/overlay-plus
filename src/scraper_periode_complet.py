@@ -12,9 +12,6 @@ import re
 
 # --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
 try:
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
     from config_banner import STATIONS, TODAY, DATA_DIR
     print("✅ Configuració importada correctament des de 'config_banner.py'")
 except ImportError as e:
@@ -574,5 +571,4 @@ if __name__ == "__main__":
         print("🎉 PROCÉS INTEL·LIGENT COMPLETAT AMB ÈXIT")
         print("="*80)
     else:
-
         print("\n❌ No s'han obtingut dades.")
