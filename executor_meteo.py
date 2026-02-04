@@ -17,10 +17,15 @@ def executar_script_simple(nom_script, comanda):
     print(f"▶  Executant {nom_script}...")
     
     try:
-        # Executa sense capturar output (evita problemes d'encoding)
+        # 🔧 CANVI CLAU: Passa respostes automàtiques (1, 1, s) a l'entrada del scraper
+        # Això resol l'error EOFError en entorns no interactius com GitHub Actions
+        respostes_automatiques = b"1\n1\ns\n"  # Bytes, no text
+        
         result = subprocess.run(
             comanda,
-            shell=True  # <-- Això evita problemes d'encoding
+            shell=False,  # Important: shell=False perque funcioni input=
+            input=respostes_automatiques,
+            capture_output=False  # No capturem output per evitar problemes d'encoding
         )
         
         if result.returncode == 0:
@@ -40,41 +45,29 @@ def main():
     print("🚀 EXECUTOR SIMPLE METEO.CAT")
     print("=" * 60)
     
-    # Scrapers
     print("\n📥 EXECUTANT SCRAPERS...")
-    scraper1 = executar_script_simple(
-        "scraper_periode_complet.py", 
-        f'python "{SCRIPTS_DIR / "scraper_periode_complet.py"}"'
-    )
     
-    if not scraper1:
+    # 1. Scraper període
+    if not executar_script_simple(
+        "scraper_periode_complet.py",
+        ["python", str(SCRIPTS_DIR / "scraper_periode_complet.py")]
+    ):
         print("❌ Primer scraper fallat. Aturant.")
-        sys.exit(1)
+        return 1
     
-    scraper2 = executar_script_simple(
-        "scraper_resum_diari_final.py",
-        f'python "{SCRIPTS_DIR / "scraper_resum_diari_final.py"}"'
-    )
-    
-    if not scraper2:
+    # 2. Scraper diari
+    if not executar_script_simple(
+        "scraper_resum_diari_final.py", 
+        ["python", str(SCRIPTS_DIR / "scraper_resum_diari_final.py")]
+    ):
         print("❌ Segon scraper fallat. Aturant.")
-        sys.exit(1)
-    
-    # Generador de banners
-    print("\n🎨 GENERANT BANNERS INDIVIDUALS...")
-    if not executar_script_simple("generador_banners.py", "python generador_banners.py"):
-        print("❌ generador_banners.py fallat")
-        sys.exit(1)
-    
-    # Integrador
-    print("\n🌐 GENERANT BANNERS GENERALS...")
-    if not executar_script_simple("integrador.py", "python integrador.py"):
-        print("❌ integrador.py fallat")
-        sys.exit(1)
+        return 1
     
     print("\n" + "=" * 60)
-    print("🎉 TOT COMPLETAT CORRECTAMENT!")
+    print("✅ TOTS ELS SCRAPERS COMPLETATS")
     print("=" * 60)
+    
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
