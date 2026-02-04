@@ -31,17 +31,17 @@ jobs:
           pip install -r requirements.txt
           pip install pandas openpyxl
 
-      # 4. EXECUTAR ELS TEUS SCRAPERS
+      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS (CORREGIT)
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
-          echo "Executant integrador.py..."
-          python integrador.py
-          echo "Executant generador_banners.py..."
+          echo "Executant SCRAPER PRINCIPAL (executor_meteo.py)..."
+          python executor_meteo.py
+          echo "Executant generador de banners..."
           python generador_banners.py
           echo "=== PROCÉS FINALITZAT ==="
 
-      # 5. PUJAR CANVIS AL REPOSITORI (CORREGIT)
+      # 5. PUJAR CANVIS AL REPOSITORI
       - name: Commit and push all updates
         run: |
           # A. Configurar l'usuari per al commit
