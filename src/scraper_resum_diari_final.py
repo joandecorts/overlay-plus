@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# scraper_resum_diari_final.py - Genera Excel formatat, CSV i JSON
+# scraper_resum_diari_fix.py - Genera Excel formatat, CSV i JSON amb noms fixos
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -8,12 +8,6 @@ import time
 from datetime import datetime
 import json
 from pathlib import Path
-
-import sys
-from pathlib import Path
-
-# 🔧 SOLUCIÓ: Afegir la carpeta 'config' al camí de cerca de Python
-sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
 
 # --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
 try:
@@ -27,9 +21,9 @@ except ImportError as e:
 DIA_CONSULTA = TODAY.strftime("%Y-%m-%d")
 BASE_URL = "https://www.meteo.cat/observacions/xema/dades"
 DELAI_ENTRE_PETICIONS = 1
-HORA_CONSULTA = "T09:00Z"  # Hora per defecte que funciona
+HORA_CONSULTA = "T09:00Z"
 
-# Diccionari de variables (9 variables - sense DIRECCIO_VENT)
+# Diccionari de variables
 MAP_VARIABLES = {
     'Temperatura mitjana': 'TEMPERATURA_MITJANA_DIA',
     'Temperatura màxima': 'TEMPERATURA_MAXIMA_DIA',
@@ -39,8 +33,7 @@ MAP_VARIABLES = {
     'Gruix de neu màxim': 'GRUIX_NEU_MAX',
     'Ratxa màxima del vent': 'RATXA_VENT_MAX',
     'Irradiació solar global': 'RADIACIO_GLOBAL',
-    'Pressió atmosfèrica': 'PRESSIO_ATMOSFERICA'  # ✅ MANTINGUT
-    # ❌ ELIMINAT: 'Direcció del vent': 'DIRECCIO_VENT'
+    'Pressió atmosfèrica': 'PRESSIO_ATMOSFERICA'
 }
 
 def obtenir_info_estacio(codi_estacio):
@@ -62,13 +55,10 @@ def neteja_valor(text):
 
 def extreu_resum_diari_per_estacio(codi_estacio, dia):
     """Extreu dades d'una estació"""
-    # URL amb hora configurable
     url = f"{BASE_URL}?codi={codi_estacio}&dia={dia}{HORA_CONSULTA}"
     
-    # Obtenir info de l'estació
     info_estacio = obtenir_info_estacio(codi_estacio)
     
-    # Inicialitzar amb totes les columnes
     resultats = {nom_var: '' for nom_var in MAP_VARIABLES.values()}
     resultats['ID_ESTAC'] = codi_estacio
     resultats['NOM_ESTACIO'] = info_estacio['nom']
@@ -87,7 +77,6 @@ def extreu_resum_diari_per_estacio(codi_estacio, dia):
     taules = soup.find_all('table')
     taula_trobada = None
 
-    # Buscar taula
     for taula in taules:
         text_anterior = taula.find_previous(['h2', 'h3', 'strong', 'b'])
         if text_anterior and 'Resum diari' in str(text_anterior):
@@ -103,7 +92,6 @@ def extreu_resum_diari_per_estacio(codi_estacio, dia):
     if not taula_trobada:
         return resultats
 
-    # Processar files
     files = taula_trobada.find_all('tr')
     for fila in files:
         cel·les = fila.find_all(['td', 'th'])
@@ -133,7 +121,6 @@ def executa_scraping_estacions(llista_estacions, dia):
         dades = extreu_resum_diari_per_estacio(codi, dia)
         totes_dades.append(dades)
         
-        # ✅ COMPTATGE CORREGIT: comptem totes les variables de MAP_VARIABLES que tinguin valor
         dades_trobades = sum(1 for nom_var in MAP_VARIABLES.values() if dades.get(nom_var))
         print(f"{dades_trobades} vars" if dades_trobades > 0 else "sense dades")
 
@@ -152,7 +139,6 @@ def genera_excel_formatat(df, ruta_excel):
         df.to_excel(writer, index=False, sheet_name='Dades_Meteo')
         worksheet = writer.sheets['Dades_Meteo']
         
-        # Estils
         header_font = Font(bold=True, color="FFFFFF", size=12)
         header_fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
         border = Border(
@@ -163,7 +149,6 @@ def genera_excel_formatat(df, ruta_excel):
         )
         center_alignment = Alignment(horizontal='center', vertical='center')
         
-        # Aplicar format als capçaleres
         for col in range(1, len(df.columns) + 1):
             cell = worksheet.cell(row=1, column=col)
             cell.font = header_font
@@ -171,7 +156,6 @@ def genera_excel_formatat(df, ruta_excel):
             cell.alignment = center_alignment
             cell.border = border
             
-            # Ajustar amplada de columna
             col_letter = get_column_letter(col)
             max_length = max(
                 df.iloc[:, col-1].astype(str).map(len).max(),
@@ -179,14 +163,12 @@ def genera_excel_formatat(df, ruta_excel):
             )
             worksheet.column_dimensions[col_letter].width = min(max_length + 2, 30)
         
-        # Aplicar borders a totes les cel·les
         for row in worksheet.iter_rows(min_row=2, max_row=len(df)+1, max_col=len(df.columns)):
             for cell in row:
                 cell.border = border
-                if cell.column in [1, 2, 4]:  # ID, NOM, DATA
+                if cell.column in [1, 2, 4]:
                     cell.alignment = Alignment(vertical='center')
         
-        # Congelar panells (ID i NOM visibles)
         worksheet.freeze_panes = 'C2'
         
         writer.close()
@@ -202,50 +184,40 @@ def genera_excel_formatat(df, ruta_excel):
         return False
 
 def guarda_tots_formats(totes_dades, data_consulta):
-    """Guarda en tots els formats: Excel, CSV i JSON"""
+    """Guarda en tots els formats: Excel, CSV i JSON amb noms fixos"""
     if not totes_dades:
         return None, None, None
 
-    # Crear DataFrame
     df = pd.DataFrame(totes_dades)
     
-    # ORDENAR COLUMNES: Metadades primer, després variables meteorològiques
     columnes_metadades = [
         'ID_ESTAC', 'NOM_ESTACIO', 'NOM_ORIGINAL',
         'DATA_DIA', 'DATA_EXTRACCIO', 'URL_FONT'
     ]
     
-    # Separar variables meteorològiques (només les que estan a MAP_VARIABLES)
     columnes_meteo = [c for c in df.columns if c in MAP_VARIABLES.values()]
-    
-    # Ordenar variables meteorològiques alfabèticament
     columnes_meteo_ordenades = sorted(columnes_meteo)
-    
-    # Columnes finals
     columnes_ordenades = columnes_metadades + columnes_meteo_ordenades
     df = df[columnes_ordenades]
     
-    # Crear directori si no existeix
     directori_dades = Path(DATA_DIR)
     directori_dades.mkdir(parents=True, exist_ok=True)
     
-    # Timestamp per als noms
-    timestamp = datetime.now().strftime("%d%m%Y_%H%M%S")
-    nom_base = f"dades_dia_{timestamp}"
+    # NOMS FIXOS SIEMPRE IGUALES
+    nom_excel = "resum_diari_meteocat.xlsx"
+    nom_csv = "resum_diari_meteocat.csv"
+    nom_json = "resum_diari_meteocat.json"
     
-    # 1. EXCEL FORMATAT (.xlsx)
-    nom_excel = f"{nom_base}.xlsx"
+    # 1. EXCEL FORMATAT
     ruta_excel = directori_dades / nom_excel
     excel_ok = genera_excel_formatat(df, ruta_excel)
     
-    # 2. CSV SIMPLE (.csv)
-    nom_csv = f"{nom_base}.csv"
+    # 2. CSV SIMPLE
     ruta_csv = directori_dades / nom_csv
     df.to_csv(ruta_csv, index=False, encoding='utf-8-sig')
     print(f"📄 CSV simple guardat: {ruta_csv}")
     
     # 3. JSON PER AL BANNER
-    nom_json = f"{nom_base}.json"
     ruta_json = directori_dades / nom_json
     
     dades_json = {
@@ -269,87 +241,29 @@ def guarda_tots_formats(totes_dades, data_consulta):
 # --- EXECUCIÓ PRINCIPAL ---
 if __name__ == "__main__":
     print("\n" + "="*70)
-    print("🌤️  SCRAPER DE RESUM DIARI - Excel, CSV i JSON")
+    print("🌤️  SCRAPER DE RESUM DIARI - NOMS FIXOS")
     print("="*70)
-    print(f"⏰ Hora utilitzada: {HORA_CONSULTA}")
-
-    # OPCIONS
-    print(f"📋 Estacions disponibles: {len(STATIONS)}")
+    print(f"⏰ Hora: {HORA_CONSULTA}")
+    print(f"📅 Data: {DIA_CONSULTA}")
+    print(f"📋 Estacions: {len(STATIONS)}")
     
-    print("\n🎯 MODES D'EXECUCIÓ:")
-    print("1. TOTES les estacions")
-    print("2. Mode PROVES (Z3, XI, XJ, C6)")
-    print("3. Excloure UO i problemàtiques")
+    # EXECUCIÓ DIRECTA SENSE PREGUNTAS
+    estacions_a_processar = STATIONS
     
-    try:
-        opcio = int(input("\n👉 Selecciona opció (1-3): ").strip() or "1")
-    except:
-        opcio = 1
-    
-    if opcio == 1:
-        estacions_a_processar = STATIONS
-    elif opcio == 2:
-        codis_prova = ['Z3', 'XI', 'XJ', 'C6']
-        estacions_a_processar = [s for s in STATIONS if s['code'] in codis_prova]
-    elif opcio == 3:
-        codis_excloure = ['UO']  # Afegeix més aquí si cal
-        estacions_a_processar = [s for s in STATIONS if s['code'] not in codis_excloure]
-    else:
-        estacions_a_processar = STATIONS
-    
-    print(f"\n▶️  Estacions seleccionades: {len(estacions_a_processar)}")
-    
-    # Preguntar per canviar l'hora si es vol
-    canviar_hora = input(f"▶️  Canviar hora de consulta ({HORA_CONSULTA})? (s/n): ").strip().lower()
-    if canviar_hora == 's':
-        nova_hora = input("Nova hora (ex: T10:00Z): ").strip()
-        if nova_hora:
-            HORA_CONSULTA = nova_hora
-    
-    continuar = input("▶️  Continuar amb l'execució? (s/n): ").strip().lower()
-    if continuar != 's':
-        print("⏹️  Execució cancel·lada.")
-        sys.exit(0)
-
     # SCRAPING
     dades = executa_scraping_estacions(estacions_a_processar, DIA_CONSULTA)
-
-    # GUARDAR I INFORME
+    
+    # GUARDAR
     if dades:
         ruta_excel, ruta_csv, ruta_json = guarda_tots_formats(dades, DIA_CONSULTA)
         
         print("\n" + "="*70)
-        print("📊 RESULTATS GENERATS")
+        print("📊 FITXERS GENERATS (NOMS FIXOS)")
         print("="*70)
-        
-        # Estadístiques
-        # Comptem quantes de les variables de MAP_VARIABLES tenen dades en alguna estació
-        df_temp = pd.DataFrame(dades)
-        vars_amb_dades = sum(1 for var in MAP_VARIABLES.values() 
-                            if var in df_temp.columns and df_temp[var].notna().any())
-        
-        print(f"✅ Estacions processades: {len(dades)}")
-        print(f"📈 Variables amb dades: {vars_amb_dades}/{len(MAP_VARIABLES)}")
+        print(f"📊 Excel: resum_diari_meteocat.xlsx")
+        print(f"📄 CSV:   resum_diari_meteocat.csv")
+        print(f"📋 JSON:  resum_diari_meteocat.json")
         print(f"📁 Directori: {DATA_DIR}")
-        print()
-        print(f"📊 1. EXCEL formatat:   {Path(ruta_excel).name if ruta_excel else 'No generat'}")
-        print(f"📄 2. CSV simple:       {Path(ruta_csv).name}")
-        print(f"📋 3. JSON per banner:  {Path(ruta_json).name}")
-        print()
-        print("💡 Obre l'Excel per veure el format professional!")
         print("="*70)
-        
-        # Mostrar mostra ràpida
-        print("\n👁️  MOSTRA RÀPIDA (primera estació):")
-        print("-" * 50)
-        if dades:
-            primera = dades[0]
-            for clau in ['ID_ESTAC', 'NOM_ESTACIO', 'DATA_DIA', 
-                        'TEMPERATURA_MITJANA_DIA', 'PRECIPITACIO_ACUM_DIA', 'URL_FONT']:
-                if clau in primera:
-                    valor = primera[clau] if primera[clau] else '(buit)'
-                    print(f"{clau:<25}: {valor}")
-        
     else:
-
-        print("\n❌ No s'han obtingut dades. Revisa la connexió.")
+        print("\n❌ No s'han obtingut dades.")

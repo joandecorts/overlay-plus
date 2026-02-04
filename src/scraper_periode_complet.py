@@ -11,14 +11,6 @@ from pathlib import Path
 import re
 
 # --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
-import sys
-from pathlib import Path
-
-# 🔧 SOLUCIÓ: Afegir la carpeta 'config' al camí de cerca de Python
-# Això assegura que el mòdul 'config_banner' es trobi tant en local com a GitHub Actions
-sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
-
-# Ara la següent línia (la del 'try') ja hauria de funcionar
 try:
     from config_banner import STATIONS, TODAY, DATA_DIR
     print("✅ Configuració importada correctament des de 'config_banner.py'")
@@ -93,7 +85,7 @@ def calcular_hora_inicial_avui():
     ara_utc = datetime.utcnow()
     
     # Ajustar: restem 40 minuts per al retard típic de publicació
-    hora_ajustada = ara_utc - timedelta(minutes=40)
+    hora_ajustada = ara_utc - timedelta(minutes=20)  # ← TORNA A L'ORIGINAL
     
     # Arrodonim cap avall a la mitja hora anterior
     # Ex: 13:50 → 13:30, 14:20 → 14:00
@@ -409,112 +401,50 @@ def executa_scraping_intelligent(llista_estacions, mode):
     
     return totes_dades, totes_capcaleres
 
-def generar_excel_intelligent(dades_periode, dades_capcaleres):
-    """Genera Excel amb totes les dades"""
-    timestamp = datetime.now().strftime("%d%m%Y_%H%M%S")
-    nom_base = f"periode_intelligent_{timestamp}"
+def generar_fitxers_periode_fixos(dades_periode, dades_capcaleres):
+    """Genera els fitxers fixos resum_periode_meteocat amb les dades"""
     directori_dades = Path(DATA_DIR)
     directori_dades.mkdir(parents=True, exist_ok=True)
     
-    ruta_excel = directori_dades / f"{nom_base}.xlsx"
+    # Nom dels fitxers fixos (segons especificat)
+    nom_base = "resum_periode_meteocat"
     
-    with pd.ExcelWriter(ruta_excel, engine='openpyxl') as writer:
-        # FULLA 1: DADES DEL PERÍODE
-        if dades_periode:
-            df_periode = pd.DataFrame(dades_periode)
-            
-            # Identificar totes les columnes VAR_ (variables reals)
-            columnes_var = sorted([c for c in df_periode.columns if c.startswith('VAR_')])
-            
-            # Columnes ordenades: metadades → variables reals → noms Meteo.cat → columnes genèriques
-            columnes_metadades = [
-                'ID_ESTAC', 'NOM_ESTACIO', 'NOM_ORIGINAL', 'DATA_UTC',
-                'PERIODE_UTC', 'ES_AHIR', 'ESTAT', 'DATA_EXTRACCIO',
-                'HORA_CONSULTA_UTC', 'URL_FONT', 'CAPÇALERES_TROBADES', 'CAPÇALERES_LLISTAT'
-            ]
-            
-            columnes_meteo = ['TM', 'TX', 'TN', 'HR', 'PPT', 'VVM', 'DVM', 'VVX', 'PM', 'RS']
-            columnes_genèriques = sorted([c for c in df_periode.columns if c.startswith('Col_')])
-            
-            # Crear llista ordenada
-            columnes_finals = []
-            
-            # 1. Metadades
-            for col in columnes_metadades:
-                if col in df_periode.columns:
-                    columnes_finals.append(col)
-            
-            # 2. Variables reals (VAR_) - ORDENADES PER POSICIÓ
-            # Ordenar VAR_ per número si és possible
-            var_ordenades = sorted(columnes_var, key=lambda x: (
-                int(x.split('_')[1]) if x.split('_')[1].isdigit() else 999,
-                x
-            ))
-            columnes_finals.extend(var_ordenades)
-            
-            # 3. Noms Meteo.cat
-            for col in columnes_meteo:
-                if col in df_periode.columns and col not in columnes_finals:
-                    columnes_finals.append(col)
-            
-            # 4. Columnes genèriques
-            columnes_finals.extend(columnes_genèriques)
-            
-            # 5. Qualsevol altra columna
-            for col in df_periode.columns:
-                if col not in columnes_finals:
-                    columnes_finals.append(col)
-            
-            df_periode = df_periode[columnes_finals]
-            df_periode.to_excel(writer, sheet_name='Dades_Període', index=False)
-            
-            # Informació sobre les variables trobades
-            print(f"💾 Fulla 'Dades_Període': {len(dades_periode)} períodes")
-            print(f"   📈 Variables diferents: {len(columnes_var)}")
-            
-            # Comptar estacions amb neu
-            if 'VAR_GN_cm' in columnes_var:
-                estacions_neu = df_periode['VAR_GN_cm'].notna().sum()
-                print(f"   ❄️  Estacions amb neu: {estacions_neu}")
+    # --- GENERAR CSV ---
+    if dades_periode:
+        df_periode = pd.DataFrame(dades_periode)
         
-        # FULLA 2: ESTUDI DE CAPÇALERES
-        if dades_capcaleres:
-            df_capcaleres = pd.DataFrame(dades_capcaleres)
-            
-            columnes_ordenades = [
-                'ID_ESTAC', 'NOM_ESTACIO', 'ESTAT', 
-                'CAPÇALERES_TROBADES', 'CAPÇALERES_LLISTAT', 'URL_FONT'
-            ]
-            
-            columnes_existents = [col for col in columnes_ordenades if col in df_capcaleres.columns]
-            
-            # Columnes CAP_ (capçaleres reals)
-            columnes_cap = sorted([c for c in df_capcaleres.columns if c.startswith('CAP_')])
-            columnes_existents.extend(columnes_cap)
-            
-            # Columnes Col_
-            columnes_col = sorted([c for c in df_capcaleres.columns if c.startswith('Col_')])
-            columnes_existents.extend(columnes_col)
-            
-            for col in df_capcaleres.columns:
-                if col not in columnes_existents:
-                    columnes_existents.append(col)
-            
-            df_capcaleres = df_capcaleres[columnes_existents]
-            df_capcaleres.to_excel(writer, sheet_name='Estudi_Capçaleres', index=False)
-            print(f"💾 Fulla 'Estudi_Capçaleres': {len(dades_capcaleres)} estacions")
+        # Identificar columnes VAR_ per a ordre
+        columnes_var = sorted([c for c in df_periode.columns if c.startswith('VAR_')])
+        
+        # Columnes ordenades
+        columnes_metadades = [
+            'ID_ESTAC', 'NOM_ESTACIO', 'NOM_ORIGINAL', 'DATA_UTC',
+            'PERIODE_UTC', 'ES_AHIR', 'ESTAT', 'DATA_EXTRACCIO',
+            'HORA_CONSULTA_UTC', 'URL_FONT', 'CAPÇALERES_TROBADES', 'CAPÇALERES_LLISTAT'
+        ]
+        
+        columnes_finals = []
+        for col in columnes_metadades:
+            if col in df_periode.columns:
+                columnes_finals.append(col)
+        
+        # Afegir variables VAR_ ordenades
+        var_ordenades = sorted(columnes_var, key=lambda x: (
+            int(x.split('_')[1]) if x.split('_')[1].isdigit() else 999,
+            x
+        ))
+        columnes_finals.extend(var_ordenades)
+        
+        # Afegir la resta de columnes
+        columnes_restants = [c for c in df_periode.columns if c not in columnes_finals]
+        columnes_finals.extend(columnes_restants)
+        
+        df_periode = df_periode[columnes_finals]
+        ruta_csv = directori_dades / f"{nom_base}.csv"
+        df_periode.to_csv(ruta_csv, index=False, encoding='utf-8')
+        print(f"💾 CSV periòdic guardat: {ruta_csv}")
     
-    print(f"📊 Excel intel·ligent guardat: {ruta_excel}")
-    return ruta_excel
-
-def guardar_json_intelligent(dades_periode, dades_capcaleres):
-    """Guarda dades en format JSON"""
-    timestamp = datetime.now().strftime("%d%m%Y_%H%M%S")
-    nom_base = f"periode_intelligent_{timestamp}"
-    directori_dades = Path(DATA_DIR)
-    
-    ruta_json = directori_dades / f"{nom_base}.json"
-    
+    # --- GENERAR JSON ---
     dades_json = {
         'metadata': {
             'data_extractcio': datetime.now().isoformat(),
@@ -524,17 +454,35 @@ def guardar_json_intelligent(dades_periode, dades_capcaleres):
             'total_estacions_estudi': len(dades_capcaleres) if dades_capcaleres else 0,
             'max_intents_avui': MAX_INTENTS_AVUI,
             'max_periodes_ahir': MAX_PERIODES_AHIR,
-            'estratègia': 'intel·ligent_retroactiva'
+            'estrategia': 'intel·ligent_retroactiva'
         },
         'dades_periode': dades_periode if dades_periode else [],
         'estudi_capcaleres': dades_capcaleres if dades_capcaleres else []
     }
     
+    ruta_json = directori_dades / f"{nom_base}.json"
     with open(ruta_json, 'w', encoding='utf-8') as f:
         json.dump(dades_json, f, ensure_ascii=False, indent=2)
+    print(f"📋 JSON periòdic guardat: {ruta_json}")
     
-    print(f"📋 JSON intel·ligent guardat: {ruta_json}")
-    return ruta_json
+    # --- GENERAR EXCEL ---
+    if dades_periode or dades_capcaleres:
+        ruta_excel = directori_dades / f"{nom_base}.xlsx"
+        with pd.ExcelWriter(ruta_excel, engine='openpyxl') as writer:
+            # FULLA 1: DADES DEL PERÍODE
+            if dades_periode:
+                df_periode.to_excel(writer, sheet_name='Dades_Període', index=False)
+                print(f"📊 Excel periòdic (full Dades_Període): {len(dades_periode)} períodes")
+            
+            # FULLA 2: ESTUDI DE CAPÇALERES
+            if dades_capcaleres:
+                df_capcaleres = pd.DataFrame(dades_capcaleres)
+                df_capcaleres.to_excel(writer, sheet_name='Estudi_Capçaleres', index=False)
+                print(f"📊 Excel periòdic (full Estudi_Capçaleres): {len(dades_capcaleres)} estacions")
+        
+        print(f"📊 Excel periòdic guardat: {ruta_excel}")
+    
+    return ruta_csv, ruta_json, ruta_excel
 
 # --- EXECUCIÓ PRINCIPAL ---
 if __name__ == "__main__":
@@ -546,69 +494,36 @@ if __name__ == "__main__":
     print(f"📅 Avui: {datetime.now().strftime('%Y-%m-%d')}")
     print(f"📅 Ahir: {(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')}")
     
-    # SELECCIÓ D'ESTACIONS
+    # SELECCIÓ D'ESTACIONS - AUTOMÀTICA (TOTES)
     print(f"\n📋 Estacions disponibles: {len(STATIONS)}")
-    print("\n🎯 SELECCIÓ D'ESTACIONS:")
-    print("1. TOTES les estacions")
-    print("2. Mode PROVES (Z3, XI, XJ, C6, UO, W1)")
-    print("3. Excloure estacions problemàtiques")
-    
-    try:
-        opcio_estacions = int(input("\n👉 Selecciona opció (1-3): ").strip() or "1")
-    except:
-        opcio_estacions = 1
-    
-    if opcio_estacions == 1:
-        estacions_a_processar = STATIONS
-    elif opcio_estacions == 2:
-        codis_prova = ['Z3', 'XI', 'XJ', 'C6', 'UO', 'W1']
-        estacions_a_processar = [s for s in STATIONS if s.get('code') in codis_prova]
-    elif opcio_estacions == 3:
-        codis_excloure = ['UO']
-        estacions_a_processar = [s for s in STATIONS if s.get('code') not in codis_excloure]
-    else:
-        estacions_a_processar = STATIONS
-    
+    print("🎯 SELECCIÓ D'ESTACIONS: TOTES (mode automàtic)")
+    estacions_a_processar = STATIONS
     print(f"▶️  Estacions seleccionades: {len(estacions_a_processar)}")
     
-    # MODE D'EXECUCIÓ
-    print("\n🎯 MODE D'EXECUCIÓ:")
-    print("1. 📥 Capturar DADES del període (per al banner)")
-    print("2. 🔍 Estudi de CAPÇALERES disponibles")
-    print("3. ⚡ FER TOT (Captura dades + Estudi capçaleres)")
+    # MODE D'EXECUCIÓ - AUTOMÀTIC (FER TOT)
+    print("\n🎯 MODE D'EXECUCIÓ: FER TOT (Captura dades + Estudi capçaleres)")
+    mode_seleccionat = 'tot'
     
-    try:
-        opcio_mode_input = input("\n👉 Selecciona mode (1-3): ").strip()
-        opcio_mode = int(opcio_mode_input) if opcio_mode_input else 3
-    except:
-        opcio_mode = 3
-    
-    modes = {1: 'dades', 2: 'capcaleres', 3: 'tot'}
-    mode_seleccionat = modes.get(opcio_mode, 'tot')
-    
-    # CONFIRMACIÓ
+    # CONFIRMACIÓ - AUTOMÀTICA (CONTINUAR)
     print(f"\n📋 RESUM DE L'EXECUCIÓ:")
     print(f"   • Estacions: {len(estacions_a_processar)}")
     print(f"   • Mode: {mode_seleccionat}")
     print(f"   • Estratègia: 1 període avui + {MAX_PERIODES_AHIR} períodes ahir")
     print(f"   • Cerca retroactiva: {MAX_INTENTS_AVUI} intents màxims")
+    print(f"   • Fitxers de sortida: resum_periode_meteocat.{{csv,json,xlsx}}")
     
-    continuar = input("\n▶️  Continuar amb l'execució? (s/n): ").strip().lower()
-    if continuar != 's':
-        print("⏹️  Execució cancel·lada.")
-        sys.exit(0)
+    print("\n▶️  Execució automàtica iniciada...")
     
     # EXECUCIÓ
     dades_periode, dades_capcaleres = executa_scraping_intelligent(estacions_a_processar, mode_seleccionat)
     
-    # GENERACIÓ DE FITXERS
+    # GENERACIÓ DE FITXERS FIXOS
     if dades_periode or dades_capcaleres:
         print("\n" + "="*80)
-        print("💾 GENERANT FITXERS DE SORTIDA")
+        print("💾 GENERANT FITXERS FIXOS DE SORTIDA")
         print("="*80)
         
-        ruta_excel = generar_excel_intelligent(dades_periode, dades_capcaleres)
-        ruta_json = guardar_json_intelligent(dades_periode, dades_capcaleres)
+        ruta_csv, ruta_json, ruta_excel = generar_fitxers_periode_fixos(dades_periode, dades_capcaleres)
         
         # RESUM FINAL
         print("\n" + "="*80)
@@ -635,7 +550,7 @@ if __name__ == "__main__":
             
             if tot_vars:
                 print(f"\n🔍 VARIABLES DIFERENTS TROBADES ({len(tot_vars)}):")
-                for var in sorted(tot_vars)[:10]:  # Mostrar les 10 primeres
+                for var in sorted(tot_vars)[:10]:
                     estacions_amb_var = sum(1 for d in dades_periode if d.get('ESTAT') == 'OK' and d.get(var) not in ['', None])
                     print(f"   • {var}: {estacions_amb_var} estacions")
                 
@@ -648,12 +563,12 @@ if __name__ == "__main__":
                 print(f"\n❄️  NEU DETECTADA a {estacions_neu} estacions")
         
         print(f"\n📁 Directori: {DATA_DIR}")
-        print(f"📊 Excel: {Path(ruta_excel).name}")
+        print(f"📄 CSV: {Path(ruta_csv).name}")
         print(f"📋 JSON: {Path(ruta_json).name}")
+        print(f"📊 Excel: {Path(ruta_excel).name}")
         
         print("\n" + "="*80)
         print("🎉 PROCÉS INTEL·LIGENT COMPLETAT AMB ÈXIT")
         print("="*80)
     else:
-
         print("\n❌ No s'han obtingut dades.")
