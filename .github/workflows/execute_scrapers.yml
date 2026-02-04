@@ -50,9 +50,9 @@ jobs:
       # 5. Pujar TOTS els fitxers generats/actualitzats
       - name: Commit and push all updates
         run: |
-          # Configurar usuari de Git
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git add --all
+          git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
+          git push
           
           # Afegir TOTS els canvis (és la forma més segura)
           git add --all
