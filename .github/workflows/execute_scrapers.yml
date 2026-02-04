@@ -1,67 +1,73 @@
-name: Executar Scrapers i Actualitzar Dades
+#!/usr/bin/env python3
+"""
+executor_meteo.py - Versió simple sense problemes d'encoding
+"""
 
-on:
-  # 1. DISPARAT DES DE CRON-JOB.ORG (EXTERN)
-  repository_dispatch:
-    types: [trigger_scrapers]
-  
-  # 2. EXECUCIÓ MANUAL (GITHUB UI)
-  workflow_dispatch:
+import subprocess
+import sys
+from pathlib import Path
+from datetime import datetime
 
-jobs:
-  update-data:
-    runs-on: ubuntu-latest
+# Configuració
+BASE_DIR = Path(__file__).parent
+SCRIPTS_DIR = BASE_DIR / "src"
+
+def executar_script_simple(nom_script, comanda):
+    """Executa un script sense preocupar-se de l'encoding"""
+    print(f"▶  Executant {nom_script}...")
     
-    steps:
-      # 1. Obtenir el codi (AMB PERMISOS PER FER PUSH)
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    try:
+        # 🔧 CANVI CLAU: Passa respostes automàtiques (1, 1, s) a l'entrada del scraper
+        # Això resol l'error EOFError en entorns no interactius com GitHub Actions
+        respostes_automatiques = b"1\n1\ns\n"  # Bytes, no text
+        
+        result = subprocess.run(
+            comanda,
+            shell=False,  # Important: shell=False perque funcioni input=
+            input=respostes_automatiques,
+            capture_output=False  # No capturem output per evitar problemes d'encoding
+        )
+        
+        if result.returncode == 0:
+            print(f"✅ {nom_script} completat")
+            return True
+        else:
+            print(f"❌ {nom_script} fallat (codi: {result.returncode})")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error executant {nom_script}: {e}")
+        return False
 
-      # 2. Configurar Python
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+def main():
+    """Executa tot en ordre"""
+    print("=" * 60)
+    print("🚀 EXECUTOR SIMPLE METEO.CAT")
+    print("=" * 60)
+    
+    print("\n📥 EXECUTANT SCRAPERS...")
+    
+    # 1. Scraper període
+    if not executar_script_simple(
+        "scraper_periode_complet.py",
+        ["python", str(SCRIPTS_DIR / "scraper_periode_complet.py")]
+    ):
+        print("❌ Primer scraper fallat. Aturant.")
+        return 1
+    
+    # 2. Scraper diari
+    if not executar_script_simple(
+        "scraper_resum_diari_final.py", 
+        ["python", str(SCRIPTS_DIR / "scraper_resum_diari_final.py")]
+    ):
+        print("❌ Segon scraper fallat. Aturant.")
+        return 1
+    
+    print("\n" + "=" * 60)
+    print("✅ TOTS ELS SCRAPERS COMPLETATS")
+    print("=" * 60)
+    
+    return 0
 
-      # 3. Instal·lar dependències
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pandas openpyxl
-
-      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS (AMB INPUT AUTOMÀTIC)
-      - name: Run meteo.cat scrapers and generators
-        run: |
-          echo "=== INICIANT PROCÉS ==="
-          # Assegura't que estem a l'arrel del projecte
-          cd /home/runner/work/overlay-plus/overlay-plus
-          
-          echo "Executant SCRAPER PRINCIPAL (executor_meteo.py) amb respostes automàtiques..."
-          # 🔧 LÍNIA CLAU: Passa les respostes '1', '1', 's' (i Enter) al programa
-          # Això simula que un usuari ha premut 1, Enter, 1, Enter, s, Enter.
-          echo -e "1\n1\ns\n" | python executor_meteo.py
-          
-          echo "Executant generador de banners..."
-          python generador_banners.py
-          echo "=== PROCÉS FINALITZAT ==="
-
-      # 5. PUJAR CANVIS AL REPOSITORI
-      - name: Commit and push all updates
-        run: |
-          # A. Configurar l'usuari per al commit
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          
-          # B. Afegir tots els canvis
-          git add --all
-          
-          # C. Crear commit (ignora si no hi ha canvis)
-          git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
-          
-          # D. 🔑 FORÇAR AUTENTICACIÓ AMB TOKEN PER AL PUSH
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus
-          
-          # E. Fer push
-          git push
+if __name__ == "__main__":
+    sys.exit(main())
