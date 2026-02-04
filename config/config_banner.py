@@ -219,7 +219,7 @@ VARIABLES = {
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Fitxers de dades
-DATA_DIR = os.path.join(BASE_DIR, 'data')
+DATA_DIR = os.path.join(BASE_DIR, 'src', 'data')
 os.makedirs(DATA_DIR, exist_ok=True)
 
 LATEST_DATA_FILE = os.path.join(DATA_DIR, 'latest_weather.json')
