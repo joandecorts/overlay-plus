@@ -35,6 +35,9 @@ jobs:
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
+          # 🔧 CANVIA AL DIRECTORI ARREL DEL PROJECTE (PER TROBAR MÒDULS COM config_banner.py)
+          cd /home/runner/work/overlay-plus/overlay-plus
+          
           echo "Executant SCRAPER PRINCIPAL (executor_meteo.py)..."
           python executor_meteo.py
           echo "Executant generador de banners..."
