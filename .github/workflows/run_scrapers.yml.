@@ -2,12 +2,10 @@ name: Executar Scrapers i Actualitzar Dades
 
 on:
   # 1. CRON EXTERN (VIA cron-job.org)
-  # S'executa quan arriba el webhook amb l'esdeveniment 'trigger_scrapers'
   repository_dispatch:
     types: [trigger_scrapers]
   
-  # 2. EXECUCIÓ MANUAL (GITHUB UI)
-  # Permet executar l'acció manualment des de la pestanya "Actions" de GitHub.
+  # 2. EXECUCIÓ MANUAL
   workflow_dispatch:
 
 jobs:
@@ -15,57 +13,52 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Obtenir el codi del repositori
+      # 1. Obtenir el codi (AMB PERMISOS PER FER PUSH)
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # ⚠️ ÉS MOLT IMPORTANT afegir aquest token per poder fer push després
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # 2. Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # 🔧 Potser cal ajustar la versió
+          python-version: '3.11'
 
       # 3. Instal·lar dependències
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          # 🔧 Afegeix aquí altres comandes d'instal·lació si calen
+          # Instal·la pandas per llegir Excel si cal
+          pip install pandas openpyxl
 
       # 4. EXECUTAR ELS TEUS SCRAPERS
-      - name: Run meteo.cat scrapers
+      - name: Run meteo.cat scrapers and generators
         run: |
-          # 🔧 ⚠️ AJUSTA AQUESTES RUTES!
-          # Els següents són exemples. Canvia els noms i l'ordre dels scripts
-          # si cal treballar des d'un directori específic, fes 'cd src' abans.
+          echo "=== INICIANT PROCÉS ==="
           
-          echo "=== INICIANT ELS SCRAPERS ==="
-          # Exemple: Executar des de l'arrel del projecte
-          python executor_meteo.py
-          # Exemple: Executar un altre script
+          # A) Executar l'integrador principal (des de l'arrel)
+          echo "Executant integrador.py..."
+          python integrador.py
+          
+          # B) Executar el generador de banners (des de l'arrel)
+          echo "Executant generador_banners.py..."
           python generador_banners.py
-          echo "=== SCRAPERS FINALITZATS ==="
+          
+          echo "=== PROCÉS FINALITZAT ==="
 
-      # 5. Pujar els canvis (els nous fitxers de dades) al repositori
-      - name: Commit and push updated data files
+      # 5. Pujar TOTS els fitxers generats/actualitzats
+      - name: Commit and push all updates
         run: |
-          echo "Preparant per pujar els canvis a GitHub..."
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          # Configurar usuari de Git
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           
-          # 🔧 ⚠️ AJUSTA AQUESTES RUTES!
-          # Afegeix aquí la ruta exacta dels fitxers que generen els teus scripts
-          # Exemple: si generen .xlsx a la carpeta 'data'
-          git add src/data/*.xlsx
-          # Exemple: si generen .json a la carpeta 'public'
-          git add public/*.json
-          # Si cal afegir tot el que hagi canviat:
-          # git add --all
+          # Afegir TOTS els canvis (és la forma més segura)
+          git add --all
           
-          # Fem el commit. Si no hi ha canvis, la comanda fallarà suau.
-          git commit -m "Automated update: data files [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
+          # Commit (ignora error si no hi ha canvis)
+          git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || exit 0
           
-          # Fem el push dels canvis al repositori
+          # Push
           git push
