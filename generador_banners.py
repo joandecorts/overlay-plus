@@ -928,16 +928,33 @@ class HTMLGenerator:
         - Centre: Copyright + email
         - Dreta: Hora d'actualització en format local
         """
-        # Hora d'actualització (format europeu, hora local)
+         # Hora d'actualització (format europeu, hora local)
         if hora_actualitzacio:
             try:
-                # Convertir de "2026-01-31 07:26:48" a "31/01/2026 07:26:48"
-                dt = datetime.strptime(hora_actualitzacio, "%Y-%m-%d %H:%M:%S")
-                hora_formatted = dt.strftime("%d/%m/%Y %H:%M:%S")
+                # Convertir de "2026-01-31 07:26:48" a objecte datetime (assumim que és UTC)
+                dt_utc = datetime.strptime(hora_actualitzacio, "%Y-%m-%d %H:%M:%S")
+                # 🔧 CONVERTIR UTC A HORA LOCAL (CET/CEST)
+                if Utilitats.es_cest(dt_utc):
+                    dt_local = dt_utc + timedelta(hours=2)
+                    zona = "CEST"
+                else:
+                    dt_local = dt_utc + timedelta(hours=1)
+                    zona = "CET"
+                # Formatar per a la visualització: "31/01/2026 08:26:48 CET"
+                hora_formatted = dt_local.strftime("%d/%m/%Y %H:%M:%S") + " " + zona
             except:
+                # Si falla la conversió, tornar a l'original (UTC)
                 hora_formatted = hora_actualitzacio
         else:
-            hora_formatted = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            # Si no hi ha hora_actualitzacio, agafar l'hora actual i convertir-la a local
+            ara_utc = datetime.utcnow()
+            if Utilitats.es_cest(ara_utc):
+                ara_local = ara_utc + timedelta(hours=2)
+                zona = "CEST"
+            else:
+                ara_local = ara_utc + timedelta(hours=1)
+                zona = "CET"
+            hora_formatted = ara_local.strftime("%d/%m/%Y %H:%M:%S") + " " + zona
         
         return f"""
     <div class="overlay-footer">
@@ -1831,4 +1848,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
