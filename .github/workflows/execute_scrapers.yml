@@ -1,11 +1,11 @@
 name: Executar Scrapers i Actualitzar Dades
 
 on:
-  # 1. CRON EXTERN (VIA cron-job.org)
+  # 1. DISPARAT DES DE CRON-JOB.ORG (EXTERN)
   repository_dispatch:
     types: [trigger_scrapers]
   
-  # 2. EXECUCIÓ MANUAL
+  # 2. EXECUCIÓ MANUAL (GITHUB UI)
   workflow_dispatch:
 
 jobs:
@@ -29,36 +29,33 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          # Instal·la pandas per llegir Excel si cal
           pip install pandas openpyxl
 
       # 4. EXECUTAR ELS TEUS SCRAPERS
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
-          
-          # A) Executar l'integrador principal (des de l'arrel)
           echo "Executant integrador.py..."
           python integrador.py
-          
-          # B) Executar el generador de banners (des de l'arrel)
           echo "Executant generador_banners.py..."
           python generador_banners.py
-          
           echo "=== PROCÉS FINALITZAT ==="
 
-      # 5. Pujar TOTS els fitxers generats/actualitzats
+      # 5. PUJAR CANVIS AL REPOSITORI (CORREGIT)
       - name: Commit and push all updates
         run: |
-          # Configura l'usuari de Git (AQUEST ÉS EL SECRET)
+          # A. Configurar l'usuari per al commit
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           
-          # Afegir TOTS els canvis (és la forma més segura)
+          # B. Afegir tots els canvis
           git add --all
           
-          # Commit (ignora error si no hi ha canvis)
+          # C. Crear commit (ignora si no hi ha canvis)
           git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
           
-          # Push
+          # D. 🔑 FORÇAR AUTENTICACIÓ AMB TOKEN PER AL PUSH
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus
+          
+          # E. Fer push
           git push
