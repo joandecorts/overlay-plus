@@ -11,6 +11,14 @@ from pathlib import Path
 import re
 
 # --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
+import sys
+from pathlib import Path
+
+# 🔧 SOLUCIÓ: Afegir la carpeta 'config' al camí de cerca de Python
+# Això assegura que el mòdul 'config_banner' es trobi tant en local com a GitHub Actions
+sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
+
+# Ara la següent línia (la del 'try') ja hauria de funcionar
 try:
     from config_banner import STATIONS, TODAY, DATA_DIR
     print("✅ Configuració importada correctament des de 'config_banner.py'")
@@ -647,4 +655,5 @@ if __name__ == "__main__":
         print("🎉 PROCÉS INTEL·LIGENT COMPLETAT AMB ÈXIT")
         print("="*80)
     else:
+
         print("\n❌ No s'han obtingut dades.")
