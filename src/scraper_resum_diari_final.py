@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 # scraper_resum_diari_fix.py - Genera Excel formatat, CSV i JSON amb noms fixos
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-import sys
-import time
-from datetime import datetime
-import json
-from pathlib import Path
 
-# --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
+# 🔧 1. PRIMER: Importar els mòduls bàsics i configurar el camí PER TROBAR config_banner
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
+
+# 🔧 2. ARA SÍ: Importar la configuració central
 try:
     from config_banner import STATIONS, TODAY, DATA_DIR
     print("✅ Configuració importada correctament des de 'config_banner.py'")
@@ -266,4 +263,5 @@ if __name__ == "__main__":
         print(f"📁 Directori: {DATA_DIR}")
         print("="*70)
     else:
+
         print("\n❌ No s'han obtingut dades.")
