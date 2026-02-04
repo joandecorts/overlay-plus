@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Banner Scroll Meteorològic joandecorts.io</title>
+    <style>
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #00bcd4;
+            --accent-orange: #ff9800;
+            --dark-bg: #0a2d5e;
+            --light-bg: #1a5f7a;
+            --text-light: #ffffff;
+            --text-muted: #b0e0e6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), var(--light-bg));
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* BANNER SUPERIOR */
+        .banner {
+            background: linear-gradient(90deg, var(--primary-blue), #283593);
+            color: var(--text-light);
+            text-align: center;
+            padding: 15px 10px;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid var(--secondary-blue);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            z-index: 1000;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        
+        /* LÍNIA DE FONT DE DADES */
+        .data-source {
+            font-size: clamp(0.7rem, 2vw, 0.85rem);
+            color: #4caf50;
+            font-style: italic;
+            text-align: center;
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            flex-shrink: 0;
+            line-height: 1.3;
+        }
+        
+        .data-source a {
+            color: #80e27e;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+        
+        /* CONTENIDOR CENTRAL */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+        
+        /* COMPTE ENRERE INICIAL */
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: clamp(20px, 4vw, 30px) clamp(15px, 4vw, 40px);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--secondary-blue);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+        
+        #countdown {
+            font-size: clamp(3.5rem, 10vw, 5rem);
+            font-weight: bold;
+            color: var(--secondary-blue);
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        
+        .countdown-label {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-muted);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        /* BOTONS */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        button {
+            padding: 12px 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            flex: 1;
+            min-width: 140px;
+            max-width: 200px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        #goButton {
+            background: linear-gradient(to right, var(--secondary-blue), #0097a7);
+            color: white;
+        }
+        
+        #stopButton {
+            background: linear-gradient(to right, var(--accent-orange), #f57c00);
+            color: white;
+        }
+        
+        #resetButton {
+            background: linear-gradient(to right, #4caf50, #388e3c);
+            color: white;
+        }
+        
+        /* COMPTE ENRERE PER CANVI D'ESTACIÓ */
+        .station-countdown {
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            border: 2px solid var(--accent-orange);
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            animation: pulse 2s infinite;
+        }
+        
+        .station-countdown.active {
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0% { border-color: var(--accent-orange); }
+            50% { border-color: #ffcc80; box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+            100% { border-color: var(--accent-orange); }
+        }
+        
+        #stationTimer {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            font-weight: bold;
+            color: var(--accent-orange);
+            font-family: 'Courier New', monospace;
+            margin-left: 8px;
+        }
+        
+        /* VISUALITZADOR D'ESTACIONS */
+        #viewer {
+            width: 100%;
+            height: 60vh;
+            min-height: 300px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            background: white;
+            display: none;
+            margin-top: 15px;
+            border: 2px solid var(--primary-blue);
+            flex: 1;
+        }
+        
+        .viewer-active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* INFO DE ROTACIÓ */
+        .rotation-info {
+            background: rgba(26, 35, 126, 0.85);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: center;
+            border-left: 3px solid var(--secondary-blue);
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .info-active {
+            display: block;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #aaa;
+            border-top: 2px solid #333;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+        
+        .footer strong {
+            color: var(--secondary-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- BANNER SUPERIOR -->
+    <div class="banner">
+        🏔️ Banner Scroll Meteorològic joandecorts.io 🏔️
+    </div>
+    
+    <!-- LÍNIA DE FONT DE DADES -->
+    <div class="data-source">
+        Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
+    </div>
+    
+    <!-- CONTINGUT PRINCIPAL -->
+    <div class="main-container">
+        <div class="countdown-container">
+            <div class="countdown-label">Inici presentació automàtica en...</div>
+            <div id="countdown">10</div>
+            <div class="countdown-label">segons</div>
+            
+            <div class="controls">
+                <button id="goButton" onclick="goToBanner()">BANNER.HTML</button>
+                <button id="stopButton" onclick="stopCountdown()">ATURAR</button>
+                <button id="resetButton" onclick="resetCountdown()">REINICIAR</button>
+            </div>
+        </div>
+        
+        <!-- COMPTE ENRERE PER CANVI D'ESTACIÓ -->
+        <div class="station-countdown" id="stationCountdown">
+            Proper canvi d'estació en: <span id="stationTimer">120</span> segons
+        </div>
+        
+        <!-- VISUALITZADOR D'ESTACIONS -->
+        <iframe id="viewer" title="Visualitzador d'Estacions"></iframe>
+        
+        <!-- INFO DE ROTACIÓ -->
+        <div class="rotation-info" id="rotationInfo">
+            Carregant estacions...
+        </div>
+        
+        <!-- MISSATGE D'ERROR -->
+        <div id="errorContainer"></div>
+    </div>
+    
+    <!-- PEU DE PÀGINA -->
+    <div class="footer" id="footer">
+        Sistema de visualització automàtica • Estacions Meteo.cat
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓ
+        // ============================================
+        const STATION_CHANGE_TIME = 120;
+        let stationTimeLeft = STATION_CHANGE_TIME;
+        let stationTimerInterval = null;
+        let countdownValue = 10;
+        let countdownInterval = null;
+        let isCountdownStopped = false;
+        let stationFiles = [];
+        let currentStationIndex = 0;
+        let stationInterval = null;
+
+        // ============================================
+        // FUNCIÓ: DETECTAR FITXERS
+        // ============================================
+        async function detectStationFiles() {
+            console.log("🔍 Carregant llista d'estacions...");
+            
+            const stationFilesList = [
+                'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
+                'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
+                'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
+                'index_UO.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
+                'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
+                'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
+                'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
+                'index_XO.html', 'index_VS.html', 'index_D7.html'
+            ];
+            
+            console.log(`🎯 Total fitxers a carregar: ${stationFilesList.length}`);
+            return stationFilesList;
+        }
+
+        // ============================================
+        // 🎯 FUNCIÓ PER REFRESCAR LA PÀGINA
+        // ============================================
+        function goToBanner() {
+            console.log("✅ HOME CLICAT - Refrescant pàgina...");
+            window.location.reload(true);
+        }
+
+        // ============================================
+        // 🔧 MODIFICAR ELS ENLLAÇOS HOME DINS L'IFRAME
+        // ============================================
+        function fixHomeLinksInIframe() {
+            const iframe = document.getElementById('viewer');
+            if (!iframe) return;
+            
+            iframe.onload = function() {
+                console.log("🔧 Buscant enllaços Home dins l'iframe...");
+                
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const allLinks = iframeDoc.querySelectorAll('a, button, [onclick*="index"]');
+                    
+                    let linksModified = 0;
+                    
+                    allLinks.forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        const text = link.textContent || link.innerHTML || '';
+                        const onclick = link.getAttribute('onclick') || '';
+                        
+                        const isHomeLink = 
+                            text.includes('🏠') || 
+                            text.includes('Home') || 
+                            text.toLowerCase().includes('home') ||
+                            href.includes('index.html') ||
+                            onclick.includes('index.html');
+                        
+                        if (isHomeLink) {
+                            console.log(`🔗 Trobat enllaç Home: "${text.substring(0, 20)}..."`);
+                            
+                            // ELIMINAR comportament antic
+                            link.removeAttribute('href');
+                            link.removeAttribute('onclick');
+                            link.removeAttribute('target');
+                            
+                            // AFEGIR comportament nou
+                            link.onclick = function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log("🖱️ Clic interceptat! Refrescant...");
+                                goToBanner();
+                                return false;
+                            };
+                            
+                            // Marcar visualment
+                            link.style.cursor = 'pointer';
+                            link.title = 'Clica per reiniciar';
+                            
+                            linksModified++;
+                        }
+                    });
+                    
+                    console.log(`✅ Modificats ${linksModified} enllaços Home`);
+                    
+                    if (linksModified === 0) {
+                        console.log("⚠️ No s'han trobat enllaços Home, provant mètode alternatiu");
+                        setupGlobalClickInterceptor();
+                    }
+                    
+                } catch (error) {
+                    console.error("❌ Error accedint a l'iframe:", error);
+                    setupGlobalClickInterceptor();
+                }
+            };
+        }
+
+        // ============================================
+        // 🌍 INTERCEPTOR GLOBAL DE CLIECS
+        // ============================================
+        function setupGlobalClickInterceptor() {
+            console.log("🌍 Configurant interceptor global...");
+            
+            // Interceptar window.open
+            const originalWindowOpen = window.open;
+            window.open = function(url, target, features) {
+                if (url && (url.includes('index.html') || url.includes('index_'))) {
+                    console.log("🔄 Interceptat window.open a index.html");
+                    goToBanner();
+                    return null;
+                }
+                return originalWindowOpen.call(this, url, target, features);
+            };
+            
+            // Interceptar clics a enllaços
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && link.href && link.href.includes('index.html')) {
+                    console.log("🔄 Interceptat clic a enllaç index.html");
+                    e.preventDefault();
+                    goToBanner();
+                }
+            }, true);
+            
+            console.log("✅ Interceptor global activat");
+        }
+
+        // ============================================
+        // INICIALITZACIÓ
+        // ============================================
+        window.onload = async function() {
+            console.log("🚀 Banner Scroll Meteorològic - Inicialitzant");
+            
+            stationFiles = await detectStationFiles();
+            
+            if (stationFiles.length === 0) {
+                document.getElementById('errorContainer').innerHTML = `
+                    <div style="background: rgba(255,152,0,0.9); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
+                        <p><strong>⚠️ No s'han detectat fitxers d'estació</strong></p>
+                    </div>
+                `;
+                document.getElementById('countdown').textContent = "0";
+                return;
+            }
+            
+            console.log(`✅ S'utilitzaran ${stationFiles.length} fitxers d'estació`);
+            
+            // Activar interceptor global per si de cas
+            setupGlobalClickInterceptor();
+            
+            startCountdown();
+        };
+
+        // ============================================
+        // FUNCIONS DE COMPTE ENRERE
+        // ============================================
+        function startCountdown() {
+            console.log("⏱️  Iniciant compte enrere...");
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownValue = 10;
+            isCountdownStopped = false;
+            document.getElementById('countdown').textContent = countdownValue;
+            document.getElementById('stopButton').textContent = "ATURAR";
+            
+            document.getElementById('viewer').classList.remove('viewer-active');
+            document.getElementById('rotationInfo').classList.remove('info-active');
+            document.getElementById('stationCountdown').classList.remove('active');
+            document.getElementById('viewer').style.display = 'none';
+            
+            document.querySelector('.countdown-container').style.display = 'block';
+            
+            countdownInterval = setInterval(function() {
+                if (!isCountdownStopped) {
+                    countdownValue--;
+                    document.getElementById('countdown').textContent = countdownValue;
+                    
+                    if (countdownValue <= 0) {
+                        console.log("⏰ Compte enrere finalitzat, iniciant rotació...");
+                        clearInterval(countdownInterval);
+                        startStationRotation();
+                    }
+                }
+            }, 1000);
+            
+            console.log("✅ Compte enrere iniciat");
+        }
+        
+        function stopCountdown() {
+            isCountdownStopped = !isCountdownStopped;
+            document.getElementById('stopButton').textContent = isCountdownStopped ? "REPRENDRE" : "ATURAR";
+        }
+        
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            startCountdown();
+        }
+
+        // ============================================
+        // FUNCIONS DE ROTACIÓ D'ESTACIONS
+        // ============================================
+        function startStationRotation() {
+            console.log("🔄 Iniciant rotació d'estacions...");
+            
+            if (stationFiles.length === 0) {
+                console.error("❌ No hi ha fitxers per carregar!");
+                return;
+            }
+            
+            document.querySelector('.countdown-container').style.display = 'none';
+            
+            const viewer = document.getElementById('viewer');
+            viewer.style.display = 'block';
+            viewer.classList.add('viewer-active');
+            
+            document.getElementById('rotationInfo').classList.add('info-active');
+            
+            startStationCountdown();
+            
+            // IMPORTANT: Activar el fix d'enllaços Home
+            fixHomeLinksInIframe();
+            
+            loadCurrentStation();
+            
+            stationInterval = setInterval(() => {
+                currentStationIndex = (currentStationIndex + 1) % stationFiles.length;
+                loadCurrentStation();
+                resetStationCountdown();
+            }, STATION_CHANGE_TIME * 1000);
+            
+            console.log(`🔄 Rotació iniciada amb ${stationFiles.length} estacions`);
+        }
+        
+        function startStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+            document.getElementById('stationCountdown').classList.add('active');
+            
+            if (stationTimerInterval) clearInterval(stationTimerInterval);
+            
+            stationTimerInterval = setInterval(() => {
+                stationTimeLeft--;
+                document.getElementById('stationTimer').textContent = stationTimeLeft;
+                if (stationTimeLeft <= 0) stationTimeLeft = STATION_CHANGE_TIME;
+            }, 1000);
+        }
+        
+        function resetStationCountdown() {
+            stationTimeLeft = STATION_CHANGE_TIME;
+            document.getElementById('stationTimer').textContent = stationTimeLeft;
+        }
+        
+        function loadCurrentStation() {
+            if (stationFiles.length === 0) return;
+            
+            const currentFile = stationFiles[currentStationIndex];
+            const totalFiles = stationFiles.length;
+            const stationNumber = currentStationIndex + 1;
+            
+            console.log(`📡 Carregant estació ${stationNumber}/${totalFiles}: ${currentFile}`);
+            
+            const viewer = document.getElementById('viewer');
+            viewer.src = currentFile;
+            
+            document.getElementById('rotationInfo').innerHTML = 
+                `🏔️ <strong>ESTACIÓ ${stationNumber} de ${totalFiles}</strong> • ${currentFile}`;
+            
+            updateFooter(currentFile, stationNumber, totalFiles);
+        }
+        
+        function updateFooter(currentFile, stationNumber, totalFiles) {
+            const nextIndex = (currentStationIndex + 1) % totalFiles;
+            const nextFile = stationFiles[nextIndex];
+            const nextChange = new Date(Date.now() + (stationTimeLeft * 1000));
+            const hours = nextChange.getHours().toString().padStart(2, '0');
+            const minutes = nextChange.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('footer').innerHTML = 
+                `<strong>${currentFile}</strong> • Estació ${stationNumber}/${totalFiles} • Canvi: ${hours}:${minutes}`;
+        }
+    </script>
+</body>
+</html>
