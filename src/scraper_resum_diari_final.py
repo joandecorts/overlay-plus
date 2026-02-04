@@ -9,6 +9,12 @@ from datetime import datetime
 import json
 from pathlib import Path
 
+import sys
+from pathlib import Path
+
+# 🔧 SOLUCIÓ: Afegir la carpeta 'config' al camí de cerca de Python
+sys.path.insert(0, str(Path(__file__).parent.parent / 'config'))
+
 # --- IMPORTACIÓ DE LA CONFIGURACIÓ CENTRAL ---
 try:
     from config_banner import STATIONS, TODAY, DATA_DIR
@@ -345,4 +351,5 @@ if __name__ == "__main__":
                     print(f"{clau:<25}: {valor}")
         
     else:
+
         print("\n❌ No s'han obtingut dades. Revisa la connexió.")
