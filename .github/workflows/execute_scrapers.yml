@@ -31,15 +31,18 @@ jobs:
           pip install -r requirements.txt
           pip install pandas openpyxl
 
-      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS (CORREGIT)
+      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS (AMB INPUT AUTOMÀTIC)
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
-          # 🔧 CANVIA AL DIRECTORI ARREL DEL PROJECTE (PER TROBAR MÒDULS COM config_banner.py)
+          # Assegura't que estem a l'arrel del projecte
           cd /home/runner/work/overlay-plus/overlay-plus
           
-          echo "Executant SCRAPER PRINCIPAL (executor_meteo.py)..."
-          python executor_meteo.py
+          echo "Executant SCRAPER PRINCIPAL (executor_meteo.py) amb respostes automàtiques..."
+          # 🔧 LÍNIA CLAU: Passa les respostes '1', '1', 's' (i Enter) al programa
+          # Això simula que un usuari ha premut 1, Enter, 1, Enter, s, Enter.
+          echo -e "1\n1\ns\n" | python executor_meteo.py
+          
           echo "Executant generador de banners..."
           python generador_banners.py
           echo "=== PROCÉS FINALITZAT ==="
