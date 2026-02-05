@@ -1449,27 +1449,30 @@ def generar_banner_html(metadades, periode_data, diari_data):
                     color_temp = "temp-calenta"
                 else:
                     color_temp = "temp-molt-calenta"
+                # Format temperatura amb un decimal
+                temperatura_actual = f"{temp:.1f}"
             except (ValueError, TypeError):
                 color_temp = "temp-desconeguda"
+                temperatura_actual = '--'
         else:
             color_temp = "temp-desconeguda"
             temperatura_actual = '--'  # Assegurar que mostri "--"
         
-        # Icona de precipitació - SOLAMENT si hi ha dades reals
+        # Icona i valor de precipitació - CORREGIT: Mostrar "0.0" en comptes de "--"
         if precipitacio_diaria != '--' and precipitacio_diaria != '' and precipitacio_diaria is not None:
             try:
                 precip = float(precipitacio_diaria)
                 icona_precip = "fa-cloud-rain" if precip > 0 else "fa-cloud"
-                # Formatar el valor amb una decimal
+                # Format precip amb un decimal, mostrar "0.0" si és 0
                 precipitacio_diaria = f"{precip:.1f}"
             except (ValueError, TypeError):
                 icona_precip = "fa-cloud"
-                precipitacio_diaria = '--'
+                precipitacio_diaria = '0.0'
         else:
             icona_precip = "fa-cloud"
-            precipitacio_diaria = '--'
+            precipitacio_diaria = '0.0'  # CANVI: "0.0" en comptes de "--"
         
-        # Formatar temperatura també
+        # Formatar temperatura si encara no s'ha formatat
         if temperatura_actual != '--' and temperatura_actual != '' and temperatura_actual is not None:
             try:
                 temp = float(temperatura_actual)
@@ -1510,6 +1513,42 @@ def generar_banner_html(metadades, periode_data, diari_data):
     html += '''
         </div>
     '''
+    
+    # JavaScript per al filtre de comarques
+    html += '''
+    <script>
+    function filtrarPerComarca() {
+        const comarcaSeleccionada = document.getElementById('filterComarca').value;
+        const targetes = document.querySelectorAll('.station-card');
+        
+        targetes.forEach(targeta => {
+            const comarca = targeta.getAttribute('data-comarca');
+            
+            if (!comarcaSeleccionada || comarca === comarcaSeleccionada) {
+                targeta.style.display = 'block';
+            } else {
+                targeta.style.display = 'none';
+            }
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
+    });
+    </script>
+    '''
+    
+    html += HTMLGenerator.generar_footer(hora_actualitzacio)
+    
+    # --- Codi per guardar banner.html ---
+    output_path = Config.OUTPUT_DIR / "banner.html"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    
+    print(f"✅ banner.html generat: {output_path}")
+    return output_path
     
     # JavaScript per al filtre de comarques
     html += '''
@@ -1739,3 +1778,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
