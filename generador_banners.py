@@ -1626,6 +1626,124 @@ def generar_banner_html(metadades, periode_data, diari_data):
     
     print(f"✅ banner.html generat: {output_path}")
     return output_path
+def generar_banners_individuals(metadades, periode_data, diari_data):
+    """Genera banners individuals per a cada estació"""
+    print("🔄 Generant banners individuals...")
+    
+    banners_generats = []
+    
+    for estacio_id, meta in metadades.items():
+        if estacio_id not in periode_data:
+            continue
+        
+        periode = periode_data[estacio_id]
+        diari = diari_data.get(estacio_id, {})
+        
+        # Obtenir hora d'actualització per al footer
+        hora_actualitzacio = periode.get('DATA_EXTRACCIO')
+        
+        html = HTMLGenerator.generar_head(f"Banner Fix - {periode.get('NOM_ESTACIO', estacio_id)}")
+        
+        html += f'''
+    <div class="meteo-overlay">
+        <div class="overlay-header">
+            <div class="station-info">
+                <div class="station-name">🏔️ {periode.get('NOM_ESTACIO', estacio_id)}</div>
+                <div class="location-details">
+                    <span class="location-label">Comarca:</span> {meta.get('comarca', 'Desconeguda')} | 
+                    <span class="location-label">Altitud:</span> {meta.get('altitud', 'N/D')} m | 
+                    <span class="location-label">ID:</span> {estacio_id}
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="station-controls">
+                    <div class="station-selector">
+                        <label for="navEstacions">Navegar a:</label>
+                        <select id="navEstacions" onchange="window.location.href=this.value">
+                            <option value="">-- Selecciona una estació --</option>
+        '''
+        
+        # Afegir opcions per a totes les estacions amb dades
+        for altre_id, altre_meta in metadades.items():
+            if altre_id in periode_data:
+                nom_altre = periode_data[altre_id].get('NOM_ESTACIO', altre_id)
+                selected = 'selected' if altre_id == estacio_id else ''
+                html += f'<option value="index_{altre_id}.html" {selected}>{nom_altre}</option>\n'
+        
+        html += f'''
+                        </select>
+                    </div>
+                    <div class="station-icon">
+                        <a href="banner.html" title="Veure totes les estacions">
+                            <i class="fas fa-list"></i>
+                            <span class="icon-text">Totes</span>
+                        </a>
+                    </div>
+                    <div class="station-icon">
+                        <a href="index.html" title="Tornar al banner principal">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Principal</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="rotation-status-container">
+                    <div class="rotation-status">
+                        <i class="fas fa-map-pin"></i>
+                        BANNER FIX
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="dual-clock-digital">
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-local">--:--</div>
+                        <div class="clock-label-digital">LT</div>
+                    </div>
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-utc">--:--</div>
+                        <div class="clock-label-digital">UTC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="overlay-content">
+        '''
+        
+        # Generar columnes amb totes les correccions
+        html += HTMLGenerator.generar_columnes_dades(periode, metadades, estacio_id, periode.get('NOM_ESTACIO', estacio_id), diari_data)
+        
+        # Generar dades diàries (amb hores de registre)
+        html += HTMLGenerator.generar_dades_diaries(diari_data, estacio_id)
+        
+        html += f'''
+        </div>
+        
+        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
+                   border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
+            <h3 style="color: #4fc3f7; margin-top: 0;">⚠️ AQUEST ÉS UN BANNER FIX</h3>
+            <p style="color: #bbdefb;">Aquesta pàgina mostra sempre les dades d'aquesta estació.</p>
+            <p style="color: #bbdefb;">Per veure la rotació automàtica de totes les estacions, ves a <a href="index.html" style="color: #ffcc80; font-weight: bold;">index.html</a></p>
+        </div>
+    '''
+        
+        html += HTMLGenerator.generar_footer(hora_actualitzacio)
+        
+        # Guardar el fitxer individual
+        output_path = Config.OUTPUT_DIR / f"index_{estacio_id}.html"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(html)
+        
+        banners_generats.append(output_path)
+        print(f"   ✅ Banner individual: {estacio_id} → {output_path.name}")
+    
+    print(f"✅ {len(banners_generats)} banners individuals generats")
+    return banners_generats
+
 def copiar_estils_existents():
     """Copia estils CSS addicionals si existeixen"""
     estils_origen = Path("estils")
@@ -1692,6 +1810,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
