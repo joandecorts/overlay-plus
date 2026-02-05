@@ -321,33 +321,31 @@ banner_html = f'''<!DOCTYPE html>
 <body>
     <h1 class="titol">📋 LLISTAT COMPLET D'ESTACIONS</h1>
     <p style="text-align: center;">Tens <strong>{len(estacions)}</strong> estacions disponibles.</p>
-    <div id="llistat"></div>
+    <div id="llistat">
+'''
 
+# --- AQUESTA PART FALTAVA: GENERAR LA LLISTA D'ESTACIONS ---
+# Afegim cada estació al HTML del banner
+for estacio in estacions:
+    # Utilitzem el mateix format que el teu local: enllaç a public/estacio_ID.html
+    banner_html += f'''
+        <div class="estacio" onclick="location.href='public/estacio_{estacio["id"]}.html'">
+            <strong>{estacio["nom"]}</strong> ({estacio["id"]}) - {estacio["comarca"]}
+        </div>'''
+
+# --- TANQUEM EL HTML I AFEGIM EL JAVASCRIPT PER AL ROTADOR ---
+banner_html += f'''
+    </div>
+    
+    <!-- Enllaç per tornar al rotador -->
     <div class="controls">
-        <!-- ENLLAÇ CORREGIT: Ara torna al nou index.html (el rotador) -->
-        <a href="index.html" class="btn-tornar">↩️ TORNAR AL ROTADOR AUTOMÀTIC</a>
+        <a href="index.html" class="btn-tornar">↩️ Tornar al Rotador Automàtic</a>
     </div>
 
+    <!-- AQUEST SCRIPT ÉS ESSENCIAL PER AL ROTADOR AUTOMÀTIC -->
     <script>
-    window.estacionsOrdenades = {json.dumps(estacions, ensure_ascii=False, indent=2)};
-
-    function renderLlistat() {{
-        const contenidor = document.getElementById('llistat');
-        contenidor.innerHTML = '';
-        window.estacionsOrdenades.forEach(estacio => {{
-            const div = document.createElement('div');
-            div.className = 'estacio';
-            div.innerHTML = `
-                <strong>${{estacio.id}}</strong>: ${{estacio.nom}}
-                <br><small>Comarca: ${{estacio.comarca}}</small>
-            `;
-            div.onclick = () => {{
-                window.location.href = 'index_' + estacio.id + '.html';
-            }};
-            contenidor.appendChild(div);
-        }});
-    }}
-    document.addEventListener('DOMContentLoaded', renderLlistat);
+        // Passem la llista d'estacions ordenades al JavaScript del rotador
+        window.estacionsOrdenades = {json.dumps(estacions, ensure_ascii=False)};
     </script>
 </body>
 </html>'''
