@@ -1472,17 +1472,6 @@ def generar_index_principal(metadades, periode_data, diari_data):
     </script>
     '''
     
-    html += HTMLGenerator.generar_footer(hora_actualitzacio)
-    
-    # output_path = Config.OUTPUT_DIR / "index.html"
-    # output_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    # with open(output_path, 'w', encoding='utf-8') as f:
-    #   f.write(html)
-    
-    # print(f"✅ index.html generat: {output_path}")
-    # return output_path
-
 def generar_banner_html(metadades, periode_data, diari_data):
     """Genera banner.html amb totes les correccions"""
     print("🔄 Generant banner.html (detall complet)...")
@@ -1560,6 +1549,18 @@ def generar_banner_html(metadades, periode_data, diari_data):
             </div>
         </div>
     '''
+    
+    html += HTMLGenerator.generar_footer(hora_actualitzacio)
+    
+    # --- Codi NOU per guardar banner.html ---
+    output_path = Config.OUTPUT_DIR / "banner.html"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    
+    print(f"✅ banner.html generat: {output_path}")
+    return output_path
     
     # JavaScript per banner.html
     html += f'''
@@ -1848,5 +1849,6 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
