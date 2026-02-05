@@ -1543,16 +1543,81 @@ def generar_banner_html(metadades, periode_data, diari_data):
         </div>
         
         <div class="llista-estacions" id="containerLlistaEstacions">
-            <div style="text-align: center; padding: 40px; color: #bbdefb;">
-                <i class="fas fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top: 20px;">Carregant dades de les estacions...</p>
+    '''
+    
+    # Ordenar estacions alfabèticament per municipi
+    estacions_ordenades = sorted(estacions_amb_dades, 
+                                 key=lambda x: metadades.get(x, {}).get('municipi', ''))
+    
+    for estacio_id in estacions_ordenades:
+        metadada = metadades.get(estacio_id, {})
+        dades_periode = periode_data.get(estacio_id, {})
+        dades_diari = diari_data.get(estacio_id, {})
+        
+        # Obtenir valors
+        municipi = metadada.get('municipi', 'Desconegut')
+        comarca = metadada.get('comarca', 'Desconeguda')
+        temperatura_actual = dades_periode.get('TM', '--')
+        precipitacio_diaria = dades_diari.get('PPT', '--')
+        
+        # Color segons temperatura
+        if temperatura_actual != '--':
+            try:
+                temp = float(temperatura_actual)
+                if temp <= 5:
+                    color_temp = "temp-fred"
+                elif temp <= 15:
+                    color_temp = "temp-fresca"
+                elif temp <= 25:
+                    color_temp = "temp-templada"
+                elif temp <= 35:
+                    color_temp = "temp-calenta"
+                else:
+                    color_temp = "temp-molt-calenta"
+            except ValueError:
+                color_temp = "temp-desconeguda"
+        else:
+            color_temp = "temp-desconeguda"
+        
+        # Icona de precipitació
+        icona_precip = "fa-cloud-rain" if (precipitacio_diaria != '--' and float(precipitacio_diaria) > 0) else "fa-cloud"
+        
+        html += f'''
+            <div class="station-card" data-comarca="{comarca}" onclick="window.location.href='index.html?estacio={estacio_id}'">
+                <div class="station-header">
+                    <div class="station-title">
+                        <div class="station-municipi">{municipi}</div>
+                        <div class="station-comarca">{comarca}</div>
+                    </div>
+                    <div class="station-icon">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="station-body">
+                    <div class="weather-data">
+                        <div class="weather-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <div class="weather-value {color_temp}">{temperatura_actual}°C</div>
+                        </div>
+                        <div class="weather-item">
+                            <i class="fas {icona_precip}"></i>
+                            <div class="weather-value">{precipitacio_diaria} mm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="station-footer">
+                    <div class="station-id">ID: {estacio_id}</div>
+                </div>
             </div>
+        '''
+    
+    html += '''
         </div>
     '''
     
     html += HTMLGenerator.generar_footer(hora_actualitzacio)
     
-    # --- Codi NOU per guardar banner.html ---
+    # --- Codi per guardar banner.html ---
     output_path = Config.OUTPUT_DIR / "banner.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
@@ -1561,228 +1626,6 @@ def generar_banner_html(metadades, periode_data, diari_data):
     
     print(f"✅ banner.html generat: {output_path}")
     return output_path
-    
-    # JavaScript per banner.html
-    html += f'''
-    <script>
-        const estacionsBanner = {json.dumps(estacions_amb_dades)};
-        const periodeData = {json.dumps(periode_data)};
-        const diariData = {json.dumps(diari_data)};
-        const metadades = {json.dumps(metadades)};
-        
-        function carregarLlistatEstacions() {{
-            const container = document.getElementById('containerLlistaEstacions');
-            container.innerHTML = '';
-            
-            estacionsBanner.forEach(estacioId => {{
-                const periode = periodeData[estacioId];
-                const meta = metadades[estacioId] || {{comarca: 'Desconeguda', altitud: 'N/D'}};
-                
-                let html = `
-                <div class="estacio-resum" onclick="toggleDetall('${{estacioId}}')" data-comarca="${{meta.comarca}}">
-                    <div>
-                        <strong>${{periode.NOM_ESTACIO || estacioId}}</strong>
-                        <div style="font-size: 14px; color: #bbdefb; margin-top: 5px;">
-                            Comarca: ${{meta.comarca}} | Altitud: ${{meta.altitud}} m | ID: ${{estacioId}}
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-down" id="icon-${{estacioId}}"></i>
-                </div>
-                <div class="estacio-detall" id="detall-${{estacioId}}">
-                    <div style="margin-bottom: 20px;">
-                        <!-- Les dades es carregaran dinàmicament -->
-                        <div style="text-align: center; padding: 20px;">
-                            <i class="fas fa-spinner fa-spin"></i> Carregant dades...
-                        </div>
-                    </div>
-                </div>`;
-                
-                container.innerHTML += html;
-            }});
-        }}
-        
-        function toggleDetall(estacioId) {{
-            const detall = document.getElementById('detall-' + estacioId);
-            const icon = document.getElementById('icon-' + estacioId);
-            
-            if (detall.classList.contains('detall-obert')) {{
-                detall.classList.remove('detall-obert');
-                icon.className = 'fas fa-chevron-down';
-            }} else {{
-                // Carregar dades si encara no s'han carregat
-                if (detall.innerHTML.includes('Carregant dades')) {{
-                    carregarDadesEstacio(estacioId);
-                }}
-                
-                // Tancar altres i obrir aquest
-                document.querySelectorAll('.estacio-detall.detall-obert').forEach(el => el.classList.remove('detall-obert'));
-                document.querySelectorAll('.estacio-resum i').forEach(el => el.className = 'fas fa-chevron-down');
-                
-                detall.classList.add('detall-obert');
-                icon.className = 'fas fa-chevron-up';
-                detall.scrollIntoView({{ behavior: 'smooth', block: 'nearest' }});
-            }}
-        }}
-        
-        function carregarDadesEstacio(estacioId) {{
-            const detall = document.getElementById('detall-' + estacioId);
-            // Implementació simplificada per brevetat
-            detall.innerHTML = '<div style="padding: 20px; text-align: center; color: #bbdefb;"><i class="fas fa-check-circle"></i> Dades carregades correctament</div>';
-        }}
-        
-        function filtrarPerComarca() {{
-            const comarcaSeleccionada = document.getElementById('filterComarca').value;
-            document.querySelectorAll('.estacio-resum').forEach(element => {{
-                const comarca = element.getAttribute('data-comarca');
-                const estacioDetall = element.nextElementSibling;
-                
-                if (!comarcaSeleccionada || comarca === comarcaSeleccionada) {{
-                    element.style.display = 'flex';
-                    estacioDetall.style.display = element.nextElementSibling.style.display;
-                }} else {{
-                    element.style.display = 'none';
-                    estacioDetall.style.display = 'none';
-                }}
-            }});
-        }}
-        
-        document.addEventListener('DOMContentLoaded', function() {{
-            setTimeout(() => {{
-                carregarLlistatEstacions();
-                document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
-            }}, 100);
-        }});
-    </script>
-    '''
-    
-    html += HTMLGenerator.generar_footer(hora_actualitzacio)
-    
-    output_path = Config.OUTPUT_DIR / "banner.html"
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(html)
-    
-    print(f"✅ banner.html generat: {output_path}")
-    return output_path
-
-def generar_banners_individuals(metadades, periode_data, diari_data):
-    """Genera banners individuals amb totes les correccions"""
-    print("🔄 Generant banners individuals...")
-    
-    banners_generats = []
-    
-    for estacio_id, meta in metadades.items():
-        if estacio_id not in periode_data:
-            continue
-        
-        periode = periode_data[estacio_id]
-        diari = diari_data.get(estacio_id, {})
-        
-        id_net = HTMLGenerator.netejar_id(estacio_id)
-        nom_estacio = periode.get('NOM_ESTACIO', estacio_id)
-        
-        # Obtenir hora d'actualització per al footer
-        hora_actualitzacio = periode.get('DATA_EXTRACCIO')
-        
-        html = HTMLGenerator.generar_head(f"Banner Fix - {nom_estacio}")
-        
-        html += f'''
-    <div class="meteo-overlay">
-        <div class="overlay-header">
-            <div class="station-info">
-                <div class="station-name">🏔️ {nom_estacio}</div>
-                <div class="location-details">
-                    <span class="location-label">Comarca:</span> {meta.get('comarca', 'Desconeguda')} | 
-                    <span class="location-label">Altitud:</span> {meta.get('altitud', 'N/D')} m | 
-                    <span class="location-label">ID:</span> {estacio_id}
-                </div>
-            </div>
-            
-            <div class="header-center">
-                <div class="station-controls">
-                    <div class="station-selector">
-                        <label for="navEstacions">Navegar a:</label>
-                        <select id="navEstacions" onchange="window.location.href=this.value">
-                            <option value="">-- Selecciona una estació --</option>
-        '''
-        
-        for altre_id, altre_meta in metadades.items():
-            if altre_id in periode_data:
-                nom_altre = periode_data[altre_id].get('NOM_ESTACIO', altre_id)
-                id_net_altre = HTMLGenerator.netejar_id(altre_id)
-                selected = 'selected' if altre_id == estacio_id else ''
-                html += f'<option value="index_{id_net_altre}.html" {selected}>{nom_altre}</option>\n'
-        
-        html += f'''
-                        </select>
-                    </div>
-                    <div class="station-icon">
-                        <a href="banner.html" title="Veure totes les estacions">
-                            <i class="fas fa-list"></i>
-                            <span class="icon-text">Totes</span>
-                        </a>
-                    </div>
-                    <div class="station-icon">
-                        <a href="index.html" title="Tornar al banner principal">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Principal</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="rotation-status-container">
-                    <div class="rotation-status">
-                        <i class="fas fa-map-pin"></i>
-                        BANNER FIX
-                    </div>
-                </div>
-            </div>
-            
-            <div class="header-right">
-                <div class="dual-clock-digital">
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local">--:--</div>
-                        <div class="clock-label-digital">LT</div>
-                    </div>
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc">--:--</div>
-                        <div class="clock-label-digital">UTC</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="overlay-content">
-        '''
-        
-        # Generar columnes amb totes les correccions
-        html += HTMLGenerator.generar_columnes_dades(periode, metadades, estacio_id, nom_estacio, diari_data)
-        
-        # Generar dades diàries (amb hores de registre)
-        html += HTMLGenerator.generar_dades_diaries(diari_data, estacio_id)
-        
-        html += f'''
-        </div>
-        
-        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
-                   border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
-            <h3 style="color: #4fc3f7; margin-top: 0;">⚠️ AQUEST ÉS UN BANNER FIX</h3>
-            <p style="color: #bbdefb;">Aquesta pàgina mostra sempre les dades d'aquesta estació.</p>
-            <p style="color: #bbdefb;">Per veure la rotació automàtica de totes les estacions, ves a <a href="index.html" style="color: #ffcc80; font-weight: bold;">index.html</a></p>
-        </div>
-    '''
-        
-        html += HTMLGenerator.generar_footer(hora_actualitzacio)
-        
-        nom_fitxer = f"index_{id_net}.html"
-        output_path = Config.OUTPUT_DIR / nom_fitxer
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(html)
-        
-        banners_generats.append(output_path)
-    
-    print(f"✅ Generats {len(banners_generats)} banners individuals")
-    return banners_generats
-
 def copiar_estils_existents():
     """Copia estils CSS addicionals si existeixen"""
     estils_origen = Path("estils")
@@ -1849,6 +1692,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
