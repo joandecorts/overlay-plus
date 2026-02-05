@@ -1586,12 +1586,20 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
                             <option value="">-- Selecciona una estació --</option>
         '''
         
-        # Afegir opcions per a totes les estacions amb dades
+        # Ordenar estacions per nom (alfabèticament)
+        estacions_ordenades = []
         for altre_id, altre_meta in metadades.items():
             if altre_id in periode_data:
                 nom_altre = periode_data[altre_id].get('NOM_ESTACIO', altre_id)
-                selected = 'selected' if altre_id == estacio_id else ''
-                html += f'<option value="index_{altre_id}.html" {selected}>{nom_altre}</option>\n'
+                estacions_ordenades.append((nom_altre, altre_id))
+        
+        # Ordenar per nom
+        estacions_ordenades.sort(key=lambda x: x[0].lower())
+        
+        # Afegir opcions ordenades
+        for nom_altre, altre_id in estacions_ordenades:
+            selected = 'selected' if altre_id == estacio_id else ''
+            html += f'<option value="index_{altre_id}.html" {selected}>{nom_altre}</option>\n'
         
         html += f'''
                         </select>
@@ -1731,5 +1739,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
