@@ -1411,7 +1411,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
     </style>
     '''
     
-    # Ordenar estacions per nom (alfabèticament)
+   # Ordenar estacions per nom (alfabèticament)
     estacions_amb_info = []
     for estacio_id in estacions_amb_dades:
         nom_estacio = periode_data.get(estacio_id, {}).get('NOM_ESTACIO', estacio_id)
@@ -1544,7 +1544,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
     
-   for altre_id, altre_meta in metadades.items():
+    print(f"✅ banner.html generat: {output_path}")
     return output_path
 
 
@@ -1739,6 +1739,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
