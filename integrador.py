@@ -42,6 +42,12 @@ if not estacions:
     print("❌ No hi ha dades. Sortint.")
     exit()
 
+# ============================================================================
+# CANVI 1/2: ORDENAR LES ESTACIONS PER NOM (ASCENDENT)
+# ============================================================================
+estacions = sorted(estacions, key=lambda x: x['nom'])
+print(f"📊 Estacions ordenades per nom: {len(estacions)}")
+
 # --- PART 2: Generar el NOU index.html (rotador automàtic) ---
 print("\n📝 Generant NOU index.html (rotador automàtic)...")
 
@@ -103,7 +109,7 @@ html_rotador = '''<!DOCTYPE html>
         }
         .btn {
             padding: 12px 30px;
-            border: none;
+            border: noe;
             border-radius: 50px;
             font-size: 1.1em;
             font-weight: bold;
@@ -241,7 +247,7 @@ html_rotador = '''<!DOCTYPE html>
             indexActual = (indexActual + 1) % llistaEstacions.length;
             const estacio = llistaEstacions[indexActual];
             const urlFitxer = `index_${estacio.id}.html`;
-            console.log(`Carregant: ${urlFitxer} - ${estacio.nom}`);
+            console.log(`Carregant: ${urlFitxer} - ${estacio.nom}`)
 
             document.getElementById('visorEstacio').src = urlFitxer;
             document.title = `Rotant: ${estacio.nom}`;
@@ -324,14 +330,23 @@ banner_html = f'''<!DOCTYPE html>
     <div id="llistat">
 '''
 
-# --- AQUESTA PART FALTAVA: GENERAR LA LLISTA D'ESTACIONS ---
-# Afegim cada estació al HTML del banner
+# ============================================================================
+# CANVI 2/2: CORREGIR ELS ENLLAÇOS (VERSIÓ LOCAL - CORRECTA)
+# Utilitza <a href> en lloc d'onclick, tal com fa el teu fitxer local.
+# ============================================================================
+# AFEGIR CADA ESTACIÓ AL LLISTAT (VERSIÓ LOCAL - CORRECTA)
 for estacio in estacions:
-    # Utilitzem el mateix format que el teu local: enllaç a public/estacio_ID.html
     banner_html += f'''
-        <div class="estacio" onclick="location.href='public/estacio_{estacio["id"]}.html'">
-            <strong>{estacio["nom"]}</strong> ({estacio["id"]}) - {estacio["comarca"]}
-        </div>'''
+        <div class="estacio">
+            <a href="public/estacio_{estacio['id']}.html" class="estacio-link">
+                <div class="estacio-nom">{estacio['nom']}</div>
+                <div class="estacio-dets">
+                    <span class="estacio-codi">{estacio['id']}</span>
+                    <span class="estacio-comarca">({estacio['comarca']})</span>
+                </div>
+            </a>
+        </div>
+    '''
 
 # --- TANQUEM EL HTML I AFEGIM EL JAVASCRIPT PER AL ROTADOR ---
 banner_html += f'''
