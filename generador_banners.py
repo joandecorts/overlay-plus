@@ -1302,7 +1302,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
         <div class="llista-estacions" id="containerLlistaEstacions">
     '''
     
-    # CSS PER A LES TARGETES - AQUEST ÉS EL QUE FALTA!
+    # CSS PER A LES TARGETES
     html += '''
     <style>
     /* Estils per a les targetes de les estacions */
@@ -1426,12 +1426,17 @@ def generar_banner_html(metadades, periode_data, diari_data):
         dades_periode = periode_data.get(estacio_id, {})
         dades_diari = diari_data.get(estacio_id, {})
         
-        # Obtenir valors
-        temperatura_actual = dades_periode.get('TM', '--')
-        precipitacio_diaria = dades_diari.get('PPT', '--')
+        # Obtenir valors - CORREGIT: Utilitzar variables correctes
+        # Les variables al JSON són VAR_TM_grausC per temperatura i VAR_PPT_mm per precipitació
+        temperatura_actual = dades_periode.get('VAR_TM_grausC', '--')
+        precipitacio_diaria = dades_diari.get('PRECIPITACIO_ACUM_DIA', '--')
         
-        # Color segons temperatura
-        if temperatura_actual != '--':
+        # Si no trobem a diari, buscar a periode
+        if precipitacio_diaria == '--':
+            precipitacio_diaria = dades_periode.get('VAR_PPT_mm', '--')
+        
+        # Color segons temperatura - SOLAMENT si hi ha dades reals
+        if temperatura_actual != '--' and temperatura_actual != '' and temperatura_actual is not None:
             try:
                 temp = float(temperatura_actual)
                 if temp <= 5:
@@ -1444,20 +1449,33 @@ def generar_banner_html(metadades, periode_data, diari_data):
                     color_temp = "temp-calenta"
                 else:
                     color_temp = "temp-molt-calenta"
-            except ValueError:
+            except (ValueError, TypeError):
                 color_temp = "temp-desconeguda"
         else:
             color_temp = "temp-desconeguda"
+            temperatura_actual = '--'  # Assegurar que mostri "--"
         
-        # Icona de precipitació
-        if precipitacio_diaria != '--':
+        # Icona de precipitació - SOLAMENT si hi ha dades reals
+        if precipitacio_diaria != '--' and precipitacio_diaria != '' and precipitacio_diaria is not None:
             try:
                 precip = float(precipitacio_diaria)
                 icona_precip = "fa-cloud-rain" if precip > 0 else "fa-cloud"
-            except ValueError:
+                # Formatar el valor amb una decimal
+                precipitacio_diaria = f"{precip:.1f}"
+            except (ValueError, TypeError):
                 icona_precip = "fa-cloud"
+                precipitacio_diaria = '--'
         else:
             icona_precip = "fa-cloud"
+            precipitacio_diaria = '--'
+        
+        # Formatar temperatura també
+        if temperatura_actual != '--' and temperatura_actual != '' and temperatura_actual is not None:
+            try:
+                temp = float(temperatura_actual)
+                temperatura_actual = f"{temp:.1f}"
+            except (ValueError, TypeError):
+                temperatura_actual = '--'
         
         # IMPORTANT: Canviar l'enllaç a la pàgina individual de l'estació
         html += f'''
@@ -1526,8 +1544,9 @@ def generar_banner_html(metadades, periode_data, diari_data):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
     
-    print(f"✅ banner.html generat: {output_path}")
+   for altre_id, altre_meta in metadades.items():
     return output_path
+
 
 def generar_banners_individuals(metadades, periode_data, diari_data):
     """Genera banners individuals per a cada estació"""
@@ -1712,4 +1731,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
