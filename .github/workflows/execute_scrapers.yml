@@ -44,7 +44,7 @@ jobs:
       - name: Commit and push all updates
         env:
           # Utilitza el token d'acció de GitHub, més segur
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.Auto_Cron_Job_Token }}
         run: |
           # A. Configurar l'usuari per al commit
           git config user.email "github-actions[bot]@users.noreply.github.com"
