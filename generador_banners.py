@@ -1302,17 +1302,131 @@ def generar_banner_html(metadades, periode_data, diari_data):
         <div class="llista-estacions" id="containerLlistaEstacions">
     '''
     
-    # Ordenar estacions pel seu ID
-    estacions_ordenades = sorted(estacions_amb_dades)
+    # CSS PER A LES TARGETES - AQUEST ÉS EL QUE FALTA!
+    html += '''
+    <style>
+    /* Estils per a les targetes de les estacions */
+    .llista-estacions {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
     
-    for estacio_id in estacions_ordenades:
+    .station-card {
+        background: linear-gradient(145deg, #1e1e2e, #252536);
+        border-radius: 12px;
+        border: 2px solid #3949ab;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .station-card:hover {
+        transform: translateY(-5px);
+        border-color: #4fc3f7;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .station-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #3949ab;
+        padding-bottom: 10px;
+    }
+    
+    .station-title {
+        flex-grow: 1;
+    }
+    
+    .station-municipi {
+        font-size: 18px;
+        font-weight: bold;
+        color: #4fc3f7;
+        margin-bottom: 5px;
+    }
+    
+    .station-comarca {
+        font-size: 14px;
+        color: #bbdefb;
+    }
+    
+    .station-icon i {
+        color: #4fc3f7;
+        font-size: 20px;
+    }
+    
+    .station-body {
+        margin: 15px 0;
+    }
+    
+    .weather-data {
+        display: flex;
+        justify-content: space-around;
+        gap: 15px;
+    }
+    
+    .weather-item {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .weather-item i {
+        font-size: 24px;
+        color: #ffcc80;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .weather-value {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    
+    /* Colors per temperatura */
+    .temp-fred { color: #80deea; }
+    .temp-fresca { color: #4fc3f7; }
+    .temp-templada { color: #ffcc80; }
+    .temp-calenta { color: #ff9800; }
+    .temp-molt-calenta { color: #ff5252; }
+    .temp-desconeguda { color: #bbdefb; }
+    
+    .station-footer {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #3949ab;
+        text-align: center;
+        font-size: 12px;
+        color: #bbdefb;
+    }
+    </style>
+    '''
+    
+    # Ordenar estacions per nom (alfabèticament)
+    estacions_amb_info = []
+    for estacio_id in estacions_amb_dades:
+        nom_estacio = periode_data.get(estacio_id, {}).get('NOM_ESTACIO', estacio_id)
+        comarca = metadades.get(estacio_id, {}).get('comarca', 'Desconeguda')
+        estacions_amb_info.append((nom_estacio, comarca, estacio_id))
+    
+    # Ordenar per nom de l'estació
+    estacions_ordenades = sorted(estacions_amb_info, key=lambda x: x[0].lower())
+    
+    for nom_estacio, comarca, estacio_id in estacions_ordenades:
         metadada = metadades.get(estacio_id, {})
         dades_periode = periode_data.get(estacio_id, {})
         dades_diari = diari_data.get(estacio_id, {})
         
-        # Obtenir valors - utilitzar nom de l'estació
-        nom_estacio = dades_periode.get('NOM_ESTACIO', estacio_id)
-        comarca = metadada.get('comarca', 'Desconeguda')
+        # Obtenir valors
         temperatura_actual = dades_periode.get('TM', '--')
         precipitacio_diaria = dades_diari.get('PPT', '--')
         
@@ -1345,8 +1459,9 @@ def generar_banner_html(metadades, periode_data, diari_data):
         else:
             icona_precip = "fa-cloud"
         
+        # IMPORTANT: Canviar l'enllaç a la pàgina individual de l'estació
         html += f'''
-            <div class="station-card" data-comarca="{comarca}" onclick="window.location.href='index.html?estacio={estacio_id}'">
+            <a class="station-card" data-comarca="{comarca}" href="index_{estacio_id}.html">
                 <div class="station-header">
                     <div class="station-title">
                         <div class="station-municipi">{nom_estacio}</div>
@@ -1371,11 +1486,35 @@ def generar_banner_html(metadades, periode_data, diari_data):
                 <div class="station-footer">
                     <div class="station-id">ID: {estacio_id}</div>
                 </div>
-            </div>
+            </a>
         '''
     
     html += '''
         </div>
+    '''
+    
+    # JavaScript per al filtre de comarques
+    html += '''
+    <script>
+    function filtrarPerComarca() {
+        const comarcaSeleccionada = document.getElementById('filterComarca').value;
+        const targetes = document.querySelectorAll('.station-card');
+        
+        targetes.forEach(targeta => {
+            const comarca = targeta.getAttribute('data-comarca');
+            
+            if (!comarcaSeleccionada || comarca === comarcaSeleccionada) {
+                targeta.style.display = 'block';
+            } else {
+                targeta.style.display = 'none';
+            }
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
+    });
+    </script>
     '''
     
     html += HTMLGenerator.generar_footer(hora_actualitzacio)
@@ -1573,3 +1712,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
