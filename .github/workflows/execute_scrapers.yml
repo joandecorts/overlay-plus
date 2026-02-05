@@ -4,7 +4,6 @@ on:
   # 1. DISPARAT DES DE CRON-JOB.ORG (EXTERN)
   repository_dispatch:
     types: [trigger_scrapers]
-  
   # 2. EXECUCIÓ MANUAL (GITHUB UI)
   workflow_dispatch:
 
@@ -13,11 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Obtenir el codi (AMB PERMISOS PER FER PUSH)
+      # 1. Obtenir el codi
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.Auto_Cron_Job_Token }}
 
       # 2. Configurar Python
       - name: Set up Python
@@ -31,16 +28,12 @@ jobs:
           pip install -r requirements.txt
           pip install pandas openpyxl
 
-      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS (AMB INPUT AUTOMÀTIC)
+      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
-          # Assegura't que estem a l'arrel del projecte
-          cd /home/runner/work/overlay-plus/overlay-plus
           
           echo "Executant SCRAPER PRINCIPAL (executor_meteo.py) amb respostes automàtiques..."
-          # 🔧 LÍNIA CLAU: Passa les respostes '1', '1', 's' (i Enter) al programa
-          # Això simula que un usuari ha premut 1, Enter, 1, Enter, s, Enter.
           echo -e "1\n1\ns\n" | python executor_meteo.py
           
           echo "Executant generador de banners..."
@@ -49,10 +42,13 @@ jobs:
 
       # 5. PUJAR CANVIS AL REPOSITORI
       - name: Commit and push all updates
+        env:
+          # Utilitza el token d'acció de GitHub, més segur
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # A. Configurar l'usuari per al commit
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           
           # B. Afegir tots els canvis
           git add --all
@@ -60,8 +56,5 @@ jobs:
           # C. Crear commit (ignora si no hi ha canvis)
           git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
           
-          # D. 🔑 FORÇAR AUTENTICACIÓ AMB TOKEN PER AL PUSH
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus
-          
-          # E. Fer push
-          git push
+          # D. Fer push (amb GITHUB_TOKEN)
+          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus"
