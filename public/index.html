@@ -225,70 +225,17 @@
             color: #a8ffa6;
         }
 
-        /* CONTENIDOR AMB EFEIX DE PERSIANA */
+        /* CONTENIDOR - TORNAM AL ORIGINAL */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0;
-            overflow: hidden; /* Canviat de auto a hidden */
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             width: 100%;
             background: #000;
-            position: relative;
-        }
-
-        /* EFEIX DE PERSIANA PER LES DADES */
-        .persiana-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .persiana-row {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: linear-gradient(90deg, 
-                rgba(0, 188, 212, 0.1) 0%,
-                rgba(0, 188, 212, 0.3) 50%,
-                rgba(0, 188, 212, 0.1) 100%);
-            opacity: 0;
-            transform: translateY(-100%);
-            animation: persiana-descent 15s linear infinite;
-            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
-        }
-
-        /* Crear múltiples files amb delays diferents */
-        .persiana-row:nth-child(1) { animation-delay: 0s; top: 10%; }
-        .persiana-row:nth-child(2) { animation-delay: 1s; top: 25%; }
-        .persiana-row:nth-child(3) { animation-delay: 2s; top: 40%; }
-        .persiana-row:nth-child(4) { animation-delay: 3s; top: 55%; }
-        .persiana-row:nth-child(5) { animation-delay: 4s; top: 70%; }
-        .persiana-row:nth-child(6) { animation-delay: 5s; top: 85%; }
-
-        @keyframes persiana-descent {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
         }
 
         #bannerViewer {
@@ -297,8 +244,6 @@
             border: none;
             flex: 1;
             background: #000;
-            position: relative;
-            z-index: 2;
         }
 
         /* PEU */
@@ -350,18 +295,8 @@
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
 
-    <!-- CONTENIDOR AMB EFEIX DE PERSIANA -->
+    <!-- CONTENIDOR ORIGINAL -->
     <div class="main-container">
-        <!-- EFEIX DE PERSIANA (6 files) -->
-        <div class="persiana-container">
-            <div class="persiana-row"></div>
-            <div class="persiana-row"></div>
-            <div class="persiana-row"></div>
-            <div class="persiana-row"></div>
-            <div class="persiana-row"></div>
-            <div class="persiana-row"></div>
-        </div>
-        
         <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
     </div>
 
@@ -378,11 +313,11 @@
         let currentIndex = 0;
         let isRotating = true;
         let rotationInterval = null;
-        let countdownInterval = null; // 🆕 Nou interval per al compte regressiu
+        let countdownInterval = null;
         let rotationSpeed = 30000;
-        let countdownValue = 30; // 🆕 Variable per al compte regressiu
+        let countdownValue = 30;
 
-        // Elements (actualitzats amb els nous IDs)
+        // Elements
         const viewer = document.getElementById('bannerViewer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -393,11 +328,11 @@
         const miniTimer = document.getElementById('miniTimer');
         const stationsButton = document.getElementById('stationsButton');
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - detectar estacions EN ORDRE ALFABÈTIC
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - detectar estacions
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
-            // Llista de totes les possibles estacions (189 IDs) EN ORDRE ALFABÈTIC
+            // Llista de totes les possibles estacions (189 IDs)
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -416,14 +351,14 @@
 
             const foundStations = [];
             
-            // Provar cada estació (en paral·lel limitat) - FUNCIONA
+            // Provar cada estació (en paral·lel limitat)
             const testPromises = allPossibleStations.map(async (id) => {
                 const url = `${GITHUB_BASE}index_${id}.html`;
                 try {
                     const response = await fetch(url, { method: 'HEAD' });
                     if (response.ok) {
                         console.log(`✅ ${id} trobada`);
-                        return { id: id, file: `index_${id}.html` };
+                        return `index_${id}.html`;
                     }
                 } catch (error) {
                     // Ignorar errors
@@ -435,20 +370,23 @@
             const results = await Promise.all(testPromises);
             
             // Filtrar les que existeixen
-            const foundItems = results.filter(item => item !== null);
+            stations = results.filter(station => station !== null);
             
-            // 🆕 ORDENAR ALFABÈTICAMENT PER NOM D'ESTACIÓ
-            foundItems.sort((a, b) => a.id.localeCompare(b.id));
+            // 🆕 ORDENAR ALFABÈTICAMENT - AQUÍ ESTÀ EL CANVI
+            stations.sort((a, b) => {
+                // Extreure els IDs: index_WB.html → WB
+                const idA = a.replace('index_', '').replace('.html', '');
+                const idB = b.replace('index_', '').replace('.html', '');
+                return idA.localeCompare(idB);
+            });
             
-            // Extreure només els noms de fitxer
-            stations = foundItems.map(item => item.file);
+            console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
+            console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
             
-            console.log(`🎯 ${stations.length} estacions detectades (ordenades alfabèticament)`);
-            console.log(`📋 Primera: ${stations[0]}, Última: ${stations[stations.length-1]}`);
             return stations;
         }
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Carregar estació actual
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Carregar estació actual
         function loadCurrentStation() {
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No hi ha estacions disponibles</h2></body></html>';
@@ -492,25 +430,24 @@
             
             viewer.onerror = () => {
                 console.log(`❌ Error carregant ${stationId}`);
-                // No saltar automàticament
             };
         }
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Següent estació
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Següent estació
         function nextStation() {
             if (stations.length === 0) return;
             currentIndex = (currentIndex + 1) % stations.length;
             loadCurrentStation();
         }
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Estació anterior
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Estació anterior
         function prevStation() {
             if (stations.length === 0) return;
             currentIndex = (currentIndex - 1 + stations.length) % stations.length;
             loadCurrentStation();
         }
 
-        // 🆕 FUNCIÓ PER INICIAR/ATURAR EL COMPTE REGRESSIU
+        // 🆕 COMPTE REGRESSIU FUNCIONAL
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             
@@ -538,7 +475,7 @@
             }
         }
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Iniciar/aturar rotació (ACTUALITZADA)
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Iniciar/aturar rotació
         function toggleRotation() {
             isRotating = !isRotating;
             
@@ -546,12 +483,12 @@
                 rotationBtn.textContent = '⏸ Aturar';
                 rotationBtn.classList.remove('stopped');
                 startRotation();
-                startCountdown(); // 🆕 Iniciar compte regressiu
+                startCountdown();
             } else {
                 rotationBtn.textContent = '▶ Iniciar';
                 rotationBtn.classList.add('stopped');
                 stopRotation();
-                stopCountdown(); // 🆕 Aturar compte regressiu
+                stopCountdown();
             }
         }
 
@@ -567,18 +504,18 @@
             }
         }
 
-        // 🆕 Funcions per als nous controls
+        // 🆕 Actualitzar velocitat
         function updateRotationSpeed() {
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
             
-            // Reiniciar compte regressiu amb la nova velocitat
             if (isRotating) {
                 startRotation();
                 startCountdown();
             }
         }
 
+        // 🆕 Actualitzar compte enrere petit
         function updateMiniCountdown() {
             miniTimer.textContent = countdownValue;
             
@@ -591,10 +528,12 @@
             }
         }
 
+        // 🆕 Anar a banner.html
         function goToStations() {
             window.location.href = 'banner.html';
         }
 
+        // 🆕 Actualitzar hora
         function updateCurrentTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('ca-ES', { 
@@ -605,7 +544,7 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // 🎯 INICIALITZACIÓ QUE SÍ FUNCIONA
+        // 🎯 INICIALITZACIÓ ORIGINAL QUE SÍ FUNCIONA
         async function init() {
             console.log("🚀 Inicialitzant...");
             
@@ -642,7 +581,7 @@
             
             // Iniciar rotació automàtica
             startRotation();
-            startCountdown(); // 🆕 Iniciar compte regressiu
+            startCountdown();
             
             // Actualitzar hora
             setInterval(updateCurrentTime, 1000);
