@@ -38,134 +38,170 @@
 
         /* 📍 CAPÇALERA SUPERIOR AMB CONTROLS */
         .top-header {
-            background: linear-gradient(90deg, var(--primary-blue), #283593);
+            background: linear-gradient(90deg, #0d1b4e, #1a237e);
             color: var(--text-light);
-            padding: 10px 15px;
+            padding: 8px 15px;
             border-bottom: 3px solid var(--secondary-blue);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.5);
             width: 100%;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
             flex-shrink: 0;
-            min-height: 70px;
+            min-height: 65px;
             z-index: 1000;
         }
 
         .header-title {
-            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            flex: 1;
-            min-width: 200px;
+            min-width: 180px;
+            white-space: nowrap;
         }
 
         .controls-group {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             justify-content: flex-end;
-            flex: 2;
+            flex: 1;
         }
 
         .nav-btn {
-            background: linear-gradient(to right, var(--secondary-blue), #0097a7);
+            background: linear-gradient(to bottom, #2d7fd1, #1a5f9e);
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 6px 12px;
+            border-radius: 6px;
+            padding: 8px 14px;
             font-size: 0.85rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            min-width: 80px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            min-width: 85px;
+            height: 36px;
             -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .nav-btn:hover {
-            opacity: 0.9;
+            background: linear-gradient(to bottom, #3a8fe0, #2a6fb0);
         }
 
         .nav-btn:active {
             transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         #rotationBtn {
-            background: linear-gradient(to right, #4caf50, #388e3c);
-            min-width: 100px;
+            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+            min-width: 95px;
         }
 
         #rotationBtn.stopped {
-            background: linear-gradient(to right, #f44336, #d32f2f);
+            background: linear-gradient(to bottom, #c62828, #b71c1c);
         }
 
         #stationCounter {
             font-size: 1.1rem;
             font-weight: bold;
-            color: white;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px 12px;
-            border-radius: 15px;
-            min-width: 80px;
+            color: #00ffaa;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 14px;
+            border-radius: 6px;
+            min-width: 85px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 2px solid var(--secondary-blue);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
         }
 
-        .speed-control {
+        /* CONTENIDORS FIXOS (no ballin) */
+        .fixed-container {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px 12px;
-            border-radius: 15px;
+            background: rgba(20, 30, 80, 0.9);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+            min-width: fit-content;
+            height: 36px;
+        }
+
+        .speed-control {
+            min-width: 140px;
         }
 
         .speed-control label {
             font-size: 0.8rem;
-            color: #ccc;
+            color: #b0e0e6;
+            font-weight: bold;
+            white-space: nowrap;
         }
 
         #rotationSpeed {
             width: 70px;
             height: 6px;
             border-radius: 3px;
-            background: #555;
+            background: #2a3a6e;
             outline: none;
+            -webkit-appearance: none;
+        }
+
+        #rotationSpeed::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
         #currentSpeed {
             font-size: 0.9rem;
-            color: white;
-            min-width: 30px;
+            color: #ffcc00;
+            min-width: 32px;
             font-weight: bold;
+            font-family: 'Courier New', monospace;
         }
 
-        /* COMPTE ENRERE PETIT (a la dreta) */
+        /* COMPTE ENRERE PETIT FIXE */
         .mini-countdown {
             font-size: 0.9rem;
-            color: var(--accent-orange);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 4px 10px;
-            border-radius: 12px;
-            border: 1px solid var(--accent-orange);
+            color: #ff9800;
+            background: rgba(30, 20, 40, 0.9);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ff9800;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             font-weight: bold;
+            min-width: 100px;
+            height: 36px;
+            box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
         }
 
         #miniTimer {
             font-family: 'Courier New', monospace;
             font-size: 1.1rem;
+            color: #ffcc00;
+            min-width: 25px;
+            text-align: center;
         }
 
-        /* BOTÓ BANNER.HTML */
-        #bannerButton {
-            background: linear-gradient(to right, #9c27b0, #7b1fa2);
+        /* BOTÓ ESTACIONS */
+        #stationsButton {
+            background: linear-gradient(to bottom, #9c27b0, #7b1fa2);
+            min-width: 95px;
         }
 
         /* LÍNIA DE FONT DE DADES */
@@ -175,9 +211,10 @@
             font-style: italic;
             text-align: center;
             padding: 6px 10px;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.35);
             flex-shrink: 0;
             line-height: 1.3;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.3);
         }
 
         .data-source a {
@@ -188,46 +225,56 @@
 
         .data-source a:hover {
             text-decoration: underline;
+            color: #a8ffa6;
         }
 
-        /* CONTENIDOR CENTRAL (PER VISUALITZAR BANNERS) */
+        /* CONTENIDOR CENTRAL */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 0;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            background: #000;
         }
 
-        /* VISUALITZADOR D'ESTACIONS (AQUEST ÉS EL CONTENIDOR PRINCIPAL) */
+        /* VISUALITZADOR D'ESTACIONS */
         #bannerViewer {
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            background: white;
-            border: 2px solid var(--primary-blue);
             flex: 1;
+            background: #000;
         }
 
-        /* FOOTER */
+        /* PEU DE PÀGINA */
         .footer {
             text-align: center;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(10, 20, 40, 0.95);
             font-size: clamp(0.8rem, 2vw, 0.9rem);
             color: #aaa;
-            border-top: 2px solid #333;
+            border-top: 2px solid #1a5f7a;
             flex-shrink: 0;
             line-height: 1.4;
         }
 
         .footer strong {
             color: var(--secondary-blue);
+        }
+
+        /* LOADING */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--secondary-blue);
+            font-size: 1.2rem;
+            z-index: 10;
         }
     </style>
 </head>
@@ -243,18 +290,18 @@
             
             <button id="rotationBtn" class="nav-btn">⏸ Aturar</button>
             
-            <div class="speed-control">
+            <div class="fixed-container speed-control">
                 <label for="rotationSpeed">Vel:</label>
                 <input type="range" id="rotationSpeed" min="5" max="120" value="30">
                 <span id="currentSpeed">30s</span>
             </div>
             
-            <div class="mini-countdown">
+            <div class="fixed-container mini-countdown">
                 <span>⏱</span>
                 <span id="miniTimer">30</span>
             </div>
             
-            <button id="bannerButton" class="nav-btn">banner.html</button>
+            <button id="stationsButton" class="nav-btn">Estacions</button>
         </div>
     </div>
 
@@ -263,7 +310,7 @@
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
 
-    <!-- CONTENIDOR PRINCIPAL PER VISUALITZAR BANNERS -->
+    <!-- CONTENIDOR PRINCIPAL -->
     <div class="main-container">
         <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
     </div>
@@ -323,12 +370,11 @@
         let rotationInterval = null;
         let countdownInterval = null;
         let isRotating = true;
-        let rotationSpeed = 30000; // 30 segons per defecte
+        let rotationSpeed = 30000;
         let countdownValue = 30;
-        
-        // Estacions disponibles (s'actualitza dinàmicament)
         let availableStations = [];
         let availableStationsCount = 0;
+        let isInitializing = true;
 
         // Elements DOM
         const bannerViewer = document.getElementById('bannerViewer');
@@ -339,41 +385,70 @@
         const rotationSpeedInput = document.getElementById('rotationSpeed');
         const currentSpeedSpan = document.getElementById('currentSpeed');
         const miniTimer = document.getElementById('miniTimer');
-        const bannerButton = document.getElementById('bannerButton');
+        const stationsButton = document.getElementById('stationsButton');
         const currentTimeSpan = document.getElementById('currentTime');
 
         // ============================================
         // FUNCIONS PRINCIPALS
         // ============================================
 
-        // Funció per verificar si un fitxer existeix
+        // Funció per verificar si un fitxer existeix (més ràpida)
         async function checkFileExists(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                return response.ok;
-            } catch (error) {
-                return false;
-            }
+            return new Promise((resolve) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('HEAD', url, true);
+                xhr.timeout = 2000;
+                
+                xhr.onload = function() {
+                    resolve(xhr.status === 200);
+                };
+                
+                xhr.onerror = function() {
+                    resolve(false);
+                };
+                
+                xhr.ontimeout = function() {
+                    resolve(false);
+                };
+                
+                try {
+                    xhr.send();
+                } catch(e) {
+                    resolve(false);
+                }
+            });
         }
 
-        // Detectar estacions disponibles (PUNT 2)
+        // Detectar estacions disponibles (RÀPID)
         async function detectAvailableStations() {
-            console.log("🔍 Detectant estacions disponibles...");
+            console.log("🔍 Detectant estacions disponibles (ràpid)...");
             availableStations = [];
             
-            for (let i = 0; i < STATION_FILES_LIST.length; i++) {
-                const file = STATION_FILES_LIST[i];
+            // Crear un array de promeses per verificar en paral·lel
+            const checkPromises = STATION_FILES_LIST.map(async (file, index) => {
                 const exists = await checkFileExists(file);
                 if (exists) {
-                    availableStations.push({
-                        index: i,
-                        file: file
-                    });
+                    return { index, file };
                 }
+                return null;
+            });
+            
+            // Esperar totes les verificacions
+            const results = await Promise.all(checkPromises);
+            
+            // Filtrar els resultats vàlids
+            availableStations = results.filter(result => result !== null);
+            availableStationsCount = availableStations.length;
+            
+            console.log(`✅ Estacions disponibles: ${availableStationsCount}/${STATION_FILES_LIST.length}`);
+            
+            // Si hi ha estacions, carregar la primera IMMEDIATAMENT
+            if (availableStationsCount > 0) {
+                currentStationIndex = availableStations[0].index;
+                await loadCurrentStation();
+                isInitializing = false;
             }
             
-            availableStationsCount = availableStations.length;
-            console.log(`✅ Estacions disponibles: ${availableStationsCount}/${STATION_FILES_LIST.length}`);
             return availableStations;
         }
 
@@ -382,14 +457,13 @@
             return availableStations.findIndex(station => station.index === originalIndex);
         }
 
-        // Carregar estació actual (PUNT 4)
+        // Carregar estació actual (SENSE BLANC)
         async function loadCurrentStation() {
             if (availableStations.length === 0) {
-                console.log("⚠️ No hi ha estacions disponibles");
                 bannerViewer.srcdoc = `
                     <html>
-                        <body style="background: #000; color: white; text-align: center; padding: 50px;">
-                            <h2>No hi ha estacions disponibles</h2>
+                        <body style="background: #000; color: white; text-align: center; padding: 50px; font-family: sans-serif;">
+                            <h2 style="color: #ff5555;">⚠️ No hi ha estacions disponibles</h2>
                             <p>No s'han trobat fitxers d'estació.</p>
                         </body>
                     </html>
@@ -407,17 +481,18 @@
             const station = availableStations[availableIndex];
             console.log(`📡 Carregant: ${station.file} (${availableIndex + 1}/${availableStationsCount})`);
             
-            // Actualitzar comptador (PUNT 3)
+            // Actualitzar comptador IMMEDIATAMENT (abans de carregar)
             stationCounter.textContent = `${availableIndex + 1}/${availableStationsCount}`;
             
-            // Carregar l'estació (PUNT 4 - Carrega directa)
-            bannerViewer.src = station.file;
+            // Carregar l'estació (amb cache busting per evitar versions velles)
+            const timestamp = new Date().getTime();
+            bannerViewer.src = `${station.file}?t=${timestamp}`;
             
             // Actualitzar l'hora
             updateCurrentTime();
         }
 
-        // Moure a la següent estació disponible
+        // Moure a la següent estació disponible (SENSE SALTAR DUES)
         async function moveToNextAvailableStation() {
             if (availableStations.length === 0) return;
             
@@ -425,14 +500,19 @@
             let nextAvailableIndex;
             
             if (currentAvailableIndex === -1) {
-                // Si l'actual no està disponible, començar des del principi
                 nextAvailableIndex = 0;
             } else {
                 nextAvailableIndex = (currentAvailableIndex + 1) % availableStationsCount;
             }
             
+            // Actualitzar índex
+            const previousIndex = currentStationIndex;
             currentStationIndex = availableStations[nextAvailableIndex].index;
-            await loadCurrentStation();
+            
+            // Evitar salts innecessaris
+            if (previousIndex !== currentStationIndex) {
+                await loadCurrentStation();
+            }
         }
 
         // Moure a l'estació anterior disponible
@@ -443,7 +523,6 @@
             let prevAvailableIndex;
             
             if (currentAvailableIndex === -1) {
-                // Si l'actual no està disponible, començar des del final
                 prevAvailableIndex = availableStationsCount - 1;
             } else {
                 prevAvailableIndex = (currentAvailableIndex - 1 + availableStationsCount) % availableStationsCount;
@@ -458,9 +537,11 @@
             miniTimer.textContent = countdownValue;
             
             if (countdownValue <= 5) {
+                miniTimer.style.color = '#ff5555';
+            } else if (countdownValue <= 10) {
                 miniTimer.style.color = '#ff9800';
             } else {
-                miniTimer.style.color = 'var(--accent-orange)';
+                miniTimer.style.color = '#ffcc00';
             }
         }
 
@@ -485,12 +566,12 @@
             }, 1000);
         }
 
-        // Canviar a següent estació (pública)
+        // Canviar a següent estació
         async function nextStation() {
             await moveToNextAvailableStation();
         }
 
-        // Canviar a estació anterior (pública)
+        // Canviar a estació anterior
         async function prevStation() {
             await moveToPrevAvailableStation();
         }
@@ -514,6 +595,8 @@
         function updateRotationSpeed() {
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
+            countdownValue = rotationSpeedInput.value;
+            updateMiniCountdown();
             
             if (isRotating) {
                 startCountdown();
@@ -531,9 +614,10 @@
             currentTimeSpan.textContent = timeString;
         }
 
-        // Navegar a banner.html
-        function goToBannerHtml() {
-            window.open('banner.html', '_blank');
+        // Navegar a banner.html (sense obrir nova finestra)
+        function goToStations() {
+            // Obrir en la mateixa finestra
+            window.location.href = 'banner.html';
         }
 
         // ============================================
@@ -542,15 +626,22 @@
         async function initialize() {
             console.log("🚀 Inicialitzant visualitzador...");
             
-            // Detectar estacions disponibles
-            await detectAvailableStations();
+            // Mostrar contingut mínim mentre es carrega
+            bannerViewer.srcdoc = `
+                <html>
+                    <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
+                        <div style="font-size: 1.5rem; margin-bottom: 20px;">⏳ Carregant estacions...</div>
+                        <div style="color: #aaa;">Detectant estacions disponibles</div>
+                    </body>
+                </html>
+            `;
             
             // Configurar controls
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
             rotationBtn.addEventListener('click', toggleRotation);
             rotationSpeedInput.addEventListener('input', updateRotationSpeed);
-            bannerButton.addEventListener('click', goToBannerHtml);
+            stationsButton.addEventListener('click', goToStations);
             
             // Configurar navegació per teclat
             document.addEventListener('keydown', (event) => {
@@ -562,11 +653,8 @@
                 }
             });
             
-            // Carregar primera estació disponible
-            if (availableStationsCount > 0) {
-                currentStationIndex = availableStations[0].index;
-                await loadCurrentStation();
-            }
+            // Detectar i carregar estacions (RÀPID)
+            await detectAvailableStations();
             
             // Iniciar rotació automàtica
             startCountdown();
