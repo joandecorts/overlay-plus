@@ -225,17 +225,70 @@
             color: #a8ffa6;
         }
 
-        /* CONTENIDOR */
+        /* CONTENIDOR AMB EFEIX DE PERSIANA */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0;
-            overflow-y: auto;
+            overflow: hidden; /* Canviat de auto a hidden */
             -webkit-overflow-scrolling: touch;
             width: 100%;
             background: #000;
+            position: relative;
+        }
+
+        /* EFEIX DE PERSIANA PER LES DADES */
+        .persiana-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .persiana-row {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(90deg, 
+                rgba(0, 188, 212, 0.1) 0%,
+                rgba(0, 188, 212, 0.3) 50%,
+                rgba(0, 188, 212, 0.1) 100%);
+            opacity: 0;
+            transform: translateY(-100%);
+            animation: persiana-descent 15s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Crear múltiples files amb delays diferents */
+        .persiana-row:nth-child(1) { animation-delay: 0s; top: 10%; }
+        .persiana-row:nth-child(2) { animation-delay: 1s; top: 25%; }
+        .persiana-row:nth-child(3) { animation-delay: 2s; top: 40%; }
+        .persiana-row:nth-child(4) { animation-delay: 3s; top: 55%; }
+        .persiana-row:nth-child(5) { animation-delay: 4s; top: 70%; }
+        .persiana-row:nth-child(6) { animation-delay: 5s; top: 85%; }
+
+        @keyframes persiana-descent {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
 
         #bannerViewer {
@@ -244,6 +297,8 @@
             border: none;
             flex: 1;
             background: #000;
+            position: relative;
+            z-index: 2;
         }
 
         /* PEU */
@@ -295,8 +350,18 @@
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
 
-    <!-- CONTENIDOR -->
+    <!-- CONTENIDOR AMB EFEIX DE PERSIANA -->
     <div class="main-container">
+        <!-- EFEIX DE PERSIANA (6 files) -->
+        <div class="persiana-container">
+            <div class="persiana-row"></div>
+            <div class="persiana-row"></div>
+            <div class="persiana-row"></div>
+            <div class="persiana-row"></div>
+            <div class="persiana-row"></div>
+            <div class="persiana-row"></div>
+        </div>
+        
         <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
     </div>
 
@@ -313,7 +378,9 @@
         let currentIndex = 0;
         let isRotating = true;
         let rotationInterval = null;
+        let countdownInterval = null; // 🆕 Nou interval per al compte regressiu
         let rotationSpeed = 30000;
+        let countdownValue = 30; // 🆕 Variable per al compte regressiu
 
         // Elements (actualitzats amb els nous IDs)
         const viewer = document.getElementById('bannerViewer');
@@ -326,11 +393,11 @@
         const miniTimer = document.getElementById('miniTimer');
         const stationsButton = document.getElementById('stationsButton');
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - detectar estacions
+        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - detectar estacions EN ORDRE ALFABÈTIC
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
-            // Llista de totes les possibles estacions (189 IDs)
+            // Llista de totes les possibles estacions (189 IDs) EN ORDRE ALFABÈTIC
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -356,7 +423,7 @@
                     const response = await fetch(url, { method: 'HEAD' });
                     if (response.ok) {
                         console.log(`✅ ${id} trobada`);
-                        return `index_${id}.html`;
+                        return { id: id, file: `index_${id}.html` };
                     }
                 } catch (error) {
                     // Ignorar errors
@@ -368,9 +435,16 @@
             const results = await Promise.all(testPromises);
             
             // Filtrar les que existeixen
-            stations = results.filter(station => station !== null);
+            const foundItems = results.filter(item => item !== null);
             
-            console.log(`🎯 ${stations.length} estacions detectades`);
+            // 🆕 ORDENAR ALFABÈTICAMENT PER NOM D'ESTACIÓ
+            foundItems.sort((a, b) => a.id.localeCompare(b.id));
+            
+            // Extreure només els noms de fitxer
+            stations = foundItems.map(item => item.file);
+            
+            console.log(`🎯 ${stations.length} estacions detectades (ordenades alfabèticament)`);
+            console.log(`📋 Primera: ${stations[0]}, Última: ${stations[stations.length-1]}`);
             return stations;
         }
 
@@ -436,7 +510,35 @@
             loadCurrentStation();
         }
 
-        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Iniciar/aturar rotació
+        // 🆕 FUNCIÓ PER INICIAR/ATURAR EL COMPTE REGRESSIU
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownValue = rotationSpeed / 1000;
+            updateMiniCountdown();
+            
+            countdownInterval = setInterval(() => {
+                if (isRotating) {
+                    countdownValue--;
+                    updateMiniCountdown();
+                    
+                    if (countdownValue <= 0) {
+                        nextStation();
+                        countdownValue = rotationSpeed / 1000;
+                        updateMiniCountdown();
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+
+        // 🎯 FUNCIÓ QUE SÍ FUNCIONA - Iniciar/aturar rotació (ACTUALITZADA)
         function toggleRotation() {
             isRotating = !isRotating;
             
@@ -444,19 +546,18 @@
                 rotationBtn.textContent = '⏸ Aturar';
                 rotationBtn.classList.remove('stopped');
                 startRotation();
+                startCountdown(); // 🆕 Iniciar compte regressiu
             } else {
                 rotationBtn.textContent = '▶ Iniciar';
                 rotationBtn.classList.add('stopped');
                 stopRotation();
+                stopCountdown(); // 🆕 Aturar compte regressiu
             }
         }
 
         function startRotation() {
             stopRotation();
             rotationInterval = setInterval(nextStation, rotationSpeed);
-            
-            // Actualitzar compte enrere petit
-            updateMiniCountdown();
         }
 
         function stopRotation() {
@@ -471,26 +572,19 @@
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
             
+            // Reiniciar compte regressiu amb la nova velocitat
             if (isRotating) {
                 startRotation();
+                startCountdown();
             }
-            
-            // Actualitzar compte enrere
-            updateMiniCountdown();
         }
 
         function updateMiniCountdown() {
-            if (!isRotating || !rotationInterval) {
-                miniTimer.textContent = "⏸";
-                return;
-            }
+            miniTimer.textContent = countdownValue;
             
-            const seconds = Math.round(rotationSpeed / 1000);
-            miniTimer.textContent = seconds;
-            
-            if (seconds <= 5) {
+            if (countdownValue <= 5) {
                 miniTimer.style.color = '#ff5555';
-            } else if (seconds <= 10) {
+            } else if (countdownValue <= 10) {
                 miniTimer.style.color = '#ff9800';
             } else {
                 miniTimer.style.color = '#ffcc00';
@@ -543,13 +637,12 @@
             });
             
             // Carregar primera estació
+            currentIndex = 0;
             loadCurrentStation();
             
             // Iniciar rotació automàtica
             startRotation();
-            
-            // Actualitzar compte enrere cada segon
-            setInterval(updateMiniCountdown, 1000);
+            startCountdown(); // 🆕 Iniciar compte regressiu
             
             // Actualitzar hora
             setInterval(updateCurrentTime, 1000);
