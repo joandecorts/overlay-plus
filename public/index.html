@@ -135,7 +135,7 @@
         }
 
         .speed-control {
-            min-width: 140px;
+            min-width: 160px; /* Aumentat per 120 */
         }
 
         .speed-control label {
@@ -146,7 +146,7 @@
         }
 
         #rotationSpeed {
-            width: 70px;
+            width: 90px; /* Aumentat per 120 */
             height: 6px;
             border-radius: 3px;
             background: #2a3a6e;
@@ -168,7 +168,7 @@
         #currentSpeed {
             font-size: 0.9rem;
             color: #ffcc00;
-            min-width: 32px;
+            min-width: 35px; /* Aumentat per 120 */
             font-weight: bold;
             font-family: 'Courier New', monospace;
         }
@@ -324,6 +324,10 @@
         // ============================================
         // CONFIGURACIÓ I VARIABLES GLOBALS
         // ============================================
+        // CANVI CRÍTIC: Afegir '/public/' al path
+        const BASE_PATH = '/public/';
+        
+        // Llista de fitxers amb path correcte
         const STATION_FILES_LIST = [
             'index_WB.html', 'index_XY.html', 'index_U7.html', 'index_WK.html', 'index_WG.html', 
             'index_X3.html', 'index_Y4.html', 'index_UU.html', 'index_DN.html', 'index_XX.html', 
@@ -363,7 +367,7 @@
             'index_D2.html', 'index_V1.html', 'index_D3.html', 'index_XO.html', 'index_YN.html', 
             'index_UG.html', 'index_WS.html', 'index_W4.html', 'index_CQ.html', 'index_VM.html', 
             'index_YR.html', 'index_DQ.html', 'index_D7.html', 'index_U6.html'
-        ];
+        ].map(file => BASE_PATH + file); // CANVI: Afegir '/public/' a cada fitxer
 
         // Variables d'estat
         let currentStationIndex = 0;
@@ -374,7 +378,6 @@
         let countdownValue = 30;
         let availableStations = [];
         let availableStationsCount = 0;
-        let isInitializing = true;
 
         // Elements DOM
         const bannerViewer = document.getElementById('bannerViewer');
@@ -392,12 +395,12 @@
         // FUNCIONS PRINCIPALS
         // ============================================
 
-        // Funció per verificar si un fitxer existeix (més ràpida)
+        // Funció per verificar si un fitxer existeix
         async function checkFileExists(url) {
             return new Promise((resolve) => {
                 const xhr = new XMLHttpRequest();
                 xhr.open('HEAD', url, true);
-                xhr.timeout = 2000;
+                xhr.timeout = 1500; // Reduït per ser més ràpid
                 
                 xhr.onload = function() {
                     resolve(xhr.status === 200);
@@ -419,35 +422,60 @@
             });
         }
 
-        // Detectar estacions disponibles (RÀPID)
+        // Detectar estacions disponibles (MÉS RÀPID)
         async function detectAvailableStations() {
-            console.log("🔍 Detectant estacions disponibles (ràpid)...");
+            console.log("🔍 Detectant estacions disponibles...");
+            stationCounter.textContent = "0/0";
+            
+            // Mostrar primer missatge
+            bannerViewer.srcdoc = `
+                <html>
+                    <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
+                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🔍 Detectant estacions...</div>
+                        <div style="color: #aaa;">0/${STATION_FILES_LIST.length} verificades</div>
+                    </body>
+                </html>
+            `;
+            
             availableStations = [];
             
-            // Crear un array de promeses per verificar en paral·lel
-            const checkPromises = STATION_FILES_LIST.map(async (file, index) => {
-                const exists = await checkFileExists(file);
-                if (exists) {
-                    return { index, file };
-                }
-                return null;
-            });
+            // Verificar en grups petits per mostrar progrés
+            const BATCH_SIZE = 10;
+            let verifiedCount = 0;
             
-            // Esperar totes les verificacions
-            const results = await Promise.all(checkPromises);
-            
-            // Filtrar els resultats vàlids
-            availableStations = results.filter(result => result !== null);
-            availableStationsCount = availableStations.length;
-            
-            console.log(`✅ Estacions disponibles: ${availableStationsCount}/${STATION_FILES_LIST.length}`);
-            
-            // Si hi ha estacions, carregar la primera IMMEDIATAMENT
-            if (availableStationsCount > 0) {
-                currentStationIndex = availableStations[0].index;
-                await loadCurrentStation();
-                isInitializing = false;
+            for (let i = 0; i < STATION_FILES_LIST.length; i += BATCH_SIZE) {
+                const batch = STATION_FILES_LIST.slice(i, i + BATCH_SIZE);
+                const batchPromises = batch.map(async (filePath, idx) => {
+                    const exists = await checkFileExists(filePath);
+                    if (exists) {
+                        availableStations.push({
+                            index: i + idx,
+                            file: filePath
+                        });
+                    }
+                    verifiedCount++;
+                    
+                    // Actualitzar progrés
+                    if (verifiedCount % 5 === 0) {
+                        bannerViewer.srcdoc = `
+                            <html>
+                                <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
+                                    <div style="font-size: 1.5rem; margin-bottom: 20px;">🔍 Detectant estacions...</div>
+                                    <div style="color: #aaa;">${verifiedCount}/${STATION_FILES_LIST.length} verificades</div>
+                                    <div style="color: #4caf50; margin-top: 10px;">${availableStations.length} disponibles</div>
+                                </body>
+                            </html>
+                        `;
+                    }
+                    
+                    return exists;
+                });
+                
+                await Promise.all(batchPromises);
             }
+            
+            availableStationsCount = availableStations.length;
+            console.log(`✅ Estacions disponibles: ${availableStationsCount}/${STATION_FILES_LIST.length}`);
             
             return availableStations;
         }
@@ -457,14 +485,14 @@
             return availableStations.findIndex(station => station.index === originalIndex);
         }
 
-        // Carregar estació actual (SENSE BLANC)
+        // Carregar estació actual
         async function loadCurrentStation() {
             if (availableStations.length === 0) {
                 bannerViewer.srcdoc = `
                     <html>
                         <body style="background: #000; color: white; text-align: center; padding: 50px; font-family: sans-serif;">
                             <h2 style="color: #ff5555;">⚠️ No hi ha estacions disponibles</h2>
-                            <p>No s'han trobat fitxers d'estació.</p>
+                            <p>No s'han trobat fitxers d'estació a la carpeta /public/</p>
                         </body>
                     </html>
                 `;
@@ -473,26 +501,26 @@
             
             const availableIndex = findAvailableIndex(currentStationIndex);
             if (availableIndex === -1) {
-                // Si la estació actual no està disponible, buscar la següent
                 await moveToNextAvailableStation();
                 return;
             }
             
             const station = availableStations[availableIndex];
-            console.log(`📡 Carregant: ${station.file} (${availableIndex + 1}/${availableStationsCount})`);
+            const fileName = station.file.split('/').pop(); // Nom del fitxer sense path
             
-            // Actualitzar comptador IMMEDIATAMENT (abans de carregar)
+            console.log(`📡 Carregant: ${fileName} (${availableIndex + 1}/${availableStationsCount})`);
+            
+            // Actualitzar comptador
             stationCounter.textContent = `${availableIndex + 1}/${availableStationsCount}`;
             
-            // Carregar l'estació (amb cache busting per evitar versions velles)
+            // Carregar amb timestamp per evitar cache
             const timestamp = new Date().getTime();
             bannerViewer.src = `${station.file}?t=${timestamp}`;
             
-            // Actualitzar l'hora
             updateCurrentTime();
         }
 
-        // Moure a la següent estació disponible (SENSE SALTAR DUES)
+        // Moure a la següent estació disponible
         async function moveToNextAvailableStation() {
             if (availableStations.length === 0) return;
             
@@ -505,14 +533,8 @@
                 nextAvailableIndex = (currentAvailableIndex + 1) % availableStationsCount;
             }
             
-            // Actualitzar índex
-            const previousIndex = currentStationIndex;
             currentStationIndex = availableStations[nextAvailableIndex].index;
-            
-            // Evitar salts innecessaris
-            if (previousIndex !== currentStationIndex) {
-                await loadCurrentStation();
-            }
+            await loadCurrentStation();
         }
 
         // Moure a l'estació anterior disponible
@@ -614,9 +636,8 @@
             currentTimeSpan.textContent = timeString;
         }
 
-        // Navegar a banner.html (sense obrir nova finestra)
+        // Navegar a banner.html
         function goToStations() {
-            // Obrir en la mateixa finestra
             window.location.href = 'banner.html';
         }
 
@@ -625,16 +646,6 @@
         // ============================================
         async function initialize() {
             console.log("🚀 Inicialitzant visualitzador...");
-            
-            // Mostrar contingut mínim mentre es carrega
-            bannerViewer.srcdoc = `
-                <html>
-                    <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                        <div style="font-size: 1.5rem; margin-bottom: 20px;">⏳ Carregant estacions...</div>
-                        <div style="color: #aaa;">Detectant estacions disponibles</div>
-                    </body>
-                </html>
-            `;
             
             // Configurar controls
             prevBtn.addEventListener('click', prevStation);
@@ -653,8 +664,14 @@
                 }
             });
             
-            // Detectar i carregar estacions (RÀPID)
+            // Detectar i carregar estacions
             await detectAvailableStations();
+            
+            // Carregar primera estació si n'hi ha
+            if (availableStationsCount > 0) {
+                currentStationIndex = availableStations[0].index;
+                await loadCurrentStation();
+            }
             
             // Iniciar rotació automàtica
             startCountdown();
@@ -662,7 +679,7 @@
             console.log("✅ Visualitzador inicialitzat correctament");
         }
 
-        // Executar inicialització quan el document estigui carregat
+        // Executar inicialització
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
