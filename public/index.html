@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
+        /* [MANTINGUES TOT EL CSS IGUAL] */
         :root {
             --primary-blue: #1a237e;
             --secondary-blue: #00bcd4;
@@ -258,7 +259,7 @@
             color: var(--secondary-blue);
         }
 
-        /* DEBUG - Pots eliminar aquesta classe si vols ocultar el debug */
+        /* DEBUG */
         .debug-info {
             position: fixed;
             bottom: 50px;
@@ -319,59 +320,17 @@
         Sistema de visualització automàtica • Estacions Meteo.cat • <strong id="currentTime"></strong>
     </div>
 
-    <!-- DEBUG INFO - Pots eliminar aquest div si vols -->
+    <!-- DEBUG INFO -->
     <div class="debug-info" id="debugInfo">
         <div>🔄 Inicialitzant...</div>
     </div>
 
     <script>
         // ============================================
-        // LLISTA COMPLETA DE 189 ESTACIONS
+        // VARIABLES GLOBALS
         // ============================================
-        const STATION_FILES = [
-            'index_WB.html', 'index_XY.html', 'index_U7.html', 'index_WK.html', 'index_WG.html', 
-            'index_X3.html', 'index_Y4.html', 'index_UU.html', 'index_DN.html', 'index_XX.html', 
-            'index_WW.html', 'index_VA.html', 'index_WU.html', 'index_X6.html', 'index_DJ.html', 
-            'index_X4.html', 'index_D5.html', 'index_X8.html', 'index_YX.html', 'index_VB.html', 
-            'index_W8.html', 'index_Z2.html', 'index_YT.html', 'index_Z1.html', 'index_YS.html', 
-            'index_UP.html', 'index_Z9.html', 'index_X9.html', 'index_WX.html', 'index_WP.html', 
-            'index_YU.html', 'index_XU.html', 'index_MQ.html', 'index_UN.html', 'index_DO.html', 
-            'index_MS.html', 'index_XC.html', 'index_U4.html', 'index_C6.html', 'index_W1.html', 
-            'index_Z5.html', 'index_C8.html', 'index_VQ.html', 'index_WZ.html', 'index_DP.html', 
-            'index_UQ.html', 'index_VD.html', 'index_WJ.html', 'index_UH.html', 'index_DB.html', 
-            'index_V8.html', 'index_CT.html', 'index_ZE.html', 'index_XL.html', 'index_D9.html', 
-            'index_XM.html', 'index_UW.html', 'index_CE.html', 'index_VZ.html', 'index_Z7.html', 
-            'index_X1.html', 'index_KP.html', 'index_DI.html', 'index_UO.html', 'index_XP.html', 
-            'index_VH.html', 'index_XJ.html', 'index_UI.html', 'index_WC.html', 'index_YM.html', 
-            'index_WV.html', 'index_MV.html', 'index_D8.html', 'index_DL.html', 'index_WO.html', 
-            'index_DF.html', 'index_UM.html', 'index_XB.html', 'index_XA.html', 'index_YC.html', 
-            'index_CR.html', 'index_KX.html', 'index_CD.html', 'index_UB.html', 'index_ZD.html', 
-            'index_W9.html', 'index_VS.html', 'index_U9.html', 'index_UA.html', 'index_YD.html', 
-            'index_US.html', 'index_CW.html', 'index_VO.html', 'index_YJ.html', 'index_WI.html', 
-            'index_WT.html', 'index_Z3.html', 'index_D1.html', 'index_C9.html', 'index_YE.html', 
-            'index_YV.html', 'index_YF.html', 'index_XI.html', 'index_CG.html', 'index_V4.html', 
-            'index_WQ.html', 'index_WN.html', 'index_CY.html', 'index_Y5.html', 'index_MW.html', 
-            'index_VY.html', 'index_DG.html', 'index_H1.html', 'index_W5.html', 'index_WA.html', 
-            'index_YB.html', 'index_CJ.html', 'index_CC.html', 'index_UY.html', 'index_YP.html', 
-            'index_J5.html', 'index_VC.html', 'index_KE.html', 'index_MR.html', 'index_XG.html', 
-            'index_V5.html', 'index_VP.html', 'index_UF.html', 'index_X5.html', 'index_Y7.html', 
-            'index_YQ.html', 'index_D6.html', 'index_XR.html', 'index_XK.html', 'index_YA.html', 
-            'index_YH.html', 'index_VK.html', 'index_VU.html', 'index_YL.html', 'index_D4.html', 
-            'index_XF.html', 'index_ZB.html', 'index_XV.html', 'index_M6.html', 'index_VV.html', 
-            'index_WL.html', 'index_U3.html', 'index_CI.html', 'index_UK.html', 'index_U2.html', 
-            'index_CP.html', 'index_YO.html', 'index_CL.html', 'index_XS.html', 'index_UJ.html', 
-            'index_WM.html', 'index_Z6.html', 'index_XN.html', 'index_XT.html', 'index_XH.html', 
-            'index_VX.html', 'index_XE.html', 'index_C7.html', 'index_YK.html', 'index_YG.html', 
-            'index_Y6.html', 'index_DK.html', 'index_X7.html', 'index_XZ.html', 'index_UE.html', 
-            'index_WR.html', 'index_XQ.html', 'index_UX.html', 'index_XD.html', 'index_ZC.html', 
-            'index_D2.html', 'index_V1.html', 'index_D3.html', 'index_XO.html', 'index_YN.html', 
-            'index_UG.html', 'index_WS.html', 'index_W4.html', 'index_CQ.html', 'index_VM.html', 
-            'index_YR.html', 'index_DQ.html', 'index_D7.html', 'index_U6.html'
-        ];
-
-        // Variables globals
+        let availableStations = []; // Estacions reals del banner.html
         let currentIndex = 0;
-        let availableStations = [...STATION_FILES]; // Còpia de la llista completa
         let isRotating = true;
         let rotationSpeed = 30000;
         let countdownValue = 30;
@@ -436,6 +395,67 @@
             }, 1000);
         }
 
+        // FUNCIÓ CRÍTICA: Llegir estacions del banner.html
+        async function getStationsFromBanner() {
+            updateDebug("📄 Llegint estacions de banner.html...");
+            
+            try {
+                const response = await fetch('banner.html');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const html = await response.text();
+                
+                // Anàlisi del banner.html per trobar els IDs d'estació
+                // Busquem patrons com index_XX.html
+                const stationRegex = /index_([A-Z0-9]{2})\.html/g;
+                const matches = [...html.matchAll(stationRegex)];
+                
+                // Extreure IDs únics
+                const stationIds = [...new Set(matches.map(match => match[1]))];
+                
+                // Crear array de fitxers
+                const stations = stationIds.map(id => `index_${id}.html`);
+                
+                updateDebug(`🎯 Trobades ${stations.length} estacions a banner.html`);
+                
+                // Si no trobem res, provem amb una llista per defecte
+                if (stations.length === 0) {
+                    updateDebug("⚠️ No s'han trobat estacions, utilitzant llista per defecte");
+                    return [
+                        'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
+                        'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
+                        'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
+                        'index_D5.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                        'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
+                        'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
+                        'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
+                        'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
+                        'index_XO.html', 'index_VS.html', 'index_D7.html'
+                    ];
+                }
+                
+                return stations;
+                
+            } catch (error) {
+                updateDebug(`❌ Error llegint banner.html: ${error.message}`);
+                
+                // Retornar llista per defecte si hi ha error
+                return [
+                    'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
+                    'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
+                    'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
+                    'index_D5.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                    'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
+                    'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
+                    'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
+                    'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
+                    'index_XO.html', 'index_VS.html', 'index_D7.html'
+                ];
+            }
+        }
+
         // Carregar estació actual
         function loadCurrentStation() {
             if (availableStations.length === 0) {
@@ -443,6 +463,7 @@
                     <html>
                         <body style="background: #000; color: white; text-align: center; padding: 50px; font-family: sans-serif;">
                             <h2 style="color: #ff5555;">⚠️ No hi ha estacions disponibles</h2>
+                            <p>Carregant llista d'estacions...</p>
                         </body>
                     </html>
                 `;
@@ -450,7 +471,9 @@
             }
             
             const station = availableStations[currentIndex];
-            updateDebug(`📡 Carregant: ${station} (${currentIndex + 1}/${availableStations.length})`);
+            const stationId = station.replace('index_', '').replace('.html', '');
+            
+            updateDebug(`📡 Carregant: ${station} (${currentIndex + 1}/${availableStations.length}) [${stationId}]`);
             updateStationCounter();
             
             // Carregar amb timestamp per evitar cache
@@ -461,7 +484,7 @@
             // Escoltar errors
             bannerViewer.onerror = function() {
                 updateDebug(`❌ Error carregant: ${station}`);
-                // Saltar a la següent estació si aquesta falla
+                // Saltar a la següent estació després d'un segon
                 setTimeout(() => nextStation(), 1000);
             };
             
@@ -530,44 +553,38 @@
         }
 
         // Test de connectivitat ràpid
-        async function quickTest() {
+        async function quickConnectivityTest() {
             updateDebug("🔍 Verificant connectivitat...");
             
-            // Prova ràpida amb 3 estacions
-            const testStations = ['index_WB.html', 'index_YT.html', 'index_U6.html'];
-            let successCount = 0;
-            
-            for (const station of testStations) {
-                const testUrl = `/public/${station}`;
-                updateDebug(`🔧 Provant: ${testUrl}`);
-                
-                try {
-                    const tempIframe = document.createElement('iframe');
-                    tempIframe.style.display = 'none';
-                    tempIframe.src = testUrl;
-                    document.body.appendChild(tempIframe);
-                    
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    
-                    if (tempIframe.contentDocument && tempIframe.contentDocument.body) {
-                        successCount++;
-                        updateDebug(`✅ ${station} accessible`);
-                    }
-                    
-                    document.body.removeChild(tempIframe);
-                } catch(e) {
-                    // CORS error - igualment pot funcionar
-                    updateDebug(`⚠️ ${station} (CORS)`);
-                    successCount++;
-                }
+            if (availableStations.length === 0) {
+                updateDebug("⚠️ Encara no hi ha estacions per provar");
+                return false;
             }
             
-            updateDebug(`📊 ${successCount}/${testStations.length} accessibles`);
-            return successCount > 0;
+            // Prova amb la primera estació
+            const testStation = availableStations[0];
+            const testUrl = `/public/${testStation}`;
+            
+            updateDebug(`🔧 Provant: ${testUrl}`);
+            
+            try {
+                const response = await fetch(testUrl, { method: 'HEAD' });
+                if (response.ok) {
+                    updateDebug(`✅ ${testStation} accessible`);
+                    return true;
+                } else {
+                    updateDebug(`❌ ${testStation}: HTTP ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                updateDebug(`⚠️ ${testStation}: ${error.message}`);
+                // Intentem igualment, potser és problema de CORS
+                return true;
+            }
         }
 
         // ============================================
-        // INICIALITZACIÓ
+        // INICIALITZACIÓ PRINCIPAL
         // ============================================
         async function initialize() {
             updateDebug("🚀 Inicialitzant sistema...");
@@ -576,42 +593,58 @@
             bannerViewer.srcdoc = `
                 <html>
                     <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🏔️ Inicialitzant visualitzador...</div>
-                        <div style="color: #aaa;">Carregant ${availableStations.length} estacions</div>
+                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🏔️ Llegint configuració...</div>
+                        <div style="color: #aaa;">Carregant estacions de banner.html</div>
                     </body>
                 </html>
             `;
             
-            // Test ràpid de connectivitat
-            const isConnected = await quickTest();
+            // 1. Llegir estacions del banner.html
+            availableStations = await getStationsFromBanner();
+            updateDebug(`📊 Estacions carregades: ${availableStations.length}`);
+            
+            if (availableStations.length === 0) {
+                bannerViewer.srcdoc = `
+                    <html>
+                        <body style="background: #000; color: #ff5555; text-align: center; padding-top: 100px; font-family: sans-serif;">
+                            <h2>❌ No s'han trobat estacions</h2>
+                            <p>El fitxer banner.html no conté estacions o no es pot llegir</p>
+                        </body>
+                    </html>
+                `;
+                return;
+            }
+            
+            // 2. Configurar controls
+            prevBtn.addEventListener('click', prevStation);
+            nextBtn.addEventListener('click', nextStation);
+            rotationBtn.addEventListener('click', toggleRotation);
+            rotationSpeedInput.addEventListener('input', updateRotationSpeed);
+            stationsButton.addEventListener('click', goToStations);
+            
+            // Configurar navegació per teclat
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevStation();
+                if (e.key === 'ArrowRight') nextStation();
+                if (e.key === ' ') {
+                    e.preventDefault();
+                    toggleRotation();
+                }
+            });
+            
+            // 3. Test de connectivitat ràpid
+            const isConnected = await quickConnectivityTest();
             
             if (isConnected) {
-                updateDebug(`✅ Sistema connectat - ${availableStations.length} estacions`);
+                updateDebug(`✅ Sistema connectat - ${availableStations.length} estacions disponibles`);
                 
-                // Configurar controls
-                prevBtn.addEventListener('click', prevStation);
-                nextBtn.addEventListener('click', nextStation);
-                rotationBtn.addEventListener('click', toggleRotation);
-                rotationSpeedInput.addEventListener('input', updateRotationSpeed);
-                stationsButton.addEventListener('click', goToStations);
-                
-                // Configurar navegació per teclat
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') prevStation();
-                    if (e.key === 'ArrowRight') nextStation();
-                    if (e.key === ' ') {
-                        e.preventDefault();
-                        toggleRotation();
-                    }
-                });
-                
-                // Carregar primera estació
+                // 4. Carregar primera estació
                 loadCurrentStation();
                 
-                // Iniciar rotació automàtica
+                // 5. Iniciar rotació automàtica
                 startCountdown();
                 
-                // Actualitzar hora cada segon
+                // 6. Actualitzar hora
                 setInterval(updateCurrentTime, 1000);
                 updateCurrentTime();
                 
@@ -626,16 +659,13 @@
                 }, 10000);
                 
             } else {
-                updateDebug("❌ No s'ha pogut connectar al servidor");
-                bannerViewer.srcdoc = `
-                    <html>
-                        <body style="background: #000; color: #ff5555; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                            <h2>❌ Error de connexió</h2>
-                            <p>No es pot accedir a les estacions</p>
-                            <p>Assegura't que els fitxers estan a /public/</p>
-                        </body>
-                    </html>
-                `;
+                updateDebug("⚠️ Possible problema de connectivitat, intentant igualment...");
+                
+                // Intentar carregar igualment
+                loadCurrentStation();
+                startCountdown();
+                setInterval(updateCurrentTime, 1000);
+                updateCurrentTime();
             }
         }
 
