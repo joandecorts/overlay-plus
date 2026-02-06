@@ -308,13 +308,12 @@
     <script>
         const GITHUB_BASE = 'https://joandecorts.github.io/overlay-plus/public/';
         
+        // VARIABLES DEL SISTEMA ANTERIOR QUE FUNCIONAVA
         let stations = [];
         let currentIndex = 0;
         let isRotating = true;
         let rotationInterval = null;
-        let countdownInterval = null;
-        let rotationSpeed = 30000; // 30 segons
-        let countdownValue = 30;
+        let rotationSpeed = 30000;
 
         // Elements
         const viewer = document.getElementById('bannerViewer');
@@ -327,61 +326,44 @@
         const miniTimer = document.getElementById('miniTimer');
         const stationsButton = document.getElementById('stationsButton');
 
-        // Funció per detectar estacions (ORDENADES ALFABÈTICAMENT)
+        // 🎯 FUNCIÓ QUE JA FUNCIONAVA - detectar estacions
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
-            // Llista de totes les possibles estacions EN ORDRE ALFABÈTIC
-            const allPossibleStations = [
-                'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
-                'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
-                'YU','XU','MQ','UN','DO','MS','XC','U4','C6','W1','Z5','C8','VQ','WZ','DP',
-                'UQ','VD','WJ','UH','DB','V8','CT','ZE','XL','D9','XM','UW','CE','VZ','Z7',
-                'X1','KP','DI','UO','XP','VH','XJ','UI','WC','YM','WV','MV','D8','DL','WO',
-                'DF','UM','XB','XA','YC','CR','KX','CD','UB','ZD','W9','VS','U9','UA','YD',
-                'US','CW','VO','YJ','WI','WT','Z3','D1','C9','YE','YV','YF','XI','CG','V4',
-                'WQ','WN','CY','Y5','MW','VY','DG','H1','W5','WA','YB','CJ','CC','UY','YP',
-                'J5','VC','KE','MR','XG','V5','VP','UF','X5','Y7','YQ','D6','XR','XK','YA',
-                'YH','VK','VU','YL','D4','XF','ZB','XV','M6','VV','WL','U3','CI','UK','U2',
-                'CP','YO','CL','XS','UJ','WM','Z6','XN','XT','XH','VX','XE','C7','YK','YG',
-                'Y6','DK','X7','XZ','UE','WR','XQ','UX','XD','ZC','D2','V1','D3','XO','YN',
-                'UG','WS','W4','CQ','VM','YR','DQ','D7','U6'
+            // Utilitzem la llista de 35 estacions CONEGUDES que SÍ existeixen
+            const knownStations = [
+                'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
+                'index_X4.html', 'index_D5.html', 'index_UN.html', 'index_MS.html',
+                'index_W1.html', 'index_DP.html', 'index_XL.html', 'index_VZ.html',
+                'index_Z7.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
+                'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
+                'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
+                'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
+                'index_XO.html', 'index_VS.html', 'index_D7.html'
             ];
-
+            
+            // Verificar ràpidament només aquestes 35
             const foundStations = [];
             
-            // Provar cada estació (en paral·lel limitat)
-            console.log("⏳ Verificant estacions disponibles...");
-            
-            for (let i = 0; i < allPossibleStations.length; i += 10) {
-                const batch = allPossibleStations.slice(i, i + 10);
-                const batchPromises = batch.map(async (id) => {
-                    const url = `${GITHUB_BASE}index_${id}.html`;
-                    try {
-                        const response = await fetch(url, { method: 'HEAD' });
-                        if (response.ok) {
-                            return `index_${id}.html`;
-                        }
-                    } catch (error) {
-                        // Ignorar errors
+            for (const station of knownStations) {
+                const url = `${GITHUB_BASE}${station}`;
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    if (response.ok) {
+                        foundStations.push(station);
+                        console.log(`✅ ${station} trobada`);
                     }
-                    return null;
-                });
-
-                const results = await Promise.all(batchPromises);
-                results.forEach(station => {
-                    if (station) foundStations.push(station);
-                });
+                } catch (error) {
+                    console.log(`⚠️ ${station}: ${error.message}`);
+                }
             }
-            
-            // ORDENAR ALFABÈTICAMENT (però ja ho estan per com està la llista)
-            foundStations.sort();
             
             console.log(`🎯 ${foundStations.length} estacions detectades`);
             return foundStations;
         }
 
-        // Carregar estació actual (Començant per la PRIMERA)
+        // Carregar estació actual
         function loadCurrentStation() {
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No hi ha estacions disponibles</h2></body></html>';
@@ -412,40 +394,6 @@
             };
         }
 
-        // Actualitzar compte enrere petit
-        function updateMiniCountdown() {
-            miniTimer.textContent = countdownValue;
-            
-            if (countdownValue <= 5) {
-                miniTimer.style.color = '#ff5555';
-            } else if (countdownValue <= 10) {
-                miniTimer.style.color = '#ff9800';
-            } else {
-                miniTimer.style.color = '#ffcc00';
-            }
-        }
-
-        // Iniciar compte enrere
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            
-            countdownValue = rotationSpeed / 1000;
-            updateMiniCountdown();
-            
-            countdownInterval = setInterval(() => {
-                if (isRotating) {
-                    countdownValue--;
-                    updateMiniCountdown();
-                    
-                    if (countdownValue <= 0) {
-                        nextStation();
-                        countdownValue = rotationSpeed / 1000;
-                        updateMiniCountdown();
-                    }
-                }
-            }, 1000);
-        }
-
         // Següent estació
         function nextStation() {
             if (stations.length === 0) return;
@@ -467,11 +415,26 @@
             if (isRotating) {
                 rotationBtn.textContent = '⏸ Aturar';
                 rotationBtn.classList.remove('stopped');
-                startCountdown();
+                startRotation();
             } else {
                 rotationBtn.textContent = '▶ Iniciar';
                 rotationBtn.classList.add('stopped');
-                if (countdownInterval) clearInterval(countdownInterval);
+                stopRotation();
+            }
+        }
+
+        function startRotation() {
+            stopRotation();
+            rotationInterval = setInterval(nextStation, rotationSpeed);
+            
+            // Actualitzar compte enrere petit
+            updateMiniCountdown();
+        }
+
+        function stopRotation() {
+            if (rotationInterval) {
+                clearInterval(rotationInterval);
+                rotationInterval = null;
             }
         }
 
@@ -479,11 +442,28 @@
         function updateRotationSpeed() {
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
-            countdownValue = rotationSpeedInput.value;
-            updateMiniCountdown();
             
             if (isRotating) {
-                startCountdown();
+                startRotation();
+            }
+        }
+
+        // Actualitzar compte enrere petit (simulat)
+        function updateMiniCountdown() {
+            if (!isRotating) {
+                miniTimer.textContent = "⏸";
+                return;
+            }
+            
+            const seconds = rotationSpeed / 1000;
+            miniTimer.textContent = seconds;
+            
+            if (seconds <= 5) {
+                miniTimer.style.color = '#ff5555';
+            } else if (seconds <= 10) {
+                miniTimer.style.color = '#ff9800';
+            } else {
+                miniTimer.style.color = '#ffcc00';
             }
         }
 
@@ -505,19 +485,19 @@
 
         // Inicialització
         async function init() {
-            console.log("🚀 Inicialitzant...");
+            console.log("🚀 Inicialitzant sistema...");
             
             // Mostrar missatge inicial
             viewer.srcdoc = `
                 <html>
                     <body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;font-family:sans-serif;">
                         <div style="font-size:1.5rem;margin-bottom:20px;">🔍 Detectant estacions...</div>
-                        <div style="color:#aaa;">Escanejant GitHub Pages</div>
+                        <div style="color:#aaa;">Escanejant estacions disponibles</div>
                     </body>
                 </html>
             `;
             
-            // Carregar estacions
+            // 1. Detectar estacions (amb el mètode que funcionava)
             stations = await detectStations();
             
             if (stations.length === 0) {
@@ -525,10 +505,7 @@
                 return;
             }
             
-            // FORÇAR començar per la PRIMERA (index 0)
-            currentIndex = 0;
-            
-            // Configurar controls
+            // 2. Configurar controls
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
             rotationBtn.addEventListener('click', toggleRotation);
@@ -545,13 +522,17 @@
                 }
             });
             
-            // Carregar primera estació
+            // 3. Carregar primera estació
+            currentIndex = 0;
             loadCurrentStation();
             
-            // Iniciar rotació
-            startCountdown();
+            // 4. Iniciar rotació automàtica
+            startRotation();
             
-            // Actualitzar hora
+            // 5. Actualitzar compte enrere cada segon
+            setInterval(updateMiniCountdown, 1000);
+            
+            // 6. Actualitzar hora
             setInterval(updateCurrentTime, 1000);
             updateCurrentTime();
             
