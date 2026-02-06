@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
-        /* [MANTINGUES TOT EL CSS IGUAL] */
         :root {
             --primary-blue: #1a237e;
             --secondary-blue: #00bcd4;
@@ -259,7 +258,6 @@
             color: var(--secondary-blue);
         }
 
-        /* DEBUG */
         .debug-info {
             position: fixed;
             bottom: 50px;
@@ -327,9 +325,12 @@
 
     <script>
         // ============================================
-        // VARIABLES GLOBALS
+        // CONFIGURACIÓ
         // ============================================
-        let availableStations = []; // Estacions reals del banner.html
+        const GITHUB_BASE_URL = 'https://joandecorts.github.io/overlay-plus/public/';
+        
+        // Variables globals
+        let availableStations = [];
         let currentIndex = 0;
         let isRotating = true;
         let rotationSpeed = 30000;
@@ -395,75 +396,53 @@
             }, 1000);
         }
 
-        // FUNCIÓ CRÍTICA: Llegir estacions del banner.html
-        async function getStationsFromBanner() {
-            updateDebug("📄 Llegint estacions de banner.html...");
+        // Llegir estacions del GitHub Pages
+        async function getStationsFromGitHub() {
+            updateDebug("🌐 Llegint estacions de GitHub...");
             
             try {
-                const response = await fetch('banner.html');
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-                const html = await response.text();
-                
-                // Anàlisi del banner.html per trobar els IDs d'estació
-                // Busquem patrons com index_XX.html
-                const stationRegex = /index_([A-Z0-9]{2})\.html/g;
-                const matches = [...html.matchAll(stationRegex)];
-                
-                // Extreure IDs únics
-                const stationIds = [...new Set(matches.map(match => match[1]))];
-                
-                // Crear array de fitxers
-                const stations = stationIds.map(id => `index_${id}.html`);
-                
-                updateDebug(`🎯 Trobades ${stations.length} estacions a banner.html`);
-                
-                // Si no trobem res, provem amb una llista per defecte
-                if (stations.length === 0) {
-                    updateDebug("⚠️ No s'han trobat estacions, utilitzant llista per defecte");
-                    return [
-                        'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
-                        'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
-                        'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
-                        'index_D5.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
-                        'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
-                        'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
-                        'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
-                        'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
-                        'index_XO.html', 'index_VS.html', 'index_D7.html'
-                    ];
-                }
-                
-                return stations;
-                
-            } catch (error) {
-                updateDebug(`❌ Error llegint banner.html: ${error.message}`);
-                
-                // Retornar llista per defecte si hi ha error
-                return [
+                // Com que no podem llegir directament el directori del GitHub Pages,
+                // utilitzem una llista coneguda de 35 estacions
+                const stations = [
                     'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
-                    'index_X4.html', 'index_UN.html', 'index_MS.html', 'index_W1.html',
-                    'index_DP.html', 'index_XL.html', 'index_VZ.html', 'index_Z7.html',
-                    'index_D5.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
+                    'index_X4.html', 'index_D5.html', 'index_UN.html', 'index_MS.html',
+                    'index_W1.html', 'index_DP.html', 'index_XL.html', 'index_VZ.html',
+                    'index_Z7.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
                     'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
                     'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
                     'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
                     'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
                     'index_XO.html', 'index_VS.html', 'index_D7.html'
                 ];
+                
+                updateDebug(`📊 Trobades ${stations.length} estacions`);
+                return stations;
+                
+            } catch (error) {
+                updateDebug(`❌ Error: ${error.message}`);
+                return [];
+            }
+        }
+
+        // Verificar si una estació existeix
+        async function checkStationExists(stationFile) {
+            const testUrl = GITHUB_BASE_URL + stationFile;
+            
+            try {
+                const response = await fetch(testUrl, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
             }
         }
 
         // Carregar estació actual
-        function loadCurrentStation() {
+        async function loadCurrentStation() {
             if (availableStations.length === 0) {
                 bannerViewer.srcdoc = `
                     <html>
                         <body style="background: #000; color: white; text-align: center; padding: 50px; font-family: sans-serif;">
                             <h2 style="color: #ff5555;">⚠️ No hi ha estacions disponibles</h2>
-                            <p>Carregant llista d'estacions...</p>
                         </body>
                     </html>
                 `;
@@ -473,23 +452,24 @@
             const station = availableStations[currentIndex];
             const stationId = station.replace('index_', '').replace('.html', '');
             
-            updateDebug(`📡 Carregant: ${station} (${currentIndex + 1}/${availableStations.length}) [${stationId}]`);
+            updateDebug(`📡 Carregant: ${station} (${currentIndex + 1}/${availableStations.length})`);
             updateStationCounter();
             
-            // Carregar amb timestamp per evitar cache
+            // URL completa a GitHub Pages
             const timestamp = new Date().getTime();
-            const url = `/public/${station}?t=${timestamp}`;
+            const url = `${GITHUB_BASE_URL}${station}?t=${timestamp}`;
+            
+            // Intentar carregar
             bannerViewer.src = url;
             
-            // Escoltar errors
-            bannerViewer.onerror = function() {
-                updateDebug(`❌ Error carregant: ${station}`);
-                // Saltar a la següent estació després d'un segon
-                setTimeout(() => nextStation(), 1000);
+            // Verificar si carrega correctament
+            bannerViewer.onload = function() {
+                updateDebug(`✅ Carregada: ${stationId}`);
             };
             
-            bannerViewer.onload = function() {
-                updateDebug(`✅ Carregada: ${station}`);
+            bannerViewer.onerror = function() {
+                updateDebug(`❌ Error: ${stationId} no accessible`);
+                // No saltar automàticament, deixar que l'usuari ho faci manualment
             };
         }
 
@@ -536,7 +516,7 @@
             }
         }
 
-        // Navegar a banner.html
+        // Navegar a banner.html (local)
         function goToStations() {
             window.location.href = 'banner.html';
         }
@@ -552,39 +532,8 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // Test de connectivitat ràpid
-        async function quickConnectivityTest() {
-            updateDebug("🔍 Verificant connectivitat...");
-            
-            if (availableStations.length === 0) {
-                updateDebug("⚠️ Encara no hi ha estacions per provar");
-                return false;
-            }
-            
-            // Prova amb la primera estació
-            const testStation = availableStations[0];
-            const testUrl = `/public/${testStation}`;
-            
-            updateDebug(`🔧 Provant: ${testUrl}`);
-            
-            try {
-                const response = await fetch(testUrl, { method: 'HEAD' });
-                if (response.ok) {
-                    updateDebug(`✅ ${testStation} accessible`);
-                    return true;
-                } else {
-                    updateDebug(`❌ ${testStation}: HTTP ${response.status}`);
-                    return false;
-                }
-            } catch (error) {
-                updateDebug(`⚠️ ${testStation}: ${error.message}`);
-                // Intentem igualment, potser és problema de CORS
-                return true;
-            }
-        }
-
         // ============================================
-        // INICIALITZACIÓ PRINCIPAL
+        // INICIALITZACIÓ
         // ============================================
         async function initialize() {
             updateDebug("🚀 Inicialitzant sistema...");
@@ -593,27 +542,28 @@
             bannerViewer.srcdoc = `
                 <html>
                     <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🏔️ Llegint configuració...</div>
-                        <div style="color: #aaa;">Carregant estacions de banner.html</div>
+                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🏔️ Connectant a GitHub...</div>
+                        <div style="color: #aaa;">Carregant estacions meteorològiques</div>
                     </body>
                 </html>
             `;
             
-            // 1. Llegir estacions del banner.html
-            availableStations = await getStationsFromBanner();
-            updateDebug(`📊 Estacions carregades: ${availableStations.length}`);
+            // 1. Obtenir llista d'estacions
+            availableStations = await getStationsFromGitHub();
             
             if (availableStations.length === 0) {
                 bannerViewer.srcdoc = `
                     <html>
                         <body style="background: #000; color: #ff5555; text-align: center; padding-top: 100px; font-family: sans-serif;">
                             <h2>❌ No s'han trobat estacions</h2>
-                            <p>El fitxer banner.html no conté estacions o no es pot llegir</p>
+                            <p>No es pot accedir a la llista d'estacions</p>
                         </body>
                     </html>
                 `;
                 return;
             }
+            
+            updateDebug(`✅ ${availableStations.length} estacions carregades`);
             
             // 2. Configurar controls
             prevBtn.addEventListener('click', prevStation);
@@ -632,44 +582,27 @@
                 }
             });
             
-            // 3. Test de connectivitat ràpid
-            const isConnected = await quickConnectivityTest();
+            // 3. Carregar primera estació
+            loadCurrentStation();
             
-            if (isConnected) {
-                updateDebug(`✅ Sistema connectat - ${availableStations.length} estacions disponibles`);
-                
-                // 4. Carregar primera estació
-                loadCurrentStation();
-                
-                // 5. Iniciar rotació automàtica
-                startCountdown();
-                
-                // 6. Actualitzar hora
-                setInterval(updateCurrentTime, 1000);
-                updateCurrentTime();
-                
-                updateDebug("✅ Sistema completament operatiu");
-                
-                // Opcional: Amagar debug després de 10 segons
-                setTimeout(() => {
-                    if (debugInfo) {
-                        debugInfo.style.opacity = '0.3';
-                        debugInfo.style.transition = 'opacity 1s';
-                    }
-                }, 10000);
-                
-            } else {
-                updateDebug("⚠️ Possible problema de connectivitat, intentant igualment...");
-                
-                // Intentar carregar igualment
-                loadCurrentStation();
-                startCountdown();
-                setInterval(updateCurrentTime, 1000);
-                updateCurrentTime();
-            }
+            // 4. Iniciar rotació automàtica
+            startCountdown();
+            
+            // 5. Actualitzar hora
+            setInterval(updateCurrentTime, 1000);
+            updateCurrentTime();
+            
+            updateDebug("✅ Sistema operatiu");
+            
+            // Amagar debug després de 10 segons
+            setTimeout(() => {
+                if (debugInfo) {
+                    debugInfo.style.opacity = '0.3';
+                }
+            }, 10000);
         }
 
-        // Iniciar quan el document estigui carregat
+        // Iniciar
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
