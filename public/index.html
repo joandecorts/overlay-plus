@@ -2,577 +2,265 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Banner Scroll Meteorològic joandecorts.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Scroll Meteorològic</title>
     <style>
-        :root {
-            --primary-blue: #1a237e;
-            --secondary-blue: #00bcd4;
-            --accent-orange: #ff9800;
-            --dark-bg: #0a2d5e;
-            --light-bg: #1a5f7a;
-            --text-light: #ffffff;
-            --text-muted: #b0e0e6;
-        }
-
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: white;
+            height: 100vh;
             overflow: hidden;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg), var(--light-bg));
-            color: var(--text-light);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            position: relative;
         }
 
-        .top-header {
-            background: linear-gradient(90deg, #0d1b4e, #1a237e);
-            color: var(--text-light);
-            padding: 8px 15px;
-            border-bottom: 3px solid var(--secondary-blue);
-            box-shadow: 0 3px 15px rgba(0,0,0,0.5);
-            width: 100%;
+        .header {
+            background: #1a237e;
+            color: white;
+            padding: 10px 15px;
             display: flex;
-            flex-wrap: nowrap;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 3px solid #00bcd4;
             flex-shrink: 0;
-            min-height: 65px;
-            z-index: 1000;
         }
 
-        .header-title {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            min-width: 180px;
-            white-space: nowrap;
-        }
-
-        .controls-group {
+        .controls {
             display: flex;
-            flex-wrap: nowrap;
             align-items: center;
             gap: 10px;
-            justify-content: flex-end;
-            flex: 1;
         }
 
-        .nav-btn {
-            background: linear-gradient(to bottom, #2d7fd1, #1a5f9e);
+        button {
+            background: #2d7fd1;
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 8px 14px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            min-width: 85px;
-            height: 36px;
-            -webkit-tap-highlight-color: transparent;
-            white-space: nowrap;
-            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
         }
 
-        .nav-btn:hover {
-            background: linear-gradient(to bottom, #3a8fe0, #2a6fb0);
-        }
-
-        .nav-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
-        #rotationBtn {
-            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
-            min-width: 95px;
-        }
-
-        #rotationBtn.stopped {
-            background: linear-gradient(to bottom, #c62828, #b71c1c);
+        button:hover {
+            background: #3a8fe0;
         }
 
         #stationCounter {
-            font-size: 1.1rem;
             font-weight: bold;
-            color: #00ffaa;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 6px 14px;
-            border-radius: 6px;
-            min-width: 85px;
-            text-align: center;
-            border: 2px solid var(--secondary-blue);
-            font-family: 'Courier New', monospace;
-            letter-spacing: 1px;
-            box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
-        }
-
-        .fixed-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(20, 30, 80, 0.9);
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(0, 188, 212, 0.3);
-            min-width: fit-content;
-            height: 36px;
-        }
-
-        .speed-control {
-            min-width: 160px;
-        }
-
-        .speed-control label {
-            font-size: 0.8rem;
-            color: #b0e0e6;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        #rotationSpeed {
-            width: 90px;
-            height: 6px;
-            border-radius: 3px;
-            background: #2a3a6e;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        #rotationSpeed::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--secondary-blue);
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        #currentSpeed {
-            font-size: 0.9rem;
-            color: #ffcc00;
-            min-width: 35px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-
-        .mini-countdown {
-            font-size: 0.9rem;
-            color: #ff9800;
-            background: rgba(30, 20, 40, 0.9);
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #ff9800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: bold;
-            min-width: 100px;
-            height: 36px;
-            box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
-        }
-
-        #miniTimer {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            color: #ffcc00;
-            min-width: 25px;
+            font-size: 16px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 4px;
+            min-width: 70px;
             text-align: center;
         }
 
-        #stationsButton {
-            background: linear-gradient(to bottom, #9c27b0, #7b1fa2);
-            min-width: 95px;
-        }
-
-        .data-source {
-            font-size: clamp(0.7rem, 2vw, 0.85rem);
-            color: #4caf50;
-            font-style: italic;
-            text-align: center;
-            padding: 6px 10px;
-            background: rgba(0, 0, 0, 0.35);
-            flex-shrink: 0;
-            line-height: 1.3;
-            border-bottom: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .data-source a {
-            color: #80e27e;
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        .data-source a:hover {
-            text-decoration: underline;
-            color: #a8ffa6;
-        }
-
-        .main-container {
+        #viewer {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             width: 100%;
-            background: #000;
-        }
-
-        #bannerViewer {
-            width: 100%;
-            height: 100%;
             border: none;
-            flex: 1;
-            background: #000;
+            background: white;
         }
 
         .footer {
+            padding: 8px;
+            background: #0a2d5e;
             text-align: center;
-            padding: 10px;
-            background: rgba(10, 20, 40, 0.95);
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            font-size: 12px;
             color: #aaa;
-            border-top: 2px solid #1a5f7a;
             flex-shrink: 0;
-            line-height: 1.4;
-        }
-
-        .footer strong {
-            color: var(--secondary-blue);
-        }
-
-        .debug-info {
-            position: fixed;
-            bottom: 50px;
-            right: 10px;
-            background: rgba(0,0,0,0.9);
-            color: #ffcc00;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-family: monospace;
-            z-index: 1001;
-            max-width: 300px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ff9800;
         }
     </style>
 </head>
 <body>
-    <!-- CAPÇALERA AMB CONTROLS -->
-    <div class="top-header">
-        <div class="header-title">🏔️ Banner Scroll Meteorològic</div>
-        
-        <div class="controls-group">
-            <button id="prevBtn" class="nav-btn">◀ Anterior</button>
+    <div class="header">
+        <div>🏔️ Banner Scroll Meteorològic</div>
+        <div class="controls">
+            <button id="prevBtn">◀ Anterior</button>
             <div id="stationCounter">-/-</div>
-            <button id="nextBtn" class="nav-btn">Següent ▶</button>
-            
-            <button id="rotationBtn" class="nav-btn">⏸ Aturar</button>
-            
-            <div class="fixed-container speed-control">
-                <label for="rotationSpeed">Vel:</label>
-                <input type="range" id="rotationSpeed" min="5" max="120" value="30">
-                <span id="currentSpeed">30s</span>
-            </div>
-            
-            <div class="fixed-container mini-countdown">
-                <span>⏱</span>
-                <span id="miniTimer">30</span>
-            </div>
-            
-            <button id="stationsButton" class="nav-btn">Estacions</button>
+            <button id="nextBtn">Següent ▶</button>
+            <button id="rotationBtn">⏸ Aturar</button>
         </div>
     </div>
 
-    <!-- LÍNIA DE FONT DE DADES -->
-    <div class="data-source">
-        Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
-    </div>
+    <iframe id="viewer" title="Estació Meteorològica"></iframe>
 
-    <!-- CONTENIDOR PRINCIPAL -->
-    <div class="main-container">
-        <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
-    </div>
-
-    <!-- PEU DE PÀGINA -->
     <div class="footer">
-        Sistema de visualització automàtica • Estacions Meteo.cat • <strong id="currentTime"></strong>
-    </div>
-
-    <!-- DEBUG INFO -->
-    <div class="debug-info" id="debugInfo">
-        <div>🔄 Inicialitzant...</div>
+        Sistema de visualització automàtica • Estacions Meteo.cat
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURACIÓ
-        // ============================================
-        const GITHUB_BASE_URL = 'https://joandecorts.github.io/overlay-plus/public/';
+        const GITHUB_BASE = 'https://joandecorts.github.io/overlay-plus/public/';
         
-        // Variables globals
-        let availableStations = [];
+        let stations = [];
         let currentIndex = 0;
         let isRotating = true;
+        let rotationInterval = null;
         let rotationSpeed = 30000;
-        let countdownValue = 30;
-        let countdownInterval = null;
 
-        // Elements DOM
-        const bannerViewer = document.getElementById('bannerViewer');
+        // Elements
+        const viewer = document.getElementById('viewer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const stationCounter = document.getElementById('stationCounter');
         const rotationBtn = document.getElementById('rotationBtn');
-        const rotationSpeedInput = document.getElementById('rotationSpeed');
-        const currentSpeedSpan = document.getElementById('currentSpeed');
-        const miniTimer = document.getElementById('miniTimer');
-        const stationsButton = document.getElementById('stationsButton');
-        const debugInfo = document.getElementById('debugInfo');
 
-        // ============================================
-        // FUNCIONS PRINCIPALS
-        // ============================================
-        function updateDebug(message) {
-            if (debugInfo) {
-                debugInfo.innerHTML += `<div>${message}</div>`;
-                debugInfo.scrollTop = debugInfo.scrollHeight;
-            }
-            console.log(message);
-        }
-
-        function updateStationCounter() {
-            stationCounter.textContent = `${currentIndex + 1}/${availableStations.length}`;
-        }
-
-        function updateMiniCountdown() {
-            miniTimer.textContent = countdownValue;
+        // Funció per detectar tots els index_??.html disponibles
+        async function detectStations() {
+            console.log("🔍 Cercant estacions a GitHub...");
             
-            if (countdownValue <= 5) {
-                miniTimer.style.color = '#ff5555';
-            } else if (countdownValue <= 10) {
-                miniTimer.style.color = '#ff9800';
-            } else {
-                miniTimer.style.color = '#ffcc00';
-            }
-        }
+            // Llista de totes les possibles estacions (189 IDs)
+            const allPossibleStations = [
+                'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
+                'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
+                'YU','XU','MQ','UN','DO','MS','XC','U4','C6','W1','Z5','C8','VQ','WZ','DP',
+                'UQ','VD','WJ','UH','DB','V8','CT','ZE','XL','D9','XM','UW','CE','VZ','Z7',
+                'X1','KP','DI','UO','XP','VH','XJ','UI','WC','YM','WV','MV','D8','DL','WO',
+                'DF','UM','XB','XA','YC','CR','KX','CD','UB','ZD','W9','VS','U9','UA','YD',
+                'US','CW','VO','YJ','WI','WT','Z3','D1','C9','YE','YV','YF','XI','CG','V4',
+                'WQ','WN','CY','Y5','MW','VY','DG','H1','W5','WA','YB','CJ','CC','UY','YP',
+                'J5','VC','KE','MR','XG','V5','VP','UF','X5','Y7','YQ','D6','XR','XK','YA',
+                'YH','VK','VU','YL','D4','XF','ZB','XV','M6','VV','WL','U3','CI','UK','U2',
+                'CP','YO','CL','XS','UJ','WM','Z6','XN','XT','XH','VX','XE','C7','YK','YG',
+                'Y6','DK','X7','XZ','UE','WR','XQ','UX','XD','ZC','D2','V1','D3','XO','YN',
+                'UG','WS','W4','CQ','VM','YR','DQ','D7','U6'
+            ];
 
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
+            const foundStations = [];
             
-            countdownValue = rotationSpeed / 1000;
-            updateMiniCountdown();
-            
-            countdownInterval = setInterval(() => {
-                if (isRotating) {
-                    countdownValue--;
-                    updateMiniCountdown();
-                    
-                    if (countdownValue <= 0) {
-                        nextStation();
-                        countdownValue = rotationSpeed / 1000;
-                        updateMiniCountdown();
+            // Provar cada estació (en paral·lel limitat)
+            const testPromises = allPossibleStations.map(async (id) => {
+                const url = `${GITHUB_BASE}index_${id}.html`;
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    if (response.ok) {
+                        console.log(`✅ ${id} trobada`);
+                        return `index_${id}.html`;
                     }
+                } catch (error) {
+                    // Ignorar errors
                 }
-            }, 1000);
-        }
+                return null;
+            });
 
-        // Llegir estacions del GitHub Pages
-        async function getStationsFromGitHub() {
-            updateDebug("🌐 Llegint estacions de GitHub...");
+            // Esperar totes les verificacions
+            const results = await Promise.all(testPromises);
             
-            try {
-                // Com que no podem llegir directament el directori del GitHub Pages,
-                // utilitzem una llista coneguda de 35 estacions
-                const stations = [
-                    'index_YT.html', 'index_Z1.html', 'index_DN.html', 'index_DJ.html',
-                    'index_X4.html', 'index_D5.html', 'index_UN.html', 'index_MS.html',
-                    'index_W1.html', 'index_DP.html', 'index_XL.html', 'index_VZ.html',
-                    'index_Z7.html', 'index_XJ.html', 'index_YU.html', 'index_CD.html',
-                    'index_Z2.html', 'index_VK.html', 'index_Z3.html', 'index_YB.html',
-                    'index_YP.html', 'index_J5.html', 'index_D6.html', 'index_YA.html',
-                    'index_DG.html', 'index_D4.html', 'index_CI.html', 'index_XS.html',
-                    'index_ZC.html', 'index_XH.html', 'index_XE.html', 'index_UE.html',
-                    'index_XO.html', 'index_VS.html', 'index_D7.html'
-                ];
-                
-                updateDebug(`📊 Trobades ${stations.length} estacions`);
-                return stations;
-                
-            } catch (error) {
-                updateDebug(`❌ Error: ${error.message}`);
-                return [];
-            }
-        }
-
-        // Verificar si una estació existeix
-        async function checkStationExists(stationFile) {
-            const testUrl = GITHUB_BASE_URL + stationFile;
+            // Filtrar les que existeixen
+            stations = results.filter(station => station !== null);
             
-            try {
-                const response = await fetch(testUrl, { method: 'HEAD' });
-                return response.ok;
-            } catch (error) {
-                return false;
-            }
+            console.log(`🎯 ${stations.length} estacions detectades`);
+            return stations;
         }
 
         // Carregar estació actual
-        async function loadCurrentStation() {
-            if (availableStations.length === 0) {
-                bannerViewer.srcdoc = `
-                    <html>
-                        <body style="background: #000; color: white; text-align: center; padding: 50px; font-family: sans-serif;">
-                            <h2 style="color: #ff5555;">⚠️ No hi ha estacions disponibles</h2>
-                        </body>
-                    </html>
-                `;
+        function loadCurrentStation() {
+            if (stations.length === 0) {
+                viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No hi ha estacions disponibles</h2></body></html>';
                 return;
             }
+
+            const stationFile = stations[currentIndex];
+            const stationId = stationFile.replace('index_', '').replace('.html', '');
             
-            const station = availableStations[currentIndex];
-            const stationId = station.replace('index_', '').replace('.html', '');
+            console.log(`📡 Carregant: ${stationId} (${currentIndex + 1}/${stations.length})`);
             
-            updateDebug(`📡 Carregant: ${station} (${currentIndex + 1}/${availableStations.length})`);
-            updateStationCounter();
+            // Actualitzar comptador
+            stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
             
-            // URL completa a GitHub Pages
+            // Carregar amb timestamp per evitar cache
             const timestamp = new Date().getTime();
-            const url = `${GITHUB_BASE_URL}${station}?t=${timestamp}`;
+            const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
             
-            // Intentar carregar
-            bannerViewer.src = url;
+            // Forçar càrrega
+            viewer.src = url;
             
-            // Verificar si carrega correctament
-            bannerViewer.onload = function() {
-                updateDebug(`✅ Carregada: ${stationId}`);
+            // Verificar càrrega
+            viewer.onload = () => {
+                console.log(`✅ ${stationId} carregada correctament`);
+                
+                // Forçar redimensionament si cal
+                setTimeout(() => {
+                    try {
+                        const iframeDoc = viewer.contentDocument || viewer.contentWindow.document;
+                        if (iframeDoc.body) {
+                            iframeDoc.body.style.width = '100%';
+                            iframeDoc.body.style.height = '100%';
+                            iframeDoc.body.style.margin = '0';
+                            iframeDoc.body.style.padding = '0';
+                        }
+                    } catch (e) {
+                        // CORS error - normal
+                    }
+                }, 100);
             };
             
-            bannerViewer.onerror = function() {
-                updateDebug(`❌ Error: ${stationId} no accessible`);
-                // No saltar automàticament, deixar que l'usuari ho faci manualment
+            viewer.onerror = () => {
+                console.log(`❌ Error carregant ${stationId}`);
+                // No saltar automàticament
             };
         }
 
         // Següent estació
         function nextStation() {
-            if (availableStations.length === 0) return;
-            
-            currentIndex = (currentIndex + 1) % availableStations.length;
+            if (stations.length === 0) return;
+            currentIndex = (currentIndex + 1) % stations.length;
             loadCurrentStation();
         }
 
         // Estació anterior
         function prevStation() {
-            if (availableStations.length === 0) return;
-            
-            currentIndex = (currentIndex - 1 + availableStations.length) % availableStations.length;
+            if (stations.length === 0) return;
+            currentIndex = (currentIndex - 1 + stations.length) % stations.length;
             loadCurrentStation();
         }
 
-        // Iniciar/Aturar rotació
+        // Iniciar/aturar rotació
         function toggleRotation() {
             isRotating = !isRotating;
             
             if (isRotating) {
                 rotationBtn.textContent = '⏸ Aturar';
-                rotationBtn.classList.remove('stopped');
-                startCountdown();
+                startRotation();
             } else {
                 rotationBtn.textContent = '▶ Iniciar';
-                rotationBtn.classList.add('stopped');
-                if (countdownInterval) clearInterval(countdownInterval);
+                stopRotation();
             }
         }
 
-        // Actualitzar velocitat
-        function updateRotationSpeed() {
-            rotationSpeed = rotationSpeedInput.value * 1000;
-            currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
-            countdownValue = rotationSpeedInput.value;
-            updateMiniCountdown();
-            
-            if (isRotating) {
-                startCountdown();
+        function startRotation() {
+            stopRotation();
+            rotationInterval = setInterval(nextStation, rotationSpeed);
+        }
+
+        function stopRotation() {
+            if (rotationInterval) {
+                clearInterval(rotationInterval);
+                rotationInterval = null;
             }
         }
 
-        // Navegar a banner.html (local)
-        function goToStations() {
-            window.location.href = 'banner.html';
-        }
-
-        // Actualitzar hora actual
-        function updateCurrentTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('ca-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById('currentTime').textContent = timeString;
-        }
-
-        // ============================================
-        // INICIALITZACIÓ
-        // ============================================
-        async function initialize() {
-            updateDebug("🚀 Inicialitzant sistema...");
+        // Inicialització
+        async function init() {
+            console.log("🚀 Inicialitzant...");
             
-            // Mostrar missatge inicial
-            bannerViewer.srcdoc = `
-                <html>
-                    <body style="background: #000; color: #00bcd4; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                        <div style="font-size: 1.5rem; margin-bottom: 20px;">🏔️ Connectant a GitHub...</div>
-                        <div style="color: #aaa;">Carregant estacions meteorològiques</div>
-                    </body>
-                </html>
-            `;
+            // Carregar estacions
+            await detectStations();
             
-            // 1. Obtenir llista d'estacions
-            availableStations = await getStationsFromGitHub();
-            
-            if (availableStations.length === 0) {
-                bannerViewer.srcdoc = `
-                    <html>
-                        <body style="background: #000; color: #ff5555; text-align: center; padding-top: 100px; font-family: sans-serif;">
-                            <h2>❌ No s'han trobat estacions</h2>
-                            <p>No es pot accedir a la llista d'estacions</p>
-                        </body>
-                    </html>
-                `;
+            if (stations.length === 0) {
+                viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No s\'han trobat estacions</h2><p>Revisa la connexió o les estacions disponibles</p></body></html>';
                 return;
             }
             
-            updateDebug(`✅ ${availableStations.length} estacions carregades`);
-            
-            // 2. Configurar controls
+            // Configurar controls
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
             rotationBtn.addEventListener('click', toggleRotation);
-            rotationSpeedInput.addEventListener('input', updateRotationSpeed);
-            stationsButton.addEventListener('click', goToStations);
             
-            // Configurar navegació per teclat
+            // Configurar teclat
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') prevStation();
                 if (e.key === 'ArrowRight') nextStation();
@@ -582,28 +270,17 @@
                 }
             });
             
-            // 3. Carregar primera estació
+            // Carregar primera estació
             loadCurrentStation();
             
-            // 4. Iniciar rotació automàtica
-            startCountdown();
+            // Iniciar rotació automàtica
+            startRotation();
             
-            // 5. Actualitzar hora
-            setInterval(updateCurrentTime, 1000);
-            updateCurrentTime();
-            
-            updateDebug("✅ Sistema operatiu");
-            
-            // Amagar debug després de 10 segons
-            setTimeout(() => {
-                if (debugInfo) {
-                    debugInfo.style.opacity = '0.3';
-                }
-            }, 10000);
+            console.log("✅ Sistema preparat");
         }
 
-        // Iniciar
-        document.addEventListener('DOMContentLoaded', initialize);
+        // Executar
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
