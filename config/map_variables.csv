@@ -26,7 +26,8 @@ VAR_TX_grausC        ; Temperatura Mitjana §C;
 VAR_VVM_10_m_km_h    ; Velocitat Mitjana del Vent (Km/h);
 VAR_VVM_6_m_km_h   ; Velocitat Mitjana del Vent (Km/h);
 VAR_VVM_2_m_km_h   ; Velocitat Mitjana del Vent (Km/h);
-VAR_VVX_10_m_km_h; Ratxa M…xima del Vent (Km/h);
+VAR_VVX_10_m_km_h  ; Ratxa M…xima del Vent (Km/h);
 VAR_VVX_6_m_km_h     ; Ratxa M…xima del Vent (Km/h);
 VAR_VVX_2_m_km_h     ; Ratxa M…xima del Vent (Km/h);
+
 
