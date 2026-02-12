@@ -56,6 +56,12 @@ class Config:
             ("VAR_VVM_10_m_km_h", "Vent Mitjà:"),
             ("VAR_DVM_10_m_graus", "Direcció Vent:"),
             ("VAR_VVX_10_m_km_h", "Ràfega Màxima:")
+            ("VAR_VVM_6_m_km_h", "Vent Mitjà:"),
+            ("VAR_DVM_6_m_graus", "Direcció Vent:"),
+            ("VAR_VVX_6_m_km_h", "Ràfega Màxima:")
+            ("VAR_VVM_2_m_km_h", "Vent Mitjà:"),
+            ("VAR_DVM_2_m_graus", "Direcció Vent:"),
+            ("VAR_VVX_2_m_km_h", "Ràfega Màxima:")
         ],
         "altres": [
             ("VAR_PM_hPa", "Pressió:"),
@@ -1778,4 +1784,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
