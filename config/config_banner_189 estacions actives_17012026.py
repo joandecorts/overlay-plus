@@ -192,7 +192,7 @@ STATIONS = [
     {'code': 'VS', 'name': 'VIELHA_E_MIJARAN___LAC_REDON_2247_M_VS', 'display_name': 'Vielha e Mijaran - Lac Redon (2.247 m)'},
     {'code': 'YN', 'name': 'VIELHA_E_MIJARAN___VIELHA___ELIPORT_YN', 'display_name': 'Vielha e Mijaran - Vielha - Elipòrt'},
     {'code': 'DQ', 'name': 'VILA_RODONA_DQ', 'display_name': 'Vila-rodona'},
-    {'code': 'YY', 'name': 'VILADECANS_UG', 'display_name': 'Viladecans - les Filipines'},
+    {'code': 'YY', 'name': 'VILADECANS_YY', 'display_name': 'Viladecans - les Filipines'},
     {'code': 'WS', 'name': 'VILADRAU_WS', 'display_name': 'Viladrau'},
     {'code': 'W4', 'name': 'VILAFRANCA_DEL_PENEDES___LA_GRANADA_W4', 'display_name': 'Vilafranca del Penedès - la Granada'},
     {'code': 'CQ', 'name': 'VILANOVA_DE_MEIA_CQ', 'display_name': 'Vilanova de Meià'},
@@ -334,4 +334,5 @@ if __name__ == "__main__":
     print(f"💬 Comentades reals: {commented_count}")
     print(f"💾 Dades actualitzades: {GENERATION_INFO['generated_at']}")
     print("=" * 70)
+
 
