@@ -2,7 +2,7 @@
   "metadata": {
     "data_consulta": "2026-02-18",
     "hora_consulta": "T09:00Z",
-    "data_extractcio": "2026-02-18T11:50:08.375425",
+    "data_extractcio": "2026-02-18T12:20:11.902185",
     "total_estacions": 45,
     "formats_generats": [
       "Excel",
@@ -36,7 +36,7 @@
       "NOM_ESTACIO": "Alt Àneu - Bonabé (1.693 m)",
       "NOM_ORIGINAL": "ALT_ANEU___BONABE_1693_M_YT",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:25",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:26",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YT&dia=2026-02-18T09:00Z"
     },
     {
@@ -53,7 +53,7 @@
       "NOM_ESTACIO": "Alt Àneu - Bonaigua (2.266 m)",
       "NOM_ORIGINAL": "ALT_ANEU___BONAIGUA_2266_M_Z1",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:28",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:28",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z1&dia=2026-02-18T09:00Z"
     },
     {
@@ -70,7 +70,7 @@
       "NOM_ESTACIO": "Anglès",
       "NOM_ORIGINAL": "ANGLES_DN",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:30",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:30",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DN&dia=2026-02-18T09:00Z"
     },
     {
@@ -87,7 +87,7 @@
       "NOM_ESTACIO": "Arres - Sasseuva (2.228 m)",
       "NOM_ORIGINAL": "ARRES___SASSEUVA_2228_M_Z6",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:32",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:33",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z6&dia=2026-02-18T09:00Z"
     },
     {
@@ -104,7 +104,7 @@
       "NOM_ESTACIO": "Banyoles",
       "NOM_ORIGINAL": "BANYOLES_DJ",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:35",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:35",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DJ&dia=2026-02-18T09:00Z"
     },
     {
@@ -121,7 +121,7 @@
       "NOM_ESTACIO": "Barcelona - el Raval",
       "NOM_ORIGINAL": "BARCELONA___EL_RAVAL_X4",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:37",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:38",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=X4&dia=2026-02-18T09:00Z"
     },
     {
@@ -138,7 +138,7 @@
       "NOM_ESTACIO": "Barcelona - Observatori Fabra",
       "NOM_ORIGINAL": "BARCELONA___OBSERVATORI_FABRA_D5",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:40",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:40",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D5&dia=2026-02-18T09:00Z"
     },
     {
@@ -155,7 +155,7 @@
       "NOM_ESTACIO": "Cabanes",
       "NOM_ORIGINAL": "CABANES_YS",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:42",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:42",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YS&dia=2026-02-18T09:00Z"
     },
     {
@@ -172,7 +172,7 @@
       "NOM_ESTACIO": "Cassà de la Selva",
       "NOM_ORIGINAL": "CASSA_DE_LA_SELVA_UN",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:45",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:45",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=UN&dia=2026-02-18T09:00Z"
     },
     {
@@ -189,7 +189,7 @@
       "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro",
       "NOM_ORIGINAL": "CASTELLAR_DE_NHUG___EL_CLOT_DEL_MORO_MS",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:46",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:47",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=MS&dia=2026-02-18T09:00Z"
     },
     {
@@ -206,7 +206,7 @@
       "NOM_ESTACIO": "Castelló D'empúries",
       "NOM_ORIGINAL": "CASTELLO_DEMPURIES_W1",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:47",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:49",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=W1&dia=2026-02-18T09:00Z"
     },
     {
@@ -223,7 +223,7 @@
       "NOM_ESTACIO": "Das - Aeròdrom",
       "NOM_ORIGINAL": "DAS___AERODROM_DP",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:48",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:52",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DP&dia=2026-02-18T09:00Z"
     },
     {
@@ -240,7 +240,7 @@
       "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat",
       "NOM_ORIGINAL": "EL_PRAT_DE_LLOBREGAT___EL_PRAT_DE_LLOBREGAT_XL",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:49",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:54",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XL&dia=2026-02-18T09:00Z"
     },
     {
@@ -257,7 +257,7 @@
       "NOM_ESTACIO": "Espolla",
       "NOM_ORIGINAL": "ESPOLLA_VZ",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:51",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:56",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VZ&dia=2026-02-18T09:00Z"
     },
     {
@@ -274,7 +274,7 @@
       "NOM_ESTACIO": "Espot (2.519 m)",
       "NOM_ORIGINAL": "ESPOT_2519_M_Z7",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:54",
+      "DATA_EXTRACCIO": "2026-02-18 12:18:58",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z7&dia=2026-02-18T09:00Z"
     },
     {
@@ -291,7 +291,7 @@
       "NOM_ESTACIO": "Fogars de Montclús - Puig Sesolles (1.668 m)",
       "NOM_ORIGINAL": "FOGARS_DE_MONTCLUS___PUIG_SESOLLES_1668_M_XK",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:56",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:01",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XK&dia=2026-02-18T09:00Z"
     },
     {
@@ -308,7 +308,7 @@
       "NOM_ESTACIO": "Girona",
       "NOM_ORIGINAL": "GIRONA_XJ",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:48:58",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:03",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-18T09:00Z"
     },
     {
@@ -325,7 +325,7 @@
       "NOM_ESTACIO": "L'esquirol - Cantonigròs",
       "NOM_ORIGINAL": "LESQUIROL___CANTONIGROS_YU",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:01",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:06",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YU&dia=2026-02-18T09:00Z"
     },
     {
@@ -342,7 +342,7 @@
       "NOM_ESTACIO": "La Coma i la Pedra - el Port del Comte (2.290 m)",
       "NOM_ORIGINAL": "LA_COMA_I_LA_PEDRA___EL_PORT_DEL_COMTE_2290_M_ZE",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:03",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:08",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=ZE&dia=2026-02-18T09:00Z"
     },
     {
@@ -359,7 +359,7 @@
       "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar",
       "NOM_ORIGINAL": "LA_SEU_DURGELL___LA_SEU_DURGELL___BELLESTAR_CD",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:06",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:11",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CD&dia=2026-02-18T09:00Z"
     },
     {
@@ -376,7 +376,7 @@
       "NOM_ESTACIO": "La Vall de Boí - Boí (2.535 m)",
       "NOM_ORIGINAL": "LA_VALL_DE_BOI___BOI_2535_M_Z2",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:08",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:13",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z2&dia=2026-02-18T09:00Z"
     },
     {
@@ -393,7 +393,7 @@
       "NOM_ESTACIO": "Lladorre - Certascan (2.400 m)",
       "NOM_ORIGINAL": "LLADORRE___CERTASCAN_2400_M_Z5",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:11",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:15",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z5&dia=2026-02-18T09:00Z"
     },
     {
@@ -410,7 +410,7 @@
       "NOM_ESTACIO": "Lleida - Raimat",
       "NOM_ORIGINAL": "LLEIDA___RAIMAT_VK",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:13",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:18",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VK&dia=2026-02-18T09:00Z"
     },
     {
@@ -427,7 +427,7 @@
       "NOM_ESTACIO": "Meranges - Malniu (2.230 m)",
       "NOM_ORIGINAL": "MERANGES___MALNIU_2230_M_Z3",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:16",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:20",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z3&dia=2026-02-18T09:00Z"
     },
     {
@@ -444,7 +444,7 @@
       "NOM_ESTACIO": "Molló - Fabert",
       "NOM_ORIGINAL": "MOLLO___FABERT_CG",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:18",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:22",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CG&dia=2026-02-18T09:00Z"
     },
     {
@@ -461,7 +461,7 @@
       "NOM_ESTACIO": "Montellà i Martinet - Cadí Nord (2.143 m) - Prat D'aguiló",
       "NOM_ORIGINAL": "MONTELLA_I_MARTINET___CADI_NORD_2143_M___PRAT_DAGU",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:20",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:24",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z9&dia=2026-02-18T09:00Z"
     },
     {
@@ -478,7 +478,7 @@
       "NOM_ESTACIO": "Olot",
       "NOM_ORIGINAL": "OLOT_YB",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:22",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:27",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YB&dia=2026-02-18T09:00Z"
     },
     {
@@ -495,7 +495,7 @@
       "NOM_ESTACIO": "Palafrugell",
       "NOM_ORIGINAL": "PALAFRUGELL_YP",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:25",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:29",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YP&dia=2026-02-18T09:00Z"
     },
     {
@@ -512,7 +512,7 @@
       "NOM_ESTACIO": "Pantà de Darnius - Boadella",
       "NOM_ORIGINAL": "PANTA_DE_DARNIUS___BOADELLA_J5",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:27",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:31",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=J5&dia=2026-02-18T09:00Z"
     },
     {
@@ -529,7 +529,7 @@
       "NOM_ESTACIO": "Portbou - Coll dels Belitres",
       "NOM_ORIGINAL": "PORTBOU___COLL_DELS_BELITRES_D6",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:30",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:33",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D6&dia=2026-02-18T09:00Z"
     },
     {
@@ -546,7 +546,7 @@
       "NOM_ESTACIO": "Prades",
       "NOM_ORIGINAL": "PRADES_XR",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:32",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:36",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XR&dia=2026-02-18T09:00Z"
     },
     {
@@ -563,7 +563,7 @@
       "NOM_ESTACIO": "Puigcerdà",
       "NOM_ORIGINAL": "PUIGCERDA_YA",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:34",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:38",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YA&dia=2026-02-18T09:00Z"
     },
     {
@@ -580,7 +580,7 @@
       "NOM_ESTACIO": "Queralbs - Núria (1.971 m)",
       "NOM_ORIGINAL": "QUERALBS___NURIA_1971_M_DG",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:37",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:41",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DG&dia=2026-02-18T09:00Z"
     },
     {
@@ -597,7 +597,7 @@
       "NOM_ESTACIO": "Roquetes - Pn dels Ports",
       "NOM_ORIGINAL": "ROQUETES___PN_DELS_PORTS_X5",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:39",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:43",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=X5&dia=2026-02-18T09:00Z"
     },
     {
@@ -614,7 +614,7 @@
       "NOM_ESTACIO": "Roses",
       "NOM_ORIGINAL": "ROSES_D4",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:42",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:45",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D4&dia=2026-02-18T09:00Z"
     },
     {
@@ -631,7 +631,7 @@
       "NOM_ESTACIO": "Sant Pau de Segúries",
       "NOM_ORIGINAL": "SANT_PAU_DE_SEGURIES_CI",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:44",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:48",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CI&dia=2026-02-18T09:00Z"
     },
     {
@@ -648,7 +648,7 @@
       "NOM_ESTACIO": "Santa Coloma de Farners",
       "NOM_ORIGINAL": "SANTA_COLOMA_DE_FARNERS_XS",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:46",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:50",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XS&dia=2026-02-18T09:00Z"
     },
     {
@@ -665,7 +665,7 @@
       "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)",
       "NOM_ORIGINAL": "SETCASES___ULLDETER_2413_M_ZC",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:49",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:52",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=ZC&dia=2026-02-18T09:00Z"
     },
     {
@@ -682,7 +682,7 @@
       "NOM_ESTACIO": "Sort",
       "NOM_ORIGINAL": "SORT_XH",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:51",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:55",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XH&dia=2026-02-18T09:00Z"
     },
     {
@@ -699,7 +699,7 @@
       "NOM_ESTACIO": "Tarragona - Complex Educatiu",
       "NOM_ORIGINAL": "TARRAGONA___COMPLEX_EDUCATIU_XE",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:54",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:57",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XE&dia=2026-02-18T09:00Z"
     },
     {
@@ -716,7 +716,7 @@
       "NOM_ESTACIO": "Torroella de Montgrí",
       "NOM_ORIGINAL": "TORROELLA_DE_MONTGRI_UE",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:56",
+      "DATA_EXTRACCIO": "2026-02-18 12:19:59",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=UE&dia=2026-02-18T09:00Z"
     },
     {
@@ -733,7 +733,7 @@
       "NOM_ESTACIO": "Vic",
       "NOM_ORIGINAL": "VIC_XO",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:49:59",
+      "DATA_EXTRACCIO": "2026-02-18 12:20:02",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XO&dia=2026-02-18T09:00Z"
     },
     {
@@ -750,7 +750,7 @@
       "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)",
       "NOM_ORIGINAL": "VIELHA_E_MIJARAN___LAC_REDON_2247_M_VS",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:50:01",
+      "DATA_EXTRACCIO": "2026-02-18 12:20:04",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VS&dia=2026-02-18T09:00Z"
     },
     {
@@ -767,7 +767,7 @@
       "NOM_ESTACIO": "Vielha e Mijaran - Vielha - Elipòrt",
       "NOM_ORIGINAL": "VIELHA_E_MIJARAN___VIELHA___ELIPORT_YN",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:50:03",
+      "DATA_EXTRACCIO": "2026-02-18 12:20:07",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YN&dia=2026-02-18T09:00Z"
     },
     {
@@ -784,7 +784,7 @@
       "NOM_ESTACIO": "Vinebre",
       "NOM_ORIGINAL": "VINEBRE_D7",
       "DATA_DIA": "2026-02-18",
-      "DATA_EXTRACCIO": "2026-02-18 11:50:06",
+      "DATA_EXTRACCIO": "2026-02-18 12:20:09",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D7&dia=2026-02-18T09:00Z"
     }
   ]
