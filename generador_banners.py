@@ -776,6 +776,15 @@ class HTMLGenerator:
             font-style: italic;
         }}
         
+        /* 🆕 PUNT 2: Estil per als textos del període (lletra petita, cursiva, verda) */
+        .periode-info {{
+            font-size: 0.7rem;
+            font-style: italic;
+            color: #4caf50;
+            margin-top: 4px;
+            line-height: 1.2;
+        }}
+        
         /* NOU: Estil per a l'avís de canvi de dia */
         .avis-canvi-dia {{
             background: linear-gradient(145deg, #b71c1c, #d32f2f);
@@ -1240,7 +1249,6 @@ class HTMLGenerator:
                         # 🆕 PUNT 2: Netejar ratxa màxima
                         if var == 'RATXA_VENT_MAX':
                             valor_net = NetejaDades.netejar_ratxa(diari[var])
-                            # No tornis a afegir unitats, perquè la variable ja les porta
                             valor_amb_unitats = valor_net
                         # 🆕 PUNT 3: Netejar pressió
                         elif var == 'PRESSIO_ATMOSFERICA':
@@ -1528,7 +1536,7 @@ def generar_banner_html(metadades, periode_data, diari_data):
             except (ValueError, TypeError):
                 temperatura_actual = '--'
         
-        # IMPORTANT: Canviar l'enllaç a la pàgina individual de l'estació
+        # 🆕 PUNT 2: Afegir textos explicatius a banner.html
         html += f'''
             <a class="station-card" data-comarca="{comarca}" href="index_{estacio_id}.html">
                 <div class="station-header">
@@ -1545,10 +1553,12 @@ def generar_banner_html(metadades, periode_data, diari_data):
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
                             <div class="weather-value {color_temp}">{temperatura_actual}°C</div>
+                            <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
                             <i class="fas {icona_precip}"></i>
                             <div class="weather-value">{precipitacio_diaria} mm</div>
+                            <div class="periode-info">Pluja acumulada del període</div>
                         </div>
                     </div>
                 </div>
@@ -1787,6 +1797,7 @@ def main():
     print("   7. ✅ Verificació de dades amb font oficial")
     print("   8. ✅ (NOU) Graus a Direcció del Vent (ex: 189º)")
     print("   9. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
+    print("   10. ✅ (NOU) Textos explicatius a banner.html (Temperatura mitjana del període / Pluja acumulada del període)")
     print("\n🎯 Recorda: index.html ja el tens fix i no s'ha generat de nou")
 
 if __name__ == "__main__":
