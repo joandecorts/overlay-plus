@@ -201,23 +201,37 @@
             min-width: 95px;
         }
 
-        /* 🆕 PUNT 1: EFECTE PERSIANA */
+        /* 🆕 PUNT 1: EFECTE PERSIANA SUAU */
         @keyframes persiana {
             0% {
                 opacity: 0;
+                transform: translateY(-30px);
+                filter: blur(4px);
+            }
+            20% {
+                opacity: 0.2;
                 transform: translateY(-20px);
+                filter: blur(3px);
             }
             40% {
-                opacity: 0.5;
+                opacity: 0.4;
                 transform: translateY(-10px);
+                filter: blur(2px);
             }
-            70% {
-                opacity: 0.8;
+            60% {
+                opacity: 0.6;
                 transform: translateY(-5px);
+                filter: blur(1px);
+            }
+            80% {
+                opacity: 0.8;
+                transform: translateY(-2px);
+                filter: blur(0.5px);
             }
             100% {
                 opacity: 1;
                 transform: translateY(0);
+                filter: blur(0);
             }
         }
 
@@ -227,11 +241,11 @@
             border: none;
             flex: 1;
             background: #000;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s ease;
         }
 
         .persiana-activa {
-            animation: persiana 0.8s ease-out forwards;
+            animation: persiana 1s ease-out forwards;
         }
 
         /* LÍNIA DE FONT */
@@ -409,7 +423,7 @@
             return stations;
         }
 
-        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA
+        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA SUAU
         function loadCurrentStation() {
             if (stations.length === 0 || isTransitioning) return;
             
@@ -422,17 +436,23 @@
             
             stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
             
-            // 🆕 EFECTE PERSIANA
-            viewer.classList.add('persiana-activa');
+            // Forçar que l'iframe estigui buit abans de l'animació
+            viewer.src = 'about:blank';
             
-            const timestamp = new Date().getTime();
-            const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
-            viewer.src = url;
+            // Petita pausa per assegurar que es reinicia
+            setTimeout(() => {
+                // 🆕 EFECTE PERSIANA SUAU
+                viewer.classList.add('persiana-activa');
+                
+                const timestamp = new Date().getTime();
+                const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
+                viewer.src = url;
+            }, 50);
             
             setTimeout(() => {
                 viewer.classList.remove('persiana-activa');
                 isTransitioning = false;
-            }, 800);
+            }, 1050); // Una mica més que l'animació (1000ms)
             
             viewer.onload = () => {
                 console.log(`✅ ${stationId} carregada`);
@@ -602,8 +622,16 @@
                 }
             });
             
+            // Forçar que comenci per la PRIMERA estació
             currentIndex = 0;
-            loadCurrentStation();
+            
+            // Forçar neteja de l'iframe abans de carregar
+            viewer.src = 'about:blank';
+            
+            // Petita pausa per assegurar que es reinicia
+            setTimeout(() => {
+                loadCurrentStation();
+            }, 100);
             
             startRotation();
             startCountdown();
