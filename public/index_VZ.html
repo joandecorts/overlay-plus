@@ -605,19 +605,19 @@
 
                 <div class="data-item">
                     <div class="data-label">Temp. Mitjana:</div>
-                    <div class="data-value">14.9 ºC</div>
-                </div>
-                <div class="data-item">
-                    <div class="data-label">Temp. Màxima:</div>
-                    <div class="data-value">15.5 ºC</div>
-                </div>
-                <div class="data-item">
-                    <div class="data-label">Temp. Mínima:</div>
                     <div class="data-value">14.1 ºC</div>
                 </div>
                 <div class="data-item">
+                    <div class="data-label">Temp. Màxima:</div>
+                    <div class="data-value">14.5 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Temp. Mínima:</div>
+                    <div class="data-value">13.7 ºC</div>
+                </div>
+                <div class="data-item">
                     <div class="data-label">Humitat Relativa:</div>
-                    <div class="data-value">51 %</div>
+                    <div class="data-value">56 %</div>
                 </div></div>
 </div>
 <div class="column col-precip-wind">
@@ -642,7 +642,7 @@
                 <div class="data-label">Període:</div>
                 <div class="data-value"><div style="line-height: 1.3;">
                 <div style="font-size: 16px;">19/02/2026</div>
-                <div style="font-size: 14px; color: #ffcc80;">16:30-17:00 CET</div>
+                <div style="font-size: 14px; color: #ffcc80;">17:00-17:30 CET</div>
             </div></div>
             </div>
             <div class="data-item">
@@ -651,7 +651,7 @@
             </div>
                 <div class="data-item">
                     <div class="data-label">Hora actualització:</div>
-                    <div class="data-value" style="text-align: right;">17:22 CET</div>
+                    <div class="data-value" style="text-align: right;">17:50 CET</div>
                 </div>
             <div class="data-item">
                 <div class="data-label">Comarca:</div>
@@ -667,7 +667,7 @@
                         <div class="data-item">
                             <div class="data-label">Temperatura mitjana:</div>
                             <div class="data-value">
-                                9.9 °C
+                                10.1 °C
                                 
                             </div>
                         </div>
@@ -688,7 +688,7 @@
                         <div class="data-item">
                             <div class="data-label">Humitat relativa:</div>
                             <div class="data-value">
-                                75%
+                                74%
                                 
                             </div>
                         </div>
@@ -704,6 +704,14 @@
         
         </div>
         
+        <!-- NOU RÈTOL EXPLICATIU (on abans hi havia "AQUEST ÉS UN BANNER FIX") -->
+        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
+                    border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
+            <p style="color: #bbdefb; margin: 0; font-size: 14px; font-style: italic;">
+                Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
+            </p>
+        </div>
+        
         <script>
         (function() {
             // Esperem que el DOM estigui carregat
@@ -714,24 +722,7 @@
             }
 
             function aplicarCanvis() {
-                // --- 1. AFEGIR EL TEXT EXPLICATIU A DALT (dins del header-center) ---
-                const headerCenter = document.querySelector('.header-center');
-                if (headerCenter) {
-                    // Crear el nou element de text
-                    const textExplicatiu = document.createElement('div');
-                    textExplicatiu.style.marginBottom = '15px';
-                    textExplicatiu.style.fontSize = '14px';
-                    textExplicatiu.style.color = '#bbdefb';
-                    textExplicatiu.style.fontStyle = 'italic';
-                    textExplicatiu.style.textAlign = 'center';
-                    textExplicatiu.style.width = '100%';
-                    textExplicatiu.innerHTML = 'Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escollir la desitjada.';
-
-                    // Inserir-lo al principi del headerCenter
-                    headerCenter.insertBefore(textExplicatiu, headerCenter.firstChild);
-                }
-
-                // --- 2. MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR ---
+                // MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR
                 const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
                 if (botoPrincipal) {
                     // Canviar l'enllaç per un botó que faci la funció
@@ -770,7 +761,7 @@
             </a>
         </div>
         <div class="footer-right">
-            <span>🔄 Actualització: 19/02/2026 17:22:14 CET</span>
+            <span>🔄 Actualització: 19/02/2026 17:50:21 CET</span>
         </div>
     </div>
     
