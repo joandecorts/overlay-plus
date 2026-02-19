@@ -1708,19 +1708,24 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         # Generar dades diàries (amb hores de registre)
         html += HTMLGenerator.generar_dades_diaries(diari_data, estacio_id)
         
+        # ============================================================================
+        # 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa
+        # ============================================================================
         html += f'''
         </div>
-        '''
-        # ============================================================================
-        # 🆕 CANVIS PER ALS BANNERS INDIVIDUALS (index_XX.html)
-        # ============================================================================
-        # 1. S'ELIMINA el bloc sencer del rètol "AQUEST ÉS UN BANNER FIX".
-        # 2. S'AFEGEIX un text explicatiu a la part superior (dins del header-center).
-        # 3. Es MODIFICA el botó "Principal" perquè utilitzi JavaScript i recarregui
-        #    el contenidor pare (window.parent.location) sense obrir una pestanya nova.
-        # ============================================================================
         
-        # Incloem un script per modificar el header i el botó un cop la pàgina està a punt.
+        <!-- NOU RÈTOL EXPLICATIU (on abans hi havia "AQUEST ÉS UN BANNER FIX") -->
+        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
+                    border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
+            <p style="color: #bbdefb; margin: 0; font-size: 14px; font-style: italic;">
+                Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
+            </p>
+        </div>
+        '''
+        
+        # ============================================================================
+        # 🆕 CANVI: Modifiquem el botó "Principal" perquè no obri pestanya nova
+        # ============================================================================
         html += f'''
         <script>
         (function() {{
@@ -1732,24 +1737,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
             }}
 
             function aplicarCanvis() {{
-                // --- 1. AFEGIR EL TEXT EXPLICATIU A DALT (dins del header-center) ---
-                const headerCenter = document.querySelector('.header-center');
-                if (headerCenter) {{
-                    // Crear el nou element de text
-                    const textExplicatiu = document.createElement('div');
-                    textExplicatiu.style.marginBottom = '15px';
-                    textExplicatiu.style.fontSize = '14px';
-                    textExplicatiu.style.color = '#bbdefb';
-                    textExplicatiu.style.fontStyle = 'italic';
-                    textExplicatiu.style.textAlign = 'center';
-                    textExplicatiu.style.width = '100%';
-                    textExplicatiu.innerHTML = 'Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.';
-
-                    // Inserir-lo al principi del headerCenter
-                    headerCenter.insertBefore(textExplicatiu, headerCenter.firstChild);
-                }}
-
-                // --- 2. MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR ---
+                // MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR
                 const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
                 if (botoPrincipal) {{
                     // Canviar l'enllaç per un botó que faci la funció
@@ -1857,4 +1845,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
