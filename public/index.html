@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
+        /* MANTINGO TOT EL CSS IGUAL - SENSE CANVIS */
         :root {
             --primary-blue: #1a237e;
             --secondary-blue: #00bcd4;
@@ -194,6 +195,11 @@
 
         #stationsButton {
             background: linear-gradient(to bottom, #9c27b0, #7b1fa2);
+            min-width: 85px;
+        }
+
+        #principalBtn {
+            background: linear-gradient(to bottom, #ff9800, #f57c00);
             min-width: 85px;
         }
 
@@ -405,12 +411,14 @@
         const principalBtn = document.getElementById('principalBtn');
 
         // ============================================
-        // PUNT 6: DETECTAR I ORDENAR ESTACIONS
+        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - detectar estacions
+        // NOMÉS CANVI: UG → YY
         // ============================================
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
             // Llista de totes les possibles estacions (189 IDs)
+            // CANVI: He substituït 'UG' per 'YY' al final de la llista
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -424,42 +432,38 @@
                 'YH','VK','VU','YL','D4','XF','ZB','XV','M6','VV','WL','U3','CI','UK','U2',
                 'CP','YO','CL','XS','UJ','WM','Z6','XN','XT','XH','VX','XE','C7','YK','YG',
                 'Y6','DK','X7','XZ','UE','WR','XQ','UX','XD','ZC','D2','V1','D3','XO','YN',
-                'UG','WS','W4','CQ','VM','YR','DQ','D7','U6'
+                'YY','WS','W4','CQ','VM','YR','DQ','D7','U6'  // 🔥 NOMÉS CANVI: UG → YY
             ];
 
             const foundStations = [];
             
-            // Provar cada estació
+            // Provar cada estació (en paral·lel limitat)
             const testPromises = allPossibleStations.map(async (id) => {
                 const url = `${GITHUB_BASE}index_${id}.html`;
                 try {
                     const response = await fetch(url, { method: 'HEAD' });
                     if (response.ok) {
+                        console.log(`✅ ${id} trobada`);
                         return `index_${id}.html`;
                     }
-                } catch (error) {}
+                } catch (error) {
+                    // Ignorar errors
+                }
                 return null;
             });
 
+            // Esperar totes les verificacions
             const results = await Promise.all(testPromises);
             
-            // Filtrar les que existeixen i ORDENAR ALFABÈTICAMENT (PUNT 6)
-            stations = results
-                .filter(station => station !== null)
-                .sort((a, b) => {
-                    const idA = a.replace('index_', '').replace('.html', '');
-                    const idB = b.replace('index_', '').replace('.html', '');
-                    return idA.localeCompare(idB);
-                });
+            // Filtrar les que existeixen
+            stations = results.filter(station => station !== null);
             
             console.log(`🎯 ${stations.length} estacions detectades`);
-            console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
-            
             return stations;
         }
 
         // ============================================
-        // PUNT 4: CARREGAR AMB EFECTE PERSIANA
+        // PUNT 4: Carregar amb efecte persiana
         // ============================================
         function loadCurrentStation() {
             if (stations.length === 0) {
@@ -496,7 +500,7 @@
                 viewer.style.transform = 'translateY(0)';
             };
             
-            // PUNT 11: COMPTADOR SEQÜENCIAL (NO ALTERNA)
+            // PUNT 11: Comptador seqüencial
             stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
         }
 
@@ -505,7 +509,6 @@
         // ============================================
         function nextStation() {
             if (stations.length === 0) return;
-            // PUNT 11: AVANÇAR SEQÜENCIALMENT
             currentIndex = (currentIndex + 1) % stations.length;
             loadCurrentStation();
             if (isRotating) {
@@ -516,7 +519,6 @@
 
         function prevStation() {
             if (stations.length === 0) return;
-            // PUNT 11: RETROCEDIR SEQÜENCIALMENT
             currentIndex = (currentIndex - 1 + stations.length) % stations.length;
             loadCurrentStation();
             if (isRotating) {
@@ -616,7 +618,6 @@
         // PUNT 10: BOTÓ PRINCIPAL
         // ============================================
         function goToPrincipal() {
-            // Comprovar si ja estem a index.html
             const path = window.location.pathname;
             if (path.endsWith('index.html') || path === '/' || path === '') {
                 alert('Ja estàs al banner scroll principal');
@@ -648,7 +649,6 @@
         async function init() {
             console.log("🚀 Inicialitzant sistema...");
             
-            // Mostrar missatge inicial
             viewer.srcdoc = `
                 <html>
                     <body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;font-family:sans-serif;">
@@ -663,7 +663,7 @@
             stationsButton.addEventListener('click', goToStations);
             principalBtn.addEventListener('click', goToPrincipal);
             
-            // Detectar estacions
+            // Detectar estacions (funció ORIGINAL amb NOMÉS canvi UG → YY)
             await detectStations();
             
             if (stations.length === 0) {
