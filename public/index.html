@@ -201,27 +201,19 @@
             min-width: 95px;
         }
 
-        /* 🆕 PUNT 1: EFECTE PERSIANA CORREGIT */
+        /* 🆕 PUNT 1: EFECTE PERSIANA */
         @keyframes persiana {
             0% {
                 opacity: 0;
-                transform: translateY(-30px);
-            }
-            20% {
-                opacity: 0.3;
                 transform: translateY(-20px);
             }
             40% {
-                opacity: 0.6;
+                opacity: 0.5;
                 transform: translateY(-10px);
             }
-            60% {
-                opacity: 0.9;
+            70% {
+                opacity: 0.8;
                 transform: translateY(-5px);
-            }
-            80% {
-                opacity: 1;
-                transform: translateY(0);
             }
             100% {
                 opacity: 1;
@@ -372,35 +364,10 @@
         const stationsButton = document.getElementById('stationsButton');
         const principalBtn = document.getElementById('principalBtn');
 
-        // 🎯 FUNCIÓ DE DETECCIÓ CORREGIDA - Llegeix de banner.html
+        // 🎯 FUNCIÓ DE DETECCIÓ (ORIGINAL + PUNT 3: ORDENACIÓ)
         async function detectStations() {
-            console.log("🔍 Llegint estacions de banner.html...");
+            console.log("🔍 Cercant estacions a GitHub...");
             
-            try {
-                // Primer intent: llegir directament de banner.html
-                const response = await fetch('banner.html');
-                const html = await response.text();
-                
-                // Buscar tots els href="index_XX.html"
-                const regex = /href="index_([A-Z0-9]{2})\.html"/g;
-                const matches = [];
-                let match;
-                while ((match = regex.exec(html)) !== null) {
-                    matches.push(`index_${match[1]}.html`);
-                }
-                
-                // Eliminar duplicats i ordenar
-                stations = [...new Set(matches)];
-                
-                if (stations.length > 0) {
-                    console.log(`✅ Trobades ${stations.length} estacions a banner.html`);
-                    return stations;
-                }
-            } catch (error) {
-                console.log("⚠️ No s'ha pogut llegir banner.html, usant mètode alternatiu");
-            }
-            
-            // Mètode alternatiu: HEAD requests
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -431,11 +398,18 @@
             const results = await Promise.all(testPromises);
             stations = results.filter(station => station !== null);
             
-            console.log(`🎯 ${stations.length} estacions detectades per HEAD`);
+            // 🆕 PUNT 3: ORDENACIÓ ALFABÈTICA
+            stations.sort((a, b) => {
+                const idA = a.replace('index_', '').replace('.html', '');
+                const idB = b.replace('index_', '').replace('.html', '');
+                return idA.localeCompare(idB);
+            });
+            
+            console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
             return stations;
         }
 
-        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA CORREGIT
+        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA
         function loadCurrentStation() {
             if (stations.length === 0 || isTransitioning) return;
             
@@ -448,23 +422,17 @@
             
             stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
             
-            // 🆕 EFECTE PERSIANA - Netejar i aplicar animació
-            viewer.classList.remove('persiana-activa');
+            // 🆕 EFECTE PERSIANA
+            viewer.classList.add('persiana-activa');
             
-            // Petita pausa per assegurar que es reinicia l'animació
-            setTimeout(() => {
-                viewer.classList.add('persiana-activa');
-                
-                const timestamp = new Date().getTime();
-                const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
-                viewer.src = url;
-            }, 10);
+            const timestamp = new Date().getTime();
+            const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
+            viewer.src = url;
             
-            // Treure l'efecte després de l'animació
             setTimeout(() => {
                 viewer.classList.remove('persiana-activa');
                 isTransitioning = false;
-            }, 900);
+            }, 800);
             
             viewer.onload = () => {
                 console.log(`✅ ${stationId} carregada`);
@@ -477,14 +445,12 @@
             };
         }
 
-        // PUNT 7: NAVEGACIÓ SEQÜENCIAL
+        // 🆕 PUNT 7: NAVEGACIÓ SEQÜENCIAL
         function nextStation() {
             if (stations.length === 0 || isTransitioning) return;
             
-            const newIndex = (currentIndex + 1) % stations.length;
-            console.log(`   Next: ${currentIndex} → ${newIndex}`);
-            currentIndex = newIndex;
-            
+            currentIndex = (currentIndex + 1) % stations.length;
+            console.log(`   Next: ${currentIndex}`);
             loadCurrentStation();
             
             if (isRotating) {
@@ -496,10 +462,8 @@
         function prevStation() {
             if (stations.length === 0 || isTransitioning) return;
             
-            const newIndex = (currentIndex - 1 + stations.length) % stations.length;
-            console.log(`   Prev: ${currentIndex} → ${newIndex}`);
-            currentIndex = newIndex;
-            
+            currentIndex = (currentIndex - 1 + stations.length) % stations.length;
+            console.log(`   Prev: ${currentIndex}`);
             loadCurrentStation();
             
             if (isRotating) {
@@ -618,24 +582,12 @@
             stationsButton.addEventListener('click', goToStations);
             principalBtn.addEventListener('click', goToPrincipal);
             
-            // Mostrar missatge de càrrega
-            viewer.srcdoc = '<html><body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;"><h2>Carregant estacions...</h2></body></html>';
-            
             await detectStations();
             
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No s\'han trobat estacions</h2><p>Revisa la connexió</p></body></html>';
                 return;
             }
-            
-            // ORDENAR ALFABÈTICAMENT PER ID
-            stations.sort((a, b) => {
-                const idA = a.replace('index_', '').replace('.html', '');
-                const idB = b.replace('index_', '').replace('.html', '');
-                return idA.localeCompare(idB);
-            });
-            
-            console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
             
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
@@ -650,7 +602,6 @@
                 }
             });
             
-            // Començar per la primera estació
             currentIndex = 0;
             loadCurrentStation();
             
