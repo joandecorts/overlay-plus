@@ -1239,14 +1239,14 @@ class HTMLGenerator:
                     if var in diari and diari[var]:
                         # 🆕 PUNT 2: Netejar ratxa màxima
                         if var == 'RATXA_VENT_MAX':
-                            valor_net = NetejaDades.netejar_ratxa(diari[var])
-                            valor_amb_unitats = Utilitats.afegir_unitats(var, valor_net)
-                        # 🆕 PUNT 3: Netejar pressió
-                        elif var == 'PRESSIO_ATMOSFERICA':
-                            valor_net = NetejaDades.netejar_pressio(diari[var])
-                            valor_amb_unitats = Utilitats.afegir_unitats(var, valor_net)
-                        else:
-                            valor_amb_unitats = Utilitats.afegir_unitats(var, diari[var])
+                        valor_net = NetejaDades.netejar_ratxa(diari[var])
+                        # 🆕 No tornis a afegir unitats, perquè la variable ja les porta
+                        valor_amb_unitats = valor_net
+                    elif var == 'PRESSIO_ATMOSFERICA':
+                        valor_net = NetejaDades.netejar_pressio(diari[var])
+                        valor_amb_unitats = valor_net
+                    else:
+                        valor_amb_unitats = Utilitats.afegir_unitats(var, diari[var])
                         
                         # Afegir hora de registre si existeix
                         hora_text = ""
@@ -1790,3 +1790,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
