@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banner Scroll Meteorològic joandecorts.io</title>
     <style>
-        /* ===== TOT EL CSS EXISTENT ES MANTÉ ===== */
         :root {
             --primary-blue: #1a237e;
             --secondary-blue: #00bcd4;
@@ -225,15 +224,6 @@
             }
         }
 
-        #bannerViewer {
-            width: 100%;
-            height: 100%;
-            border: none;
-            flex: 1;
-            background: #000;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
         .persiana-activa {
             animation: persiana 0.8s ease-in-out;
         }
@@ -262,7 +252,7 @@
             color: #a8ffa6;
         }
 
-        /* CONTENIDOR */
+        /* CONTENIDOR - TORNAM AL ORIGINAL */
         .main-container {
             flex: 1;
             display: flex;
@@ -297,66 +287,6 @@
 
         .footer strong {
             color: var(--secondary-blue);
-        }
-
-        /* PUNT 2: RESPONSIVE (JA EXISTEIX) */
-        @media (max-width: 768px) {
-            .top-header {
-                flex-direction: column;
-                align-items: stretch;
-                min-height: auto;
-                padding: 8px;
-            }
-            
-            .header-title {
-                text-align: center;
-                min-width: auto;
-            }
-            
-            .controls-group {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .nav-btn {
-                min-width: 65px;
-                padding: 6px 8px;
-                font-size: 0.7rem;
-            }
-            
-            .fixed-container {
-                padding: 4px 8px;
-            }
-            
-            .speed-control {
-                min-width: 120px;
-            }
-            
-            #rotationSpeed {
-                width: 60px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .controls-group {
-                gap: 4px;
-            }
-            
-            .nav-btn {
-                min-width: 55px;
-                padding: 4px 6px;
-                font-size: 0.65rem;
-            }
-            
-            #stationCounter {
-                min-width: 60px;
-                font-size: 0.8rem;
-                padding: 4px 6px;
-            }
-            
-            .mini-countdown {
-                min-width: 60px;
-            }
         }
     </style>
 </head>
@@ -393,7 +323,7 @@
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
 
-    <!-- CONTENIDOR -->
+    <!-- CONTENIDOR ORIGINAL -->
     <div class="main-container">
         <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
     </div>
@@ -406,7 +336,7 @@
     <script>
         const GITHUB_BASE = 'https://joandecorts.github.io/overlay-plus/public/';
         
-        // Variables
+        // VARIABLES
         let stations = [];
         let currentIndex = 0;
         let isRotating = true;
@@ -427,13 +357,10 @@
         const stationsButton = document.getElementById('stationsButton');
         const principalBtn = document.getElementById('principalBtn');
 
-        // ============================================
-        // 🆕 PUNT 3: DETECTAR I ORDENAR ESTACIONS (ALFABÈTICAMENT)
-        // ============================================
+        // 🎯 FUNCIÓ DE DETECCIÓ (ORIGINAL + PUNT 3: ORDENACIÓ)
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
-            // Llista de totes les possibles estacions (189 IDs)
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -452,7 +379,6 @@
 
             const foundStations = [];
             
-            // Provar cada estació
             const testPromises = allPossibleStations.map(async (id) => {
                 const url = `${GITHUB_BASE}index_${id}.html`;
                 try {
@@ -466,11 +392,9 @@
             });
 
             const results = await Promise.all(testPromises);
-            
-            // Filtrar les que existeixen
             stations = results.filter(station => station !== null);
             
-            // 🆕 ORDENAR ALFABÈTICAMENT PER ID
+            // 🆕 PUNT 3: ORDENACIÓ ALFABÈTICA
             stations.sort((a, b) => {
                 const idA = a.replace('index_', '').replace('.html', '');
                 const idB = b.replace('index_', '').replace('.html', '');
@@ -478,14 +402,10 @@
             });
             
             console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
-            console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
-            
             return stations;
         }
 
-        // ============================================
         // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA
-        // ============================================
         function loadCurrentStation() {
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No hi ha estacions disponibles</h2></body></html>';
@@ -500,18 +420,15 @@
             // 🆕 EFECTE PERSIANA
             viewer.classList.add('persiana-activa');
             
-            // Carregar amb timestamp per evitar cache
+            stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
+            
             const timestamp = new Date().getTime();
             const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
             viewer.src = url;
             
-            // Treure l'efecte després de la càrrega
             setTimeout(() => {
                 viewer.classList.remove('persiana-activa');
-            }, 800); // Mateixa durada que l'animació
-            
-            // Actualitzar comptador (PUNT 8)
-            stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
+            }, 800);
             
             viewer.onload = () => {
                 console.log(`✅ ${stationId} carregada`);
@@ -523,12 +440,9 @@
             };
         }
 
-        // ============================================
-        // 🆕 PUNT 8: NAVEGACIÓ SEQÜENCIAL (NO ALTERNA)
-        // ============================================
+        // 🎯 FUNCIONS DE NAVEGACIÓ (ORIGINAL)
         function nextStation() {
             if (stations.length === 0) return;
-            // Avança 1 posició, després torna al principi
             currentIndex = (currentIndex + 1) % stations.length;
             loadCurrentStation();
             if (isRotating) {
@@ -539,7 +453,6 @@
 
         function prevStation() {
             if (stations.length === 0) return;
-            // Retrocedeix 1 posició, després va a l'última si cal
             currentIndex = (currentIndex - 1 + stations.length) % stations.length;
             loadCurrentStation();
             if (isRotating) {
@@ -548,20 +461,15 @@
             }
         }
 
-        // ============================================
         // COMPTE REGRESSIU
-        // ============================================
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
-            
             countdownValue = rotationSpeed / 1000;
             updateMiniCountdown();
-            
             countdownInterval = setInterval(() => {
                 if (isRotating) {
                     countdownValue--;
                     updateMiniCountdown();
-                    
                     if (countdownValue <= 0) {
                         nextStation();
                         countdownValue = rotationSpeed / 1000;
@@ -580,7 +488,6 @@
 
         function updateMiniCountdown() {
             miniTimer.textContent = countdownValue;
-            
             if (countdownValue <= 5) {
                 miniTimer.style.color = '#ff5555';
             } else if (countdownValue <= 10) {
@@ -590,12 +497,9 @@
             }
         }
 
-        // ============================================
         // ROTACIÓ
-        // ============================================
         function toggleRotation() {
             isRotating = !isRotating;
-            
             if (isRotating) {
                 rotationBtn.textContent = '⏸ Aturar';
                 rotationBtn.classList.remove('stopped');
@@ -622,22 +526,17 @@
             }
         }
 
-        // ============================================
         // VELOCITAT
-        // ============================================
         function updateRotationSpeed() {
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
-            
             if (isRotating) {
                 startRotation();
                 startCountdown();
             }
         }
 
-        // ============================================
         // 🆕 PUNT 7: BOTÓ PRINCIPAL INTEL·LIGENT
-        // ============================================
         function goToPrincipal() {
             const path = window.location.pathname;
             if (path.endsWith('index.html') || path === '/' || path === '') {
@@ -647,9 +546,7 @@
             }
         }
 
-        // ============================================
         // ALTRES FUNCIONS
-        // ============================================
         function goToStations() {
             window.location.href = 'banner.html';
         }
@@ -664,27 +561,14 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // ============================================
         // INICIALITZACIÓ
-        // ============================================
         async function init() {
-            console.log("🚀 Inicialitzant sistema...");
+            console.log("🚀 Inicialitzant...");
             
-            viewer.srcdoc = `
-                <html>
-                    <body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;font-family:sans-serif;">
-                        <div style="font-size:1.5rem;margin-bottom:20px;">🔍 Detectant estacions...</div>
-                        <div style="color:#aaa;">Carregant dades meteorològiques</div>
-                    </body>
-                </html>
-            `;
-            
-            // Configurar controls
             rotationSpeedInput.addEventListener('input', updateRotationSpeed);
             stationsButton.addEventListener('click', goToStations);
             principalBtn.addEventListener('click', goToPrincipal);
             
-            // Detectar estacions (ara ordenades)
             await detectStations();
             
             if (stations.length === 0) {
@@ -692,12 +576,10 @@
                 return;
             }
             
-            // Configurar controls bàsics
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
             rotationBtn.addEventListener('click', toggleRotation);
             
-            // Teclat
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') prevStation();
                 if (e.key === 'ArrowRight') nextStation();
@@ -707,22 +589,18 @@
                 }
             });
             
-            // Carregar primera estació
             currentIndex = 0;
             loadCurrentStation();
             
-            // Iniciar rotació
             startRotation();
             startCountdown();
             
-            // Actualitzar hora
             setInterval(updateCurrentTime, 1000);
             updateCurrentTime();
             
             console.log("✅ Sistema preparat");
         }
 
-        // Executar
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
