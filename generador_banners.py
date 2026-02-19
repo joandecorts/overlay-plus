@@ -1,15 +1,32 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import json
 import os
+import sys
+import json
 from datetime import datetime
 
 # ============================================
-# CONFIGURACIÓ
+# CONFIGURACIÓ DE PATHS
 # ============================================
-CARPETA_SORTIDA = "public"
-FITXER_ESTACIONS = "estacions_actives.json"
+# Afegir el directori config al path per poder importar
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_DIR = os.path.join(BASE_DIR, 'config')
+sys.path.insert(0, CONFIG_DIR)
+
+# Importar la configuració de les estacions
+try:
+    from config_banner import STATIONS
+    print("✅ Configuració carregada correctament")
+except ImportError as e:
+    print(f"❌ Error important config_banner.py: {e}")
+    print("   Assegura't que el fitxer és a ./config/config_banner.py")
+    sys.exit(1)
+
+# ============================================
+# CONFIGURACIÓ DE SORTIDA
+# ============================================
+CARPETA_SORTIDA = os.path.join(BASE_DIR, 'public')
 
 def crear_carpeta_public():
     """Crea la carpeta public si no existeix"""
@@ -17,24 +34,36 @@ def crear_carpeta_public():
         os.makedirs(CARPETA_SORTIDA)
         print(f"📁 Carpeta '{CARPETA_SORTIDA}' creada")
 
-def carregar_estacions():
-    """Carrega la llista d'estacions actives"""
-    try:
-        with open(FITXER_ESTACIONS, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print(f"❌ No es troba el fitxer {FITXER_ESTACIONS}")
-        return []
-    except json.JSONDecodeError:
-        print(f"❌ Error llegint {FITXER_ESTACIONS}")
-        return []
+def obtenir_estacions_actives():
+    """
+    Extreu les estacions ACTIVES de STATIONS
+    (les que NO tenen # al davant en el fitxer original)
+    """
+    estacions_actives = []
+    
+    for estacio in STATIONS:
+        # Si és un diccionari (estació activa)
+        if isinstance(estacio, dict):
+            # Comprovar si té el camp 'code'
+            if 'code' in estacio:
+                code = estacio['code']
+                # APLICAR CANVI: UG → YY
+                if code == 'UG':
+                    code = 'YY'
+                estacions_actives.append({
+                    'code': code,
+                    'name': estacio.get('name', ''),
+                    'display_name': estacio.get('display_name', '')
+                })
+    
+    print(f"📊 {len(estacions_actives)} estacions actives trobades")
+    return estacions_actives
 
 def processar_vent(resum_dia):
     """
     PUNT 1: Posar graus a Direcció del Vent
     Exemple: "N 15 km/h" → "N 15°"
     """
-    # Buscar camps de vent al resum
     camps_vent = ['DIRECCIO_VENT', 'VENT_DIRECCIO', 'DIR_VENT']
     direccio = ''
     for camp in camps_vent:
@@ -42,13 +71,11 @@ def processar_vent(resum_dia):
             direccio = resum_dia[camp]
             break
     
-    # Buscar velocitat
     camps_velocitat = ['VELOCITAT_VENT', 'VENT_VELOCITAT', 'VEL_VENT']
     velocitat = ''
     for camp in camps_velocitat:
         if camp in resum_dia and resum_dia[camp]:
             velocitat = resum_dia[camp]
-            # Netejar unitats
             velocitat = velocitat.replace('km/h', '').replace('Km/h', '').strip()
             break
     
@@ -62,7 +89,7 @@ def processar_ratxa_maxima(resum_dia):
     """
     ratxa = resum_dia.get('RATXA_VENT_MAX', '')
     if ratxa and ratxa.endswith('ºC'):
-        ratxa = ratxa[:-2]  # Treure els últims 2 caràcters
+        ratxa = ratxa[:-2]
     return ratxa
 
 def processar_pressio(resum_dia):
@@ -74,7 +101,7 @@ def processar_pressio(resum_dia):
         pressio = pressio[:-2]
     return pressio
 
-def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
+def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions, estacio_info):
     """
     Genera l'HTML per a una estació amb TOTES les millores:
     - PUNT 1: Graus a vent
@@ -86,12 +113,8 @@ def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
     - PUNT 9: Nou missatge capçalera
     """
     
-    # Processar dades
-    id_estacio = dades.get('ID_ESTAC', '')
-    nom_estacio = dades.get('NOM_ESTACIO', '')
-    data = dades.get('DATA_UTC', '')
-    hora = dades.get('HORA_CONSULTA_UTC', '')
-    periode = dades.get('PERIODE_UTC', '')
+    code = estacio_info['code']
+    display_name = estacio_info['display_name']
     
     # Dades del període
     tm_periode = dades.get('VAR_TM_grausC', 'N/A')
@@ -113,13 +136,9 @@ def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
         ppt_periode_valor = float(ppt_periode)
         
         if ppt_periode_valor == 0.0 and ppt_dia_valor > 0:
-            print(f"⚠️ Alerta {id_estacio}: PPT període 0.0 però dia {ppt_dia}")
+            print(f"⚠️ Alerta {code}: PPT període 0.0 però dia {ppt_dia}")
     except:
         pass
-    
-    # PUNT 7: Textos del període (lletra verda)
-    periode_text_tm = f"Temperatura mitjana del període"
-    periode_text_ppt = f"Precipitació del període"
     
     # ============================================
     # GENERAR HTML
@@ -129,7 +148,7 @@ def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Estació {id_estacio} - {nom_estacio}</title>
+    <title>Estació {code} - {display_name}</title>
     <style>
         /* PUNT 5: RESPONSIVE DESIGN */
         * {{
@@ -334,25 +353,25 @@ def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
         <i>📍</i> Per a finestra estàtica anar a "Estacions" i escollir la desitjada
     </div>
     
-    <h1>🏔️ {nom_estacio}</h1>
+    <h1>🏔️ {display_name}</h1>
     <div class="subtitle">
-        ID: {id_estacio} | {data} {hora} TU
+        ID: {code} | {dades.get('DATA_UTC', '')} {dades.get('HORA_CONSULTA_UTC', '')} TU
     </div>
     
     <!-- TARGETA DEL PERÍODE ACTUAL -->
     <div class="periode-card">
-        <div class="periode-title">📊 Dades del període {periode}</div>
+        <div class="periode-title">📊 Dades del període {dades.get('PERIODE_UTC', '')}</div>
         <div class="periode-grid">
             <!-- Temperatura mitjana període -->
             <div>
                 <div class="dada-principal">{tm_periode}°C</div>
-                <div class="periode-info">{periode_text_tm}</div>
+                <div class="periode-info">Temperatura mitjana del període</div>
             </div>
             
             <!-- Precipitació període -->
             <div>
                 <div class="dada-principal">{ppt_periode} mm</div>
-                <div class="periode-info">{periode_text_ppt}</div>
+                <div class="periode-info">Precipitació del període</div>
             </div>
         </div>
     </div>
@@ -452,7 +471,7 @@ def generar_html_estacio(dades, resum_dia, index_estacio, total_estacions):
     
     return html
 
-def generar_banner_html(estacions_actives, dades_completes):
+def generar_banner_html(estacions_actives):
     """
     Genera el fitxer banner.html amb la llista d'estacions
     """
@@ -513,14 +532,17 @@ def generar_banner_html(estacions_actives, dades_completes):
     <div class="estacions-grid">
 """
     
-    for estacio in estacions_actives:
-        id_est = estacio.get('id', '')
-        nom = estacio.get('nom', '')
+    # Ordenar alfabèticament per display_name (PUNT 6)
+    estacions_ordenades = sorted(estacions_actives, key=lambda x: x['display_name'])
+    
+    for estacio in estacions_ordenades:
+        code = estacio['code']
+        display_name = estacio['display_name']
         html += f"""
         <div class="estacio-card">
-            <h3>{id_est}</h3>
-            <p>{nom}</p>
-            <a href="public/index_{id_est}.html" target="_blank">📊 index_{id_est}.html</a>
+            <h3>{code}</h3>
+            <p>{display_name}</p>
+            <a href="public/index_{code}.html" target="_blank">📊 index_{code}.html</a>
         </div>
 """
     
@@ -536,31 +558,38 @@ def generar_banner_html(estacions_actives, dades_completes):
     return html
 
 def main():
-    print("🚀 Iniciant generador de banners meteorològics...")
+    print("=" * 70)
+    print("🚀 GENERADOR DE BANNERS METEOROLÒGICS")
+    print("=" * 70)
     
     # Crear carpeta de sortida
     crear_carpeta_public()
     
-    # Carregar estacions actives
-    estacions_actives = carregar_estacions()
+    # Obtenir estacions actives
+    estacions_actives = obtenir_estacions_actives()
+    
     if not estacions_actives:
-        print("❌ No hi ha estacions per processar")
+        print("❌ No hi ha estacions actives per processar")
         return
     
-    print(f"📊 {len(estacions_actives)} estacions carregades")
+    print(f"\n📊 Processant {len(estacions_actives)} estacions actives...")
+    
+    # Ordenar alfabèticament per al procés (PUNT 6)
+    estacions_actives.sort(key=lambda x: x['display_name'])
     
     # Simular dades per cada estació (en producció, aquí es connectaria amb l'scraper)
-    # Aquesta part s'ha de substituir per la crida real a les dades
     dades_completes = []
     
     for i, estacio in enumerate(estacions_actives):
-        print(f"🔄 Processant {estacio.get('id', '')} ({i+1}/{len(estacions_actives)})...")
+        code = estacio['code']
+        display_name = estacio['display_name']
+        print(f"🔄 Processant {code} ({i+1}/{len(estacions_actives)})...")
         
         # AQUÍ ANIRIA LA CRIDA A L'SCRAPER PER OBTENIR DADES REALS
         # Per ara, generem dades de prova
         dades_periode = {
-            'ID_ESTAC': estacio.get('id', ''),
-            'NOM_ESTACIO': estacio.get('nom', ''),
+            'ID_ESTAC': code,
+            'NOM_ESTACIO': display_name,
             'DATA_UTC': datetime.now().strftime("%Y-%m-%d"),
             'HORA_CONSULTA_UTC': datetime.now().strftime("%H:%M"),
             'PERIODE_UTC': f"{(datetime.now().hour-1):02d}:30 - {datetime.now().hour:02d}:00",
@@ -571,7 +600,7 @@ def main():
             'VAR_PPT_mm': "0.0" if i % 3 == 0 else "0.2",
             'VAR_GN_cm': f"{80 + (i % 30)}",
             'VAR_RS_W_m_2': f"{i % 200}",
-            'URL_FONT': f"https://www.meteo.cat/observacions/xema/dades?codi={estacio.get('id', '')}"
+            'URL_FONT': f"https://www.meteo.cat/observacions/xema/dades?codi={code}"
         }
         
         resum_dia = {
@@ -599,27 +628,30 @@ def main():
             dades_periode, 
             resum_dia,
             i,
-            len(estacions_actives)
+            len(estacions_actives),
+            estacio
         )
         
         # Guardar fitxer
-        nom_fitxer = f"index_{estacio.get('id', '')}.html"
+        nom_fitxer = f"index_{code}.html"
         cami_fitxer = os.path.join(CARPETA_SORTIDA, nom_fitxer)
         
         with open(cami_fitxer, 'w', encoding='utf-8') as f:
             f.write(html_estacio)
         
-        print(f"✅ {nom_fitxer} generat")
+        print(f"  ✅ {nom_fitxer} generat")
     
     # Generar banner.html
     print("\n📄 Generant banner.html...")
-    banner_html = generar_banner_html(estacions_actives, dades_completes)
+    banner_html = generar_banner_html(estacions_actives)
     
     with open('banner.html', 'w', encoding='utf-8') as f:
         f.write(banner_html)
     
     print("✅ banner.html generat")
-    print(f"\n🎯 Procés completat! {len(estacions_actives)} estacions processades")
+    print("\n" + "=" * 70)
+    print(f"🎯 Procés COMPLETAT! {len(estacions_actives)} estacions processades")
+    print("=" * 70)
 
 if __name__ == "__main__":
     main()
