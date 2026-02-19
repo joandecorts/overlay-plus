@@ -175,6 +175,16 @@ class Utilitats:
         
         value_str = str(value).strip()
         
+        # 🆕 CANVI 1: Direcció del vent amb graus
+        # Si la variable conté DVM (Direcció del Vent), afegir º
+        if 'DVM' in var_name:
+            # Extreure només els números (per si ve "189 " o "189 km/h")
+            import re
+            numeros = re.findall(r'\d+', value_str)
+            if numeros:
+                return f"{numeros[0]}º"
+            return value_str
+        
         # Diccionari de correspondències variable -> unitat
         unitats = {
             'TM': 'ºC', 'TX': 'ºC', 'TN': 'ºC',
@@ -189,9 +199,6 @@ class Utilitats:
         # Buscar patró de variable
         for key, unitat in unitats.items():
             if key in var_name:
-                # Per a direcció del vent, afegir graus
-                if key == 'DVM' and value_str.isdigit():
-                    return f"{value_str}º"
                 return f"{value_str} {unitat}"
         
         return value_str  # Si no trobem unitat, retornar sense
@@ -240,7 +247,7 @@ class Utilitats:
         return False
 
 # ============================================================================
-# 🆕 FUNCIONS DE NETEJA (PUNTS 1, 2, 3)
+# 🆕 FUNCIONS DE NETEJA (PUNTS 2 i 3)
 # ============================================================================
 class NetejaDades:
     @staticmethod
@@ -263,18 +270,6 @@ class NetejaDades:
             elif pressio.endswith(' ºC'):
                 return pressio[:-3]
         return pressio
-    
-    @staticmethod
-    def format_vent(direccio, velocitat):
-        """Punt 1: Posar graus a Direcció del Vent (ex: N 15°)"""
-        if direccio and velocitat:
-            # Si velocitat és string, netejar-lo
-            if isinstance(velocitat, str):
-                velocitat_neta = velocitat.replace('km/h', '').replace('Km/h', '').strip()
-            else:
-                velocitat_neta = str(velocitat)
-            return f"{direccio} {velocitat_neta}°"
-        return direccio
 
 # ============================================================================
 # FUNCIONS DE LECTURA DE DADES (MANTINGUTS DEL CODI ORIGINAL)
@@ -1789,7 +1784,8 @@ def main():
     print("   5. ✅ Avís per al canvi de dia quan falten dades")
     print("   6. ✅ Rellotges amb format 'HH:MM:SS LT' i 'HH:MM UTC'")
     print("   7. ✅ Verificació de dades amb font oficial")
-    print("   8. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
+    print("   8. ✅ (NOU) Graus a Direcció del Vent (ex: 189º)")
+    print("   9. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
     print("\n🎯 Recorda: index.html ja el tens fix i no s'ha generat de nou")
 
 if __name__ == "__main__":
