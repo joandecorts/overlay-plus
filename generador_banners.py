@@ -1677,10 +1677,12 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
                         </a>
                     </div>
                 </div>
+                
+                <!-- 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa -->
                 <div class="rotation-status-container">
-                    <div class="rotation-status">
-                        <i class="fas fa-map-pin"></i>
-                        BANNER FIX
+                    <div class="rotation-status" style="max-width: 500px; white-space: normal; line-height: 1.4; padding: 8px 15px;">
+                        <i class="fas fa-info-circle"></i>
+                        Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
                     </div>
                 </div>
             </div>
@@ -1708,18 +1710,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         # Generar dades diàries (amb hores de registre)
         html += HTMLGenerator.generar_dades_diaries(diari_data, estacio_id)
         
-        # ============================================================================
-        # 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa
-        # ============================================================================
         html += f'''
-        </div>
-        
-        <!-- NOU RÈTOL EXPLICATIU (on abans hi havia "AQUEST ÉS UN BANNER FIX") -->
-        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
-                    border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
-            <p style="color: #bbdefb; margin: 0; font-size: 14px; font-style: italic;">
-                Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
-            </p>
         </div>
         '''
         
