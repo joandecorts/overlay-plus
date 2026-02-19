@@ -246,15 +246,22 @@ class NetejaDades:
     @staticmethod
     def netejar_ratxa(ratxa):
         """Punt 2: Eliminar ºC del final de Ratxa màxima del vent"""
-        if ratxa and isinstance(ratxa, str) and ratxa.endswith('ºC'):
-            return ratxa[:-2]
+        if ratxa and isinstance(ratxa, str):
+            # Exemple: "46.4 km/h - 232º 1:44 TU ºC"
+            if ratxa.endswith('ºC'):
+                return ratxa[:-2]  # Treure els últims 2 caràcters
+            elif ratxa.endswith(' ºC'):
+                return ratxa[:-3]  # Treure " ºC" (espai + ºC)
         return ratxa
     
     @staticmethod
     def netejar_pressio(pressio):
         """Punt 3: Eliminar ºC del final de Pressió atmosfèrica"""
-        if pressio and isinstance(pressio, str) and pressio.endswith('ºC'):
-            return pressio[:-2]
+        if pressio and isinstance(pressio, str):
+            if pressio.endswith('ºC'):
+                return pressio[:-2]
+            elif pressio.endswith(' ºC'):
+                return pressio[:-3]
         return pressio
     
     @staticmethod
@@ -457,6 +464,11 @@ class DataLoader:
 # GENERADOR HTML - AMB TOTES LES CORRECCIONS IMPLEMENTADES
 # ============================================================================
 class HTMLGenerator:
+    @staticmethod
+    def netejar_id(id_str):
+        """Netega ID per a ús en noms de fitxer"""
+        return re.sub(r'[^a-zA-Z0-9_]', '_', str(id_str))
+    
     @staticmethod
     def generar_head(titol="Banner Meteo.cat"):
         """Genera la secció head dels HTMLs - AMB RELLOTGES CORREGITS"""
@@ -1263,15 +1275,6 @@ class HTMLGenerator:
         </div>
         '''
         
-        # 🆕 PUNT 8: Comprovació de pluja (només per consola, no afecta visualització)
-        if 'PRECIPITACIO_ACUM_DIA' in diari:
-            try:
-                ppt_dia = diari['PRECIPITACIO_ACUM_DIA']
-                # Aquesta part és només informativa, no canvia res
-                pass
-            except:
-                pass
-        
         return html
 
 # ============================================================================
@@ -1598,43 +1601,6 @@ def generar_banner_html(metadades, periode_data, diari_data):
     
     print(f"✅ banner.html generat: {output_path}")
     return output_path
-    
-    # JavaScript per al filtre de comarques
-    html += '''
-    <script>
-    function filtrarPerComarca() {
-        const comarcaSeleccionada = document.getElementById('filterComarca').value;
-        const targetes = document.querySelectorAll('.station-card');
-        
-        targetes.forEach(targeta => {
-            const comarca = targeta.getAttribute('data-comarca');
-            
-            if (!comarcaSeleccionada || comarca === comarcaSeleccionada) {
-                targeta.style.display = 'block';
-            } else {
-                targeta.style.display = 'none';
-            }
-        });
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
-    });
-    </script>
-    '''
-    
-    html += HTMLGenerator.generar_footer(hora_actualitzacio)
-    
-    # --- Codi per guardar banner.html ---
-    output_path = Config.OUTPUT_DIR / "banner.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(html)
-    
-    print(f"✅ banner.html generat: {output_path}")
-    return output_path
-
 
 def generar_banners_individuals(metadades, periode_data, diari_data):
     """Genera banners individuals per a cada estació"""
@@ -1824,7 +1790,6 @@ def main():
     print("   6. ✅ Rellotges amb format 'HH:MM:SS LT' i 'HH:MM UTC'")
     print("   7. ✅ Verificació de dades amb font oficial")
     print("   8. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
-    print("   9. ✅ (NOU) Format de vent amb graus (ex: N 15°)")
     print("\n🎯 Recorda: index.html ja el tens fix i no s'ha generat de nou")
 
 if __name__ == "__main__":
