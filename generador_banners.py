@@ -1710,14 +1710,69 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         
         html += f'''
         </div>
+        '''
+        # ============================================================================
+        # 🆕 CANVIS PER ALS BANNERS INDIVIDUALS (index_XX.html)
+        # ============================================================================
+        # 1. S'ELIMINA el bloc sencer del rètol "AQUEST ÉS UN BANNER FIX".
+        # 2. S'AFEGEIX un text explicatiu a la part superior (dins del header-center).
+        # 3. Es MODIFICA el botó "Principal" perquè utilitzi JavaScript i recarregui
+        #    el contenidor pare (window.parent.location) sense obrir una pestanya nova.
+        # ============================================================================
         
-        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
-                   border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
-            <h3 style="color: #4fc3f7; margin-top: 0;">⚠️ AQUEST ÉS UN BANNER FIX</h3>
-            <p style="color: #bbdefb;">Aquesta pàgina mostra sempre les dades d'aquesta estació.</p>
-            <p style="color: #bbdefb;">Per veure la rotació automàtica de totes les estacions, ves a <a href="index.html" style="color: #ffcc80; font-weight: bold;">index.html</a></p>
-        </div>
-    '''
+        # Incloem un script per modificar el header i el botó un cop la pàgina està a punt.
+        html += f'''
+        <script>
+        (function() {{
+            // Esperem que el DOM estigui carregat
+            if (document.readyState === 'loading') {{
+                document.addEventListener('DOMContentLoaded', aplicarCanvis);
+            }} else {{
+                aplicarCanvis();
+            }}
+
+            function aplicarCanvis() {{
+                // --- 1. AFEGIR EL TEXT EXPLICATIU A DALT (dins del header-center) ---
+                const headerCenter = document.querySelector('.header-center');
+                if (headerCenter) {{
+                    // Crear el nou element de text
+                    const textExplicatiu = document.createElement('div');
+                    textExplicatiu.style.marginBottom = '15px';
+                    textExplicatiu.style.fontSize = '14px';
+                    textExplicatiu.style.color = '#bbdefb';
+                    textExplicatiu.style.fontStyle = 'italic';
+                    textExplicatiu.style.textAlign = 'center';
+                    textExplicatiu.style.width = '100%';
+                    textExplicatiu.innerHTML = 'Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escollir la desitjada.';
+
+                    // Inserir-lo al principi del headerCenter
+                    headerCenter.insertBefore(textExplicatiu, headerCenter.firstChild);
+                }}
+
+                // --- 2. MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR ---
+                const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
+                if (botoPrincipal) {{
+                    // Canviar l'enllaç per un botó que faci la funció
+                    const botoPare = botoPrincipal.parentNode;
+                    const iconClass = botoPrincipal.querySelector('i')?.className || 'fas fa-home';
+                    const textSpan = botoPrincipal.querySelector('.icon-text')?.innerHTML || 'Principal';
+
+                    // Crear el nou botó
+                    const nouBoto = document.createElement('button');
+                    nouBoto.innerHTML = `<i class="${{iconClass}}"></i> <span class="icon-text">${{textSpan}}</span>`;
+                    nouBoto.className = botoPrincipal.className; // Mantenir les classes
+                    nouBoto.title = botoPrincipal.title;
+                    nouBoto.onclick = function() {{
+                        window.parent.location.href = 'index.html'; // Això carrega index.html dins del contenidor pare
+                    }};
+
+                    // Substituir l'enllaç pel botó
+                    botoPare.replaceChild(nouBoto, botoPrincipal);
+                }}
+            }}
+        }})();
+        </script>
+        '''
         
         html += HTMLGenerator.generar_footer(hora_actualitzacio)
         
