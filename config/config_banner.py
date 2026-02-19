@@ -2,7 +2,7 @@
 CONFIGURACIÓ BANNER NEWS CHANNEL - VERSIÓ DADES REALS
 Configuració per al sistema de banner meteorològic amb dades reals de Meteocat
 Fitxer generat automàticament: 2026-01-08 18:07:32
-Total estacions: 189 (Actives: 35, Comentades: 154)
+Total estacions: 189 (Actives: 45, Comentades: 144)
 """
 
 import os
