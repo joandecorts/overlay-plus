@@ -45,27 +45,28 @@
             box-shadow: 0 3px 15px rgba(0,0,0,0.5);
             width: 100%;
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             flex-shrink: 0;
             min-height: 70px;
             z-index: 1000;
+            gap: 10px;
         }
 
         .header-title {
-            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-size: clamp(1rem, 3vw, 1.6rem);
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            min-width: 200px;
+            min-width: 180px;
             white-space: nowrap;
         }
 
         .controls-group {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             justify-content: flex-end;
             flex: 2;
         }
@@ -75,13 +76,13 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 8px 14px;
-            font-size: 0.85rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            min-width: 85px;
+            min-width: 75px;
             height: 36px;
             -webkit-tap-highlight-color: transparent;
             white-space: nowrap;
@@ -94,12 +95,11 @@
 
         .nav-btn:active {
             transform: translateY(1px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         #rotationBtn {
             background: linear-gradient(to bottom, #2e7d32, #1b5e20);
-            min-width: 95px;
+            min-width: 85px;
         }
 
         #rotationBtn.stopped {
@@ -107,26 +107,25 @@
         }
 
         #stationCounter {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #00ffaa;
             background: rgba(0, 0, 0, 0.6);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 6px;
-            min-width: 85px;
+            min-width: 75px;
             text-align: center;
             border: 2px solid var(--secondary-blue);
             font-family: 'Courier New', monospace;
             letter-spacing: 1px;
-            box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
         }
 
         .fixed-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(20, 30, 80, 0.9);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             border: 1px solid rgba(0, 188, 212, 0.3);
             min-width: fit-content;
@@ -134,19 +133,19 @@
         }
 
         .speed-control {
-            min-width: 160px;
+            min-width: 140px;
         }
 
         .speed-control label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #b0e0e6;
             font-weight: bold;
             white-space: nowrap;
         }
 
         #rotationSpeed {
-            width: 90px;
-            height: 6px;
+            width: 80px;
+            height: 5px;
             border-radius: 3px;
             background: #2a3a6e;
             outline: none;
@@ -155,59 +154,56 @@
 
         #rotationSpeed::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: var(--secondary-blue);
             cursor: pointer;
             border: 2px solid white;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
         #currentSpeed {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #ffcc00;
-            min-width: 35px;
+            min-width: 32px;
             font-weight: bold;
-            font-family: 'Courier New', monospace;
         }
 
         .mini-countdown {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #ff9800;
             background: rgba(30, 20, 40, 0.9);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             border: 1px solid #ff9800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             font-weight: bold;
-            min-width: 100px;
+            min-width: 80px;
             height: 36px;
-            box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
         }
 
         #miniTimer {
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #ffcc00;
-            min-width: 25px;
+            min-width: 22px;
             text-align: center;
         }
 
         #stationsButton {
             background: linear-gradient(to bottom, #9c27b0, #7b1fa2);
-            min-width: 95px;
+            min-width: 85px;
         }
 
         /* LÍNIA DE FONT */
         .data-source {
-            font-size: clamp(0.7rem, 2vw, 0.85rem);
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
             color: #4caf50;
             font-style: italic;
             text-align: center;
-            padding: 6px 10px;
+            padding: 5px 10px;
             background: rgba(0, 0, 0, 0.35);
             flex-shrink: 0;
             line-height: 1.3;
@@ -220,12 +216,39 @@
             word-break: break-all;
         }
 
-        .data-source a:hover {
-            text-decoration: underline;
-            color: #a8ffa6;
+        /* PUNT 4: EFECTE PERSIANA */
+        @keyframes persiana {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+                filter: blur(3px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(3px);
+            }
         }
 
-        /* CONTENIDOR - TORNAM AL ORIGINAL */
+        #bannerViewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            flex: 1;
+            background: #000;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* CONTENIDOR */
         .main-container {
             flex: 1;
             display: flex;
@@ -238,20 +261,12 @@
             background: #000;
         }
 
-        #bannerViewer {
-            width: 100%;
-            height: 100%;
-            border: none;
-            flex: 1;
-            background: #000;
-        }
-
         /* PEU */
         .footer {
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             background: rgba(10, 20, 40, 0.95);
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
             color: #aaa;
             border-top: 2px solid #1a5f7a;
             flex-shrink: 0;
@@ -260,6 +275,65 @@
 
         .footer strong {
             color: var(--secondary-blue);
+        }
+
+        /* RESPONSIVE PER MÒBILS */
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                align-items: stretch;
+                min-height: auto;
+                padding: 8px;
+            }
+            
+            .header-title {
+                text-align: center;
+                min-width: auto;
+            }
+            
+            .controls-group {
+                justify-content: center;
+            }
+            
+            .nav-btn {
+                min-width: 65px;
+                padding: 6px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .fixed-container {
+                padding: 4px 8px;
+            }
+            
+            .speed-control {
+                min-width: 120px;
+            }
+            
+            #rotationSpeed {
+                width: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .controls-group {
+                gap: 4px;
+            }
+            
+            .nav-btn {
+                min-width: 55px;
+                padding: 4px 6px;
+                font-size: 0.65rem;
+            }
+            
+            #stationCounter {
+                min-width: 60px;
+                font-size: 0.8rem;
+                padding: 4px 6px;
+            }
+            
+            .mini-countdown {
+                min-width: 60px;
+            }
         }
     </style>
 </head>
@@ -287,6 +361,7 @@
             </div>
             
             <button id="stationsButton" class="nav-btn">Estacions</button>
+            <button id="principalBtn" class="nav-btn">Principal</button>
         </div>
     </div>
 
@@ -295,7 +370,7 @@
         Dades obtingudes amb scrapers propis. Font oficial: <a href="https://www.meteo.cat/" target="_blank">https://www.meteo.cat/</a>
     </div>
 
-    <!-- CONTENIDOR ORIGINAL -->
+    <!-- CONTENIDOR -->
     <div class="main-container">
         <iframe id="bannerViewer" title="Visualitzador de Banners"></iframe>
     </div>
@@ -308,7 +383,7 @@
     <script>
         const GITHUB_BASE = 'https://joandecorts.github.io/overlay-plus/public/';
         
-        // 🎯 VARIABLES DEL CÓDIGO QUE SÍ FUNCIONA
+        // Variables
         let stations = [];
         let currentIndex = 0;
         let isRotating = true;
@@ -327,8 +402,11 @@
         const currentSpeedSpan = document.getElementById('currentSpeed');
         const miniTimer = document.getElementById('miniTimer');
         const stationsButton = document.getElementById('stationsButton');
+        const principalBtn = document.getElementById('principalBtn');
 
-        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - detectar estacions
+        // ============================================
+        // PUNT 6: DETECTAR I ORDENAR ESTACIONS
+        // ============================================
         async function detectStations() {
             console.log("🔍 Cercant estacions a GitHub...");
             
@@ -346,47 +424,43 @@
                 'YH','VK','VU','YL','D4','XF','ZB','XV','M6','VV','WL','U3','CI','UK','U2',
                 'CP','YO','CL','XS','UJ','WM','Z6','XN','XT','XH','VX','XE','C7','YK','YG',
                 'Y6','DK','X7','XZ','UE','WR','XQ','UX','XD','ZC','D2','V1','D3','XO','YN',
-                'YY','WS','W4','CQ','VM','YR','DQ','D7','U6'
+                'UG','WS','W4','CQ','VM','YR','DQ','D7','U6'
             ];
 
             const foundStations = [];
             
-            // Provar cada estació (en paral·lel limitat)
+            // Provar cada estació
             const testPromises = allPossibleStations.map(async (id) => {
                 const url = `${GITHUB_BASE}index_${id}.html`;
                 try {
                     const response = await fetch(url, { method: 'HEAD' });
                     if (response.ok) {
-                        console.log(`✅ ${id} trobada`);
                         return `index_${id}.html`;
                     }
-                } catch (error) {
-                    // Ignorar errors
-                }
+                } catch (error) {}
                 return null;
             });
 
-            // Esperar totes les verificacions
             const results = await Promise.all(testPromises);
             
-            // Filtrar les que existeixen
-            stations = results.filter(station => station !== null);
+            // Filtrar les que existeixen i ORDENAR ALFABÈTICAMENT (PUNT 6)
+            stations = results
+                .filter(station => station !== null)
+                .sort((a, b) => {
+                    const idA = a.replace('index_', '').replace('.html', '');
+                    const idB = b.replace('index_', '').replace('.html', '');
+                    return idA.localeCompare(idB);
+                });
             
-            // 🆕 ORDENAR ALFABÈTICAMENT - AQUÍ ESTÀ EL CANVI
-            stations.sort((a, b) => {
-                // Extreure els IDs: index_WB.html → WB
-                const idA = a.replace('index_', '').replace('.html', '');
-                const idB = b.replace('index_', '').replace('.html', '');
-                return idA.localeCompare(idB);
-            });
-            
-            console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
+            console.log(`🎯 ${stations.length} estacions detectades`);
             console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
             
             return stations;
         }
 
-        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Carregar estació actual
+        // ============================================
+        // PUNT 4: CARREGAR AMB EFECTE PERSIANA
+        // ============================================
         function loadCurrentStation() {
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No hi ha estacions disponibles</h2></body></html>';
@@ -398,56 +472,62 @@
             
             console.log(`📡 Carregant: ${stationId} (${currentIndex + 1}/${stations.length})`);
             
-            // Actualitzar comptador
-            stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
+            // PUNT 4: EFECTE PERSIANA
+            viewer.style.opacity = '0';
+            viewer.style.transform = 'translateY(-20px)';
             
-            // Carregar amb timestamp per evitar cache
-            const timestamp = new Date().getTime();
-            const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
+            setTimeout(() => {
+                const timestamp = new Date().getTime();
+                const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
+                viewer.src = url;
+            }, 200);
             
-            // Forçar càrrega
-            viewer.src = url;
-            
-            // Verificar càrrega
             viewer.onload = () => {
-                console.log(`✅ ${stationId} carregada correctament`);
-                
-                // Forçar redimensionament si cal
                 setTimeout(() => {
-                    try {
-                        const iframeDoc = viewer.contentDocument || viewer.contentWindow.document;
-                        if (iframeDoc.body) {
-                            iframeDoc.body.style.width = '100%';
-                            iframeDoc.body.style.height = '100%';
-                            iframeDoc.body.style.margin = '0';
-                            iframeDoc.body.style.padding = '0';
-                        }
-                    } catch (e) {
-                        // CORS error - normal
-                    }
+                    viewer.style.opacity = '1';
+                    viewer.style.transform = 'translateY(0)';
                 }, 100);
+                console.log(`✅ ${stationId} carregada`);
             };
             
             viewer.onerror = () => {
                 console.log(`❌ Error carregant ${stationId}`);
+                viewer.style.opacity = '1';
+                viewer.style.transform = 'translateY(0)';
             };
+            
+            // PUNT 11: COMPTADOR SEQÜENCIAL (NO ALTERNA)
+            stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
         }
 
-        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Següent estació
+        // ============================================
+        // FUNCIONS DE NAVEGACIÓ
+        // ============================================
         function nextStation() {
             if (stations.length === 0) return;
+            // PUNT 11: AVANÇAR SEQÜENCIALMENT
             currentIndex = (currentIndex + 1) % stations.length;
             loadCurrentStation();
+            if (isRotating) {
+                countdownValue = rotationSpeed / 1000;
+                updateMiniCountdown();
+            }
         }
 
-        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Estació anterior
         function prevStation() {
             if (stations.length === 0) return;
+            // PUNT 11: RETROCEDIR SEQÜENCIALMENT
             currentIndex = (currentIndex - 1 + stations.length) % stations.length;
             loadCurrentStation();
+            if (isRotating) {
+                countdownValue = rotationSpeed / 1000;
+                updateMiniCountdown();
+            }
         }
 
-        // 🆕 COMPTE REGRESSIU FUNCIONAL
+        // ============================================
+        // COMPTE REGRESSIU
+        // ============================================
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             
@@ -475,7 +555,21 @@
             }
         }
 
-        // 🎯 FUNCIÓ ORIGINAL QUE SÍ FUNCIONA - Iniciar/aturar rotació
+        function updateMiniCountdown() {
+            miniTimer.textContent = countdownValue;
+            
+            if (countdownValue <= 5) {
+                miniTimer.style.color = '#ff5555';
+            } else if (countdownValue <= 10) {
+                miniTimer.style.color = '#ff9800';
+            } else {
+                miniTimer.style.color = '#ffcc00';
+            }
+        }
+
+        // ============================================
+        // ROTACIÓ
+        // ============================================
         function toggleRotation() {
             isRotating = !isRotating;
             
@@ -489,6 +583,7 @@
                 rotationBtn.classList.add('stopped');
                 stopRotation();
                 stopCountdown();
+                miniTimer.textContent = '⏸';
             }
         }
 
@@ -504,7 +599,9 @@
             }
         }
 
-        // 🆕 Actualitzar velocitat
+        // ============================================
+        // VELOCITAT
+        // ============================================
         function updateRotationSpeed() {
             rotationSpeed = rotationSpeedInput.value * 1000;
             currentSpeedSpan.textContent = rotationSpeedInput.value + 's';
@@ -515,25 +612,26 @@
             }
         }
 
-        // 🆕 Actualitzar compte enrere petit
-        function updateMiniCountdown() {
-            miniTimer.textContent = countdownValue;
-            
-            if (countdownValue <= 5) {
-                miniTimer.style.color = '#ff5555';
-            } else if (countdownValue <= 10) {
-                miniTimer.style.color = '#ff9800';
+        // ============================================
+        // PUNT 10: BOTÓ PRINCIPAL
+        // ============================================
+        function goToPrincipal() {
+            // Comprovar si ja estem a index.html
+            const path = window.location.pathname;
+            if (path.endsWith('index.html') || path === '/' || path === '') {
+                alert('Ja estàs al banner scroll principal');
             } else {
-                miniTimer.style.color = '#ffcc00';
+                window.location.href = 'index.html';
             }
         }
 
-        // 🆕 Anar a banner.html
+        // ============================================
+        // ALTRES FUNCIONS
+        // ============================================
         function goToStations() {
             window.location.href = 'banner.html';
         }
 
-        // 🆕 Actualitzar hora
         function updateCurrentTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('ca-ES', { 
@@ -544,28 +642,41 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // 🎯 INICIALITZACIÓ ORIGINAL QUE SÍ FUNCIONA
+        // ============================================
+        // INICIALITZACIÓ
+        // ============================================
         async function init() {
-            console.log("🚀 Inicialitzant...");
+            console.log("🚀 Inicialitzant sistema...");
             
-            // Configurar nous controls
+            // Mostrar missatge inicial
+            viewer.srcdoc = `
+                <html>
+                    <body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;font-family:sans-serif;">
+                        <div style="font-size:1.5rem;margin-bottom:20px;">🔍 Detectant estacions...</div>
+                        <div style="color:#aaa;">Carregant dades meteorològiques</div>
+                    </body>
+                </html>
+            `;
+            
+            // Configurar controls
             rotationSpeedInput.addEventListener('input', updateRotationSpeed);
             stationsButton.addEventListener('click', goToStations);
+            principalBtn.addEventListener('click', goToPrincipal);
             
-            // Carregar estacions (funció que funciona)
+            // Detectar estacions
             await detectStations();
             
             if (stations.length === 0) {
-                viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No s\'han trobat estacions</h2><p>Revisa la connexió o les estacions disponibles</p></body></html>';
+                viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No s\'han trobat estacions</h2><p>Revisa la connexió</p></body></html>';
                 return;
             }
             
-            // Configurar controls bàsics (que funcionen)
+            // Configurar controls bàsics
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
             rotationBtn.addEventListener('click', toggleRotation);
             
-            // Configurar teclat
+            // Teclat
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') prevStation();
                 if (e.key === 'ArrowRight') nextStation();
@@ -579,7 +690,7 @@
             currentIndex = 0;
             loadCurrentStation();
             
-            // Iniciar rotació automàtica
+            // Iniciar rotació
             startRotation();
             startCountdown();
             
@@ -595,4 +706,3 @@
     </script>
 </body>
 </html>
-
