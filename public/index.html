@@ -201,37 +201,37 @@
             min-width: 95px;
         }
 
-        /* 🆕 PUNT 1: EFECTE PERSIANA SUAU */
-        @keyframes persiana {
+        /* 🆕 EFECTE PERSIANA MILLORAT - ENTRADA DE FILERES */
+        @keyframes filaPersiana {
             0% {
                 opacity: 0;
-                transform: translateY(-30px);
-                filter: blur(4px);
+                transform: translateY(-20px);
+                clip-path: inset(0 0 100% 0);
             }
             20% {
-                opacity: 0.2;
-                transform: translateY(-20px);
-                filter: blur(3px);
+                opacity: 0.3;
+                transform: translateY(-15px);
+                clip-path: inset(0 0 70% 0);
             }
             40% {
-                opacity: 0.4;
+                opacity: 0.5;
                 transform: translateY(-10px);
-                filter: blur(2px);
+                clip-path: inset(0 0 50% 0);
             }
             60% {
-                opacity: 0.6;
+                opacity: 0.7;
                 transform: translateY(-5px);
-                filter: blur(1px);
+                clip-path: inset(0 0 30% 0);
             }
             80% {
-                opacity: 0.8;
+                opacity: 0.9;
                 transform: translateY(-2px);
-                filter: blur(0.5px);
+                clip-path: inset(0 0 10% 0);
             }
             100% {
                 opacity: 1;
                 transform: translateY(0);
-                filter: blur(0);
+                clip-path: inset(0 0 0 0);
             }
         }
 
@@ -241,11 +241,10 @@
             border: none;
             flex: 1;
             background: #000;
-            transition: opacity 0.2s ease;
         }
 
         .persiana-activa {
-            animation: persiana 1s ease-out forwards;
+            animation: filaPersiana 1.2s ease-out forwards;
         }
 
         /* LÍNIA DE FONT */
@@ -378,8 +377,36 @@
         const stationsButton = document.getElementById('stationsButton');
         const principalBtn = document.getElementById('principalBtn');
 
-        // 🎯 FUNCIÓ DE DETECCIÓ (ORIGINAL + PUNT 3: ORDENACIÓ)
+        // 🎯 NOVA FUNCIÓ DE DETECCIÓ - Llegeix l'ordre REAL del desplegable
         async function detectStations() {
+            console.log("🔍 Llegint estacions del desplegable...");
+            
+            try {
+                // Primer intent: agafar un banner qualsevol per extreure l'ordre del desplegable
+                // Agafem la primera estació que segur que existeix (YT)
+                const response = await fetch(`${GITHUB_BASE}index_YT.html`);
+                const html = await response.text();
+                
+                // Buscar el select id="navEstacions" i extreure les opcions
+                const selectMatch = html.match(/<select id="navEstacions"[^>]*>([\s\S]*?)<\/select>/);
+                if (selectMatch && selectMatch[1]) {
+                    const options = selectMatch[1].match(/<option value="index_([A-Z0-9]+)\.html"[^>]*>/g);
+                    if (options) {
+                        stations = options.map(opt => {
+                            const match = opt.match(/index_([A-Z0-9]+)\.html/);
+                            return match ? `index_${match[1]}.html` : null;
+                        }).filter(s => s !== null);
+                        
+                        console.log(`✅ Trobades ${stations.length} estacions del desplegable`);
+                        console.log("📋 Ordre:", stations.map(s => s.replace('index_', '').replace('.html', '')));
+                        return stations;
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ No s'ha pogut llegir del desplegable, usant mètode alternatiu");
+            }
+            
+            // Mètode alternatiu: HEAD requests (per si falla)
             console.log("🔍 Cercant estacions a GitHub...");
             
             const allPossibleStations = [
@@ -412,18 +439,18 @@
             const results = await Promise.all(testPromises);
             stations = results.filter(station => station !== null);
             
-            // 🆕 PUNT 3: ORDENACIÓ ALFABÈTICA
+            // ORDENACIÓ ALFABÈTICA
             stations.sort((a, b) => {
                 const idA = a.replace('index_', '').replace('.html', '');
                 const idB = b.replace('index_', '').replace('.html', '');
                 return idA.localeCompare(idB);
             });
             
-            console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
+            console.log(`🎯 ${stations.length} estacions detectades per HEAD`);
             return stations;
         }
 
-        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA SUAU
+        // 🆕 CARREGAR AMB EFECTE PERSIANA DE FILERES
         function loadCurrentStation() {
             if (stations.length === 0 || isTransitioning) return;
             
@@ -436,12 +463,12 @@
             
             stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
             
-            // Forçar que l'iframe estigui buit abans de l'animació
+            // Netejar i aplicar efecte
+            viewer.classList.remove('persiana-activa');
             viewer.src = 'about:blank';
             
-            // Petita pausa per assegurar que es reinicia
+            // Petita pausa per reiniciar
             setTimeout(() => {
-                // 🆕 EFECTE PERSIANA SUAU
                 viewer.classList.add('persiana-activa');
                 
                 const timestamp = new Date().getTime();
@@ -452,7 +479,7 @@
             setTimeout(() => {
                 viewer.classList.remove('persiana-activa');
                 isTransitioning = false;
-            }, 1050); // Una mica més que l'animació (1000ms)
+            }, 1300); // Una mica més que l'animació (1200ms)
             
             viewer.onload = () => {
                 console.log(`✅ ${stationId} carregada`);
@@ -465,7 +492,7 @@
             };
         }
 
-        // 🆕 PUNT 7: NAVEGACIÓ SEQÜENCIAL
+        // NAVEGACIÓ SEQÜENCIAL
         function nextStation() {
             if (stations.length === 0 || isTransitioning) return;
             
@@ -622,16 +649,11 @@
                 }
             });
             
-            // Forçar que comenci per la PRIMERA estació
+            // Començar per la PRIMERA estació
             currentIndex = 0;
             
-            // Forçar neteja de l'iframe abans de carregar
-            viewer.src = 'about:blank';
-            
-            // Petita pausa per assegurar que es reinicia
-            setTimeout(() => {
-                loadCurrentStation();
-            }, 100);
+            // Carregar primera estació
+            loadCurrentStation();
             
             startRotation();
             startCountdown();
