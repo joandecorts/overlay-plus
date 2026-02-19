@@ -2,324 +2,799 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Estació ZC - Setcases - Ulldeter (2.413 m)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Fix - Setcases - Ulldeter (2.413 m)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* PUNT 5: RESPONSIVE DESIGN */
-        * {
+        /* ==== ESTIL ORIGINAL AMB MILLORES ==== */
+        body {
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            padding: 20px;
+            background-color: #007BFF;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a237e, #0a2d5e);
+        .meteo-overlay {
+            background: rgba(10, 25, 49, 0.95);
+            border-radius: 15px;
+            padding: 25px;
             color: white;
-            min-height: 100vh;
-            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 1400px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3949ab;
+        }
+        
+        .station-info {
+            flex: 1;
+        }
+        
+        .station-name {
+            font-size: 24px;
+            color: #4fc3f7;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .location-details {
+            font-size: 14px;
+            color: #bbdefb;
+        }
+        
+        .location-label {
+            color: #7986cb;
+            margin-right: 5px;
+        }
+        
+        .header-right {
+            text-align: right;
+            flex: 1;
+        }
+        
+        /* RELLOTGES CORREGITS - FORMAT DEMANAT */
+        .dual-clock-digital {
             display: flex;
             flex-direction: column;
+            gap: 2px;
+            background: transparent !important;
+            padding: 0;
+            border: none !important;
+            min-width: 180px;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            align-items: flex-end;
         }
         
-        /* PUNT 9: NOU MISSATGE CAPÇALERA */
-        .header-info {
-            background: rgba(0, 188, 212, 0.15);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
+        .clock-row-digital {
+            display: flex;
+            justify-content: flex-end;
+            align-items: baseline;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .clock-time-digital {
+            color: white !important;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            min-width: 95px;
+            text-align: right;
+        }
+        
+        .clock-label-digital {
+            color: white !important;
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: left;
+        }
+        
+        .header-center {
             text-align: center;
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .station-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .station-selector select {
+            background: linear-gradient(145deg, #1a237e, #283593) !important;
+            color: #bbdefb !important;
+            border: 2px solid #3949ab !important;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 300px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        .station-selector select:hover {
+            border-color: #4fc3f7 !important;
+            background: linear-gradient(145deg, #283593, #1a237e) !important;
+        }
+        
+        .station-selector select:focus {
+            outline: none;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+        
+        .station-selector select option {
+            background: white !important;
+            color: black !important;
+            font-weight: 500;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+        
+        .station-selector select option:hover {
+            background: #f0f0f0 !important;
+            color: #1a237e !important;
+        }
+        
+        .station-selector select option:checked {
+            background: #e3f2fd !important;
+            color: #1a237e !important;
+            font-weight: 600;
+        }
+        
+        .station-selector label {
+            color: #bbdefb;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .station-icon {
+            margin-left: 15px;
+        }
+        
+        .station-icon a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(145deg, #1a237e, #283593);
+            border: 2px solid #3949ab;
+            border-radius: 8px;
+            color: #bbdefb;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .station-icon a:hover {
+            background: linear-gradient(145deg, #283593, #1a237e);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+        }
+        
+        .icon-text {
+            display: inline;
+        }
+        
+        .rotation-status-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .rotation-status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .rotation-status.paused {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .overlay-content {
+            margin: 30px 0;
+        }
+        
+        .columns-4-container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .col-basics { padding-left: 15px; }
+        .col-precip-wind { padding-left: 15px; }
+        .col-other { padding-left: 15px; }
+        .col-additional { padding-left: 15px; }
+        
+        .data-column {
+            margin-bottom: 25px;
+        }
+        
+        .column-title {
+            color: #bbdefb;
+            font-size: 16px;
+            font-weight: bold;
             margin-bottom: 15px;
-            border-left: 4px solid #00bcd4;
-            border-right: 4px solid #00bcd4;
-            backdrop-filter: blur(5px);
+            padding-bottom: 5px;
+            border-bottom: 1px solid #3949ab;
         }
         
-        .header-info i {
-            color: #ff9800;
-            font-style: normal;
+        .data-item {
+            background: linear-gradient(145deg, #1a237e, #283593);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border: 2px solid #3949ab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #ff7b00;
         }
         
-        h1 {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            margin-bottom: 5px;
-            word-break: break-word;
+        .data-item:hover {
+            transform: translateY(-3px);
+            box-shadow: -8px 0 20px rgba(255, 123, 0, 0.6), 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-left-color: #ff9d4d;
         }
         
-        .subtitle {
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            color: #b0e0e6;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0, 188, 212, 0.3);
+        .data-label {
+            color: #bbdefb;
+            font-weight: bold;
+            font-size: 15px;
         }
         
-        /* TARGETA DEL PERÍODE ACTUAL */
-        .periode-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0, 188, 212, 0.3);
+        .data-value {
+            color: #ffcc80;
+            font-weight: bold;
+            font-size: 17px;
+            text-align: right;
         }
         
-        .periode-title {
-            font-size: clamp(0.8rem, 2.5vw, 1rem);
-            color: #00bcd4;
-            margin-bottom: 15px;
+        /* NOU: Estil per a hores de registre petites */
+        .hora-registre {
+            font-size: 12px;
+            color: #90caf9;
+            display: block;
+            margin-top: 3px;
+            font-style: italic;
+        }
+        
+        /* NOU: Estil per a l'avís de canvi de dia */
+        .avis-canvi-dia {
+            background: linear-gradient(145deg, #b71c1c, #d32f2f);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border: 2px solid #f44336;
+            color: white;
+            text-align: center;
             font-weight: bold;
         }
         
-        .periode-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        /* NOU: Estil per al peu de pàgina corregit */
+        .overlay-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #3949ab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #9fa8da;
         }
         
-        @media (max-width: 480px) {
-            .periode-grid {
-                grid-template-columns: 1fr;
+        .footer-left, .footer-center, .footer-right {
+            flex: 1;
+        }
+        
+        .footer-left { text-align: left; }
+        .footer-center { text-align: center; }
+        .footer-right { 
+            text-align: right; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .email-icon {
+            color: #4fc3f7;
+            font-size: 16px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        
+        .verificacio-dades {
+            font-size: 12px;
+            color: #81c784;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 1200px) {
+            .columns-4-container {
+                flex-direction: column;
+            }
+            .column {
+                min-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .header-center {
+                order: 3;
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .station-controls {
+                flex-direction: column;
+            }
+            
+            .dual-clock-digital {
+                min-width: 160px;
+            }
+            
+            .clock-time-digital {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+            
+            .clock-label-digital {
+                font-size: 14px;
+            }
+            
+            .overlay-footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .footer-left, .footer-center, .footer-right {
+                text-align: center;
+                width: 100%;
             }
         }
         
-        .dada-principal {
-            font-size: clamp(1.5rem, 5vw, 2.2rem);
-            font-weight: bold;
-            line-height: 1.2;
-        }
-        
-        /* PUNT 7: LETRA PETITA CURSIVA VERDA */
-        .periode-info {
-            font-size: clamp(0.6rem, 1.8vw, 0.75rem);
-            font-style: italic;
-            color: #4caf50;
-            margin-top: 3px;
-        }
-        
-        /* GRAELLA DE TARGETES */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin: 15px 0;
-        }
-        
-        .targeta {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 10px;
-            border-left: 4px solid #00bcd4;
-            backdrop-filter: blur(5px);
-        }
-        
-        .targeta h3 {
-            font-size: clamp(0.8rem, 2.2vw, 0.95rem);
-            margin: 0 0 8px 0;
-            color: #b0e0e6;
-            border-bottom: 1px solid rgba(0, 188, 212, 0.2);
-            padding-bottom: 3px;
-        }
-        
-        .targeta .valor {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            font-weight: bold;
-        }
-        
-        .targeta .detall {
-            font-size: clamp(0.65rem, 1.8vw, 0.8rem);
-            color: #ccc;
-        }
-        
-        /* RESUM DEL DIA */
-        .resum-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 15px;
-            border: 1px solid rgba(255, 152, 0, 0.3);
-        }
-        
-        .resum-title {
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            color: #ff9800;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .resum-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-        }
-        
-        .resum-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 6px;
-        }
-        
-        .resum-label {
-            font-size: clamp(0.65rem, 1.8vw, 0.75rem);
-            color: #aaa;
-        }
-        
-        .resum-value {
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            font-weight: bold;
-            color: #ff9800;
-        }
-        
-        /* FOOTER */
-        .footer {
+        /* Estils per a banner.html */
+        .llista-estacions {
             margin-top: 20px;
-            text-align: center;
-            font-size: clamp(0.6rem, 1.8vw, 0.7rem);
-            color: #aaa;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
         
-        .footer a {
-            color: #80e27e;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* PROGRÉS D'ESTACIONS (PETIT) */
-        .progress {
-            position: fixed;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(0,0,0,0.5);
-            color: #aaa;
-            padding: 3px 8px;
+        .estacio-resum {
+            background: linear-gradient(145deg, #1a237e, #283593);
             border-radius: 10px;
-            font-size: 0.6rem;
-            z-index: 100;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4fc3f7;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .estacio-resum:hover {
+            border-left-color: #ff7b00;
+            transform: translateX(5px);
+        }
+        
+        .estacio-detall {
+            background: rgba(26, 35, 126, 0.5);
+            border-radius: 0 0 10px 10px;
+            padding: 20px;
+            display: none;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detall-obert {
+            display: block;
+        }
+        
+        .estacio-dades-diari {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #3949ab;
+        }
+        
+        .btn-estacio-fixa {
+            display: inline-block;
+            background: linear-gradient(145deg, #ff7b00, #e56b00);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-estacio-fixa:hover {
+            background: linear-gradient(145deg, #ff9d4d, #ff7b00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
+        }
+        
+        .day-summary {
+            display: none !important;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .icon-text {
+                display: none;
+            }
+            
+            .station-icon a {
+                padding: 10px;
+                width: 42px;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- PUNT 9: NOU MISSATGE -->
-    <div class="header-info">
-        <i>📍</i> Per a finestra estàtica anar a "Estacions" i escollir la desitjada
-    </div>
-    
-    <h1>🏔️ Setcases - Ulldeter (2.413 m)</h1>
-    <div class="subtitle">
-        ID: ZC | 2026-02-19 08:49 TU
-    </div>
-    
-    <!-- TARGETA DEL PERÍODE ACTUAL -->
-    <div class="periode-card">
-        <div class="periode-title">📊 Dades del període 07:30 - 08:00</div>
-        <div class="periode-grid">
-            <!-- Temperatura mitjana període -->
-            <div>
-                <div class="dada-principal">3.5°C</div>
-                <div class="periode-info">Temperatura mitjana del període</div>
+
+    <div class="meteo-overlay">
+        <div class="overlay-header">
+            <div class="station-info">
+                <div class="station-name">🏔️ Setcases - Ulldeter (2.413 m)</div>
+                <div class="location-details">
+                    <span class="location-label">Comarca:</span> Ripollès | 
+                    <span class="location-label">Altitud:</span> 2413 m | 
+                    <span class="location-label">ID:</span> ZC
+                </div>
             </div>
             
-            <!-- Precipitació període -->
-            <div>
-                <div class="dada-principal">0.2 mm</div>
-                <div class="periode-info">Precipitació del període</div>
+            <div class="header-center">
+                <div class="station-controls">
+                    <div class="station-selector">
+                        <label for="navEstacions">Navegar a:</label>
+                        <select id="navEstacions" onchange="window.location.href=this.value">
+                            <option value="">-- Selecciona una estació --</option>
+        <option value="index_YT.html" >Alt Àneu - Bonabé (1.693 m)</option>
+<option value="index_Z1.html" >Alt Àneu - Bonaigua (2.266 m)</option>
+<option value="index_DN.html" >Anglès</option>
+<option value="index_Z6.html" >Arres - Sasseuva (2.228 m)</option>
+<option value="index_DJ.html" >Banyoles</option>
+<option value="index_X4.html" >Barcelona - el Raval</option>
+<option value="index_D5.html" >Barcelona - Observatori Fabra</option>
+<option value="index_YS.html" >Cabanes</option>
+<option value="index_UN.html" >Cassà de la Selva</option>
+<option value="index_MS.html" >Castellar de N'hug - el Clot del Moro</option>
+<option value="index_W1.html" >Castelló D'empúries</option>
+<option value="index_DP.html" >Das - Aeròdrom</option>
+<option value="index_XL.html" >El Prat de Llobregat - el Prat de Llobregat</option>
+<option value="index_VZ.html" >Espolla</option>
+<option value="index_Z7.html" >Espot (2.519 m)</option>
+<option value="index_XK.html" >Fogars de Montclús - Puig Sesolles (1.668 m)</option>
+<option value="index_XJ.html" >Girona</option>
+<option value="index_YU.html" >L'esquirol - Cantonigròs</option>
+<option value="index_ZE.html" >La Coma i la Pedra - el Port del Comte (2.290 m)</option>
+<option value="index_CD.html" >La Seu D'urgell - la Seu D'urgell - Bellestar</option>
+<option value="index_Z2.html" >La Vall de Boí - Boí (2.535 m)</option>
+<option value="index_Z5.html" >Lladorre - Certascan (2.400 m)</option>
+<option value="index_VK.html" >Lleida - Raimat</option>
+<option value="index_Z3.html" >Meranges - Malniu (2.230 m)</option>
+<option value="index_CG.html" >Molló - Fabert</option>
+<option value="index_Z9.html" >Montellà i Martinet - Cadí Nord (2.143 m) - Prat D'aguiló</option>
+<option value="index_YB.html" >Olot</option>
+<option value="index_YP.html" >Palafrugell</option>
+<option value="index_J5.html" >Pantà de Darnius - Boadella</option>
+<option value="index_D6.html" >Portbou - Coll dels Belitres</option>
+<option value="index_XR.html" >Prades</option>
+<option value="index_YA.html" >Puigcerdà</option>
+<option value="index_DG.html" >Queralbs - Núria (1.971 m)</option>
+<option value="index_X5.html" >Roquetes - Pn dels Ports</option>
+<option value="index_D4.html" >Roses</option>
+<option value="index_CI.html" >Sant Pau de Segúries</option>
+<option value="index_XS.html" >Santa Coloma de Farners</option>
+<option value="index_ZC.html" selected>Setcases - Ulldeter (2.413 m)</option>
+<option value="index_XH.html" >Sort</option>
+<option value="index_XE.html" >Tarragona - Complex Educatiu</option>
+<option value="index_UE.html" >Torroella de Montgrí</option>
+<option value="index_XO.html" >Vic</option>
+<option value="index_VS.html" >Vielha e Mijaran - Lac Redon (2.247 m)</option>
+<option value="index_YN.html" >Vielha e Mijaran - Vielha - Elipòrt</option>
+<option value="index_D7.html" >Vinebre</option>
+
+                        </select>
+                    </div>
+                    <div class="station-icon">
+                        <a href="banner.html" title="Veure totes les estacions">
+                            <i class="fas fa-list"></i>
+                            <span class="icon-text">Totes</span>
+                        </a>
+                    </div>
+                    <div class="station-icon">
+                        <a href="index.html" title="Tornar al banner principal">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Principal</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="rotation-status-container">
+                    <div class="rotation-status">
+                        <i class="fas fa-map-pin"></i>
+                        BANNER FIX
+                    </div>
+                </div>
             </div>
+            
+            <div class="header-right">
+                <div class="dual-clock-digital">
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-local">--:--</div>
+                        <div class="clock-label-digital">LT</div>
+                    </div>
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-utc">--:--</div>
+                        <div class="clock-label-digital">UTC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="overlay-content">
+        <div class="columns-4-container">
+<div class="column col-basics">
+<div class="data-column">
+<div class="column-title">Dades bàsiques</div>
+
+                <div class="data-item">
+                    <div class="data-label">Temp. Mitjana:</div>
+                    <div class="data-value">-6.9 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Temp. Màxima:</div>
+                    <div class="data-value">-6.6 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Temp. Mínima:</div>
+                    <div class="data-value">-7.0 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Humitat Relativa:</div>
+                    <div class="data-value">78 %</div>
+                </div></div>
+</div>
+<div class="column col-precip-wind">
+<div class="data-column">
+<div class="column-title">Precipitació i vent</div>
+
+                <div class="data-item">
+                    <div class="data-label">Precipitació:</div>
+                    <div class="data-value">0.1 mm</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Vent Mitjà:</div>
+                    <div class="data-value">21.6 Km/h</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Direcció Vent:</div>
+                    <div class="data-value">294</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Ràfega Màxima:</div>
+                    <div class="data-value">50.4 Km/h</div>
+                </div></div>
+</div>
+<div class="column col-other">
+<div class="data-column">
+<div class="column-title">Altres dades</div>
+
+                <div class="data-item">
+                    <div class="data-label">Irradiància:</div>
+                    <div class="data-value">236 W/m²</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Gruix de neu:</div>
+                    <div class="data-value">55 cm</div>
+                </div></div>
+</div>
+<div class="column col-additional">
+<div class="data-column">
+<div class="column-title">Dades addicionals</div>
+
+            <div class="data-item">
+                <div class="data-label">Període:</div>
+                <div class="data-value"><div style="line-height: 1.3;">
+                <div style="font-size: 16px;">19/02/2026</div>
+                <div style="font-size: 14px; color: #ffcc80;">09:30-10:00 CET</div>
+            </div></div>
+            </div>
+            <div class="data-item">
+                <div class="data-label">Altitud:</div>
+                <div class="data-value">2413 m</div>
+            </div>
+                <div class="data-item">
+                    <div class="data-label">Hora actualització:</div>
+                    <div class="data-value" style="text-align: right;">10:24 CET</div>
+                </div>
+            <div class="data-item">
+                <div class="data-label">Comarca:</div>
+                <div class="data-value">Ripollès</div>
+            </div></div>
+</div>
+</div>
+
+        <div style="margin-top: 30px; padding: 25px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 20px;">📅 Dades Diàries (Avui des de les 00:00)</div>
+            <div class="columns-4-container">
+        <div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Temperatura mitjana:</div>
+                            <div class="data-value">
+                                -6.8 °C
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Temperatura màxima:</div>
+                            <div class="data-value">
+                                -3.0 °C 0:00 TU
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Temperatura mínima:</div>
+                            <div class="data-value">
+                                -8.3 °C 6:03 TU
+                                
+                            </div>
+                        </div></div></div><div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Humitat relativa:</div>
+                            <div class="data-value">
+                                73%
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Precipitació acumulada:</div>
+                            <div class="data-value">
+                                2.7 mm
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Gruix de neu màxim:</div>
+                            <div class="data-value">
+                                56 cm
+                                
+                            </div>
+                        </div></div></div><div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Ratxa màxima del vent:</div>
+                            <div class="data-value">
+                                63.7 km/h - 262º 5:53 TU ºC
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Irradiació solar global:</div>
+                            <div class="data-value">
+                                1.2 MJ/m2
+                                
+                            </div>
+                        </div></div></div>
+            </div>
+        </div>
+        
+        </div>
+        
+        <div style="margin: 30px auto; padding: 15px; background: linear-gradient(145deg, #283593, #1a237e); 
+                   border-radius: 10px; border: 2px solid #3949ab; max-width: 600px; text-align: center;">
+            <h3 style="color: #4fc3f7; margin-top: 0;">⚠️ AQUEST ÉS UN BANNER FIX</h3>
+            <p style="color: #bbdefb;">Aquesta pàgina mostra sempre les dades d'aquesta estació.</p>
+            <p style="color: #bbdefb;">Per veure la rotació automàtica de totes les estacions, ves a <a href="index.html" style="color: #ffcc80; font-weight: bold;">index.html</a></p>
+        </div>
+    
+    <div class="overlay-footer">
+        <div class="footer-left">
+            <span>📡 Font: https://www.meteo.cat/</span>
+            <div class="verificacio-dades">
+                Les dades s'han verificat amb la web oficial i totes són coincidents.
+            </div>
+        </div>
+        <div class="footer-center">
+            <span>© joandecorts.io</span>
+            <a href="mailto:admin@joandecorts.com">
+                <i class="fas fa-envelope email-icon"></i>
+               
+            </a>
+        </div>
+        <div class="footer-right">
+            <span>🔄 Actualització: 19/02/2026 10:24:06 CET</span>
         </div>
     </div>
     
-    <!-- GRAELLA DE TOTES LES DADES -->
-    <div class="grid-container">
-        <!-- Temperatures -->
-        <div class="targeta">
-            <h3>🌡️ Temperatures</h3>
-            <div class="valor">4.5°C</div>
-            <div class="detall">Màxima període</div>
-            <div class="valor" style="margin-top:5px;">2.5°C</div>
-            <div class="detall">Mínima període</div>
-        </div>
+    <!-- Script per als rellotges -->
+    <script>
+        function actualitzarRellotges() {
+            const ara = new Date();
+            
+            // Hora local amb segons
+            const horaLocal = ara.toLocaleTimeString('ca-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false 
+            });
+            
+            // Hora UTC sense segons
+            const horaUTC = ara.getUTCHours().toString().padStart(2, '0') + ':' + 
+                           ara.getUTCMinutes().toString().padStart(2, '0');
+            
+            // Actualitzar elements si existeixen
+            const elemLocal = document.getElementById('hora-local');
+            const elemUTC = document.getElementById('hora-utc');
+            const elemLocalSimple = document.getElementById('hora-local-simple');
+            const elemUTCSimple = document.getElementById('hora-utc-simple');
+            
+            if (elemLocal) elemLocal.textContent = horaLocal;
+            if (elemUTC) elemUTC.textContent = horaUTC;
+            if (elemLocalSimple) elemLocalSimple.textContent = horaLocal.split(':')[0] + ':' + horaLocal.split(':')[1];
+            if (elemUTCSimple) elemUTCSimple.textContent = horaUTC;
+        }
         
-        <!-- Humitat -->
-        <div class="targeta">
-            <h3>💧 Humitat</h3>
-            <div class="valor">57%</div>
-            <div class="detall">Mitjana període</div>
-        </div>
-        
-        <!-- Vent (PUNT 1) -->
-        <div class="targeta">
-            <h3>🌬️ Vent</h3>
-            <div class="valor">SW 24.7°</div>
-            <div class="detall">Direcció i velocitat</div>
-            <div class="valor" style="margin-top:5px;">35.7 km/h</div>
-            <div class="detall">Ratxa màxima</div>
-        </div>
-        
-        <!-- Pressió (PUNT 3) -->
-        <div class="targeta">
-            <h3>📈 Pressió</h3>
-            <div class="valor">1017.7 hPa</div>
-            <div class="detall">Atmosfèrica</div>
-        </div>
-        
-        <!-- Neu -->
-        <div class="targeta">
-            <h3>❄️ Neu</h3>
-            <div class="valor">87 cm</div>
-            <div class="detall">Gruix actual</div>
-        </div>
-        
-        <!-- Radiació -->
-        <div class="targeta">
-            <h3>☀️ Radiació</h3>
-            <div class="valor">37 W/m²</div>
-            <div class="detall">Mitjana període</div>
-        </div>
-    </div>
-    
-    <!-- RESUM DEL DIA -->
-    <div class="resum-card">
-        <div class="resum-title">📅 Resum del dia 2026-02-19</div>
-        <div class="resum-grid">
-            <div class="resum-item">
-                <div class="resum-label">Temperatura mitjana</div>
-                <div class="resum-value">5.5 °C</div>
-            </div>
-            <div class="resum-item">
-                <div class="resum-label">Temperatura màxima</div>
-                <div class="resum-value">6.5 °C 01:37 TU</div>
-            </div>
-            <div class="resum-item">
-                <div class="resum-label">Temperatura mínima</div>
-                <div class="resum-value">1.5 °C 18:37 TU</div>
-            </div>
-            <div class="resum-item">
-                <div class="resum-label">Humitat mitjana</div>
-                <div class="resum-value">57%</div>
-            </div>
-            <div class="resum-item">
-                <div class="resum-label">Precipitació acumulada</div>
-                <div class="resum-value">2.1 mm</div>
-            </div>
-            <div class="resum-item">
-                <div class="resum-label">Gruix màxim neu</div>
-                <div class="resum-value">97 cm</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Font de dades -->
-    <div class="footer">
-        Dades: <a href="https://www.meteo.cat/observacions/xema/dades?codi=ZC" target="_blank">Meteo.cat</a> • 
-        Estació 38/45
-    </div>
-    
-    <!-- Petit comptador de progrés -->
-    <div class="progress">
-        38/45
-    </div>
+        document.addEventListener('DOMContentLoaded', function() {
+            actualitzarRellotges();
+            setInterval(actualitzarRellotges, 1000);
+        });
+    </script>
 </body>
 </html>
