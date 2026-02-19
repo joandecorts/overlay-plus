@@ -1224,53 +1224,53 @@ class HTMLGenerator:
             <div class="columns-4-container">
         '''
         
-        # Agrupar variables per columnes
-        vars_per_columna = len(Config.VARIABLES_DIARI_COMPLETES) // 4 + 1
+# Agrupar variables per columnes
+vars_per_columna = len(Config.VARIABLES_DIARI_COMPLETES) // 4 + 1
+
+for i in range(4):
+    start_idx = i * vars_per_columna
+    end_idx = start_idx + vars_per_columna
+    vars_columna = Config.VARIABLES_DIARI_COMPLETES[start_idx:end_idx]
+    
+    if vars_columna:
+        html += '<div class="column"><div class="data-column">'
         
-        for i in range(4):
-            start_idx = i * vars_per_columna
-            end_idx = start_idx + vars_per_columna
-            vars_columna = Config.VARIABLES_DIARI_COMPLETES[start_idx:end_idx]
-            
-            if vars_columna:
-                html += '<div class="column"><div class="data-column">'
+        for var, label, hora_var in vars_columna:
+            if var in diari and diari[var]:
+                # 🆕 PUNT 2: Netejar ratxa màxima
+                if var == 'RATXA_VENT_MAX':
+                    valor_net = NetejaDades.netejar_ratxa(diari[var])
+                    valor_amb_unitats = valor_net
+                # 🆕 PUNT 3: Netejar pressió
+                elif var == 'PRESSIO_ATMOSFERICA':
+                    valor_net = NetejaDades.netejar_pressio(diari[var])
+                    valor_amb_unitats = valor_net
+                else:
+                    valor_amb_unitats = Utilitats.afegir_unitats(var, diari[var])
                 
-                for var, label, hora_var in vars_columna:
-                    if var in diari and diari[var]:
-                        # 🆕 PUNT 2: Netejar ratxa màxima
-                        if var == 'RATXA_VENT_MAX':
-                        valor_net = NetejaDades.netejar_ratxa(diari[var])
-                        # 🆕 No tornis a afegir unitats, perquè la variable ja les porta
-                        valor_amb_unitats = valor_net
-                    elif var == 'PRESSIO_ATMOSFERICA':
-                        valor_net = NetejaDades.netejar_pressio(diari[var])
-                        valor_amb_unitats = valor_net
-                    else:
-                        valor_amb_unitats = Utilitats.afegir_unitats(var, diari[var])
-                        
-                        # Afegir hora de registre si existeix
-                        hora_text = ""
-                        if hora_var and hora_var in diari and diari[hora_var]:
-                            hora_formatted = Utilitats.format_hora_tu(diari[hora_var])
-                            hora_text = f'<span class="hora-registre">({hora_formatted} TU)</span>'
-                        
-                        html += f'''
-                        <div class="data-item">
-                            <div class="data-label">{label}:</div>
-                            <div class="data-value">
-                                {valor_amb_unitats}
-                                {hora_text}
-                            </div>
-                        </div>'''
+                # Afegir hora de registre si existeix
+                hora_text = ""
+                if hora_var and hora_var in diari and diari[hora_var]:
+                    hora_formatted = Utilitats.format_hora_tu(diari[hora_var])
+                    hora_text = f'<span class="hora-registre">({hora_formatted} TU)</span>'
                 
-                html += '</div></div>'
+                html += f'''
+                <div class="data-item">
+                    <div class="data-label">{label}:</div>
+                    <div class="data-value">
+                        {valor_amb_unitats}
+                        {hora_text}
+                    </div>
+                </div>'''
         
-        html += '''
-            </div>
-        </div>
-        '''
-        
-        return html
+        html += '</div></div>'
+
+html += '''
+    </div>
+</div>
+'''
+
+return html
 
 # ============================================================================
 # FUNCIONS PRINCIPALS DE GENERACIÓ (ACTUALITZADES)
@@ -1790,4 +1790,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
