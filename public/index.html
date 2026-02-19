@@ -201,23 +201,31 @@
             min-width: 95px;
         }
 
-        /* 🆕 PUNT 1: EFECTE PERSIANA MILLORAT */
+        /* 🆕 PUNT 1: EFECTE PERSIANA CORREGIT */
         @keyframes persiana {
             0% {
                 opacity: 0;
+                transform: translateY(-30px);
+            }
+            20% {
+                opacity: 0.3;
                 transform: translateY(-20px);
             }
-            30% {
-                opacity: 1;
-                transform: translateY(0);
+            40% {
+                opacity: 0.6;
+                transform: translateY(-10px);
             }
-            70% {
+            60% {
+                opacity: 0.9;
+                transform: translateY(-5px);
+            }
+            80% {
                 opacity: 1;
                 transform: translateY(0);
             }
             100% {
-                opacity: 0;
-                transform: translateY(20px);
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -227,11 +235,11 @@
             border: none;
             flex: 1;
             background: #000;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
 
         .persiana-activa {
-            animation: persiana 0.8s ease-in-out;
+            animation: persiana 0.8s ease-out forwards;
         }
 
         /* LÍNIA DE FONT */
@@ -350,7 +358,7 @@
         let countdownInterval = null;
         let rotationSpeed = 30000;
         let countdownValue = 30;
-        let isTransitioning = false; // 🆕 Per evitar múltiples transicions
+        let isTransitioning = false;
 
         // Elements
         const viewer = document.getElementById('bannerViewer');
@@ -364,10 +372,35 @@
         const stationsButton = document.getElementById('stationsButton');
         const principalBtn = document.getElementById('principalBtn');
 
-        // 🎯 FUNCIÓ DE DETECCIÓ (ORIGINAL + PUNT 3: ORDENACIÓ)
+        // 🎯 FUNCIÓ DE DETECCIÓ CORREGIDA - Llegeix de banner.html
         async function detectStations() {
-            console.log("🔍 Cercant estacions a GitHub...");
+            console.log("🔍 Llegint estacions de banner.html...");
             
+            try {
+                // Primer intent: llegir directament de banner.html
+                const response = await fetch('banner.html');
+                const html = await response.text();
+                
+                // Buscar tots els href="index_XX.html"
+                const regex = /href="index_([A-Z0-9]{2})\.html"/g;
+                const matches = [];
+                let match;
+                while ((match = regex.exec(html)) !== null) {
+                    matches.push(`index_${match[1]}.html`);
+                }
+                
+                // Eliminar duplicats i ordenar
+                stations = [...new Set(matches)];
+                
+                if (stations.length > 0) {
+                    console.log(`✅ Trobades ${stations.length} estacions a banner.html`);
+                    return stations;
+                }
+            } catch (error) {
+                console.log("⚠️ No s'ha pogut llegir banner.html, usant mètode alternatiu");
+            }
+            
+            // Mètode alternatiu: HEAD requests
             const allPossibleStations = [
                 'WB','XY','U7','WK','WG','X3','Y4','UU','DN','XX','WW','VA','WU','X6','DJ',
                 'X4','D5','X8','YX','VB','W8','Z2','YT','Z1','YS','UP','Z9','X9','WX','WP',
@@ -384,8 +417,6 @@
                 'YY','WS','W4','CQ','VM','YR','DQ','D7','U6'
             ];
 
-            const foundStations = [];
-            
             const testPromises = allPossibleStations.map(async (id) => {
                 const url = `${GITHUB_BASE}index_${id}.html`;
                 try {
@@ -400,19 +431,11 @@
             const results = await Promise.all(testPromises);
             stations = results.filter(station => station !== null);
             
-            // 🆕 PUNT 3: ORDENACIÓ ALFABÈTICA
-            stations.sort((a, b) => {
-                const idA = a.replace('index_', '').replace('.html', '');
-                const idB = b.replace('index_', '').replace('.html', '');
-                return idA.localeCompare(idB);
-            });
-            
-            console.log(`🎯 ${stations.length} estacions detectades (ORDENADES)`);
-            console.log("📋 Primera:", stations[0], "Última:", stations[stations.length-1]);
+            console.log(`🎯 ${stations.length} estacions detectades per HEAD`);
             return stations;
         }
 
-        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA MILLORAT
+        // 🆕 PUNT 1: CARREGAR AMB EFECTE PERSIANA CORREGIT
         function loadCurrentStation() {
             if (stations.length === 0 || isTransitioning) return;
             
@@ -423,23 +446,25 @@
             
             console.log(`📡 Carregant: ${stationId} (${currentIndex + 1}/${stations.length})`);
             
-            // PUNT 7: Comprovar que l'índex és correcte
-            console.log(`   Índex actual: ${currentIndex}`);
-            
             stationCounter.textContent = `${currentIndex + 1}/${stations.length}`;
             
-            // 🆕 EFECTE PERSIANA
-            viewer.classList.add('persiana-activa');
+            // 🆕 EFECTE PERSIANA - Netejar i aplicar animació
+            viewer.classList.remove('persiana-activa');
             
-            const timestamp = new Date().getTime();
-            const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
-            viewer.src = url;
+            // Petita pausa per assegurar que es reinicia l'animació
+            setTimeout(() => {
+                viewer.classList.add('persiana-activa');
+                
+                const timestamp = new Date().getTime();
+                const url = `${GITHUB_BASE}${stationFile}?t=${timestamp}`;
+                viewer.src = url;
+            }, 10);
             
             // Treure l'efecte després de l'animació
             setTimeout(() => {
                 viewer.classList.remove('persiana-activa');
                 isTransitioning = false;
-            }, 800);
+            }, 900);
             
             viewer.onload = () => {
                 console.log(`✅ ${stationId} carregada`);
@@ -452,11 +477,10 @@
             };
         }
 
-        // 🆕 PUNT 7: NAVEGACIÓ SEQÜENCIAL CORREGIDA
+        // PUNT 7: NAVEGACIÓ SEQÜENCIAL
         function nextStation() {
             if (stations.length === 0 || isTransitioning) return;
             
-            // Avança 1 posició seqüencialment
             const newIndex = (currentIndex + 1) % stations.length;
             console.log(`   Next: ${currentIndex} → ${newIndex}`);
             currentIndex = newIndex;
@@ -472,7 +496,6 @@
         function prevStation() {
             if (stations.length === 0 || isTransitioning) return;
             
-            // Retrocedeix 1 posició seqüencialment
             const newIndex = (currentIndex - 1 + stations.length) % stations.length;
             console.log(`   Prev: ${currentIndex} → ${newIndex}`);
             currentIndex = newIndex;
@@ -595,12 +618,24 @@
             stationsButton.addEventListener('click', goToStations);
             principalBtn.addEventListener('click', goToPrincipal);
             
+            // Mostrar missatge de càrrega
+            viewer.srcdoc = '<html><body style="background:#000;color:#00bcd4;text-align:center;padding-top:100px;"><h2>Carregant estacions...</h2></body></html>';
+            
             await detectStations();
             
             if (stations.length === 0) {
                 viewer.srcdoc = '<html><body style="background:#000;color:white;text-align:center;padding:50px;"><h2>No s\'han trobat estacions</h2><p>Revisa la connexió</p></body></html>';
                 return;
             }
+            
+            // ORDENAR ALFABÈTICAMENT PER ID
+            stations.sort((a, b) => {
+                const idA = a.replace('index_', '').replace('.html', '');
+                const idB = b.replace('index_', '').replace('.html', '');
+                return idA.localeCompare(idB);
+            });
+            
+            console.log("📋 Llista ordenada:", stations.map(s => s.replace('index_', '').replace('.html', '')));
             
             prevBtn.addEventListener('click', prevStation);
             nextBtn.addEventListener('click', nextStation);
