@@ -1743,7 +1743,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
                     textExplicatiu.style.fontStyle = 'italic';
                     textExplicatiu.style.textAlign = 'center';
                     textExplicatiu.style.width = '100%';
-                    textExplicatiu.innerHTML = 'Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escollir la desitjada.';
+                    textExplicatiu.innerHTML = 'Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.';
 
                     // Inserir-lo al principi del headerCenter
                     headerCenter.insertBefore(textExplicatiu, headerCenter.firstChild);
@@ -1857,3 +1857,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
