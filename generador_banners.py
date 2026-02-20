@@ -52,7 +52,7 @@ class Config:
             ("VAR_HRM_perc", "Humitat Relativa:")
         ],
         "precip_vent": [
-            ("VAR_PPT_mm", "Precipitació:"),
+            ("VAR_PPT_mm", "Precipitació (període):"),  # 🔹 CANVI: Etiqueta més clara
             ("VAR_VVM_10_m_km_h", "Vent Mitjà:"),
             ("VAR_DVM_10_m_graus", "Direcció Vent:"),
             ("VAR_VVX_10_m_km_h", "Ràfega Màxima:"),
@@ -82,7 +82,7 @@ class Config:
         ("TEMPERATURA_MAXIMA_DIA", "Temperatura màxima", "HORA_TX"),
         ("TEMPERATURA_MINIMA_DIA", "Temperatura mínima", "HORA_TN"),
         ("HUMITAT_MITJANA_DIA", "Humitat relativa", None),
-        ("PRECIPITACIO_ACUM_DIA", "Precipitació acumulada", None),
+        ("PRECIPITACIO_ACUM_DIA", "Precipitació acumulada", None),  # Això és el total del dia
         ("GRUIX_NEU_MAX", "Gruix de neu màxim", "HORA_GN"),
         ("RATXA_VENT_MAX", "Ratxa màxima del vent", "HORA_VVX"),
         ("PRESSIO_ATMOSFERICA", "Pressió atmosfèrica", None),
@@ -467,18 +467,23 @@ class HTMLGenerator:
     @staticmethod
     def generar_head(titol="Banner Meteo.cat"):
         """Genera la secció head dels HTMLs - AMB RELLOTGES CORREGITS"""
+        # 🔹 NOU: Media queries responsives millorades
         return f"""<!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>{titol}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==== ESTIL ORIGINAL AMB MILLORES ==== */
+        /* ==== ESTIL AMB MILLORES RESPONSIVES ==== */
+        * {{
+            box-sizing: border-box;
+        }}
+        
         body {{
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             background-color: #007BFF;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -487,7 +492,7 @@ class HTMLGenerator:
         .meteo-overlay {{
             background: rgba(10, 25, 49, 0.95);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             color: white;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             max-width: 1400px;
@@ -497,15 +502,18 @@ class HTMLGenerator:
         
         .overlay-header {{
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #3949ab;
+            gap: 15px;
         }}
         
         .station-info {{
-            flex: 1;
+            flex: 1 1 250px;
+            min-width: 200px;
         }}
         
         .station-name {{
@@ -513,11 +521,13 @@ class HTMLGenerator:
             color: #4fc3f7;
             font-weight: bold;
             margin-bottom: 5px;
+            word-break: break-word;
         }}
         
         .location-details {{
             font-size: 14px;
             color: #bbdefb;
+            line-height: 1.4;
         }}
         
         .location-label {{
@@ -527,10 +537,10 @@ class HTMLGenerator:
         
         .header-right {{
             text-align: right;
-            flex: 1;
+            flex: 1 1 auto;
         }}
         
-        /* RELLOTGES CORREGITS - FORMAT DEMANAT */
+        /* RELLOTGES RESPONSIVES */
         .dual-clock-digital {{
             display: flex;
             flex-direction: column;
@@ -538,7 +548,7 @@ class HTMLGenerator:
             background: transparent !important;
             padding: 0;
             border: none !important;
-            min-width: 180px;
+            min-width: 160px;
             font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
             align-items: flex-end;
         }}
@@ -547,32 +557,32 @@ class HTMLGenerator:
             display: flex;
             justify-content: flex-end;
             align-items: baseline;
-            gap: 15px;
+            gap: 10px;
             width: 100%;
         }}
         
         .clock-time-digital {{
             color: white !important;
             font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            min-width: 95px;
+            min-width: 90px;
             text-align: right;
         }}
         
         .clock-label-digital {{
             color: white !important;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            min-width: 40px;
+            min-width: 35px;
             text-align: left;
         }}
         
         .header-center {{
             text-align: center;
-            flex: 2;
+            flex: 2 1 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -582,8 +592,15 @@ class HTMLGenerator:
         .station-controls {{
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }}
+        
+        .station-selector {{
+            min-width: 250px;
+            flex: 2 1 300px;
         }}
         
         .station-selector select {{
@@ -594,7 +611,7 @@ class HTMLGenerator:
             padding: 10px 15px;
             font-size: 14px;
             font-weight: 600;
-            min-width: 300px;
+            width: 100%;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             appearance: none;
@@ -626,29 +643,21 @@ class HTMLGenerator:
             font-size: 14px;
         }}
         
-        .station-selector select option:hover {{
-            background: #f0f0f0 !important;
-            color: #1a237e !important;
-        }}
-        
-        .station-selector select option:checked {{
-            background: #e3f2fd !important;
-            color: #1a237e !important;
-            font-weight: 600;
-        }}
-        
         .station-selector label {{
             color: #bbdefb;
             font-size: 16px;
             font-weight: bold;
             margin-right: 12px;
+            display: inline-block;
+            margin-bottom: 5px;
         }}
         
         .station-icon {{
-            margin-left: 15px;
+            margin-left: 0;
+            flex: 0 1 auto;
         }}
         
-        .station-icon a {{
+        .station-icon a, .station-icon button {{
             display: flex;
             align-items: center;
             gap: 8px;
@@ -661,9 +670,13 @@ class HTMLGenerator:
             font-size: 14px;
             font-weight: 600;
             transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: inherit;
+            width: 100%;
+            white-space: nowrap;
         }}
         
-        .station-icon a:hover {{
+        .station-icon a:hover, .station-icon button:hover {{
             background: linear-gradient(145deg, #283593, #1a237e);
             border-color: #4fc3f7;
             color: #4fc3f7;
@@ -680,12 +693,14 @@ class HTMLGenerator:
             align-items: center;
             gap: 10px;
             margin-top: 8px;
+            width: 100%;
+            justify-content: center;
         }}
         
         .rotation-status {{
             font-size: 13px;
             font-weight: bold;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 20px;
             background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
@@ -693,6 +708,10 @@ class HTMLGenerator:
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            text-align: center;
+            max-width: 100%;
+            white-space: normal;
+            line-height: 1.4;
         }}
         
         .rotation-status.paused {{
@@ -702,43 +721,42 @@ class HTMLGenerator:
         }}
         
         .overlay-content {{
-            margin: 30px 0;
+            margin: 20px 0;
         }}
         
         .columns-4-container {{
             display: flex;
-            gap: 25px;
+            gap: 20px;
             flex-wrap: wrap;
         }}
         
         .column {{
-            flex: 1;
-            min-width: 200px;
+            flex: 1 1 200px;
+            min-width: 220px;
         }}
         
-        .col-basics {{ padding-left: 15px; }}
-        .col-precip-wind {{ padding-left: 15px; }}
-        .col-other {{ padding-left: 15px; }}
-        .col-additional {{ padding-left: 15px; }}
+        .col-basics, .col-precip-wind, .col-other, .col-additional {{
+            padding-left: 0;
+        }}
         
         .data-column {{
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }}
         
         .column-title {{
             color: #bbdefb;
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             padding-bottom: 5px;
             border-bottom: 1px solid #3949ab;
         }}
         
         .data-item {{
             background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
             border: 2px solid #3949ab;
             display: flex;
             justify-content: space-between;
@@ -746,6 +764,7 @@ class HTMLGenerator:
             transition: all 0.3s ease;
             box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
             border-left: 4px solid #ff7b00;
+            gap: 10px;
         }}
         
         .data-item:hover {{
@@ -757,19 +776,21 @@ class HTMLGenerator:
         .data-label {{
             color: #bbdefb;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
+            flex: 1;
         }}
         
         .data-value {{
             color: #ffcc80;
             font-weight: bold;
-            font-size: 17px;
+            font-size: 15px;
             text-align: right;
+            word-break: break-word;
         }}
         
         /* NOU: Estil per a hores de registre petites */
         .hora-registre {{
-            font-size: 12px;
+            font-size: 11px;
             color: #90caf9;
             display: block;
             margin-top: 3px;
@@ -788,29 +809,32 @@ class HTMLGenerator:
         /* NOU: Estil per a l'avís de canvi de dia */
         .avis-canvi-dia {{
             background: linear-gradient(145deg, #b71c1c, #d32f2f);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin: 20px 0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 15px 0;
             border: 2px solid #f44336;
             color: white;
             text-align: center;
             font-weight: bold;
+            font-size: 14px;
         }}
         
         /* NOU: Estil per al peu de pàgina corregit */
         .overlay-footer {{
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 15px;
             border-top: 1px solid #3949ab;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #9fa8da;
+            gap: 15px;
         }}
         
         .footer-left, .footer-center, .footer-right {{
-            flex: 1;
+            flex: 1 1 200px;
         }}
         
         .footer-left {{ text-align: left; }}
@@ -831,47 +855,207 @@ class HTMLGenerator:
         }}
         
         .verificacio-dades {{
-            font-size: 12px;
+            font-size: 11px;
             color: #81c784;
             margin-top: 5px;
             font-style: italic;
         }}
         
-        @media (max-width: 1200px) {{
-            .columns-4-container {{
-                flex-direction: column;
+        /* Estils per a banner.html */
+        .llista-estacions {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            padding: 15px 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }}
+        
+        .station-card {{
+            background: linear-gradient(145deg, #1e1e2e, #252536);
+            border-radius: 10px;
+            border: 2px solid #3949ab;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+        }}
+        
+        .station-card:hover {{
+            transform: translateY(-5px);
+            border-color: #4fc3f7;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }}
+        
+        .station-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #3949ab;
+            padding-bottom: 8px;
+            gap: 10px;
+        }}
+        
+        .station-title {{
+            flex-grow: 1;
+        }}
+        
+        .station-municipi {{
+            font-size: 16px;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin-bottom: 3px;
+            word-break: break-word;
+        }}
+        
+        .station-comarca {{
+            font-size: 13px;
+            color: #bbdefb;
+        }}
+        
+        .station-icon i {{
+            color: #4fc3f7;
+            font-size: 18px;
+        }}
+        
+        .station-body {{
+            margin: 12px 0;
+        }}
+        
+        .weather-data {{
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            flex-wrap: wrap;
+        }}
+        
+        .weather-item {{
+            text-align: center;
+            flex: 1 1 80px;
+            min-width: 70px;
+        }}
+        
+        .weather-item i {{
+            font-size: 22px;
+            color: #ffcc80;
+            margin-bottom: 5px;
+            display: block;
+        }}
+        
+        .weather-value {{
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+        }}
+        
+        /* Colors per temperatura */
+        .temp-fred {{ color: #80deea; }}
+        .temp-fresca {{ color: #4fc3f7; }}
+        .temp-templada {{ color: #ffcc80; }}
+        .temp-calenta {{ color: #ff9800; }}
+        .temp-molt-calenta {{ color: #ff5252; }}
+        .temp-desconeguda {{ color: #bbdefb; }}
+        
+        .station-footer {{
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px solid #3949ab;
+            text-align: center;
+            font-size: 11px;
+            color: #bbdefb;
+        }}
+        
+        /* ===== MEDIA QUERIES PER A MÒBILS ===== */
+        @media (max-width: 900px) {{
+            .clock-time-digital {{
+                font-size: 20px;
+                min-width: 80px;
             }}
-            .column {{
-                min-width: 100%;
-                margin-bottom: 20px;
+            .clock-label-digital {{
+                font-size: 14px;
+                min-width: 30px;
+            }}
+        }}
+        
+        @media (max-width: 768px) {{
+            body {{
+                padding: 10px;
             }}
             
-            .header-center {{
-                order: 3;
+            .meteo-overlay {{
+                padding: 15px;
+            }}
+            
+            .overlay-header {{
+                flex-direction: column;
+                align-items: stretch;
+            }}
+            
+            .station-info, .header-center, .header-right {{
                 width: 100%;
-                margin-top: 15px;
+                text-align: center;
+            }}
+            
+            .header-right {{
+                text-align: center;
+            }}
+            
+            .dual-clock-digital {{
+                align-items: center;
+                width: 100%;
+                min-width: auto;
+            }}
+            
+            .clock-row-digital {{
+                justify-content: center;
             }}
             
             .station-controls {{
                 flex-direction: column;
+                width: 100%;
             }}
             
-            .dual-clock-digital {{
-                min-width: 160px;
+            .station-selector {{
+                width: 100%;
+                min-width: auto;
             }}
             
-            .clock-time-digital {{
-                font-size: 20px;
-                letter-spacing: 1px;
+            .station-selector select {{
+                width: 100%;
             }}
             
-            .clock-label-digital {{
-                font-size: 14px;
+            .station-icon {{
+                width: 100%;
+                margin-left: 0;
+            }}
+            
+            .station-icon a, .station-icon button {{
+                width: 100%;
+                justify-content: center;
+                white-space: normal;
+            }}
+            
+            .columns-4-container {{
+                flex-direction: column;
+                gap: 15px;
+            }}
+            
+            .column {{
+                width: 100%;
+                min-width: auto;
+            }}
+            
+            .icon-text {{
+                display: inline;
             }}
             
             .overlay-footer {{
                 flex-direction: column;
-                gap: 10px;
+                gap: 12px;
                 text-align: center;
             }}
             
@@ -879,87 +1063,42 @@ class HTMLGenerator:
                 text-align: center;
                 width: 100%;
             }}
+            
+            .llista-estacions {{
+                grid-template-columns: 1fr;
+            }}
         }}
         
-        /* Estils per a banner.html */
-        .llista-estacions {{
-            margin-top: 20px;
-        }}
-        
-        .estacio-resum {{
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-left: 4px solid #4fc3f7;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }}
-        
-        .estacio-resum:hover {{
-            border-left-color: #ff7b00;
-            transform: translateX(5px);
-        }}
-        
-        .estacio-detall {{
-            background: rgba(26, 35, 126, 0.5);
-            border-radius: 0 0 10px 10px;
-            padding: 20px;
-            display: none;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease;
-        }}
-        
-        .detall-obert {{
-            display: block;
-        }}
-        
-        .estacio-dades-diari {{
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #3949ab;
-        }}
-        
-        .btn-estacio-fixa {{
-            display: inline-block;
-            background: linear-gradient(145deg, #ff7b00, #e56b00);
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }}
-        
-        .btn-estacio-fixa:hover {{
-            background: linear-gradient(145deg, #ff9d4d, #ff7b00);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
-        }}
-        
-        .day-summary {{
-            display: none !important;
-        }}
-        
-        @keyframes fadeIn {{
-            from {{ opacity: 0; }}
-            to {{ opacity: 1; }}
-        }}
-        
-        @media (max-width: 768px) {{
-            .icon-text {{
-                display: none;
+        @media (max-width: 480px) {{
+            .station-name {{
+                font-size: 20px;
             }}
             
-            .station-icon a {{
-                padding: 10px;
-                width: 42px;
-                justify-content: center;
+            .clock-time-digital {{
+                font-size: 18px;
+                min-width: 70px;
+            }}
+            
+            .clock-label-digital {{
+                font-size: 12px;
+                min-width: 25px;
+            }}
+            
+            .data-item {{
+                padding: 8px 10px;
+            }}
+            
+            .data-label {{
+                font-size: 13px;
+            }}
+            
+            .data-value {{
+                font-size: 14px;
+            }}
+            
+            .rotation-status {{
+                font-size: 12px;
+                padding: 6px 10px;
             }}
         }}
     </style>
@@ -1228,8 +1367,8 @@ class HTMLGenerator:
         
         diari = diari_data[estacio_id]
         html = '''
-        <div style="margin-top: 30px; padding: 25px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 20px;">📅 Dades Diàries (Avui des de les 00:00)</div>
+        <div style="margin-top: 30px; padding: 20px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 15px;">📅 Dades Diàries (Avui des de les 00:00)</div>
             <div class="columns-4-container">
         '''
         
@@ -1358,116 +1497,9 @@ def generar_banner_html(metadades, periode_data, diari_data):
         <div class="llista-estacions" id="containerLlistaEstacions">
     '''
     
-    # CSS PER A LES TARGETES
-    html += '''
-    <style>
-    /* Estils per a les targetes de les estacions */
-    .llista-estacions {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
+    # CSS PER A LES TARGETES (ja està dins del head, no cal repetir)
     
-    .station-card {
-        background: linear-gradient(145deg, #1e1e2e, #252536);
-        border-radius: 12px;
-        border: 2px solid #3949ab;
-        padding: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        color: #ffffff;
-        text-decoration: none;
-        display: block;
-    }
-    
-    .station-card:hover {
-        transform: translateY(-5px);
-        border-color: #4fc3f7;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    }
-    
-    .station-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #3949ab;
-        padding-bottom: 10px;
-    }
-    
-    .station-title {
-        flex-grow: 1;
-    }
-    
-    .station-municipi {
-        font-size: 18px;
-        font-weight: bold;
-        color: #4fc3f7;
-        margin-bottom: 5px;
-    }
-    
-    .station-comarca {
-        font-size: 14px;
-        color: #bbdefb;
-    }
-    
-    .station-icon i {
-        color: #4fc3f7;
-        font-size: 20px;
-    }
-    
-    .station-body {
-        margin: 15px 0;
-    }
-    
-    .weather-data {
-        display: flex;
-        justify-content: space-around;
-        gap: 15px;
-    }
-    
-    .weather-item {
-        text-align: center;
-        flex: 1;
-    }
-    
-    .weather-item i {
-        font-size: 24px;
-        color: #ffcc80;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .weather-value {
-        font-size: 20px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-    
-    /* Colors per temperatura */
-    .temp-fred { color: #80deea; }
-    .temp-fresca { color: #4fc3f7; }
-    .temp-templada { color: #ffcc80; }
-    .temp-calenta { color: #ff9800; }
-    .temp-molt-calenta { color: #ff5252; }
-    .temp-desconeguda { color: #bbdefb; }
-    
-    .station-footer {
-        margin-top: 15px;
-        padding-top: 10px;
-        border-top: 1px solid #3949ab;
-        text-align: center;
-        font-size: 12px;
-        color: #bbdefb;
-    }
-    </style>
-    '''
-    
-   # Ordenar estacions per nom (alfabèticament)
+    # Ordenar estacions per nom (alfabèticament)
     estacions_amb_info = []
     for estacio_id in estacions_amb_dades:
         nom_estacio = periode_data.get(estacio_id, {}).get('NOM_ESTACIO', estacio_id)
@@ -1832,6 +1864,8 @@ def main():
     print("   8. ✅ (NOU) Graus a Direcció del Vent (ex: 189º)")
     print("   9. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
     print("   10. ✅ (NOU) Textos explicatius a banner.html (Temperatura mitjana del període / Pluja acumulada del període)")
+    print("   11. ✅ (NOU) Correcció de la pluja del període (ara es mostra correctament)")
+    print("   12. ✅ (NOU) Disseny responsive millorat per a mòbils i tablets")
     print("\n🎯 Recorda: index.html ja el tens fix i no s'ha generat de nou")
 
 if __name__ == "__main__":
