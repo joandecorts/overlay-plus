@@ -1321,6 +1321,27 @@ def generar_banner_html(metadades, periode_data, diari_data):
             
             <div class="header-center">
                 <div class="station-controls">
+                    <!-- Botons de navegació (endavant, enrere, aturar, etc.) -->
+                    <div class="station-icon">
+                        <button onclick="window.location.href='index.html'" title="Inici">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Inici</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <button onclick="window.location.href='banner.html'" title="Estacions">
+                            <i class="fas fa-list"></i>
+                            <span class="icon-text">Estacions</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <button onclick="window.location.href='index.html'" title="Principal">
+                            <i class="fas fa-undo-alt"></i>
+                            <span class="icon-text">Principal</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="station-controls">
                     <div class="station-selector">
                         <label for="filterComarca">Filtra:</label>
                         <select id="filterComarca">
@@ -1333,12 +1354,6 @@ def generar_banner_html(metadades, periode_data, diari_data):
     
     html += f'''
                         </select>
-                    </div>
-                    <div class="station-icon">
-                        <a href="index.html" title="Principal">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Principal</span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -1665,4 +1680,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
