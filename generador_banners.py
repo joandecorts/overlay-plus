@@ -52,7 +52,7 @@ class Config:
             ("VAR_HRM_perc", "Humitat Relativa:")
         ],
         "precip_vent": [
-            ("VAR_PPT_mm", "Precipitació:"),
+            ("VAR_PPT_mm", "Precipitació (període):"),
             ("VAR_VVM_10_m_km_h", "Vent Mitjà:"),
             ("VAR_DVM_10_m_graus", "Direcció Vent:"),
             ("VAR_VVX_10_m_km_h", "Ràfega Màxima:"),
@@ -175,10 +175,8 @@ class Utilitats:
         
         value_str = str(value).strip()
         
-        # 🆕 CANVI 1: Direcció del vent amb graus
-        # Si la variable conté DVM (Direcció del Vent), afegir º
+        # Direcció del vent amb graus
         if 'DVM' in var_name:
-            # Extreure només els números (per si ve "189 " o "189 km/h")
             import re
             numeros = re.findall(r'\d+', value_str)
             if numeros:
@@ -196,12 +194,11 @@ class Utilitats:
             'GN': 'cm'
         }
         
-        # Buscar patró de variable
         for key, unitat in unitats.items():
             if key in var_name:
                 return f"{value_str} {unitat}"
         
-        return value_str  # Si no trobem unitat, retornar sense
+        return value_str
     
     @staticmethod
     def format_hora_tu(hora_str):
@@ -210,7 +207,6 @@ class Utilitats:
             return ''
         
         try:
-            # Intentar diferents formats
             if ':' in hora_str:
                 parts = hora_str.strip().split(':')
                 if len(parts) >= 2:
@@ -221,49 +217,41 @@ class Utilitats:
     
     @staticmethod
     def calcular_falta_dades_diari(periode_utc_str, zona_horaria, diari_data, estacio_id):
-        """
-        Determina si cal mostrar l'avís de falta de dades diàries.
-        Retorna True si cal mostrar l'avís.
-        """
+        """Determina si cal mostrar l'avís de falta de dades diàries."""
         if estacio_id in diari_data and diari_data[estacio_id]:
-            return False  # Hi ha dades diàries
+            return False
         
-        # Analitzar el període actual
         try:
             if ' - ' in periode_utc_str:
                 hora_inici_str, _ = periode_utc_str.split(' - ')
                 hora_inici = int(hora_inici_str.split(':')[0])
                 
-                # Lògica segons zona horària
                 if zona_horaria == "CET":
-                    # A CET, després de les 22:30 TU ja és dia següent
-                    return hora_inici >= 22  # 22:00 o més tard
+                    return hora_inici >= 22
                 elif zona_horaria == "CEST":
-                    # A CEST, després de les 21:30 TU ja és dia següent
-                    return hora_inici >= 21  # 21:00 o més tard
+                    return hora_inici >= 21
         except:
             pass
         
         return False
 
 # ============================================================================
-# 🆕 FUNCIONS DE NETEJA (PUNTS 2 i 3)
+# FUNCIONS DE NETEJA
 # ============================================================================
 class NetejaDades:
     @staticmethod
     def netejar_ratxa(ratxa):
-        """Punt 2: Eliminar ºC del final de Ratxa màxima del vent"""
+        """Eliminar ºC del final de Ratxa màxima del vent"""
         if ratxa and isinstance(ratxa, str):
-            # Exemple: "46.4 km/h - 232º 1:44 TU ºC"
             if ratxa.endswith('ºC'):
-                return ratxa[:-2]  # Treure els últims 2 caràcters
+                return ratxa[:-2]
             elif ratxa.endswith(' ºC'):
-                return ratxa[:-3]  # Treure " ºC" (espai + ºC)
+                return ratxa[:-3]
         return ratxa
     
     @staticmethod
     def netejar_pressio(pressio):
-        """Punt 3: Eliminar ºC del final de Pressió atmosfèrica"""
+        """Eliminar ºC del final de Pressió atmosfèrica"""
         if pressio and isinstance(pressio, str):
             if pressio.endswith('ºC'):
                 return pressio[:-2]
@@ -272,7 +260,7 @@ class NetejaDades:
         return pressio
 
 # ============================================================================
-# FUNCIONS DE LECTURA DE DADES (MANTINGUTS DEL CODI ORIGINAL)
+# FUNCIONS DE LECTURA DE DADES
 # ============================================================================
 class DataLoader:
     @staticmethod
@@ -324,7 +312,7 @@ class DataLoader:
 
     @staticmethod
     def llegir_dades_periode():
-        """Llegeix les dades periòdiques del JSON - SELECCIONA PERÍODE CORRECTE"""
+        """Llegeix les dades periòdiques del JSON"""
         try:
             with open(Config.PERIODE_JSON, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -403,7 +391,7 @@ class DataLoader:
 
     @staticmethod
     def llegir_dades_diari():
-        """Llegeix les dades diàries del JSON (amb hores de registre)"""
+        """Llegeix les dades diàries del JSON"""
         try:
             with open(Config.DIARI_JSON, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -437,7 +425,6 @@ class DataLoader:
                     for var, label, hora_var in Config.VARIABLES_DIARI_COMPLETES:
                         if var in d and d[var] not in ['', None]:
                             dades_diari[var] = d[var]
-                            # Guardar hora associada si existeix
                             if hora_var and hora_var in d and d[hora_var] not in ['', None]:
                                 dades_diari[hora_var] = d[hora_var]
                     
@@ -456,7 +443,7 @@ class DataLoader:
             return {}
 
 # ============================================================================
-# GENERADOR HTML - AMB TOTES LES CORRECCIONS IMPLEMENTADES
+# GENERADOR HTML - AMB TOTES LES CORRECCIONS
 # ============================================================================
 class HTMLGenerator:
     @staticmethod
@@ -466,19 +453,23 @@ class HTMLGenerator:
     
     @staticmethod
     def generar_head(titol="Banner Meteo.cat"):
-        """Genera la secció head dels HTMLs - AMB RELLOTGES CORREGITS"""
+        """Genera la secció head dels HTMLs - AMB CSS RESPONSIU MILLORAT"""
         return f"""<!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>{titol}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==== ESTIL ORIGINAL AMB MILLORES ==== */
+        /* ===== ESTIL BASE ===== */
+        * {{
+            box-sizing: border-box;
+        }}
+        
         body {{
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background-color: #007BFF;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -487,50 +478,55 @@ class HTMLGenerator:
         .meteo-overlay {{
             background: rgba(10, 25, 49, 0.95);
             border-radius: 15px;
-            padding: 25px;
+            padding: 15px;
             color: white;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             max-width: 1400px;
             margin: 0 auto;
-            cursor: pointer;
         }}
         
+        /* ===== CAPÇALERA ===== */
         .overlay-header {{
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #3949ab;
+            gap: 10px;
         }}
         
         .station-info {{
-            flex: 1;
+            flex: 1 1 250px;
+            min-width: 200px;
         }}
         
         .station-name {{
-            font-size: 24px;
+            font-size: 20px;
             color: #4fc3f7;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            word-break: break-word;
         }}
         
         .location-details {{
-            font-size: 14px;
+            font-size: 12px;
             color: #bbdefb;
+            line-height: 1.3;
         }}
         
         .location-label {{
             color: #7986cb;
-            margin-right: 5px;
+            margin-right: 3px;
         }}
         
         .header-right {{
             text-align: right;
-            flex: 1;
+            flex: 0 1 auto;
         }}
         
-        /* RELLOTGES CORREGITS - FORMAT DEMANAT */
+        /* ===== RELLOTGES ===== */
         .dual-clock-digital {{
             display: flex;
             flex-direction: column;
@@ -538,8 +534,8 @@ class HTMLGenerator:
             background: transparent !important;
             padding: 0;
             border: none !important;
-            min-width: 180px;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            min-width: 140px;
+            font-family: 'Courier New', monospace;
             align-items: flex-end;
         }}
         
@@ -547,69 +543,75 @@ class HTMLGenerator:
             display: flex;
             justify-content: flex-end;
             align-items: baseline;
-            gap: 15px;
+            gap: 8px;
             width: 100%;
         }}
         
         .clock-time-digital {{
             color: white !important;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-            font-size: 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
             font-weight: 700;
-            letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            min-width: 95px;
+            min-width: 85px;
             text-align: right;
         }}
         
         .clock-label-digital {{
             color: white !important;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            min-width: 40px;
+            min-width: 32px;
             text-align: left;
         }}
         
+        /* ===== CONTROLS CENTRALS ===== */
         .header-center {{
             text-align: center;
-            flex: 2;
+            flex: 2 1 350px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }}
         
         .station-controls {{
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
             justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
         }}
         
+        .station-selector {{
+            min-width: 220px;
+            flex: 2 1 250px;
+        }}
+        
+        /* 🔹 CORREGIT: Color dels selects (negre sobre blanc per llegir bé) */
         .station-selector select {{
-            background: linear-gradient(145deg, #1a237e, #283593) !important;
-            color: #bbdefb !important;
+            background: white !important;
+            color: black !important;
             border: 2px solid #3949ab !important;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 14px;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
             font-weight: 600;
-            min-width: 300px;
+            width: 100%;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             appearance: none;
             -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            padding-right: 40px;
+            background-position: right 12px center;
+            background-size: 14px;
+            padding-right: 35px;
         }}
         
         .station-selector select:hover {{
             border-color: #4fc3f7 !important;
-            background: linear-gradient(145deg, #283593, #1a237e) !important;
+            background: #f5f5f5 !important;
         }}
         
         .station-selector select:focus {{
@@ -626,64 +628,53 @@ class HTMLGenerator:
             font-size: 14px;
         }}
         
-        .station-selector select option:hover {{
-            background: #f0f0f0 !important;
-            color: #1a237e !important;
-        }}
-        
-        .station-selector select option:checked {{
-            background: #e3f2fd !important;
-            color: #1a237e !important;
-            font-weight: 600;
-        }}
-        
         .station-selector label {{
             color: #bbdefb;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            margin-right: 12px;
+            margin-right: 8px;
+            display: inline-block;
         }}
         
         .station-icon {{
-            margin-left: 15px;
+            flex: 0 1 auto;
         }}
         
-        .station-icon a {{
+        .station-icon a, .station-icon button {{
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             background: linear-gradient(145deg, #1a237e, #283593);
             border: 2px solid #3949ab;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #bbdefb;
-            padding: 10px 15px;
+            padding: 8px 12px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
         }}
         
-        .station-icon a:hover {{
+        .station-icon a:hover, .station-icon button:hover {{
             background: linear-gradient(145deg, #283593, #1a237e);
             border-color: #4fc3f7;
             color: #4fc3f7;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
-        }}
-        
-        .icon-text {{
-            display: inline;
         }}
         
         .rotation-status-container {{
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 5px;
+            width: 100%;
+            justify-content: center;
         }}
         
         .rotation-status {{
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             padding: 6px 12px;
             border-radius: 20px;
@@ -692,125 +683,189 @@ class HTMLGenerator:
             border: 1px solid #2ecc71;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            text-align: center;
+            max-width: 100%;
+            white-space: normal;
+            line-height: 1.3;
         }}
         
-        .rotation-status.paused {{
-            background: rgba(231, 76, 60, 0.15);
-            color: #e74c3c;
-            border-color: #e74c3c;
-        }}
-        
+        /* ===== CONTINGUT PRINCIPAL ===== */
         .overlay-content {{
-            margin: 30px 0;
+            margin: 15px 0;
         }}
         
         .columns-4-container {{
             display: flex;
-            gap: 25px;
+            gap: 15px;
             flex-wrap: wrap;
         }}
         
         .column {{
-            flex: 1;
+            flex: 1 1 200px;
             min-width: 200px;
         }}
         
-        .col-basics {{ padding-left: 15px; }}
-        .col-precip-wind {{ padding-left: 15px; }}
-        .col-other {{ padding-left: 15px; }}
-        .col-additional {{ padding-left: 15px; }}
-        
         .data-column {{
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }}
         
         .column-title {{
             color: #bbdefb;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 1px solid #3949ab;
         }}
         
         .data-item {{
             background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
+            border-radius: 6px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
             border: 2px solid #3949ab;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
             border-left: 4px solid #ff7b00;
-        }}
-        
-        .data-item:hover {{
-            transform: translateY(-3px);
-            box-shadow: -8px 0 20px rgba(255, 123, 0, 0.6), 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-left-color: #ff9d4d;
+            gap: 8px;
         }}
         
         .data-label {{
             color: #bbdefb;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 13px;
         }}
         
         .data-value {{
             color: #ffcc80;
             font-weight: bold;
-            font-size: 17px;
+            font-size: 14px;
             text-align: right;
+            word-break: break-word;
         }}
         
-        /* NOU: Estil per a hores de registre petites */
         .hora-registre {{
-            font-size: 12px;
+            font-size: 10px;
             color: #90caf9;
             display: block;
-            margin-top: 3px;
+            margin-top: 2px;
             font-style: italic;
         }}
         
-        /* 🆕 PUNT 2: Estil per als textos del període (lletra petita, cursiva, verda) */
         .periode-info {{
             font-size: 0.7rem;
             font-style: italic;
             color: #4caf50;
-            margin-top: 4px;
+            margin-top: 3px;
             line-height: 1.2;
         }}
         
-        /* NOU: Estil per a l'avís de canvi de dia */
-        .avis-canvi-dia {{
-            background: linear-gradient(145deg, #b71c1c, #d32f2f);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border: 2px solid #f44336;
-            color: white;
-            text-align: center;
-            font-weight: bold;
+        /* ===== LLISTA D'ESTACIONS (banner.html) ===== */
+        .llista-estacions {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            padding: 10px 0;
+            max-width: 1400px;
+            margin: 0 auto;
         }}
         
-        /* NOU: Estil per al peu de pàgina corregit */
-        .overlay-footer {{
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #3949ab;
+        .station-card {{
+            background: linear-gradient(145deg, #1e1e2e, #252536);
+            border-radius: 8px;
+            border: 2px solid #3949ab;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+        }}
+        
+        .station-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3949ab;
+            padding-bottom: 6px;
+            gap: 8px;
+        }}
+        
+        .station-municipi {{
+            font-size: 15px;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }}
+        
+        .station-comarca {{
+            font-size: 12px;
+            color: #bbdefb;
+        }}
+        
+        .weather-data {{
+            display: flex;
+            justify-content: space-around;
+            gap: 8px;
+            flex-wrap: wrap;
+        }}
+        
+        .weather-item {{
+            text-align: center;
+            flex: 1 1 70px;
+            min-width: 60px;
+        }}
+        
+        .weather-item i {{
+            font-size: 20px;
+            color: #ffcc80;
+            margin-bottom: 3px;
+            display: block;
+        }}
+        
+        .weather-value {{
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+        }}
+        
+        .temp-fred {{ color: #80deea; }}
+        .temp-fresca {{ color: #4fc3f7; }}
+        .temp-templada {{ color: #ffcc80; }}
+        .temp-calenta {{ color: #ff9800; }}
+        .temp-molt-calenta {{ color: #ff5252; }}
+        .temp-desconeguda {{ color: #bbdefb; }}
+        
+        .station-footer {{
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px solid #3949ab;
+            text-align: center;
+            font-size: 10px;
+            color: #bbdefb;
+        }}
+        
+        /* ===== PEU DE PÀGINA ===== */
+        .overlay-footer {{
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #3949ab;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
             color: #9fa8da;
+            gap: 10px;
         }}
         
         .footer-left, .footer-center, .footer-right {{
-            flex: 1;
+            flex: 1 1 150px;
         }}
         
         .footer-left {{ text-align: left; }}
@@ -820,58 +875,121 @@ class HTMLGenerator:
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 8px;
+            gap: 5px;
         }}
         
         .email-icon {{
             color: #4fc3f7;
-            font-size: 16px;
-            vertical-align: middle;
-            margin-left: 5px;
+            font-size: 14px;
         }}
         
         .verificacio-dades {{
-            font-size: 12px;
+            font-size: 9px;
             color: #81c784;
-            margin-top: 5px;
+            margin-top: 3px;
             font-style: italic;
         }}
         
-        @media (max-width: 1200px) {{
-            .columns-4-container {{
-                flex-direction: column;
+        /* ===== MEDIA QUERIES ===== */
+        @media (max-width: 900px) {{
+            .clock-time-digital {{
+                font-size: 18px;
+                min-width: 75px;
             }}
-            .column {{
-                min-width: 100%;
-                margin-bottom: 20px;
+            .clock-label-digital {{
+                font-size: 13px;
+                min-width: 28px;
+            }}
+        }}
+        
+        @media (max-width: 768px) {{
+            body {{
+                padding: 5px;
             }}
             
-            .header-center {{
-                order: 3;
+            .overlay-header {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }}
+            
+            .station-info, .header-center, .header-right {{
                 width: 100%;
-                margin-top: 15px;
+                text-align: center;
+            }}
+            
+            .header-right {{
+                text-align: center;
+            }}
+            
+            .dual-clock-digital {{
+                align-items: center;
+                width: 100%;
+                min-width: auto;
+            }}
+            
+            .clock-row-digital {{
+                justify-content: center;
             }}
             
             .station-controls {{
                 flex-direction: column;
+                width: 100%;
+                gap: 6px;
             }}
             
-            .dual-clock-digital {{
-                min-width: 160px;
+            .station-selector {{
+                width: 100%;
+                min-width: auto;
             }}
             
-            .clock-time-digital {{
-                font-size: 20px;
-                letter-spacing: 1px;
+            .station-selector select {{
+                width: 100%;
             }}
             
-            .clock-label-digital {{
-                font-size: 14px;
+            .station-icon {{
+                width: 100%;
+            }}
+            
+            .station-icon a, .station-icon button {{
+                width: 100%;
+                justify-content: center;
+                white-space: normal;
+                padding: 8px 10px;
+            }}
+            
+            .rotation-status-container {{
+                margin-top: 5px;
+            }}
+            
+            .rotation-status {{
+                width: 100%;
+                justify-content: center;
+                padding: 6px 10px;
+            }}
+            
+            /* Eliminar espais blancs innecessaris */
+            .station-name {{
+                margin-bottom: 2px;
+            }}
+            
+            .location-details {{
+                margin-bottom: 2px;
+            }}
+            
+            .columns-4-container {{
+                flex-direction: column;
+                gap: 10px;
+            }}
+            
+            .column {{
+                width: 100%;
+                min-width: auto;
             }}
             
             .overlay-footer {{
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
                 text-align: center;
             }}
             
@@ -879,87 +997,43 @@ class HTMLGenerator:
                 text-align: center;
                 width: 100%;
             }}
+            
+            .llista-estacions {{
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }}
         }}
         
-        /* Estils per a banner.html */
-        .llista-estacions {{
-            margin-top: 20px;
-        }}
-        
-        .estacio-resum {{
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-left: 4px solid #4fc3f7;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }}
-        
-        .estacio-resum:hover {{
-            border-left-color: #ff7b00;
-            transform: translateX(5px);
-        }}
-        
-        .estacio-detall {{
-            background: rgba(26, 35, 126, 0.5);
-            border-radius: 0 0 10px 10px;
-            padding: 20px;
-            display: none;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease;
-        }}
-        
-        .detall-obert {{
-            display: block;
-        }}
-        
-        .estacio-dades-diari {{
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #3949ab;
-        }}
-        
-        .btn-estacio-fixa {{
-            display: inline-block;
-            background: linear-gradient(145deg, #ff7b00, #e56b00);
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }}
-        
-        .btn-estacio-fixa:hover {{
-            background: linear-gradient(145deg, #ff9d4d, #ff7b00);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 123, 0, 0.4);
-        }}
-        
-        .day-summary {{
-            display: none !important;
-        }}
-        
-        @keyframes fadeIn {{
-            from {{ opacity: 0; }}
-            to {{ opacity: 1; }}
-        }}
-        
-        @media (max-width: 768px) {{
-            .icon-text {{
-                display: none;
+        @media (max-width: 480px) {{
+            .station-name {{
+                font-size: 18px;
             }}
             
-            .station-icon a {{
-                padding: 10px;
-                width: 42px;
-                justify-content: center;
+            .clock-time-digital {{
+                font-size: 16px;
+                min-width: 65px;
+            }}
+            
+            .clock-label-digital {{
+                font-size: 12px;
+                min-width: 24px;
+            }}
+            
+            .data-item {{
+                padding: 6px 8px;
+            }}
+            
+            .data-label {{
+                font-size: 12px;
+            }}
+            
+            .data-value {{
+                font-size: 13px;
+            }}
+            
+            .rotation-status {{
+                font-size: 11px;
+                padding: 5px 8px;
             }}
         }}
     </style>
@@ -969,31 +1043,20 @@ class HTMLGenerator:
     
     @staticmethod
     def generar_footer(hora_actualitzacio=None):
-        """
-        Genera el peu de pàgina CORREGIT segons especificacions:
-        - Esquerra: Font oficial
-        - Centre: Copyright + email
-        - Dreta: Hora d'actualització en format local
-        """
-         # Hora d'actualització (format europeu, hora local)
+        """Genera el peu de pàgina"""
         if hora_actualitzacio:
             try:
-                # Convertir de "2026-01-31 07:26:48" a objecte datetime (assumim que és UTC)
                 dt_utc = datetime.strptime(hora_actualitzacio, "%Y-%m-%d %H:%M:%S")
-                # 🔧 CONVERTIR UTC A HORA LOCAL (CET/CEST)
                 if Utilitats.es_cest(dt_utc):
                     dt_local = dt_utc + timedelta(hours=2)
                     zona = "CEST"
                 else:
                     dt_local = dt_utc + timedelta(hours=1)
                     zona = "CET"
-                # Formatar per a la visualització: "31/01/2026 08:26:48 CET"
                 hora_formatted = dt_local.strftime("%d/%m/%Y %H:%M:%S") + " " + zona
             except:
-                # Si falla la conversió, tornar a l'original (UTC)
                 hora_formatted = hora_actualitzacio
         else:
-            # Si no hi ha hora_actualitzacio, agafar l'hora actual i convertir-la a local
             ara_utc = datetime.utcnow()
             if Utilitats.es_cest(ara_utc):
                 ara_local = ara_utc + timedelta(hours=2)
@@ -1006,41 +1069,29 @@ class HTMLGenerator:
         return f"""
     <div class="overlay-footer">
         <div class="footer-left">
-            <span>📡 Font: https://www.meteo.cat/</span>
-            <div class="verificacio-dades">
-                Les dades s'han verificat amb la web oficial i totes són coincidents.
-            </div>
+            <span>📡 Font: meteo.cat</span>
+            <div class="verificacio-dades">Dades verificades</div>
         </div>
         <div class="footer-center">
             <span>© joandecorts.io</span>
             <a href="mailto:admin@joandecorts.com">
                 <i class="fas fa-envelope email-icon"></i>
-               
             </a>
         </div>
         <div class="footer-right">
-            <span>🔄 Actualització: {hora_formatted}</span>
+            <span>🔄 {hora_formatted}</span>
         </div>
     </div>
     
-    <!-- Script per als rellotges -->
     <script>
         function actualitzarRellotges() {{
             const ara = new Date();
-            
-            // Hora local amb segons
             const horaLocal = ara.toLocaleTimeString('ca-ES', {{ 
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false 
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
             }});
-            
-            // Hora UTC sense segons
             const horaUTC = ara.getUTCHours().toString().padStart(2, '0') + ':' + 
                            ara.getUTCMinutes().toString().padStart(2, '0');
             
-            // Actualitzar elements si existeixen
             const elemLocal = document.getElementById('hora-local');
             const elemUTC = document.getElementById('hora-utc');
             const elemLocalSimple = document.getElementById('hora-local-simple');
@@ -1063,10 +1114,9 @@ class HTMLGenerator:
     
     @staticmethod
     def generar_columnes_dades(periode_data, metadades, estacio_id, nom_estacio, diari_data=None):
-        """Genera les 4 columnes de dades AMB UNITATS I FORMAT CORREGIT"""
+        """Genera les 4 columnes de dades"""
         html = '<div class="columns-4-container">\n'
         
-        # Obtenir dades del període convertides
         data_formatted = ""
         periode_formatted = ""
         zona_horaria = "TU"
@@ -1125,20 +1175,19 @@ class HTMLGenerator:
         
         html += '</div>\n</div>\n'
         
-        # COLUMNA 4: Dades addicionals (FORMAT CORREGIT)
+        # COLUMNA 4: Dades addicionals
         html += '<div class="column col-additional">\n'
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Dades addicionals</div>\n'
         
-        # 1. PERÍODE (format corregit: dues línies)
         if data_formatted and periode_formatted:
             periode_display = f'''<div style="line-height: 1.3;">
-                <div style="font-size: 16px;">{data_formatted}</div>
-                <div style="font-size: 14px; color: #ffcc80;">{periode_formatted}</div>
+                <div style="font-size: 15px;">{data_formatted}</div>
+                <div style="font-size: 13px; color: #ffcc80;">{periode_formatted}</div>
             </div>'''
             
             if periode_data.get('TIPUS_PERIODE') == 'ahir':
-                periode_display += '<div style="font-size: 12px; color: #ff9999; margin-top: 5px;">(dades d\'ahir)</div>'
+                periode_display += '<div style="font-size: 11px; color: #ff9999;">(ahir)</div>'
             
             html += f'''
             <div class="data-item">
@@ -1146,7 +1195,6 @@ class HTMLGenerator:
                 <div class="data-value">{periode_display}</div>
             </div>'''
         
-        # 2. ALTITUD
         if estacio_id in metadades and 'altitud' in metadades[estacio_id]:
             html += f'''
             <div class="data-item">
@@ -1154,44 +1202,29 @@ class HTMLGenerator:
                 <div class="data-value">{metadades[estacio_id]['altitud']} m</div>
             </div>'''
         
-       # 3. HORA ACTUALITZACIÓ (CONVERTIDA A HORA LOCAL, sense TU)
         if 'DATA_EXTRACCIO' in periode_data and periode_data['DATA_EXTRACCIO']:
             try:
-                # 1. Agafar la data i hora de les dades (assumim que és UTC)
-                # Exemple: "2026-01-31 07:26:48"
                 data_hora_utc_str = periode_data['DATA_EXTRACCIO']
-                
-                # 2. Convertir-la a objecte datetime
-                from datetime import datetime
-                # Assegura't que el format coincideix amb el que guarda el scraper
                 data_hora_utc = datetime.strptime(data_hora_utc_str, "%Y-%m-%d %H:%M:%S")
                 
-                # 3. Utilitzar la teva funció per convertir a local
-                # Necessitem la zona horària. Pots usar una data de referència de periode_data si la tens,
-                # o assumir que és avui. Un exemple simple:
                 if Utilitats.es_cest(data_hora_utc):
-                    desplacament = 2  # CEST
+                    desplacament = 2
                     zona = "CEST"
                 else:
-                    desplacament = 1  # CET
+                    desplacament = 1
                     zona = "CET"
                 
                 data_hora_local = data_hora_utc + timedelta(hours=desplacament)
-                
-                # 4. Formatar per a la visualització: "HH:MM CET"
                 hora_formatted = data_hora_local.strftime("%H:%M") + " " + zona
                 
                 html += f'''
                 <div class="data-item">
-                    <div class="data-label">Hora actualització:</div>
-                    <div class="data-value" style="text-align: right;">{hora_formatted}</div>
+                    <div class="data-label">Hora act.:</div>
+                    <div class="data-value">{hora_formatted}</div>
                 </div>'''
-            except Exception as e:
-                # Per depurar, pots imprimir l'error temporalment
-                # print(f"Error convertint hora: {e}")
+            except:
                 pass
         
-        # 4. COMARCA
         if estacio_id in metadades and 'comarca' in metadades[estacio_id]:
             html += f'''
             <div class="data-item">
@@ -1200,9 +1233,8 @@ class HTMLGenerator:
             </div>'''
         
         html += '</div>\n</div>\n'
-        html += '</div>\n'  # Tanca columns-4-container
+        html += '</div>\n'
         
-        # AVÍS DE CANVI DE DIA (si cal)
         if diari_data is not None:
             mostra_avis = Utilitats.calcular_falta_dades_diari(
                 periode_data.get('PERIODE_UTC', ''), 
@@ -1214,7 +1246,7 @@ class HTMLGenerator:
             if mostra_avis:
                 html += '''
                 <div class="avis-canvi-dia">
-                    ⚠️ Els ítems de dades del resum del dia no estaran disponibles fins a obtenir dades vàlides del període 23:30-00:00 TU.
+                    ⚠️ Dades diàries pendents...
                 </div>
                 '''
         
@@ -1222,18 +1254,17 @@ class HTMLGenerator:
     
     @staticmethod
     def generar_dades_diaries(diari_data, estacio_id):
-        """Genera la secció de dades diàries AMB HORES DE REGISTRE"""
+        """Genera la secció de dades diàries"""
         if estacio_id not in diari_data or not diari_data[estacio_id]:
             return ""
         
         diari = diari_data[estacio_id]
         html = '''
-        <div style="margin-top: 30px; padding: 25px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 20px;">📅 Dades Diàries (Avui des de les 00:00)</div>
+        <div style="margin-top: 20px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries</div>
             <div class="columns-4-container">
         '''
         
-        # Agrupar variables per columnes
         vars_per_columna = len(Config.VARIABLES_DIARI_COMPLETES) // 4 + 1
         
         for i in range(4):
@@ -1246,22 +1277,19 @@ class HTMLGenerator:
                 
                 for var, label, hora_var in vars_columna:
                     if var in diari and diari[var]:
-                        # 🆕 PUNT 2: Netejar ratxa màxima
                         if var == 'RATXA_VENT_MAX':
                             valor_net = NetejaDades.netejar_ratxa(diari[var])
                             valor_amb_unitats = valor_net
-                        # 🆕 PUNT 3: Netejar pressió
                         elif var == 'PRESSIO_ATMOSFERICA':
                             valor_net = NetejaDades.netejar_pressio(diari[var])
                             valor_amb_unitats = valor_net
                         else:
                             valor_amb_unitats = Utilitats.afegir_unitats(var, diari[var])
                         
-                        # Afegir hora de registre si existeix
                         hora_text = ""
                         if hora_var and hora_var in diari and diari[hora_var]:
                             hora_formatted = Utilitats.format_hora_tu(diari[hora_var])
-                            hora_text = f'<span class="hora-registre">({hora_formatted} TU)</span>'
+                            hora_text = f'<span class="hora-registre">({hora_formatted})</span>'
                         
                         html += f'''
                         <div class="data-item">
@@ -1282,12 +1310,12 @@ class HTMLGenerator:
         return html
 
 # ============================================================================
-# FUNCIONS PRINCIPALS DE GENERACIÓ (ACTUALITZADES)
+# FUNCIONS PRINCIPALS DE GENERACIÓ
 # ============================================================================
 
 def generar_banner_html(metadades, periode_data, diari_data):
     """Genera banner.html amb totes les correccions"""
-    print("🔄 Generant banner.html (detall complet)...")
+    print("🔄 Generant banner.html...")
     
     estacions_amb_dades = [id for id in metadades.keys() if id in periode_data]
     
@@ -1301,22 +1329,43 @@ def generar_banner_html(metadades, periode_data, diari_data):
             hora_actualitzacio = periode_data[estacio_id].get('DATA_EXTRACCIO')
             break
     
-    html = HTMLGenerator.generar_head("Detall complet de totes les estacions")
+    html = HTMLGenerator.generar_head("Llistat d'estacions")
     
     html += f'''
     <div class="meteo-overlay">
         <div class="overlay-header">
             <div class="station-info">
-                <div class="station-name">📋 Llistat complet d'estacions</div>
-                <div class="location-details">Fes clic a qualsevol estació per veure totes les seves dades</div>
+                <div class="station-name">📋 Estacions</div>
+                <div class="location-details">{len(estacions_amb_dades)} estacions amb dades</div>
             </div>
             
             <div class="header-center">
                 <div class="station-controls">
+                    <!-- Botons de navegació (endavant, enrere, aturar, etc.) -->
+                    <div class="station-icon">
+                        <button onclick="window.location.href='index.html'" title="Inici">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Inici</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <button onclick="window.location.href='banner.html'" title="Estacions">
+                            <i class="fas fa-list"></i>
+                            <span class="icon-text">Estacions</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <button onclick="window.location.href='index.html'" title="Principal">
+                            <i class="fas fa-undo-alt"></i>
+                            <span class="icon-text">Principal</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="station-controls">
                     <div class="station-selector">
-                        <label for="filterComarca">Filtrar per comarca:</label>
+                        <label for="filterComarca">Filtra:</label>
                         <select id="filterComarca">
-                            <option value="">Totes les comarques</option>
+                            <option value="">Totes</option>
     '''
     
     comarques = sorted(set([m['comarca'] for m in metadades.values() if m['comarca'] != 'Desconeguda']))
@@ -1325,18 +1374,6 @@ def generar_banner_html(metadades, periode_data, diari_data):
     
     html += f'''
                         </select>
-                    </div>
-                    <div class="station-icon">
-                        <a href="index.html" title="Tornar al banner principal">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Principal</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="rotation-status-container">
-                    <div class="rotation-status">
-                        <i class="fas fa-list"></i>
-                        {len(estacions_amb_dades)} estacions amb dades
                     </div>
                 </div>
             </div>
@@ -1358,140 +1395,24 @@ def generar_banner_html(metadades, periode_data, diari_data):
         <div class="llista-estacions" id="containerLlistaEstacions">
     '''
     
-    # CSS PER A LES TARGETES
-    html += '''
-    <style>
-    /* Estils per a les targetes de les estacions */
-    .llista-estacions {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-    
-    .station-card {
-        background: linear-gradient(145deg, #1e1e2e, #252536);
-        border-radius: 12px;
-        border: 2px solid #3949ab;
-        padding: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        color: #ffffff;
-        text-decoration: none;
-        display: block;
-    }
-    
-    .station-card:hover {
-        transform: translateY(-5px);
-        border-color: #4fc3f7;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    }
-    
-    .station-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #3949ab;
-        padding-bottom: 10px;
-    }
-    
-    .station-title {
-        flex-grow: 1;
-    }
-    
-    .station-municipi {
-        font-size: 18px;
-        font-weight: bold;
-        color: #4fc3f7;
-        margin-bottom: 5px;
-    }
-    
-    .station-comarca {
-        font-size: 14px;
-        color: #bbdefb;
-    }
-    
-    .station-icon i {
-        color: #4fc3f7;
-        font-size: 20px;
-    }
-    
-    .station-body {
-        margin: 15px 0;
-    }
-    
-    .weather-data {
-        display: flex;
-        justify-content: space-around;
-        gap: 15px;
-    }
-    
-    .weather-item {
-        text-align: center;
-        flex: 1;
-    }
-    
-    .weather-item i {
-        font-size: 24px;
-        color: #ffcc80;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .weather-value {
-        font-size: 20px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-    
-    /* Colors per temperatura */
-    .temp-fred { color: #80deea; }
-    .temp-fresca { color: #4fc3f7; }
-    .temp-templada { color: #ffcc80; }
-    .temp-calenta { color: #ff9800; }
-    .temp-molt-calenta { color: #ff5252; }
-    .temp-desconeguda { color: #bbdefb; }
-    
-    .station-footer {
-        margin-top: 15px;
-        padding-top: 10px;
-        border-top: 1px solid #3949ab;
-        text-align: center;
-        font-size: 12px;
-        color: #bbdefb;
-    }
-    </style>
-    '''
-    
-   # Ordenar estacions per nom (alfabèticament)
+    # Ordenar estacions per nom
     estacions_amb_info = []
     for estacio_id in estacions_amb_dades:
         nom_estacio = periode_data.get(estacio_id, {}).get('NOM_ESTACIO', estacio_id)
         comarca = metadades.get(estacio_id, {}).get('comarca', 'Desconeguda')
         estacions_amb_info.append((nom_estacio, comarca, estacio_id))
     
-    # Ordenar per nom de l'estació
     estacions_ordenades = sorted(estacions_amb_info, key=lambda x: x[0].lower())
     
     for nom_estacio, comarca, estacio_id in estacions_ordenades:
-        metadada = metadades.get(estacio_id, {})
         dades_periode = periode_data.get(estacio_id, {})
         dades_diari = diari_data.get(estacio_id, {})
         
-        # Obtenir valors - CORREGIT: Utilitzar variables correctes
-        # Les variables al JSON són VAR_TM_grausC per temperatura i VAR_PPT_mm per precipitació
+        # 🔹 CANVI: Agafar precipitació del període (VAR_PPT_mm) per a les targetes
         temperatura_actual = dades_periode.get('VAR_TM_grausC', '--')
-        precipitacio_diaria = dades_diari.get('PRECIPITACIO_ACUM_DIA', '--')
+        precipitacio_periode = dades_periode.get('VAR_PPT_mm', '--')
         
-        # Si no trobem a diari, buscar a periode
-        if precipitacio_diaria == '--':
-            precipitacio_diaria = dades_periode.get('VAR_PPT_mm', '--')
-        
-        # Color segons temperatura - SOLAMENT si hi ha dades reals
+        # Color segons temperatura
         if temperatura_actual != '--' and temperatura_actual != '' and temperatura_actual is not None:
             try:
                 temp = float(temperatura_actual)
@@ -1505,38 +1426,27 @@ def generar_banner_html(metadades, periode_data, diari_data):
                     color_temp = "temp-calenta"
                 else:
                     color_temp = "temp-molt-calenta"
-                # Format temperatura amb un decimal
                 temperatura_actual = f"{temp:.1f}"
-            except (ValueError, TypeError):
+            except:
                 color_temp = "temp-desconeguda"
                 temperatura_actual = '--'
         else:
             color_temp = "temp-desconeguda"
-            temperatura_actual = '--'  # Assegurar que mostri "--"
+            temperatura_actual = '--'
         
-        # Icona i valor de precipitació - CORREGIT: Mostrar "0.0" en comptes de "--"
-        if precipitacio_diaria != '--' and precipitacio_diaria != '' and precipitacio_diaria is not None:
+        # Valor de precipitació
+        if precipitacio_periode != '--' and precipitacio_periode != '' and precipitacio_periode is not None:
             try:
-                precip = float(precipitacio_diaria)
+                precip = float(precipitacio_periode)
                 icona_precip = "fa-cloud-rain" if precip > 0 else "fa-cloud"
-                # Format precip amb un decimal, mostrar "0.0" si és 0
-                precipitacio_diaria = f"{precip:.1f}"
-            except (ValueError, TypeError):
+                precipitacio_periode = f"{precip:.1f}"
+            except:
                 icona_precip = "fa-cloud"
-                precipitacio_diaria = '0.0'
+                precipitacio_periode = '0.0'
         else:
             icona_precip = "fa-cloud"
-            precipitacio_diaria = '0.0'  # CANVI: "0.0" en comptes de "--"
+            precipitacio_periode = '0.0'
         
-        # Formatar temperatura si encara no s'ha formatat
-        if temperatura_actual != '--' and temperatura_actual != '' and temperatura_actual is not None:
-            try:
-                temp = float(temperatura_actual)
-                temperatura_actual = f"{temp:.1f}"
-            except (ValueError, TypeError):
-                temperatura_actual = '--'
-        
-        # 🆕 PUNT 2: Afegir textos explicatius a banner.html
         html += f'''
             <a class="station-card" data-comarca="{comarca}" href="index_{estacio_id}.html">
                 <div class="station-header">
@@ -1557,13 +1467,13 @@ def generar_banner_html(metadades, periode_data, diari_data):
                         </div>
                         <div class="weather-item">
                             <i class="fas {icona_precip}"></i>
-                            <div class="weather-value">{precipitacio_diaria} mm</div>
+                            <div class="weather-value">{precipitacio_periode} mm</div>
                             <div class="periode-info">Pluja acumulada del període</div>
                         </div>
                     </div>
                 </div>
                 <div class="station-footer">
-                    <div class="station-id">ID: {estacio_id}</div>
+                    ID: {estacio_id}
                 </div>
             </a>
         '''
@@ -1572,33 +1482,21 @@ def generar_banner_html(metadades, periode_data, diari_data):
         </div>
     '''
     
-    # JavaScript per al filtre de comarques
+    # JavaScript per al filtre
     html += '''
     <script>
     function filtrarPerComarca() {
-        const comarcaSeleccionada = document.getElementById('filterComarca').value;
-        const targetes = document.querySelectorAll('.station-card');
-        
-        targetes.forEach(targeta => {
-            const comarca = targeta.getAttribute('data-comarca');
-            
-            if (!comarcaSeleccionada || comarca === comarcaSeleccionada) {
-                targeta.style.display = 'block';
-            } else {
-                targeta.style.display = 'none';
-            }
+        const comarca = document.getElementById('filterComarca').value;
+        document.querySelectorAll('.station-card').forEach(c => {
+            c.style.display = !comarca || c.dataset.comarca === comarca ? 'block' : 'none';
         });
     }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
-    });
+    document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
     </script>
     '''
     
     html += HTMLGenerator.generar_footer(hora_actualitzacio)
     
-    # --- Codi per guardar banner.html ---
     output_path = Config.OUTPUT_DIR / "banner.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
@@ -1608,8 +1506,11 @@ def generar_banner_html(metadades, periode_data, diari_data):
     print(f"✅ banner.html generat: {output_path}")
     return output_path
 
+# ============================================================================
+# 🔹 FUNCIÓ GENERADORA D'INDIVIDUALS (DEL FITXER BO)
+# ============================================================================
 def generar_banners_individuals(metadades, periode_data, diari_data):
-    """Genera banners individuals per a cada estació"""
+    """Genera banners individuals per a cada estació - VERSIÓ DEL FITXER BO"""
     print("🔄 Generant banners individuals...")
     
     banners_generats = []
@@ -1782,23 +1683,23 @@ def copiar_estils_existents():
 
 def main():
     print("\n" + "="*80)
-    print("🚀 GENERADOR DE BANNERS METEOCAT - VERSIÓ COMPLETA CORREGIDA")
+    print("🚀 GENERADOR DE BANNERS METEOCAT")
     print("="*80)
-    print(f"📁 Directori de sortida: {Config.OUTPUT_DIR.absolute()}")
+    print(f"📁 Sortida: {Config.OUTPUT_DIR.absolute()}")
     
     Config.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     copiar_estils_existents()
     
-    print("\n📥 CARREGANT DADES...")
+    print("\n📥 Carregant dades...")
     metadades = DataLoader.llegir_metadades()
     periode_data = DataLoader.llegir_dades_periode()
     diari_data = DataLoader.llegir_dades_diari()
     
     if not metadades or not periode_data:
-        print("❌ Dades insuficients per generar banners")
+        print("❌ Dades insuficients")
         return
     
-    print("\n🛠️  GENERANT FITXERS HTML...")
+    print("\n🛠️  Generant HTML...")
     
     # NO generem index.html perquè ja el tens fix
     banner_path = generar_banner_html(metadades, periode_data, diari_data)
@@ -1807,32 +1708,20 @@ def main():
     print("\n" + "="*80)
     print("✅ GENERACIÓ COMPLETADA")
     print("="*80)
-    print(f"📁 Fitxers generats a: {Config.OUTPUT_DIR.absolute()}")
+    print(f"📁 Fitxers a: {Config.OUTPUT_DIR.absolute()}")
     
     estacions_amb_dades = len([id for id in metadades.keys() if id in periode_data])
-    dades_avui = sum(1 for d in periode_data.values() if d.get('TIPUS_PERIODE') == 'avui')
-    dades_ahir = sum(1 for d in periode_data.values() if d.get('TIPUS_PERIODE') == 'ahir')
     
-    print(f"📊 Resum:")
-    print(f"   • Estacions amb metadades: {len(metadades)}")
-    print(f"   • Estacions amb dades periòdiques: {estacions_amb_dades}")
-    print(f"     - Dades d'avui: {dades_avui}")
-    print(f"     - Dades d'ahir (fallback): {dades_ahir}")
-    print(f"   • Estacions amb dades diàries: {len(diari_data)}")
-    print(f"   • Banners individuals generats: {len(banners_individuals)}")
-    
-    print("\n🎯 Funcionalitats implementades:")
-    print("   1. ✅ Unitats de mesura a totes les variables")
-    print("   2. ✅ Format de data/hora '31/01/2026' i '06:30-07:30 CET/CEST'")
-    print("   3. ✅ Peu de pàgina complet amb font, copyright i email")
-    print("   4. ✅ Dades diàries amb hores de registre")
-    print("   5. ✅ Avís per al canvi de dia quan falten dades")
-    print("   6. ✅ Rellotges amb format 'HH:MM:SS LT' i 'HH:MM UTC'")
-    print("   7. ✅ Verificació de dades amb font oficial")
-    print("   8. ✅ (NOU) Graus a Direcció del Vent (ex: 189º)")
-    print("   9. ✅ (NOU) Neteja de ºC sobrants a ratxa màxima i pressió")
-    print("   10. ✅ (NOU) Textos explicatius a banner.html (Temperatura mitjana del període / Pluja acumulada del període)")
-    print("\n🎯 Recorda: index.html ja el tens fix i no s'ha generat de nou")
+    print(f"📊 Resum: {estacions_amb_dades} estacions, {len(banners_individuals)} individuals")
+    print("\n🎯 Funcionalitats:")
+    print("   ✅ Unitats de mesura")
+    print("   ✅ Format data/hora local")
+    print("   ✅ Dades diàries amb hores")
+    print("   ✅ Rellotges duals")
+    print("   ✅ Disseny responsive millorat")
+    print("   ✅ Precipitació del període a les targetes (banner.html)")
+    print("   ✅ Banners individuals amb frase explicativa i botó sense pestanya")
+    print("   ✅ Colors dels selects corregits (negre sobre blanc)")
 
 if __name__ == "__main__":
     main()
