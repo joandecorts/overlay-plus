@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "data_extractcio": "2026-02-20T11:15:29.751809",
-    "hora_utc_actual": "11:15",
-    "hora_local_actual": "11:15",
+    "data_extractcio": "2026-02-20T11:38:42.370851",
+    "hora_utc_actual": "11:38",
+    "hora_local_actual": "11:38",
     "total_periodes": 5,
     "total_estacions_estudi": 1,
     "max_intents_avui": 6,
@@ -15,9 +15,9 @@
       "NOM_ESTACIO": "Girona",
       "NOM_ORIGINAL": "GIRONA_XJ",
       "DATA_UTC": "2026-02-20",
-      "HORA_CONSULTA_UTC": "10:30",
-      "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-20T10:30Z",
-      "DATA_EXTRACCIO": "2026-02-20 11:15:27",
+      "HORA_CONSULTA_UTC": "11:00",
+      "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-20T11:00Z",
+      "DATA_EXTRACCIO": "2026-02-20 11:38:39",
       "ESTAT": "OK",
       "ES_AHIR": "NO",
       "PERIODE_UTC": "10:30 - 11:00",
@@ -64,7 +64,7 @@
       "DATA_UTC": "2026-02-19",
       "HORA_CONSULTA_UTC": "00:00",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-19T00:00Z",
-      "DATA_EXTRACCIO": "2026-02-20 11:15:28",
+      "DATA_EXTRACCIO": "2026-02-20 11:38:41",
       "ESTAT": "OK",
       "ES_AHIR": "SÍ",
       "PERIODE_UTC": "23:30 - 00:00",
@@ -111,7 +111,7 @@
       "DATA_UTC": "2026-02-19",
       "HORA_CONSULTA_UTC": "00:00",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-19T00:00Z",
-      "DATA_EXTRACCIO": "2026-02-20 11:15:28",
+      "DATA_EXTRACCIO": "2026-02-20 11:38:41",
       "ESTAT": "OK",
       "ES_AHIR": "SÍ",
       "PERIODE_UTC": "23:00 - 23:30",
@@ -158,7 +158,7 @@
       "DATA_UTC": "2026-02-19",
       "HORA_CONSULTA_UTC": "00:00",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-19T00:00Z",
-      "DATA_EXTRACCIO": "2026-02-20 11:15:28",
+      "DATA_EXTRACCIO": "2026-02-20 11:38:41",
       "ESTAT": "OK",
       "ES_AHIR": "SÍ",
       "PERIODE_UTC": "22:30 - 23:00",
@@ -205,7 +205,7 @@
       "DATA_UTC": "2026-02-19",
       "HORA_CONSULTA_UTC": "00:00",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-19T00:00Z",
-      "DATA_EXTRACCIO": "2026-02-20 11:15:28",
+      "DATA_EXTRACCIO": "2026-02-20 11:38:41",
       "ESTAT": "OK",
       "ES_AHIR": "SÍ",
       "PERIODE_UTC": "22:00 - 22:30",
@@ -253,7 +253,7 @@
       "ESTAT": "OK",
       "CAPÇALERES_TROBADES": 11,
       "CAPÇALERES_LLISTAT": "Període TU, TM °C, TX °C, TN °C, HRM %, PPT mm, VVM (10 m) km/h, DVM (10 m) graus, VVX (10 m) km/h, PM hPa, RS W/m 2",
-      "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-20T10:30Z"
+      "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-20T11:00Z"
     }
   ]
 }

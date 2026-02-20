@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>Llistat d'estacions</title>
+    <title>Banner Fix - Girona</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== ESTIL BASE ===== */
@@ -587,81 +587,43 @@
     <div class="meteo-overlay">
         <div class="overlay-header">
             <div class="station-info">
-                <div class="station-name">📋 Estacions</div>
-                <div class="location-details">1 estacions amb dades</div>
+                <div class="station-name">🏔️ Girona</div>
+                <div class="location-details">
+                    <span class="location-label">Comarca:</span> Gironès | 
+                    <span class="location-label">Altitud:</span> 72 m | 
+                    <span class="location-label">ID:</span> XJ
+                </div>
             </div>
             
             <div class="header-center">
                 <div class="station-controls">
-                    <!-- Botons de navegació (endavant, enrere, aturar, etc.) -->
-                    <div class="station-icon">
-                        <button onclick="window.location.href='index.html'" title="Inici">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Inici</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='banner.html'" title="Estacions">
-                            <i class="fas fa-list"></i>
-                            <span class="icon-text">Estacions</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='index.html'" title="Principal">
-                            <i class="fas fa-undo-alt"></i>
-                            <span class="icon-text">Principal</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="station-controls">
                     <div class="station-selector">
-                        <label for="filterComarca">Filtra:</label>
-                        <select id="filterComarca">
-                            <option value="">Totes</option>
-    <option value="Alt Camp">Alt Camp</option>
-<option value="Alt Empordà">Alt Empordà</option>
-<option value="Alt Penedès">Alt Penedès</option>
-<option value="Alt Urgell">Alt Urgell</option>
-<option value="Alta Ribagorça">Alta Ribagorça</option>
-<option value="Anoia">Anoia</option>
-<option value="Bages">Bages</option>
-<option value="Baix Camp">Baix Camp</option>
-<option value="Baix Ebre">Baix Ebre</option>
-<option value="Baix Empordà">Baix Empordà</option>
-<option value="Baix Llobregat">Baix Llobregat</option>
-<option value="Baix Penedès">Baix Penedès</option>
-<option value="Barcelonès">Barcelonès</option>
-<option value="Berguedà">Berguedà</option>
-<option value="Cerdanya">Cerdanya</option>
-<option value="Conca de Barberà">Conca de Barberà</option>
-<option value="Garraf">Garraf</option>
-<option value="Garrigues">Garrigues</option>
-<option value="Garrotxa">Garrotxa</option>
-<option value="Gironès">Gironès</option>
-<option value="Lluçanès">Lluçanès</option>
-<option value="Maresme">Maresme</option>
-<option value="Montsià">Montsià</option>
-<option value="Noguera">Noguera</option>
-<option value="Osona">Osona</option>
-<option value="Pallars Jussà">Pallars Jussà</option>
-<option value="Pallars Sobirà">Pallars Sobirà</option>
-<option value="Pla d'Urgell">Pla d'Urgell</option>
-<option value="Pla de l'Estany">Pla de l'Estany</option>
-<option value="Priorat">Priorat</option>
-<option value="Ribera d'Ebre">Ribera d'Ebre</option>
-<option value="Ripollès">Ripollès</option>
-<option value="Segarra">Segarra</option>
-<option value="Segrià">Segrià</option>
-<option value="Selva">Selva</option>
-<option value="Solsonès">Solsonès</option>
-<option value="Tarragonès">Tarragonès</option>
-<option value="Terra Alta">Terra Alta</option>
-<option value="Urgell">Urgell</option>
-<option value="Val d'Aran">Val d'Aran</option>
-<option value="Vallès Occidental">Vallès Occidental</option>
-<option value="Vallès Oriental">Vallès Oriental</option>
+                        <label for="navEstacions">Navegar a:</label>
+                        <select id="navEstacions" onchange="window.location.href=this.value">
+                            <option value="">-- Selecciona una estació --</option>
+        <option value="index_XJ.html" selected>Girona</option>
 
                         </select>
+                    </div>
+                    <div class="station-icon">
+                        <a href="banner.html" title="Veure totes les estacions">
+                            <i class="fas fa-list"></i>
+                            <span class="icon-text">Totes</span>
+                        </a>
+                    </div>
+                    <div class="station-icon">
+                        <a href="index.html" title="Tornar al banner principal">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Principal</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa -->
+                <div class="rotation-status-container">
+                    <div class="rotation-status" style="max-width: 500px; white-space: normal; line-height: 1.4; padding: 8px 15px;">
+                        <i class="fas fa-info-circle"></i>
+                        Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
                     </div>
                 </div>
             </div>
@@ -669,60 +631,199 @@
             <div class="header-right">
                 <div class="dual-clock-digital">
                     <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local-simple">--:--</div>
+                        <div class="clock-time-digital" id="hora-local">--:--</div>
                         <div class="clock-label-digital">LT</div>
                     </div>
                     <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc-simple">--:--</div>
+                        <div class="clock-time-digital" id="hora-utc">--:--</div>
                         <div class="clock-label-digital">UTC</div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="llista-estacions" id="containerLlistaEstacions">
-    
-            <a class="station-card" data-comarca="Gironès" href="index_XJ.html">
-                <div class="station-header">
-                    <div class="station-title">
-                        <div class="station-municipi">Girona</div>
-                        <div class="station-comarca">Gironès</div>
-                    </div>
-                    <div class="station-icon">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
+        <div class="overlay-content">
+        <div class="columns-4-container">
+<div class="column col-basics">
+<div class="data-column">
+<div class="column-title">Dades bàsiques</div>
+
+                <div class="data-item">
+                    <div class="data-label">Temp. Mitjana:</div>
+                    <div class="data-value">15.0 ºC</div>
                 </div>
-                <div class="station-body">
-                    <div class="weather-data">
-                        <div class="weather-item">
-                            <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">15.0°C</div>
-                            <div class="periode-info">Temperatura mitjana del període</div>
+                <div class="data-item">
+                    <div class="data-label">Temp. Màxima:</div>
+                    <div class="data-value">15.6 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Temp. Mínima:</div>
+                    <div class="data-value">14.4 ºC</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Humitat Relativa:</div>
+                    <div class="data-value">42 %</div>
+                </div></div>
+</div>
+<div class="column col-precip-wind">
+<div class="data-column">
+<div class="column-title">Precipitació i vent</div>
+
+                <div class="data-item">
+                    <div class="data-label">Precipitació (període):</div>
+                    <div class="data-value">0.0 mm</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Vent Mitjà:</div>
+                    <div class="data-value">4.3 Km/h</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Direcció Vent:</div>
+                    <div class="data-value">194º</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Ràfega Màxima:</div>
+                    <div class="data-value">11.9 Km/h</div>
+                </div></div>
+</div>
+<div class="column col-other">
+<div class="data-column">
+<div class="column-title">Altres dades</div>
+
+                <div class="data-item">
+                    <div class="data-label">Pressió:</div>
+                    <div class="data-value">1024.5 hPa</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Irradiància:</div>
+                    <div class="data-value">649 W/m²</div>
+                </div></div>
+</div>
+<div class="column col-additional">
+<div class="data-column">
+<div class="column-title">Dades addicionals</div>
+
+            <div class="data-item">
+                <div class="data-label">Període:</div>
+                <div class="data-value"><div style="line-height: 1.3;">
+                <div style="font-size: 15px;">20/02/2026</div>
+                <div style="font-size: 13px; color: #ffcc80;">11:30-12:00 CET</div>
+            </div></div>
+            </div>
+            <div class="data-item">
+                <div class="data-label">Altitud:</div>
+                <div class="data-value">72 m</div>
+            </div>
+                <div class="data-item">
+                    <div class="data-label">Hora act.:</div>
+                    <div class="data-value">12:38 CET</div>
+                </div>
+            <div class="data-item">
+                <div class="data-label">Comarca:</div>
+                <div class="data-value">Gironès</div>
+            </div></div>
+</div>
+</div>
+
+        <div style="margin-top: 20px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries</div>
+            <div class="columns-4-container">
+        <div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Temperatura mitjana:</div>
+                            <div class="data-value">
+                                4.3 °C
+                                
+                            </div>
                         </div>
-                        <div class="weather-item">
-                            <i class="fas fa-cloud"></i>
-                            <div class="weather-value">0.0 mm</div>
-                            <div class="periode-info">Pluja acumulada del període</div>
+                        <div class="data-item">
+                            <div class="data-label">Temperatura màxima:</div>
+                            <div class="data-value">
+                                15.6 °C 10:56 TU
+                                
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="station-footer">
-                    ID: XJ
-                </div>
-            </a>
+                        <div class="data-item">
+                            <div class="data-label">Temperatura mínima:</div>
+                            <div class="data-value">
+                                -0.4 °C 6:44 TU
+                                
+                            </div>
+                        </div></div></div><div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Humitat relativa:</div>
+                            <div class="data-value">
+                                87%
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Precipitació acumulada:</div>
+                            <div class="data-value">
+                                0.2 mm
+                                
+                            </div>
+                        </div></div></div><div class="column"><div class="data-column">
+                        <div class="data-item">
+                            <div class="data-label">Ratxa màxima del vent:</div>
+                            <div class="data-value">
+                                11.9 km/h - 249º 10:59 TU
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Pressió atmosfèrica:</div>
+                            <div class="data-value">
+                                1021.2 hPa
+                                
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Irradiació solar global:</div>
+                            <div class="data-value">
+                                5.0 MJ/m2
+                                
+                            </div>
+                        </div></div></div>
+            </div>
+        </div>
         
         </div>
-    
-    <script>
-    function filtrarPerComarca() {
-        const comarca = document.getElementById('filterComarca').value;
-        document.querySelectorAll('.station-card').forEach(c => {
-            c.style.display = !comarca || c.dataset.comarca === comarca ? 'block' : 'none';
-        });
-    }
-    document.getElementById('filterComarca').addEventListener('change', filtrarPerComarca);
-    </script>
-    
+        
+        <script>
+        (function() {
+            // Esperem que el DOM estigui carregat
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', aplicarCanvis);
+            } else {
+                aplicarCanvis();
+            }
+
+            function aplicarCanvis() {
+                // MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR
+                const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
+                if (botoPrincipal) {
+                    // Canviar l'enllaç per un botó que faci la funció
+                    const botoPare = botoPrincipal.parentNode;
+                    const iconClass = botoPrincipal.querySelector('i')?.className || 'fas fa-home';
+                    const textSpan = botoPrincipal.querySelector('.icon-text')?.innerHTML || 'Principal';
+
+                    // Crear el nou botó
+                    const nouBoto = document.createElement('button');
+                    nouBoto.innerHTML = `<i class="${iconClass}"></i> <span class="icon-text">${textSpan}</span>`;
+                    nouBoto.className = botoPrincipal.className; // Mantenir les classes
+                    nouBoto.title = botoPrincipal.title;
+                    nouBoto.onclick = function() {
+                        window.parent.location.href = 'index.html'; // Això carrega index.html dins del contenidor pare
+                    };
+
+                    // Substituir l'enllaç pel botó
+                    botoPare.replaceChild(nouBoto, botoPrincipal);
+                }
+            }
+        })();
+        </script>
+        
     <div class="overlay-footer">
         <div class="footer-left">
             <span>📡 Font: meteo.cat</span>
