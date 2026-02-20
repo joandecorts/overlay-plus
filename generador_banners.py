@@ -1261,7 +1261,7 @@ class HTMLGenerator:
         diari = diari_data[estacio_id]
         html = '''
         <div style="margin-top: 20px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries</div>
+            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries (des de les 00:00 UTC)</div>
             <div class="columns-4-container">
         '''
         
@@ -1725,3 +1725,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
