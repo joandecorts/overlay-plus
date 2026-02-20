@@ -1506,147 +1506,6 @@ def generar_banner_html(metadades, periode_data, diari_data):
     print(f"✅ banner.html generat: {output_path}")
     return output_path
 
-def generar_index_html(metadades, periode_data, diari_data):
-    """Genera index.html (el principal) amb la capçalera reorganitzada"""
-    print("🔄 Generant index.html (principal)...")
-    
-    estacions_amb_dades = [id for id in metadades.keys() if id in periode_data]
-    
-    if not estacions_amb_dades:
-        print("⚠️  No hi ha estacions amb dades")
-        return
-    
-    hora_actualitzacio = None
-    for estacio_id in estacions_amb_dades:
-        if estacio_id in periode_data and periode_data[estacio_id].get('DATA_EXTRACCIO'):
-            hora_actualitzacio = periode_data[estacio_id].get('DATA_EXTRACCIO')
-            break
-    
-    html = HTMLGenerator.generar_head("Banner Scroll Meteo.cat")
-    
-    # ============================================================================
-    # 🔹 CAPÇALERA REORGANITZADA (PNG 1 a dalt, PNG 2 a sota, alineats a la dreta)
-    # ============================================================================
-    html += f'''
-    <div class="meteo-overlay">
-        <div class="overlay-header">
-            <div class="station-info">
-                <div class="station-name">📋 Banner Scroll Meteo.cat</div>
-                <div class="location-details">Dades obtingudes amb scrapers propis. Font oficial: https://www.meteo.cat/</div>
-            </div>
-            
-            <div class="header-center" style="align-items: flex-end;">
-                <!-- Primera fila: Anterior, 4/45, Següent, Aturar (PNG 1) - alineats a la dreta -->
-                <div class="station-controls" style="justify-content: flex-end; width: 100%;">
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Anterior">
-                            <i class="fas fa-chevron-left"></i>
-                            <span class="icon-text">Anterior</span>
-                        </button>
-                    </div>
-                    <div class="rotation-status" style="margin: 0 5px; background: rgba(255,255,255,0.1); color: #4fc3f7;">
-                        4 / {len(estacions_amb_dades)}
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Següent">
-                            <i class="fas fa-chevron-right"></i>
-                            <span class="icon-text">Següent</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Aturar">
-                            <i class="fas fa-pause"></i>
-                            <span class="icon-text">Aturar</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Segona fila: Vel: 30s, 24, Estacions, Principal (PNG 2) - alineats a la dreta -->
-                <div class="station-controls" style="justify-content: flex-end; width: 100%; margin-top: 5px;">
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Velocitat">
-                            <i class="fas fa-clock"></i>
-                            <span class="icon-text">Vel: 30s</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="24">
-                            <span class="icon-text" style="font-weight: bold;">24</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <a href="banner.html" title="Estacions">
-                            <i class="fas fa-list"></i>
-                            <span class="icon-text">Estacions</span>
-                        </a>
-                    </div>
-                    <div class="station-icon">
-                        <a href="index.html" title="Principal">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Principal</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Selector d'estació (a sota de tot) -->
-                <div class="station-controls" style="margin-top: 10px; width: 100%; justify-content: flex-end;">
-                    <div class="station-selector" style="min-width: 250px;">
-                        <label for="navEstacions">Ves a:</label>
-                        <select id="navEstacions" onchange="window.location.href=this.value">
-                            <option value="">-- Selecciona una estació --</option>
-    '''
-    
-    # Ordenar estacions per nom
-    estacions_ordenades = []
-    for estacio_id in estacions_amb_dades:
-        nom_estacio = periode_data.get(estacio_id, {}).get('NOM_ESTACIO', estacio_id)
-        estacions_ordenades.append((nom_estacio, estacio_id))
-    estacions_ordenades.sort(key=lambda x: x[0].lower())
-    
-    for nom_estacio, estacio_id in estacions_ordenades:
-        html += f'<option value="index_{estacio_id}.html">{nom_estacio}</option>\n'
-    
-    html += f'''
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="header-right">
-                <div class="dual-clock-digital">
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local">--:--</div>
-                        <div class="clock-label-digital">LT</div>
-                    </div>
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc">--:--</div>
-                        <div class="clock-label-digital">UTC</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="overlay-content">
-    '''
-    
-    # Aquí aniria el contingut de l'índex (estació actual, etc.)
-    # Però com que és el teu fitxer, mantinc el que tu tinguis
-    
-    html += '''
-        </div>
-    '''
-    
-    html += HTMLGenerator.generar_footer(hora_actualitzacio)
-    
-    output_path = Config.OUTPUT_DIR / "index.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(html)
-    
-    print(f"✅ index.html generat: {output_path}")
-    return output_path
-
 def generar_banners_individuals(metadades, periode_data, diari_data):
     """Genera banners individuals per a cada estació"""
     print("🔄 Generant banners individuals...")
@@ -1819,8 +1678,7 @@ def main():
     
     print("\n🛠️  Generant HTML...")
     
-    # 🔹 ARA generem index.html amb la nova capçalera
-    index_path = generar_index_html(metadades, periode_data, diari_data)
+    # NO generem index.html perquè ja el tens fix
     banner_path = generar_banner_html(metadades, periode_data, diari_data)
     banners_individuals = generar_banners_individuals(metadades, periode_data, diari_data)
     
@@ -1840,8 +1698,6 @@ def main():
     print("   ✅ Disseny responsive millorat")
     print("   ✅ Precipitació del període a les targetes")
     print("   ✅ Espais optimitzats")
-    print("   ✅ Capçalera d'index.html reorganitzada (PNG 1 dalt, PNG 2 sota, alineació dreta)")
-    print("   ✅ Colors dels selects corregits (negre sobre blanc)")
 
 if __name__ == "__main__":
     main()
