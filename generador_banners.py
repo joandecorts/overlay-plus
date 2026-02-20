@@ -1320,64 +1320,32 @@ def generar_banner_html(metadades, periode_data, diari_data):
             </div>
             
             <div class="header-center">
-                <!-- Primera fila: controls de navegació (PNG 1) - alineats a la dreta -->
-                <div class="station-controls" style="justify-content: flex-end; width: 100%;">
+                <div class="station-controls">
+                    <!-- Botons de navegació (endavant, enrere, aturar, etc.) -->
                     <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Anterior">
-                            <i class="fas fa-chevron-left"></i>
-                            <span class="icon-text">Anterior</span>
-                        </button>
-                    </div>
-                    <div class="rotation-status" style="margin: 0 5px;">
-                        4 / {len(estacions_amb_dades)}
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Següent">
-                            <i class="fas fa-chevron-right"></i>
-                            <span class="icon-text">Següent</span>
+                        <button onclick="window.location.href='index.html'" title="Inici">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text">Inici</span>
                         </button>
                     </div>
                     <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Aturar">
-                            <i class="fas fa-pause"></i>
-                            <span class="icon-text">Aturar</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Segona fila: controls de velocitat i navegació (PNG 2) - alineats a la dreta -->
-                <div class="station-controls" style="justify-content: flex-end; width: 100%; margin-top: 5px;">
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="Velocitat">
-                            <i class="fas fa-clock"></i>
-                            <span class="icon-text">Vel: 30s</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='#'" title="24">
-                            <span class="icon-text">24</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <a href="banner.html" title="Estacions">
+                        <button onclick="window.location.href='banner.html'" title="Estacions">
                             <i class="fas fa-list"></i>
                             <span class="icon-text">Estacions</span>
-                        </a>
+                        </button>
                     </div>
                     <div class="station-icon">
-                        <a href="index.html" title="Principal">
-                            <i class="fas fa-home"></i>
+                        <button onclick="window.location.href='index.html'" title="Principal">
+                            <i class="fas fa-undo-alt"></i>
                             <span class="icon-text">Principal</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
-                
-                <!-- Filtre per comarca (a sota de tot) -->
-                <div class="station-controls" style="margin-top: 10px; width: 100%;">
-                    <div class="station-selector" style="min-width: 200px; width: 100%;">
+                <div class="station-controls">
+                    <div class="station-selector">
                         <label for="filterComarca">Filtra:</label>
                         <select id="filterComarca">
-                            <option value="">Totes les comarques</option>
+                            <option value="">Totes</option>
     '''
     
     comarques = sorted(set([m['comarca'] for m in metadades.values() if m['comarca'] != 'Desconeguda']))
