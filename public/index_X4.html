@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>Banner Fix - Barcelona - el Raval</title>
+    <title>Barcelona - el Raval</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==== ESTIL AMB MILLORES RESPONSIVES ==== */
+        /* ===== ESTIL BASE ===== */
         * {
             box-sizing: border-box;
         }
         
         body {
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             background-color: #007BFF;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -22,23 +22,23 @@
         .meteo-overlay {
             background: rgba(10, 25, 49, 0.95);
             border-radius: 15px;
-            padding: 20px;
+            padding: 15px;
             color: white;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             max-width: 1400px;
             margin: 0 auto;
-            cursor: pointer;
         }
         
+        /* ===== CAPÇALERA ===== */
         .overlay-header {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #3949ab;
-            gap: 15px;
+            gap: 10px;
         }
         
         .station-info {
@@ -47,30 +47,30 @@
         }
         
         .station-name {
-            font-size: 24px;
+            font-size: 20px;
             color: #4fc3f7;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             word-break: break-word;
         }
         
         .location-details {
-            font-size: 14px;
+            font-size: 12px;
             color: #bbdefb;
-            line-height: 1.4;
+            line-height: 1.3;
         }
         
         .location-label {
             color: #7986cb;
-            margin-right: 5px;
+            margin-right: 3px;
         }
         
         .header-right {
             text-align: right;
-            flex: 1 1 auto;
+            flex: 0 1 auto;
         }
         
-        /* RELLOTGES RESPONSIVES */
+        /* ===== RELLOTGES ===== */
         .dual-clock-digital {
             display: flex;
             flex-direction: column;
@@ -78,8 +78,8 @@
             background: transparent !important;
             padding: 0;
             border: none !important;
-            min-width: 160px;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            min-width: 140px;
+            font-family: 'Courier New', monospace;
             align-items: flex-end;
         }
         
@@ -87,122 +87,98 @@
             display: flex;
             justify-content: flex-end;
             align-items: baseline;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
         }
         
         .clock-time-digital {
             color: white !important;
-            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-            font-size: 22px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
             font-weight: 700;
-            letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            min-width: 90px;
+            min-width: 85px;
             text-align: right;
         }
         
         .clock-label-digital {
             color: white !important;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            min-width: 35px;
+            min-width: 32px;
             text-align: left;
         }
         
+        /* ===== CONTROLS CENTRALS ===== */
         .header-center {
             text-align: center;
-            flex: 2 1 400px;
+            flex: 2 1 350px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
         
         .station-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
             width: 100%;
         }
         
         .station-selector {
-            min-width: 250px;
-            flex: 2 1 300px;
+            min-width: 220px;
+            flex: 2 1 250px;
         }
         
         .station-selector select {
             background: linear-gradient(145deg, #1a237e, #283593) !important;
             color: #bbdefb !important;
             border: 2px solid #3949ab !important;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 14px;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             appearance: none;
             -webkit-appearance: none;
-            -moz-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-        
-        .station-selector select:hover {
-            border-color: #4fc3f7 !important;
-            background: linear-gradient(145deg, #283593, #1a237e) !important;
-        }
-        
-        .station-selector select:focus {
-            outline: none;
-            border-color: #2ecc71 !important;
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
-        }
-        
-        .station-selector select option {
-            background: white !important;
-            color: black !important;
-            font-weight: 500;
-            padding: 12px 15px;
-            font-size: 14px;
+            background-position: right 12px center;
+            background-size: 14px;
+            padding-right: 35px;
         }
         
         .station-selector label {
             color: #bbdefb;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            margin-right: 12px;
+            margin-right: 8px;
             display: inline-block;
-            margin-bottom: 5px;
         }
         
         .station-icon {
-            margin-left: 0;
             flex: 0 1 auto;
         }
         
         .station-icon a, .station-icon button {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             background: linear-gradient(145deg, #1a237e, #283593);
             border: 2px solid #3949ab;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #bbdefb;
-            padding: 10px 15px;
+            padding: 8px 12px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s ease;
             cursor: pointer;
             font-family: inherit;
-            width: 100%;
             white-space: nowrap;
         }
         
@@ -210,161 +186,210 @@
             background: linear-gradient(145deg, #283593, #1a237e);
             border-color: #4fc3f7;
             color: #4fc3f7;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
-        }
-        
-        .icon-text {
-            display: inline;
         }
         
         .rotation-status-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 5px;
             width: 100%;
             justify-content: center;
         }
         
         .rotation-status {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
             background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
             border: 1px solid #2ecc71;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             text-align: center;
             max-width: 100%;
             white-space: normal;
-            line-height: 1.4;
+            line-height: 1.3;
         }
         
-        .rotation-status.paused {
-            background: rgba(231, 76, 60, 0.15);
-            color: #e74c3c;
-            border-color: #e74c3c;
-        }
-        
+        /* ===== CONTINGUT PRINCIPAL ===== */
         .overlay-content {
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .columns-4-container {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         
         .column {
             flex: 1 1 200px;
-            min-width: 220px;
-        }
-        
-        .col-basics, .col-precip-wind, .col-other, .col-additional {
-            padding-left: 0;
+            min-width: 200px;
         }
         
         .data-column {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .column-title {
             color: #bbdefb;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 1px solid #3949ab;
         }
         
         .data-item {
             background: linear-gradient(145deg, #1a237e, #283593);
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 10px;
+            border-radius: 6px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
             border: 2px solid #3949ab;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: -5px 0 15px rgba(255, 123, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
             border-left: 4px solid #ff7b00;
-            gap: 10px;
-        }
-        
-        .data-item:hover {
-            transform: translateY(-3px);
-            box-shadow: -8px 0 20px rgba(255, 123, 0, 0.6), 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-left-color: #ff9d4d;
+            gap: 8px;
         }
         
         .data-label {
             color: #bbdefb;
             font-weight: bold;
-            font-size: 14px;
-            flex: 1;
+            font-size: 13px;
         }
         
         .data-value {
             color: #ffcc80;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
             text-align: right;
             word-break: break-word;
         }
         
-        /* NOU: Estil per a hores de registre petites */
         .hora-registre {
-            font-size: 11px;
+            font-size: 10px;
             color: #90caf9;
             display: block;
-            margin-top: 3px;
+            margin-top: 2px;
             font-style: italic;
         }
         
-        /* 🆕 PUNT 2: Estil per als textos del període (lletra petita, cursiva, verda) */
         .periode-info {
             font-size: 0.7rem;
             font-style: italic;
             color: #4caf50;
-            margin-top: 4px;
+            margin-top: 3px;
             line-height: 1.2;
         }
         
-        /* NOU: Estil per a l'avís de canvi de dia */
-        .avis-canvi-dia {
-            background: linear-gradient(145deg, #b71c1c, #d32f2f);
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin: 15px 0;
-            border: 2px solid #f44336;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
+        /* ===== LLISTA D'ESTACIONS (banner.html) ===== */
+        .llista-estacions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            padding: 10px 0;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
-        /* NOU: Estil per al peu de pàgina corregit */
+        .station-card {
+            background: linear-gradient(145deg, #1e1e2e, #252536);
+            border-radius: 8px;
+            border: 2px solid #3949ab;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .station-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3949ab;
+            padding-bottom: 6px;
+            gap: 8px;
+        }
+        
+        .station-municipi {
+            font-size: 15px;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+        
+        .station-comarca {
+            font-size: 12px;
+            color: #bbdefb;
+        }
+        
+        .weather-data {
+            display: flex;
+            justify-content: space-around;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .weather-item {
+            text-align: center;
+            flex: 1 1 70px;
+            min-width: 60px;
+        }
+        
+        .weather-item i {
+            font-size: 20px;
+            color: #ffcc80;
+            margin-bottom: 3px;
+            display: block;
+        }
+        
+        .weather-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .temp-fred { color: #80deea; }
+        .temp-fresca { color: #4fc3f7; }
+        .temp-templada { color: #ffcc80; }
+        .temp-calenta { color: #ff9800; }
+        .temp-molt-calenta { color: #ff5252; }
+        .temp-desconeguda { color: #bbdefb; }
+        
+        .station-footer {
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px solid #3949ab;
+            text-align: center;
+            font-size: 10px;
+            color: #bbdefb;
+        }
+        
+        /* ===== PEU DE PÀGINA ===== */
         .overlay-footer {
-            margin-top: 25px;
-            padding-top: 15px;
+            margin-top: 20px;
+            padding-top: 10px;
             border-top: 1px solid #3949ab;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 11px;
             color: #9fa8da;
-            gap: 15px;
+            gap: 10px;
         }
         
         .footer-left, .footer-center, .footer-right {
-            flex: 1 1 200px;
+            flex: 1 1 150px;
         }
         
         .footer-left { text-align: left; }
@@ -374,155 +399,42 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 8px;
+            gap: 5px;
         }
         
         .email-icon {
             color: #4fc3f7;
-            font-size: 16px;
-            vertical-align: middle;
-            margin-left: 5px;
+            font-size: 14px;
         }
         
         .verificacio-dades {
-            font-size: 11px;
+            font-size: 9px;
             color: #81c784;
-            margin-top: 5px;
+            margin-top: 3px;
             font-style: italic;
         }
         
-        /* Estils per a banner.html */
-        .llista-estacions {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            padding: 15px 0;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .station-card {
-            background: linear-gradient(145deg, #1e1e2e, #252536);
-            border-radius: 10px;
-            border: 2px solid #3949ab;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            color: #ffffff;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .station-card:hover {
-            transform: translateY(-5px);
-            border-color: #4fc3f7;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-        
-        .station-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            border-bottom: 2px solid #3949ab;
-            padding-bottom: 8px;
-            gap: 10px;
-        }
-        
-        .station-title {
-            flex-grow: 1;
-        }
-        
-        .station-municipi {
-            font-size: 16px;
-            font-weight: bold;
-            color: #4fc3f7;
-            margin-bottom: 3px;
-            word-break: break-word;
-        }
-        
-        .station-comarca {
-            font-size: 13px;
-            color: #bbdefb;
-        }
-        
-        .station-icon i {
-            color: #4fc3f7;
-            font-size: 18px;
-        }
-        
-        .station-body {
-            margin: 12px 0;
-        }
-        
-        .weather-data {
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .weather-item {
-            text-align: center;
-            flex: 1 1 80px;
-            min-width: 70px;
-        }
-        
-        .weather-item i {
-            font-size: 22px;
-            color: #ffcc80;
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        .weather-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
-        /* Colors per temperatura */
-        .temp-fred { color: #80deea; }
-        .temp-fresca { color: #4fc3f7; }
-        .temp-templada { color: #ffcc80; }
-        .temp-calenta { color: #ff9800; }
-        .temp-molt-calenta { color: #ff5252; }
-        .temp-desconeguda { color: #bbdefb; }
-        
-        .station-footer {
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid #3949ab;
-            text-align: center;
-            font-size: 11px;
-            color: #bbdefb;
-        }
-        
-        /* ===== MEDIA QUERIES PER A MÒBILS ===== */
+        /* ===== MEDIA QUERIES ===== */
         @media (max-width: 900px) {
             .clock-time-digital {
-                font-size: 20px;
-                min-width: 80px;
+                font-size: 18px;
+                min-width: 75px;
             }
             .clock-label-digital {
-                font-size: 14px;
-                min-width: 30px;
+                font-size: 13px;
+                min-width: 28px;
             }
         }
         
         @media (max-width: 768px) {
             body {
-                padding: 10px;
-            }
-            
-            .meteo-overlay {
-                padding: 15px;
+                padding: 5px;
             }
             
             .overlay-header {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 8px;
             }
             
             .station-info, .header-center, .header-right {
@@ -547,6 +459,7 @@
             .station-controls {
                 flex-direction: column;
                 width: 100%;
+                gap: 6px;
             }
             
             .station-selector {
@@ -560,18 +473,37 @@
             
             .station-icon {
                 width: 100%;
-                margin-left: 0;
             }
             
             .station-icon a, .station-icon button {
                 width: 100%;
                 justify-content: center;
                 white-space: normal;
+                padding: 8px 10px;
+            }
+            
+            .rotation-status-container {
+                margin-top: 5px;
+            }
+            
+            .rotation-status {
+                width: 100%;
+                justify-content: center;
+                padding: 6px 10px;
+            }
+            
+            /* Eliminar espais blancs innecessaris */
+            .station-name {
+                margin-bottom: 2px;
+            }
+            
+            .location-details {
+                margin-bottom: 2px;
             }
             
             .columns-4-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
             }
             
             .column {
@@ -579,13 +511,9 @@
                 min-width: auto;
             }
             
-            .icon-text {
-                display: inline;
-            }
-            
             .overlay-footer {
                 flex-direction: column;
-                gap: 12px;
+                gap: 8px;
                 text-align: center;
             }
             
@@ -596,39 +524,40 @@
             
             .llista-estacions {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
         
         @media (max-width: 480px) {
             .station-name {
-                font-size: 20px;
+                font-size: 18px;
             }
             
             .clock-time-digital {
-                font-size: 18px;
-                min-width: 70px;
+                font-size: 16px;
+                min-width: 65px;
             }
             
             .clock-label-digital {
                 font-size: 12px;
-                min-width: 25px;
+                min-width: 24px;
             }
             
             .data-item {
-                padding: 8px 10px;
+                padding: 6px 8px;
             }
             
             .data-label {
-                font-size: 13px;
+                font-size: 12px;
             }
             
             .data-value {
-                font-size: 14px;
+                font-size: 13px;
             }
             
             .rotation-status {
-                font-size: 12px;
-                padding: 6px 10px;
+                font-size: 11px;
+                padding: 5px 8px;
             }
         }
     </style>
@@ -640,18 +569,16 @@
             <div class="station-info">
                 <div class="station-name">🏔️ Barcelona - el Raval</div>
                 <div class="location-details">
-                    <span class="location-label">Comarca:</span> Barcelonès | 
-                    <span class="location-label">Altitud:</span> 33 m | 
-                    <span class="location-label">ID:</span> X4
+                    Barcelonès | 33 m | ID: X4
                 </div>
             </div>
             
             <div class="header-center">
                 <div class="station-controls">
                     <div class="station-selector">
-                        <label for="navEstacions">Navegar a:</label>
+                        <label for="navEstacions">Ves a:</label>
                         <select id="navEstacions" onchange="window.location.href=this.value">
-                            <option value="">-- Selecciona una estació --</option>
+                            <option value="">-- Selecciona --</option>
         <option value="index_YT.html" >Alt Àneu - Bonabé (1.693 m)</option>
 <option value="index_Z1.html" >Alt Àneu - Bonaigua (2.266 m)</option>
 <option value="index_DN.html" >Anglès</option>
@@ -701,24 +628,23 @@
                         </select>
                     </div>
                     <div class="station-icon">
-                        <a href="banner.html" title="Veure totes les estacions">
+                        <a href="banner.html" title="Totes">
                             <i class="fas fa-list"></i>
                             <span class="icon-text">Totes</span>
                         </a>
                     </div>
                     <div class="station-icon">
-                        <a href="index.html" title="Tornar al banner principal">
+                        <a href="index.html" title="Principal">
                             <i class="fas fa-home"></i>
                             <span class="icon-text">Principal</span>
                         </a>
                     </div>
                 </div>
                 
-                <!-- 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa -->
                 <div class="rotation-status-container">
-                    <div class="rotation-status" style="max-width: 500px; white-space: normal; line-height: 1.4; padding: 8px 15px;">
+                    <div class="rotation-status">
                         <i class="fas fa-info-circle"></i>
-                        Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
+                        Prem "Totes" per canviar d'estació
                     </div>
                 </div>
             </div>
@@ -801,8 +727,8 @@
             <div class="data-item">
                 <div class="data-label">Període:</div>
                 <div class="data-value"><div style="line-height: 1.3;">
-                <div style="font-size: 16px;">20/02/2026</div>
-                <div style="font-size: 14px; color: #ffcc80;">07:00-07:30 CET</div>
+                <div style="font-size: 15px;">20/02/2026</div>
+                <div style="font-size: 13px; color: #ffcc80;">07:00-07:30 CET</div>
             </div></div>
             </div>
             <div class="data-item">
@@ -810,8 +736,8 @@
                 <div class="data-value">33 m</div>
             </div>
                 <div class="data-item">
-                    <div class="data-label">Hora actualització:</div>
-                    <div class="data-value" style="text-align: right;">07:45 CET</div>
+                    <div class="data-label">Hora act.:</div>
+                    <div class="data-value">08:05 CET</div>
                 </div>
             <div class="data-item">
                 <div class="data-label">Comarca:</div>
@@ -820,8 +746,8 @@
 </div>
 </div>
 
-        <div style="margin-top: 30px; padding: 20px; background: rgba(26, 35, 126, 0.7); border-radius: 10px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 15px;">📅 Dades Diàries (Avui des de les 00:00)</div>
+        <div style="margin-top: 20px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries</div>
             <div class="columns-4-container">
         <div class="column"><div class="data-column">
                         <div class="data-item">
@@ -887,7 +813,6 @@
         
         <script>
         (function() {
-            // Esperem que el DOM estigui carregat
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', aplicarCanvis);
             } else {
@@ -895,24 +820,19 @@
             }
 
             function aplicarCanvis() {
-                // MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR
                 const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
                 if (botoPrincipal) {
-                    // Canviar l'enllaç per un botó que faci la funció
                     const botoPare = botoPrincipal.parentNode;
                     const iconClass = botoPrincipal.querySelector('i')?.className || 'fas fa-home';
                     const textSpan = botoPrincipal.querySelector('.icon-text')?.innerHTML || 'Principal';
 
-                    // Crear el nou botó
                     const nouBoto = document.createElement('button');
                     nouBoto.innerHTML = `<i class="${iconClass}"></i> <span class="icon-text">${textSpan}</span>`;
-                    nouBoto.className = botoPrincipal.className; // Mantenir les classes
+                    nouBoto.className = botoPrincipal.className;
                     nouBoto.title = botoPrincipal.title;
                     nouBoto.onclick = function() {
-                        window.parent.location.href = 'index.html'; // Això carrega index.html dins del contenidor pare
+                        window.parent.location.href = 'index.html';
                     };
-
-                    // Substituir l'enllaç pel botó
                     botoPare.replaceChild(nouBoto, botoPrincipal);
                 }
             }
@@ -921,41 +841,29 @@
         
     <div class="overlay-footer">
         <div class="footer-left">
-            <span>📡 Font: https://www.meteo.cat/</span>
-            <div class="verificacio-dades">
-                Les dades s'han verificat amb la web oficial i totes són coincidents.
-            </div>
+            <span>📡 Font: meteo.cat</span>
+            <div class="verificacio-dades">Dades verificades</div>
         </div>
         <div class="footer-center">
             <span>© joandecorts.io</span>
             <a href="mailto:admin@joandecorts.com">
                 <i class="fas fa-envelope email-icon"></i>
-               
             </a>
         </div>
         <div class="footer-right">
-            <span>🔄 Actualització: 20/02/2026 07:45:45 CET</span>
+            <span>🔄 20/02/2026 08:05:07 CET</span>
         </div>
     </div>
     
-    <!-- Script per als rellotges -->
     <script>
         function actualitzarRellotges() {
             const ara = new Date();
-            
-            // Hora local amb segons
             const horaLocal = ara.toLocaleTimeString('ca-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false 
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
             });
-            
-            // Hora UTC sense segons
             const horaUTC = ara.getUTCHours().toString().padStart(2, '0') + ':' + 
                            ara.getUTCMinutes().toString().padStart(2, '0');
             
-            // Actualitzar elements si existeixen
             const elemLocal = document.getElementById('hora-local');
             const elemUTC = document.getElementById('hora-utc');
             const elemLocalSimple = document.getElementById('hora-local-simple');
