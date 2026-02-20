@@ -1428,12 +1428,12 @@ def generar_banner_html(metadades, periode_data, diari_data):
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
                             <div class="weather-value {color_temp}">{temperatura_actual}°C</div>
-                            <div class="periode-info">Temp. període</div>
+                            <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
                             <i class="fas {icona_precip}"></i>
                             <div class="weather-value">{precipitacio_periode} mm</div>
-                            <div class="periode-info">Pluja període</div>
+                            <div class="periode-info">Pluja acumulada del període</div>
                         </div>
                     </div>
                 </div>
@@ -1665,3 +1665,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
