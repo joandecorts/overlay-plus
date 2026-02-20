@@ -1320,59 +1320,63 @@ def generar_banner_html(metadades, periode_data, diari_data):
             </div>
             
             <div class="header-center">
-                <!-- 🔹 NOU: Contenidor per als botons de navegació i comptador -->
-                <div class="station-controls" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: 100%;">
-                    <!-- Botó Anterior -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
-                        <button onclick="window.location.href='#'" title="Anterior" style="width: 100%; padding: 8px 5px;">
+                <!-- Primera fila: controls de navegació (PNG 1) - alineats a la dreta -->
+                <div class="station-controls" style="justify-content: flex-end; width: 100%;">
+                    <div class="station-icon">
+                        <button onclick="window.location.href='#'" title="Anterior">
                             <i class="fas fa-chevron-left"></i>
-                            <span class="icon-text" style="font-size: 12px;">Anterior</span>
+                            <span class="icon-text">Anterior</span>
                         </button>
                     </div>
-                    
-                    <!-- Comptador d'estacions -->
-                    <div class="rotation-status" style="flex: 0 1 auto; margin: 0; padding: 8px 12px; font-size: 14px;">
-                        2 / {len(estacions_amb_dades)}
+                    <div class="rotation-status" style="margin: 0 5px;">
+                        4 / {len(estacions_amb_dades)}
                     </div>
-                    
-                    <!-- Botó Següent -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
-                        <button onclick="window.location.href='#'" title="Següent" style="width: 100%; padding: 8px 5px;">
+                    <div class="station-icon">
+                        <button onclick="window.location.href='#'" title="Següent">
                             <i class="fas fa-chevron-right"></i>
-                            <span class="icon-text" style="font-size: 12px;">Següent</span>
+                            <span class="icon-text">Següent</span>
                         </button>
                     </div>
-                    
-                    <!-- Botó Aturar -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
-                        <button onclick="window.location.href='#'" title="Aturar" style="width: 100%; padding: 8px 5px;">
+                    <div class="station-icon">
+                        <button onclick="window.location.href='#'" title="Aturar">
                             <i class="fas fa-pause"></i>
-                            <span class="icon-text" style="font-size: 12px;">Aturar</span>
+                            <span class="icon-text">Aturar</span>
                         </button>
                     </div>
-                    
-                    <!-- Botó Estacions -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
-                        <button onclick="window.location.href='banner.html'" title="Estacions" style="width: 100%; padding: 8px 5px;">
+                </div>
+                
+                <!-- Segona fila: controls de velocitat i navegació (PNG 2) - alineats a la dreta -->
+                <div class="station-controls" style="justify-content: flex-end; width: 100%; margin-top: 5px;">
+                    <div class="station-icon">
+                        <button onclick="window.location.href='#'" title="Velocitat">
+                            <i class="fas fa-clock"></i>
+                            <span class="icon-text">Vel: 30s</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <button onclick="window.location.href='#'" title="24">
+                            <span class="icon-text">24</span>
+                        </button>
+                    </div>
+                    <div class="station-icon">
+                        <a href="banner.html" title="Estacions">
                             <i class="fas fa-list"></i>
-                            <span class="icon-text" style="font-size: 12px;">Estacions</span>
-                        </button>
+                            <span class="icon-text">Estacions</span>
+                        </a>
                     </div>
-                    
-                    <!-- Botó Principal -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
-                        <a href="index.html" title="Principal" style="width: 100%; padding: 8px 5px; text-align: center;">
+                    <div class="station-icon">
+                        <a href="index.html" title="Principal">
                             <i class="fas fa-home"></i>
-                            <span class="icon-text" style="font-size: 12px;">Principal</span>
+                            <span class="icon-text">Principal</span>
                         </a>
                     </div>
                 </div>
                 
-                <!-- Filtre per comarca (separat) -->
+                <!-- Filtre per comarca (a sota de tot) -->
                 <div class="station-controls" style="margin-top: 10px; width: 100%;">
-                    <div class="station-selector" style="min-width: 150px; width: 100%;">
-                        <label for="filterComarca" style="font-size: 13px;">Filtra:</label>
-                        <select id="filterComarca" style="font-size: 13px; padding: 8px 10px;">
+                    <div class="station-selector" style="min-width: 200px; width: 100%;">
+                        <label for="filterComarca">Filtra:</label>
+                        <select id="filterComarca">
                             <option value="">Totes les comarques</option>
     '''
     
