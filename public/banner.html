@@ -572,31 +572,38 @@
             </div>
             
             <div class="header-center">
-                <div class="station-controls">
-                    <!-- Botons de navegació (endavant, enrere, aturar, etc.) -->
-                    <div class="station-icon">
-                        <button onclick="window.location.href='index.html'" title="Inici">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Inici</span>
+                <div class="station-controls" style="flex-wrap: wrap; gap: 5px;">
+                    <!-- Botons de navegació compactes -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
+                        <button onclick="window.location.href='index.html'" title="Anterior" style="padding: 6px 8px;">
+                            <i class="fas fa-chevron-left"></i>
+                            <span class="icon-text" style="font-size: 11px;">Anterior</span>
                         </button>
                     </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='banner.html'" title="Estacions">
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
+                        <button onclick="window.location.href='banner.html'" title="Següent" style="padding: 6px 8px;">
+                            <i class="fas fa-chevron-right"></i>
+                            <span class="icon-text" style="font-size: 11px;">Següent</span>
+                        </button>
+                    </div>
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
+                        <button onclick="window.location.href='index.html'" title="Aturar" style="padding: 6px 8px;">
+                            <i class="fas fa-pause"></i>
+                            <span class="icon-text" style="font-size: 11px;">Aturar</span>
+                        </button>
+                    </div>
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
+                        <button onclick="window.location.href='banner.html'" title="Estacions" style="padding: 6px 8px;">
                             <i class="fas fa-list"></i>
-                            <span class="icon-text">Estacions</span>
-                        </button>
-                    </div>
-                    <div class="station-icon">
-                        <button onclick="window.location.href='index.html'" title="Principal">
-                            <i class="fas fa-undo-alt"></i>
-                            <span class="icon-text">Principal</span>
+                            <span class="icon-text" style="font-size: 11px;">Estacions</span>
                         </button>
                     </div>
                 </div>
-                <div class="station-controls">
-                    <div class="station-selector">
-                        <label for="filterComarca">Filtra:</label>
-                        <select id="filterComarca">
+                
+                <div class="station-controls" style="margin-top: 5px; width: 100%;">
+                    <div class="station-selector" style="min-width: 150px; width: 100%;">
+                        <label for="filterComarca" style="font-size: 12px;">Filtra:</label>
+                        <select id="filterComarca" style="font-size: 12px; padding: 6px 8px;">
                             <option value="">Totes</option>
     <option value="Alt Camp">Alt Camp</option>
 <option value="Alt Empordà">Alt Empordà</option>
@@ -644,17 +651,25 @@
                         </select>
                     </div>
                 </div>
+                
+                <!-- Comptador d'estacions compacte -->
+                <div class="rotation-status-container" style="margin-top: 5px;">
+                    <div class="rotation-status" style="font-size: 11px; padding: 4px 8px;">
+                        <i class="fas fa-sync-alt"></i>
+                        2 / 45
+                    </div>
+                </div>
             </div>
             
             <div class="header-right">
-                <div class="dual-clock-digital">
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-local-simple">--:--</div>
-                        <div class="clock-label-digital">LT</div>
+                <div class="dual-clock-digital" style="min-width: 100px;">
+                    <div class="clock-row-digital" style="gap: 4px;">
+                        <div class="clock-time-digital" id="hora-local-simple" style="font-size: 16px; min-width: 65px;">--:--</div>
+                        <div class="clock-label-digital" style="font-size: 11px; min-width: 24px;">LT</div>
                     </div>
-                    <div class="clock-row-digital">
-                        <div class="clock-time-digital" id="hora-utc-simple">--:--</div>
-                        <div class="clock-label-digital">UTC</div>
+                    <div class="clock-row-digital" style="gap: 4px;">
+                        <div class="clock-time-digital" id="hora-utc-simple" style="font-size: 16px; min-width: 65px;">--:--</div>
+                        <div class="clock-label-digital" style="font-size: 11px; min-width: 24px;">UTC</div>
                     </div>
                 </div>
             </div>
@@ -879,7 +894,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">11.7°C</div>
+                            <div class="weather-value temp-fresca">12.2°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -908,7 +923,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">3.1°C</div>
+                            <div class="weather-value temp-fresca">5.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -937,7 +952,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">7.4°C</div>
+                            <div class="weather-value temp-fresca">7.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -966,7 +981,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">12.2°C</div>
+                            <div class="weather-value temp-fresca">12.8°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -995,7 +1010,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">2.4°C</div>
+                            <div class="weather-value temp-fred">4.4°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1024,7 +1039,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">9.6°C</div>
+                            <div class="weather-value temp-fresca">9.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1053,7 +1068,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">11.6°C</div>
+                            <div class="weather-value temp-fresca">12.0°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1082,7 +1097,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-4.8°C</div>
+                            <div class="weather-value temp-fred">-4.5°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1111,7 +1126,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">2.5°C</div>
+                            <div class="weather-value temp-fred">2.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1140,7 +1155,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">1.2°C</div>
+                            <div class="weather-value temp-fred">3.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1169,7 +1184,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">1.9°C</div>
+                            <div class="weather-value temp-fred">4.0°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1198,7 +1213,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-4.1°C</div>
+                            <div class="weather-value temp-fred">-3.7°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1227,7 +1242,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">7.3°C</div>
+                            <div class="weather-value temp-fresca">8.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1256,7 +1271,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-3.7°C</div>
+                            <div class="weather-value temp-fred">-3.8°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1285,7 +1300,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-6.9°C</div>
+                            <div class="weather-value temp-fred">-7.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1314,7 +1329,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">5.5°C</div>
+                            <div class="weather-value temp-fresca">6.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1343,12 +1358,12 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-2.7°C</div>
+                            <div class="weather-value temp-fred">-2.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
                             <i class="fas fa-cloud-rain"></i>
-                            <div class="weather-value">0.2 mm</div>
+                            <div class="weather-value">0.1 mm</div>
                             <div class="periode-info">Pluja acumulada del període</div>
                         </div>
                     </div>
@@ -1372,7 +1387,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">2.5°C</div>
+                            <div class="weather-value temp-fred">3.7°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1401,7 +1416,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-3.0°C</div>
+                            <div class="weather-value temp-fred">-2.6°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1430,7 +1445,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">1.3°C</div>
+                            <div class="weather-value temp-fred">3.6°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1459,7 +1474,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">6.4°C</div>
+                            <div class="weather-value temp-fresca">9.8°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1488,7 +1503,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">11.6°C</div>
+                            <div class="weather-value temp-fresca">11.5°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1517,7 +1532,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">9.5°C</div>
+                            <div class="weather-value temp-fresca">10.0°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1546,7 +1561,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">1.4°C</div>
+                            <div class="weather-value temp-fred">1.6°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1575,7 +1590,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">3.7°C</div>
+                            <div class="weather-value temp-fred">4.8°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1604,7 +1619,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-1.4°C</div>
+                            <div class="weather-value temp-fred">-1.3°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1633,7 +1648,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">2.0°C</div>
+                            <div class="weather-value temp-fred">2.3°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1662,7 +1677,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">12.5°C</div>
+                            <div class="weather-value temp-fresca">13.0°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1691,7 +1706,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-1.0°C</div>
+                            <div class="weather-value temp-fred">0.0°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1720,7 +1735,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">6.1°C</div>
+                            <div class="weather-value temp-fresca">7.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1749,7 +1764,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-3.6°C</div>
+                            <div class="weather-value temp-fred">-3.4°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1778,7 +1793,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">9.5°C</div>
+                            <div class="weather-value temp-fresca">9.7°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1807,7 +1822,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">10.1°C</div>
+                            <div class="weather-value temp-fresca">10.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1836,7 +1851,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">4.7°C</div>
+                            <div class="weather-value temp-fresca">7.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1865,7 +1880,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">0.5°C</div>
+                            <div class="weather-value temp-fred">1.7°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1894,12 +1909,12 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">-6.1°C</div>
+                            <div class="weather-value temp-fred">-6.2°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
                             <i class="fas fa-cloud-rain"></i>
-                            <div class="weather-value">0.3 mm</div>
+                            <div class="weather-value">0.2 mm</div>
                             <div class="periode-info">Pluja acumulada del període</div>
                         </div>
                     </div>
@@ -1923,7 +1938,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fred">1.9°C</div>
+                            <div class="weather-value temp-fred">2.1°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1952,7 +1967,7 @@
                     <div class="weather-data">
                         <div class="weather-item">
                             <i class="fas fa-thermometer-half"></i>
-                            <div class="weather-value temp-fresca">9.1°C</div>
+                            <div class="weather-value temp-fresca">9.9°C</div>
                             <div class="periode-info">Temperatura mitjana del període</div>
                         </div>
                         <div class="weather-item">
@@ -1991,7 +2006,7 @@
             </a>
         </div>
         <div class="footer-right">
-            <span>🔄 20/02/2026 08:45:52 CET</span>
+            <span>🔄 20/02/2026 09:09:08 CET</span>
         </div>
     </div>
     
