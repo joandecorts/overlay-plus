@@ -2,7 +2,7 @@
   "metadata": {
     "data_consulta": "2026-02-20",
     "hora_consulta": "T09:00Z",
-    "data_extractcio": "2026-02-20T10:47:40.795786",
+    "data_extractcio": "2026-02-20T11:15:32.786762",
     "total_estacions": 1,
     "formats_generats": [
       "Excel",
@@ -23,20 +23,20 @@
   },
   "estacions": [
     {
-      "TEMPERATURA_MITJANA_DIA": "3.8 °C",
-      "TEMPERATURA_MAXIMA_DIA": "14.4 °C 10:29 TU",
+      "TEMPERATURA_MITJANA_DIA": "4.3 °C",
+      "TEMPERATURA_MAXIMA_DIA": "15.6 °C 10:56 TU",
       "TEMPERATURA_MINIMA_DIA": "-0.4 °C 6:44 TU",
-      "HUMITAT_MITJANA_DIA": "89%",
+      "HUMITAT_MITJANA_DIA": "87%",
       "PRECIPITACIO_ACUM_DIA": "0.2 mm",
       "GRUIX_NEU_MAX": "",
-      "RATXA_VENT_MAX": "8.6 km/h - 160º 10:02 TU",
-      "RADIACIO_GLOBAL": "3.8 MJ/m2",
-      "PRESSIO_ATMOSFERICA": "1021.0 hPa",
+      "RATXA_VENT_MAX": "11.9 km/h - 249º 10:59 TU",
+      "RADIACIO_GLOBAL": "5.0 MJ/m2",
+      "PRESSIO_ATMOSFERICA": "1021.2 hPa",
       "ID_ESTAC": "XJ",
       "NOM_ESTACIO": "Girona",
       "NOM_ORIGINAL": "GIRONA_XJ",
       "DATA_DIA": "2026-02-20",
-      "DATA_EXTRACCIO": "2026-02-20 10:47:37",
+      "DATA_EXTRACCIO": "2026-02-20 11:15:30",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-20T09:00Z"
     }
   ]
