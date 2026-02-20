@@ -1320,39 +1320,60 @@ def generar_banner_html(metadades, periode_data, diari_data):
             </div>
             
             <div class="header-center">
-                <div class="station-controls" style="flex-wrap: wrap; gap: 5px;">
-                    <!-- Botons de navegació compactes -->
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
-                        <button onclick="window.location.href='index.html'" title="Anterior" style="padding: 6px 8px;">
+                <!-- 🔹 NOU: Contenidor per als botons de navegació i comptador -->
+                <div class="station-controls" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: 100%;">
+                    <!-- Botó Anterior -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
+                        <button onclick="window.location.href='#'" title="Anterior" style="width: 100%; padding: 8px 5px;">
                             <i class="fas fa-chevron-left"></i>
-                            <span class="icon-text" style="font-size: 11px;">Anterior</span>
+                            <span class="icon-text" style="font-size: 12px;">Anterior</span>
                         </button>
                     </div>
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
-                        <button onclick="window.location.href='banner.html'" title="Següent" style="padding: 6px 8px;">
+                    
+                    <!-- Comptador d'estacions -->
+                    <div class="rotation-status" style="flex: 0 1 auto; margin: 0; padding: 8px 12px; font-size: 14px;">
+                        2 / {len(estacions_amb_dades)}
+                    </div>
+                    
+                    <!-- Botó Següent -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
+                        <button onclick="window.location.href='#'" title="Següent" style="width: 100%; padding: 8px 5px;">
                             <i class="fas fa-chevron-right"></i>
-                            <span class="icon-text" style="font-size: 11px;">Següent</span>
+                            <span class="icon-text" style="font-size: 12px;">Següent</span>
                         </button>
                     </div>
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
-                        <button onclick="window.location.href='index.html'" title="Aturar" style="padding: 6px 8px;">
+                    
+                    <!-- Botó Aturar -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
+                        <button onclick="window.location.href='#'" title="Aturar" style="width: 100%; padding: 8px 5px;">
                             <i class="fas fa-pause"></i>
-                            <span class="icon-text" style="font-size: 11px;">Aturar</span>
+                            <span class="icon-text" style="font-size: 12px;">Aturar</span>
                         </button>
                     </div>
-                    <div class="station-icon" style="flex: 1 1 auto; min-width: 60px;">
-                        <button onclick="window.location.href='banner.html'" title="Estacions" style="padding: 6px 8px;">
+                    
+                    <!-- Botó Estacions -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
+                        <button onclick="window.location.href='banner.html'" title="Estacions" style="width: 100%; padding: 8px 5px;">
                             <i class="fas fa-list"></i>
-                            <span class="icon-text" style="font-size: 11px;">Estacions</span>
+                            <span class="icon-text" style="font-size: 12px;">Estacions</span>
                         </button>
+                    </div>
+                    
+                    <!-- Botó Principal -->
+                    <div class="station-icon" style="flex: 1 1 auto; min-width: 70px;">
+                        <a href="index.html" title="Principal" style="width: 100%; padding: 8px 5px; text-align: center;">
+                            <i class="fas fa-home"></i>
+                            <span class="icon-text" style="font-size: 12px;">Principal</span>
+                        </a>
                     </div>
                 </div>
                 
-                <div class="station-controls" style="margin-top: 5px; width: 100%;">
+                <!-- Filtre per comarca (separat) -->
+                <div class="station-controls" style="margin-top: 10px; width: 100%;">
                     <div class="station-selector" style="min-width: 150px; width: 100%;">
-                        <label for="filterComarca" style="font-size: 12px;">Filtra:</label>
-                        <select id="filterComarca" style="font-size: 12px; padding: 6px 8px;">
-                            <option value="">Totes</option>
+                        <label for="filterComarca" style="font-size: 13px;">Filtra:</label>
+                        <select id="filterComarca" style="font-size: 13px; padding: 8px 10px;">
+                            <option value="">Totes les comarques</option>
     '''
     
     comarques = sorted(set([m['comarca'] for m in metadades.values() if m['comarca'] != 'Desconeguda']))
@@ -1363,25 +1384,17 @@ def generar_banner_html(metadades, periode_data, diari_data):
                         </select>
                     </div>
                 </div>
-                
-                <!-- Comptador d'estacions compacte -->
-                <div class="rotation-status-container" style="margin-top: 5px;">
-                    <div class="rotation-status" style="font-size: 11px; padding: 4px 8px;">
-                        <i class="fas fa-sync-alt"></i>
-                        2 / {len(estacions_amb_dades)}
-                    </div>
-                </div>
             </div>
             
             <div class="header-right">
-                <div class="dual-clock-digital" style="min-width: 100px;">
-                    <div class="clock-row-digital" style="gap: 4px;">
-                        <div class="clock-time-digital" id="hora-local-simple" style="font-size: 16px; min-width: 65px;">--:--</div>
-                        <div class="clock-label-digital" style="font-size: 11px; min-width: 24px;">LT</div>
+                <div class="dual-clock-digital">
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-local-simple">--:--</div>
+                        <div class="clock-label-digital">LT</div>
                     </div>
-                    <div class="clock-row-digital" style="gap: 4px;">
-                        <div class="clock-time-digital" id="hora-utc-simple" style="font-size: 16px; min-width: 65px;">--:--</div>
-                        <div class="clock-label-digital" style="font-size: 11px; min-width: 24px;">UTC</div>
+                    <div class="clock-row-digital">
+                        <div class="clock-time-digital" id="hora-utc-simple">--:--</div>
+                        <div class="clock-label-digital">UTC</div>
                     </div>
                 </div>
             </div>
