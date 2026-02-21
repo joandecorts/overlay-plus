@@ -2,7 +2,7 @@
   "metadata": {
     "data_consulta": "2026-02-21",
     "hora_consulta": "T09:00Z",
-    "data_extractcio": "2026-02-21T18:49:52.736264",
+    "data_extractcio": "2026-02-21T19:20:23.087953",
     "total_estacions": 45,
     "formats_generats": [
       "Excel",
@@ -36,11 +36,11 @@
       "NOM_ESTACIO": "Alt Àneu - Bonabé (1.693 m)",
       "NOM_ORIGINAL": "ALT_ANEU___BONABE_1693_M_YT",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:18",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:31",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YT&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "1.8 °C",
+      "TEMPERATURA_MITJANA_DIA": "1.9 °C",
       "TEMPERATURA_MAXIMA_DIA": "7.7 °C 10:09 TU",
       "TEMPERATURA_MINIMA_DIA": "-3.1 °C 2:49 TU",
       "HUMITAT_MITJANA_DIA": "42%",
@@ -53,7 +53,7 @@
       "NOM_ESTACIO": "Alt Àneu - Bonaigua (2.266 m)",
       "NOM_ORIGINAL": "ALT_ANEU___BONAIGUA_2266_M_Z1",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:20",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:33",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z1&dia=2026-02-21T09:00Z"
     },
     {
@@ -70,14 +70,14 @@
       "NOM_ESTACIO": "Anglès",
       "NOM_ORIGINAL": "ANGLES_DN",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:23",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:36",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DN&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "3.5 °C",
+      "TEMPERATURA_MITJANA_DIA": "3.6 °C",
       "TEMPERATURA_MAXIMA_DIA": "9.2 °C 15:38 TU",
       "TEMPERATURA_MINIMA_DIA": "-2.3 °C 0:54 TU",
-      "HUMITAT_MITJANA_DIA": "40%",
+      "HUMITAT_MITJANA_DIA": "39%",
       "PRECIPITACIO_ACUM_DIA": "0.7 mm",
       "GRUIX_NEU_MAX": "131 cm",
       "RATXA_VENT_MAX": "16.2 km/h - 302º 1:46 TU",
@@ -87,14 +87,14 @@
       "NOM_ESTACIO": "Arres - Sasseuva (2.228 m)",
       "NOM_ORIGINAL": "ARRES___SASSEUVA_2228_M_Z6",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:25",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:38",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z6&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "10.6 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.7 °C 15:40 TU",
       "TEMPERATURA_MINIMA_DIA": "3.3 °C 5:54 TU",
-      "HUMITAT_MITJANA_DIA": "70%",
+      "HUMITAT_MITJANA_DIA": "69%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "16.2 km/h - 105º 12:09 TU",
@@ -104,7 +104,7 @@
       "NOM_ESTACIO": "Banyoles",
       "NOM_ORIGINAL": "BANYOLES_DJ",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:27",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:41",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DJ&dia=2026-02-21T09:00Z"
     },
     {
@@ -121,7 +121,7 @@
       "NOM_ESTACIO": "Barcelona - el Raval",
       "NOM_ORIGINAL": "BARCELONA___EL_RAVAL_X4",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:30",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:43",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=X4&dia=2026-02-21T09:00Z"
     },
     {
@@ -138,14 +138,14 @@
       "NOM_ESTACIO": "Barcelona - Observatori Fabra",
       "NOM_ORIGINAL": "BARCELONA___OBSERVATORI_FABRA_D5",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:32",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:46",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D5&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "14.1 °C",
+      "TEMPERATURA_MITJANA_DIA": "13.9 °C",
       "TEMPERATURA_MAXIMA_DIA": "19.9 °C 13:41 TU",
-      "TEMPERATURA_MINIMA_DIA": "9.1 °C 18:29 TU",
-      "HUMITAT_MITJANA_DIA": "52%",
+      "TEMPERATURA_MINIMA_DIA": "8.5 °C 18:59 TU",
+      "HUMITAT_MITJANA_DIA": "53%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "40.3 km/h - 344º 4:31 TU",
@@ -155,14 +155,14 @@
       "NOM_ESTACIO": "Cabanes",
       "NOM_ORIGINAL": "CABANES_YS",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:35",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:48",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YS&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "8.8 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.5 °C 14:41 TU",
       "TEMPERATURA_MINIMA_DIA": "0.9 °C 6:00 TU",
-      "HUMITAT_MITJANA_DIA": "77%",
+      "HUMITAT_MITJANA_DIA": "78%",
       "PRECIPITACIO_ACUM_DIA": "0.1 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "15.1 km/h - 103º 12:55 TU",
@@ -172,14 +172,14 @@
       "NOM_ESTACIO": "Cassà de la Selva",
       "NOM_ORIGINAL": "CASSA_DE_LA_SELVA_UN",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:36",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:51",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=UN&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "9.4 °C",
+      "TEMPERATURA_MITJANA_DIA": "9.3 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.6 °C 13:10 TU",
       "TEMPERATURA_MINIMA_DIA": "2.1 °C 2:46 TU",
-      "HUMITAT_MITJANA_DIA": "49%",
+      "HUMITAT_MITJANA_DIA": "50%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "",
@@ -189,14 +189,14 @@
       "NOM_ESTACIO": "Castellar de N'hug - el Clot del Moro",
       "NOM_ORIGINAL": "CASTELLAR_DE_NHUG___EL_CLOT_DEL_MORO_MS",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:37",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:53",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=MS&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "13.1 °C",
+      "TEMPERATURA_MITJANA_DIA": "13.0 °C",
       "TEMPERATURA_MAXIMA_DIA": "17.4 °C 13:58 TU",
       "TEMPERATURA_MINIMA_DIA": "7.2 °C 6:39 TU",
-      "HUMITAT_MITJANA_DIA": "58%",
+      "HUMITAT_MITJANA_DIA": "59%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "",
@@ -206,11 +206,11 @@
       "NOM_ESTACIO": "Castelló D'empúries",
       "NOM_ORIGINAL": "CASTELLO_DEMPURIES_W1",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:38",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:56",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=W1&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "5.3 °C",
+      "TEMPERATURA_MITJANA_DIA": "5.4 °C",
       "TEMPERATURA_MAXIMA_DIA": "20.9 °C 14:46 TU",
       "TEMPERATURA_MINIMA_DIA": "-5.1 °C 5:01 TU",
       "HUMITAT_MITJANA_DIA": "61%",
@@ -223,14 +223,14 @@
       "NOM_ESTACIO": "Das - Aeròdrom",
       "NOM_ORIGINAL": "DAS___AERODROM_DP",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:39",
+      "DATA_EXTRACCIO": "2026-02-21 19:18:58",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DP&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "11.9 °C",
+      "TEMPERATURA_MITJANA_DIA": "11.8 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.3 °C 12:10 TU",
       "TEMPERATURA_MINIMA_DIA": "6.8 °C 5:11 TU",
-      "HUMITAT_MITJANA_DIA": "66%",
+      "HUMITAT_MITJANA_DIA": "67%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "33.1 km/h - 327º 9:02 TU",
@@ -240,14 +240,14 @@
       "NOM_ESTACIO": "El Prat de Llobregat - el Prat de Llobregat",
       "NOM_ORIGINAL": "EL_PRAT_DE_LLOBREGAT___EL_PRAT_DE_LLOBREGAT_XL",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:40",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:01",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XL&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "13.9 °C",
+      "TEMPERATURA_MITJANA_DIA": "13.7 °C",
       "TEMPERATURA_MAXIMA_DIA": "19.0 °C 13:56 TU",
       "TEMPERATURA_MINIMA_DIA": "6.7 °C 5:50 TU",
-      "HUMITAT_MITJANA_DIA": "51%",
+      "HUMITAT_MITJANA_DIA": "52%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "",
@@ -257,7 +257,7 @@
       "NOM_ESTACIO": "Espolla",
       "NOM_ORIGINAL": "ESPOLLA_VZ",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:41",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:03",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VZ&dia=2026-02-21T09:00Z"
     },
     {
@@ -274,14 +274,14 @@
       "NOM_ESTACIO": "Espot (2.519 m)",
       "NOM_ORIGINAL": "ESPOT_2519_M_Z7",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:42",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:06",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z7&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "8.6 °C",
       "TEMPERATURA_MAXIMA_DIA": "12.9 °C 16:23 TU",
       "TEMPERATURA_MINIMA_DIA": "5.8 °C 6:00 TU",
-      "HUMITAT_MITJANA_DIA": "34%",
+      "HUMITAT_MITJANA_DIA": "33%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "1 cm",
       "RATXA_VENT_MAX": "39.6 km/h - 325º 4:30 TU",
@@ -291,7 +291,7 @@
       "NOM_ESTACIO": "Fogars de Montclús - Puig Sesolles (1.668 m)",
       "NOM_ORIGINAL": "FOGARS_DE_MONTCLUS___PUIG_SESOLLES_1668_M_XK",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:43",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:08",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XK&dia=2026-02-21T09:00Z"
     },
     {
@@ -308,14 +308,14 @@
       "NOM_ESTACIO": "Girona",
       "NOM_ORIGINAL": "GIRONA_XJ",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:45",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:10",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "8.0 °C",
       "TEMPERATURA_MAXIMA_DIA": "15.0 °C 14:03 TU",
       "TEMPERATURA_MINIMA_DIA": "1.6 °C 6:07 TU",
-      "HUMITAT_MITJANA_DIA": "65%",
+      "HUMITAT_MITJANA_DIA": "64%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "17.3 km/h - 255º 13:48 TU",
@@ -325,7 +325,7 @@
       "NOM_ESTACIO": "L'esquirol - Cantonigròs",
       "NOM_ORIGINAL": "LESQUIROL___CANTONIGROS_YU",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:46",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:13",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YU&dia=2026-02-21T09:00Z"
     },
     {
@@ -342,7 +342,7 @@
       "NOM_ESTACIO": "La Coma i la Pedra - el Port del Comte (2.290 m)",
       "NOM_ORIGINAL": "LA_COMA_I_LA_PEDRA___EL_PORT_DEL_COMTE_2290_M_ZE",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:47",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:15",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=ZE&dia=2026-02-21T09:00Z"
     },
     {
@@ -359,7 +359,7 @@
       "NOM_ESTACIO": "La Seu D'urgell - la Seu D'urgell - Bellestar",
       "NOM_ORIGINAL": "LA_SEU_DURGELL___LA_SEU_DURGELL___BELLESTAR_CD",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:49",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:18",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CD&dia=2026-02-21T09:00Z"
     },
     {
@@ -376,11 +376,11 @@
       "NOM_ESTACIO": "La Vall de Boí - Boí (2.535 m)",
       "NOM_ORIGINAL": "LA_VALL_DE_BOI___BOI_2535_M_Z2",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:51",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:20",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z2&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "2.7 °C",
+      "TEMPERATURA_MITJANA_DIA": "2.8 °C",
       "TEMPERATURA_MAXIMA_DIA": "9.4 °C 12:31 TU",
       "TEMPERATURA_MINIMA_DIA": "-0.8 °C 1:34 TU",
       "HUMITAT_MITJANA_DIA": "33%",
@@ -393,7 +393,7 @@
       "NOM_ESTACIO": "Lladorre - Certascan (2.400 m)",
       "NOM_ORIGINAL": "LLADORRE___CERTASCAN_2400_M_Z5",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:54",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:22",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z5&dia=2026-02-21T09:00Z"
     },
     {
@@ -404,13 +404,13 @@
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "15.5 km/h - 240º 11:58 TU",
-      "RADIACIO_GLOBAL": "15.9 MJ/m2",
+      "RADIACIO_GLOBAL": "15.8 MJ/m2",
       "PRESSIO_ATMOSFERICA": "1031.6 hPa",
       "ID_ESTAC": "VK",
       "NOM_ESTACIO": "Lleida - Raimat",
       "NOM_ORIGINAL": "LLEIDA___RAIMAT_VK",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:56",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:25",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VK&dia=2026-02-21T09:00Z"
     },
     {
@@ -427,7 +427,7 @@
       "NOM_ESTACIO": "Meranges - Malniu (2.230 m)",
       "NOM_ORIGINAL": "MERANGES___MALNIU_2230_M_Z3",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:48:59",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:28",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z3&dia=2026-02-21T09:00Z"
     },
     {
@@ -444,14 +444,14 @@
       "NOM_ESTACIO": "Molló - Fabert",
       "NOM_ORIGINAL": "MOLLO___FABERT_CG",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:01",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:30",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CG&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "4.4 °C",
+      "TEMPERATURA_MITJANA_DIA": "4.3 °C",
       "TEMPERATURA_MAXIMA_DIA": "9.1 °C 12:25 TU",
       "TEMPERATURA_MINIMA_DIA": "0.4 °C 3:51 TU",
-      "HUMITAT_MITJANA_DIA": "32%",
+      "HUMITAT_MITJANA_DIA": "33%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "163 cm",
       "RATXA_VENT_MAX": "24.1 km/h - 226º 5:04 TU",
@@ -461,7 +461,7 @@
       "NOM_ESTACIO": "Montellà i Martinet - Cadí Nord (2.143 m) - Prat D'aguiló",
       "NOM_ORIGINAL": "MONTELLA_I_MARTINET___CADI_NORD_2143_M___PRAT_DAGU",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:04",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:33",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=Z9&dia=2026-02-21T09:00Z"
     },
     {
@@ -478,31 +478,31 @@
       "NOM_ESTACIO": "Olot",
       "NOM_ORIGINAL": "OLOT_YB",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:06",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:35",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YB&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "12.1 °C",
+      "TEMPERATURA_MITJANA_DIA": "12.0 °C",
       "TEMPERATURA_MAXIMA_DIA": "16.4 °C 13:37 TU",
       "TEMPERATURA_MINIMA_DIA": "7.4 °C 7:06 TU",
-      "HUMITAT_MITJANA_DIA": "63%",
+      "HUMITAT_MITJANA_DIA": "64%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "24.8 km/h - 334º 0:21 TU",
-      "RADIACIO_GLOBAL": "15.4 MJ/m2",
+      "RADIACIO_GLOBAL": "15.3 MJ/m2",
       "PRESSIO_ATMOSFERICA": "",
       "ID_ESTAC": "YP",
       "NOM_ESTACIO": "Palafrugell",
       "NOM_ORIGINAL": "PALAFRUGELL_YP",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:09",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:37",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YP&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "12.0 °C",
+      "TEMPERATURA_MITJANA_DIA": "11.9 °C",
       "TEMPERATURA_MAXIMA_DIA": "19.9 °C 14:39 TU",
       "TEMPERATURA_MINIMA_DIA": "4.4 °C 6:38 TU",
-      "HUMITAT_MITJANA_DIA": "63%",
+      "HUMITAT_MITJANA_DIA": "64%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "61.9 km/h - 15º 1:47 TU",
@@ -512,7 +512,7 @@
       "NOM_ESTACIO": "Pantà de Darnius - Boadella",
       "NOM_ORIGINAL": "PANTA_DE_DARNIUS___BOADELLA_J5",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:11",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:40",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=J5&dia=2026-02-21T09:00Z"
     },
     {
@@ -529,14 +529,14 @@
       "NOM_ESTACIO": "Portbou - Coll dels Belitres",
       "NOM_ORIGINAL": "PORTBOU___COLL_DELS_BELITRES_D6",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:13",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:42",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D6&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "5.8 °C",
+      "TEMPERATURA_MITJANA_DIA": "5.7 °C",
       "TEMPERATURA_MAXIMA_DIA": "14.6 °C 14:56 TU",
       "TEMPERATURA_MINIMA_DIA": "-3.3 °C 7:04 TU",
-      "HUMITAT_MITJANA_DIA": "77%",
+      "HUMITAT_MITJANA_DIA": "78%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "2 cm",
       "RATXA_VENT_MAX": "16.9 km/h - 304º 0:34 TU",
@@ -546,30 +546,30 @@
       "NOM_ESTACIO": "Prades",
       "NOM_ORIGINAL": "PRADES_XR",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:16",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:45",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XR&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "6.6 °C",
       "TEMPERATURA_MAXIMA_DIA": "17.3 °C 14:01 TU",
       "TEMPERATURA_MINIMA_DIA": "-2.7 °C 4:54 TU",
-      "HUMITAT_MITJANA_DIA": "54%",
+      "HUMITAT_MITJANA_DIA": "53%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "18.7 km/h - 334º 16:14 TU",
       "RADIACIO_GLOBAL": "15.7 MJ/m2",
-      "PRESSIO_ATMOSFERICA": "1030.2 hPa",
+      "PRESSIO_ATMOSFERICA": "1030.3 hPa",
       "ID_ESTAC": "YA",
       "NOM_ESTACIO": "Puigcerdà",
       "NOM_ORIGINAL": "PUIGCERDA_YA",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:18",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:47",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YA&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "5.0 °C",
+      "TEMPERATURA_MITJANA_DIA": "4.9 °C",
       "TEMPERATURA_MAXIMA_DIA": "9.2 °C 12:51 TU",
-      "TEMPERATURA_MINIMA_DIA": "0.7 °C 18:24 TU",
+      "TEMPERATURA_MINIMA_DIA": "0.3 °C 18:46 TU",
       "HUMITAT_MITJANA_DIA": "37%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "85 cm",
@@ -580,7 +580,7 @@
       "NOM_ESTACIO": "Queralbs - Núria (1.971 m)",
       "NOM_ORIGINAL": "QUERALBS___NURIA_1971_M_DG",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:21",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:50",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=DG&dia=2026-02-21T09:00Z"
     },
     {
@@ -592,16 +592,16 @@
       "GRUIX_NEU_MAX": "1 cm",
       "RATXA_VENT_MAX": "58.0 km/h - 279º 2:50 TU",
       "RADIACIO_GLOBAL": "16.5 MJ/m2",
-      "PRESSIO_ATMOSFERICA": "1030.7 hPa",
+      "PRESSIO_ATMOSFERICA": "1030.8 hPa",
       "ID_ESTAC": "X5",
       "NOM_ESTACIO": "Roquetes - Pn dels Ports",
       "NOM_ORIGINAL": "ROQUETES___PN_DELS_PORTS_X5",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:23",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:53",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=X5&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "13.7 °C",
+      "TEMPERATURA_MITJANA_DIA": "13.6 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.6 °C 13:45 TU",
       "TEMPERATURA_MINIMA_DIA": "7.6 °C 7:10 TU",
       "HUMITAT_MITJANA_DIA": "55%",
@@ -614,7 +614,7 @@
       "NOM_ESTACIO": "Roses",
       "NOM_ORIGINAL": "ROSES_D4",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:25",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:55",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D4&dia=2026-02-21T09:00Z"
     },
     {
@@ -631,7 +631,7 @@
       "NOM_ESTACIO": "Sant Pau de Segúries",
       "NOM_ORIGINAL": "SANT_PAU_DE_SEGURIES_CI",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:28",
+      "DATA_EXTRACCIO": "2026-02-21 19:19:57",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=CI&dia=2026-02-21T09:00Z"
     },
     {
@@ -648,7 +648,7 @@
       "NOM_ESTACIO": "Santa Coloma de Farners",
       "NOM_ORIGINAL": "SANTA_COLOMA_DE_FARNERS_XS",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:30",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:00",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XS&dia=2026-02-21T09:00Z"
     },
     {
@@ -665,11 +665,11 @@
       "NOM_ESTACIO": "Setcases - Ulldeter (2.413 m)",
       "NOM_ORIGINAL": "SETCASES___ULLDETER_2413_M_ZC",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:32",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:03",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=ZC&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "9.1 °C",
+      "TEMPERATURA_MITJANA_DIA": "9.0 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.8 °C 14:21 TU",
       "TEMPERATURA_MINIMA_DIA": "0.8 °C 1:46 TU",
       "HUMITAT_MITJANA_DIA": "50%",
@@ -677,16 +677,16 @@
       "GRUIX_NEU_MAX": "2 cm",
       "RATXA_VENT_MAX": "",
       "RADIACIO_GLOBAL": "",
-      "PRESSIO_ATMOSFERICA": "1030.3 hPa",
+      "PRESSIO_ATMOSFERICA": "1030.4 hPa",
       "ID_ESTAC": "XH",
       "NOM_ESTACIO": "Sort",
       "NOM_ORIGINAL": "SORT_XH",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:35",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:05",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XH&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "11.5 °C",
+      "TEMPERATURA_MITJANA_DIA": "11.4 °C",
       "TEMPERATURA_MAXIMA_DIA": "16.9 °C 14:59 TU",
       "TEMPERATURA_MINIMA_DIA": "3.7 °C 6:35 TU",
       "HUMITAT_MITJANA_DIA": "65%",
@@ -699,14 +699,14 @@
       "NOM_ESTACIO": "Tarragona - Complex Educatiu",
       "NOM_ORIGINAL": "TARRAGONA___COMPLEX_EDUCATIU_XE",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:37",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:07",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XE&dia=2026-02-21T09:00Z"
     },
     {
       "TEMPERATURA_MITJANA_DIA": "11.1 °C",
       "TEMPERATURA_MAXIMA_DIA": "17.9 °C 13:29 TU",
       "TEMPERATURA_MINIMA_DIA": "4.2 °C 6:27 TU",
-      "HUMITAT_MITJANA_DIA": "71%",
+      "HUMITAT_MITJANA_DIA": "72%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "",
@@ -716,14 +716,14 @@
       "NOM_ESTACIO": "Torroella de Montgrí",
       "NOM_ORIGINAL": "TORROELLA_DE_MONTGRI_UE",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:40",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:10",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=UE&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "7.0 °C",
+      "TEMPERATURA_MITJANA_DIA": "7.1 °C",
       "TEMPERATURA_MAXIMA_DIA": "18.7 °C 15:08 TU",
       "TEMPERATURA_MINIMA_DIA": "-1.4 °C 5:52 TU",
-      "HUMITAT_MITJANA_DIA": "76%",
+      "HUMITAT_MITJANA_DIA": "75%",
       "PRECIPITACIO_ACUM_DIA": "0.0 mm",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "15.5 km/h - 269º 16:29 TU",
@@ -733,11 +733,11 @@
       "NOM_ESTACIO": "Vic",
       "NOM_ORIGINAL": "VIC_XO",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:42",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:12",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XO&dia=2026-02-21T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "2.6 °C",
+      "TEMPERATURA_MITJANA_DIA": "2.5 °C",
       "TEMPERATURA_MAXIMA_DIA": "5.7 °C 12:16 TU",
       "TEMPERATURA_MINIMA_DIA": "-0.3 °C 2:04 TU",
       "HUMITAT_MITJANA_DIA": "38%",
@@ -750,7 +750,7 @@
       "NOM_ESTACIO": "Vielha e Mijaran - Lac Redon (2.247 m)",
       "NOM_ORIGINAL": "VIELHA_E_MIJARAN___LAC_REDON_2247_M_VS",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:45",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:15",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=VS&dia=2026-02-21T09:00Z"
     },
     {
@@ -767,7 +767,7 @@
       "NOM_ESTACIO": "Vielha e Mijaran - Vielha - Elipòrt",
       "NOM_ORIGINAL": "VIELHA_E_MIJARAN___VIELHA___ELIPORT_YN",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:47",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:17",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=YN&dia=2026-02-21T09:00Z"
     },
     {
@@ -779,12 +779,12 @@
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "23.8 km/h - 339º 12:25 TU",
       "RADIACIO_GLOBAL": "15.4 MJ/m2",
-      "PRESSIO_ATMOSFERICA": "1031.6 hPa",
+      "PRESSIO_ATMOSFERICA": "1031.5 hPa",
       "ID_ESTAC": "D7",
       "NOM_ESTACIO": "Vinebre",
       "NOM_ORIGINAL": "VINEBRE_D7",
       "DATA_DIA": "2026-02-21",
-      "DATA_EXTRACCIO": "2026-02-21 18:49:50",
+      "DATA_EXTRACCIO": "2026-02-21 19:20:20",
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=D7&dia=2026-02-21T09:00Z"
     }
   ]
