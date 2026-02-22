@@ -452,7 +452,8 @@ class HTMLGenerator:
         return re.sub(r'[^a-zA-Z0-9_]', '_', str(id_str))
     
     @staticmethod
-    def generar_head(titol="Banner Meteo.cat"):
+    def generar_head(titol="Banner 
+"):
         """Genera la secció head dels HTMLs - AMB CSS RESPONSIU MILLORAT"""
         return f"""<!DOCTYPE html>
 <html lang="ca">
@@ -1069,7 +1070,7 @@ class HTMLGenerator:
         return f"""
     <div class="overlay-footer">
         <div class="footer-left">
-            <span>📡 Font: https://www.meteo.cat</span>
+            <span>📡 Font de dades: https://www.meteo.cat/</span>
         </div>
         <div class="footer-center">
             <span>© joandecorts.io</span>
