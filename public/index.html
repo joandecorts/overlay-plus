@@ -53,11 +53,25 @@
             z-index: 1000;
         }
 
+        /* 🔹 NOU: Contenidor del títol amb logo */
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 200px;
+        }
+
+        .catalunya-logo {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
         .header-title {
             font-size: clamp(1.2rem, 3vw, 1.6rem);
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            min-width: 200px;
             white-space: nowrap;
         }
 
@@ -324,8 +338,8 @@
                 padding: 8px 10px;
             }
             
-            .header-title {
-                text-align: center;
+            .title-container {
+                justify-content: center;
                 margin-bottom: 5px;
             }
             
@@ -351,7 +365,11 @@
 <body>
     <!-- CAPÇALERA COMPLETA -->
     <div class="top-header">
-        <div class="header-title">🏔️ Banner Scroll Meteorològic</div>
+        <!-- 🔹 NOU: Títol amb logo de Catalunya -->
+        <div class="title-container">
+            <img src="/main/templates/Catalunya_logo.jpg" alt="Logo Catalunya" class="catalunya-logo">
+            <div class="header-title">Banner Scroll Meteorològic</div>
+        </div>
         
         <!-- 🔹 NOU: Dues files a la dreta -->
         <div class="right-controls">
