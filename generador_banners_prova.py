@@ -1069,8 +1069,7 @@ class HTMLGenerator:
         return f"""
     <div class="overlay-footer">
         <div class="footer-left">
-            <span>📡 Font: meteo.cat</span>
-            <div class="verificacio-dades">Dades verificades</div>
+            <span>📡 Font: https://www.meteo.cat</span>
         </div>
         <div class="footer-center">
             <span>© joandecorts.io</span>
