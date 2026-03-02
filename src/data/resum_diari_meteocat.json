@@ -244,11 +244,11 @@
       "URL_FONT": "https://www.meteo.cat/observacions/xema/dades?codi=XL&dia=2026-03-02T09:00Z"
     },
     {
-      "TEMPERATURA_MITJANA_DIA": "8.7 °C",
-      "TEMPERATURA_MAXIMA_DIA": "11.9 °C 9:27 TU",
-      "TEMPERATURA_MINIMA_DIA": "4.6 °C 6:28 TU",
-      "HUMITAT_MITJANA_DIA": "90%",
-      "PRECIPITACIO_ACUM_DIA": "0.0 mm",
+      "TEMPERATURA_MITJANA_DIA": "Sense dades",
+      "TEMPERATURA_MAXIMA_DIA": "Sense dades Sense dades",
+      "TEMPERATURA_MINIMA_DIA": "Sense dades Sense dades",
+      "HUMITAT_MITJANA_DIA": "Sense dades",
+      "PRECIPITACIO_ACUM_DIA": "Sense dades",
       "GRUIX_NEU_MAX": "",
       "RATXA_VENT_MAX": "",
       "RADIACIO_GLOBAL": "",
