@@ -1260,7 +1260,7 @@ class HTMLGenerator:
                 
                 html += f'''
                 <div class="data-item">
-                    <div class="data-label">Hora act.:</div>
+                    <div class="data-label">Hora d'actualització:</div>
                     <div class="data-value">{hora_formatted}</div>
                 </div>'''
             except:
