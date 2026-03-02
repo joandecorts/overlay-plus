@@ -234,17 +234,6 @@ class Utilitats:
             pass
         
         return False
-    
-    @staticmethod
-    def format_data_dia(data_dia_str):
-        """Converteix DATA_DIA del format YYYY-MM-DD a DD/MM/YYYY"""
-        if not data_dia_str or data_dia_str.strip() == '':
-            return ""
-        try:
-            data_dia = datetime.strptime(data_dia_str, "%Y-%m-%d")
-            return data_dia.strftime("%d/%m/%Y")
-        except:
-            return data_dia_str
 
 # ============================================================================
 # FUNCIONS DE NETEJA
@@ -454,7 +443,7 @@ class DataLoader:
             return {}
 
 # ============================================================================
-# GENERADOR HTML - AMB TOTES LES CORRECCIONS I MILLORES
+# GENERADOR HTML - AMB TOTES LES CORRECCIONS
 # ============================================================================
 class HTMLGenerator:
     @staticmethod
@@ -496,13 +485,13 @@ class HTMLGenerator:
             margin: 0 auto;
         }}
         
-        /* ===== CAPÇALERA REDISSENYADA ===== */
+        /* ===== CAPÇALERA ===== */
         .overlay-header {{
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #3949ab;
             gap: 10px;
@@ -535,7 +524,6 @@ class HTMLGenerator:
         .header-right {{
             text-align: right;
             flex: 0 1 auto;
-            min-width: 140px;
         }}
         
         /* ===== RELLOTGES ===== */
@@ -577,7 +565,7 @@ class HTMLGenerator:
             text-align: left;
         }}
         
-        /* ===== CONTROLS CENTRALS REDISSENYATS ===== */
+        /* ===== CONTROLS CENTRALS ===== */
         .header-center {{
             text-align: center;
             flex: 2 1 350px;
@@ -587,59 +575,73 @@ class HTMLGenerator:
             gap: 8px;
         }}
         
-        /* 🔹 NOU: Grup de botons superior alineat amb el nom */
-        .top-controls-group {{
+        .station-controls {{
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            justify-content: flex-end;
             gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
             width: 100%;
         }}
         
-        /* 🔹 NOU: Selector d'estacions estilitzat com els botons */
-        .station-selector-wrapper {{
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(145deg, #1a237e, #283593);
-            border: 2px solid #3949ab;
-            border-radius: 6px;
-            padding: 0;
-            height: 36px;
+        .station-selector {{
+            min-width: 220px;
+            flex: 2 1 250px;
         }}
         
-        .station-selector-wrapper select {{
-            background: transparent;
-            color: #bbdefb;
-            border: none;
+        /* 🔹 CORREGIT: Color dels selects (negre sobre blanc per llegir bé) */
+        .station-selector select {{
+            background: white !important;
+            color: black !important;
+            border: 2px solid #3949ab !important;
             border-radius: 6px;
-            padding: 8px 30px 8px 12px;
+            padding: 8px 12px;
             font-size: 13px;
             font-weight: 600;
+            width: 100%;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbdefb'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 12px center;
             background-size: 14px;
-            height: 100%;
-            min-width: 200px;
+            padding-right: 35px;
         }}
         
-        .station-selector-wrapper select option {{
-            background: white;
-            color: black;
-            padding: 10px;
+        .station-selector select:hover {{
+            border-color: #4fc3f7 !important;
+            background: #f5f5f5 !important;
         }}
         
-        .station-selector-wrapper select:hover {{
-            color: #4fc3f7;
+        .station-selector select:focus {{
+            outline: none;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
         }}
         
-        /* Botons amb la mateixa alçada */
-        .nav-btn, .station-icon a, .station-icon button {{
-            display: inline-flex;
+        .station-selector select option {{
+            background: white !important;
+            color: black !important;
+            font-weight: 500;
+            padding: 12px 15px;
+            font-size: 14px;
+        }}
+        
+        .station-selector label {{
+            color: #bbdefb;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 8px;
+            display: inline-block;
+        }}
+        
+        .station-icon {{
+            flex: 0 1 auto;
+        }}
+        
+        .station-icon a, .station-icon button {{
+            display: flex;
             align-items: center;
             gap: 5px;
             background: linear-gradient(145deg, #1a237e, #283593);
@@ -654,23 +656,21 @@ class HTMLGenerator:
             cursor: pointer;
             font-family: inherit;
             white-space: nowrap;
-            height: 36px;
         }}
         
-        .nav-btn:hover, .station-icon a:hover, .station-icon button:hover {{
+        .station-icon a:hover, .station-icon button:hover {{
             background: linear-gradient(145deg, #283593, #1a237e);
             border-color: #4fc3f7;
             color: #4fc3f7;
         }}
         
-        /* 🔹 Rètol verd pujat */
         .rotation-status-container {{
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-top: 5px;
             width: 100%;
-            justify-content: flex-end;
-            margin-top: 0;
+            justify-content: center;
         }}
         
         .rotation-status {{
@@ -692,7 +692,7 @@ class HTMLGenerator:
         
         /* ===== CONTINGUT PRINCIPAL ===== */
         .overlay-content {{
-            margin: 10px 0;
+            margin: 15px 0;
         }}
         
         .columns-4-container {{
@@ -719,7 +719,6 @@ class HTMLGenerator:
             border-bottom: 1px solid #3949ab;
         }}
         
-        /* 🔹 Dades en marcs invisibles */
         .data-item {{
             background: linear-gradient(145deg, #1a237e, #283593);
             border-radius: 6px;
@@ -763,51 +762,97 @@ class HTMLGenerator:
             line-height: 1.2;
         }}
         
-        /* ===== NOU: RÈTOL D'ESPERA INTERMITENT ===== */
-        @keyframes esperaParpelleig {{
-            0% {{ opacity: 0.7; }}
-            50% {{ opacity: 1; }}
-            100% {{ opacity: 0.7; }}
+        /* ===== LLISTA D'ESTACIONS (banner.html) ===== */
+        .llista-estacions {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            padding: 10px 0;
+            max-width: 1400px;
+            margin: 0 auto;
         }}
         
-        @keyframes puntVerd {{
-            0% {{ transform: scale(1); opacity: 1; }}
-            50% {{ transform: scale(1.3); opacity: 0.8; }}
-            100% {{ transform: scale(1); opacity: 1; }}
+        .station-card {{
+            background: linear-gradient(145deg, #1e1e2e, #252536);
+            border-radius: 8px;
+            border: 2px solid #3949ab;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
         }}
         
-        .espera-container {{
-            background: rgba(10, 25, 49, 0.8);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-            border: 2px dashed #4fc3f7;
-            animation: esperaParpelleig 2s infinite ease-in-out;
-        }}
-        
-        .espera-missatge {{
+        .station-header {{
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-size: 18px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3949ab;
+            padding-bottom: 6px;
+            gap: 8px;
+        }}
+        
+        .station-municipi {{
+            font-size: 15px;
             font-weight: bold;
             color: #4fc3f7;
+            margin-bottom: 2px;
+            word-break: break-word;
         }}
         
-        .espera-punt {{
-            width: 20px;
-            height: 20px;
-            background-color: #4caf50;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #4caf50;
-            animation: puntVerd 1.5s infinite ease-in-out;
+        .station-comarca {{
+            font-size: 12px;
+            color: #bbdefb;
+        }}
+        
+        .weather-data {{
+            display: flex;
+            justify-content: space-around;
+            gap: 8px;
+            flex-wrap: wrap;
+        }}
+        
+        .weather-item {{
+            text-align: center;
+            flex: 1 1 70px;
+            min-width: 60px;
+        }}
+        
+        .weather-item i {{
+            font-size: 20px;
+            color: #ffcc80;
+            margin-bottom: 3px;
+            display: block;
+        }}
+        
+        .weather-value {{
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+        }}
+        
+        .temp-fred {{ color: #80deea; }}
+        .temp-fresca {{ color: #4fc3f7; }}
+        .temp-templada {{ color: #ffcc80; }}
+        .temp-calenta {{ color: #ff9800; }}
+        .temp-molt-calenta {{ color: #ff5252; }}
+        .temp-desconeguda {{ color: #bbdefb; }}
+        
+        .station-footer {{
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px solid #3949ab;
+            text-align: center;
+            font-size: 10px;
+            color: #bbdefb;
         }}
         
         /* ===== PEU DE PÀGINA ===== */
         .overlay-footer {{
-            margin-top: 15px;
+            margin-top: 20px;
             padding-top: 10px;
             border-top: 1px solid #3949ab;
             display: flex;
@@ -838,6 +883,13 @@ class HTMLGenerator:
             font-size: 14px;
         }}
         
+        .verificacio-dades {{
+            font-size: 9px;
+            color: #81c784;
+            margin-top: 3px;
+            font-style: italic;
+        }}
+        
         /* ===== MEDIA QUERIES ===== */
         @media (max-width: 900px) {{
             .clock-time-digital {{
@@ -858,6 +910,7 @@ class HTMLGenerator:
             .overlay-header {{
                 flex-direction: column;
                 align-items: stretch;
+                gap: 8px;
             }}
             
             .station-info, .header-center, .header-right {{
@@ -879,33 +932,49 @@ class HTMLGenerator:
                 justify-content: center;
             }}
             
-            .top-controls-group {{
+            .station-controls {{
                 flex-direction: column;
                 width: 100%;
-                gap: 8px;
+                gap: 6px;
             }}
             
-            .station-selector-wrapper {{
-                width: 100%;
-            }}
-            
-            .station-selector-wrapper select {{
+            .station-selector {{
                 width: 100%;
                 min-width: auto;
             }}
             
-            .nav-btn, .station-icon a, .station-icon button {{
+            .station-selector select {{
+                width: 100%;
+            }}
+            
+            .station-icon {{
+                width: 100%;
+            }}
+            
+            .station-icon a, .station-icon button {{
                 width: 100%;
                 justify-content: center;
+                white-space: normal;
+                padding: 8px 10px;
             }}
             
             .rotation-status-container {{
-                justify-content: center;
+                margin-top: 5px;
             }}
             
             .rotation-status {{
                 width: 100%;
                 justify-content: center;
+                padding: 6px 10px;
+            }}
+            
+            /* Eliminar espais blancs innecessaris */
+            .station-name {{
+                margin-bottom: 2px;
+            }}
+            
+            .location-details {{
+                margin-bottom: 2px;
             }}
             
             .columns-4-container {{
@@ -927,6 +996,11 @@ class HTMLGenerator:
             .footer-left, .footer-center, .footer-right {{
                 text-align: center;
                 width: 100%;
+            }}
+            
+            .llista-estacions {{
+                grid-template-columns: 1fr;
+                gap: 10px;
             }}
         }}
         
@@ -1160,34 +1234,33 @@ class HTMLGenerator:
         html += '</div>\n</div>\n'
         html += '</div>\n'
         
+        if diari_data is not None:
+            mostra_avis = Utilitats.calcular_falta_dades_diari(
+                periode_data.get('PERIODE_UTC', ''), 
+                zona_horaria,
+                diari_data, 
+                estacio_id
+            )
+            
+            if mostra_avis:
+                html += '''
+                <div class="avis-canvi-dia">
+                    ⚠️ Dades diàries pendents...
+                </div>
+                '''
+        
         return html
     
     @staticmethod
     def generar_dades_diaries(diari_data, estacio_id):
-        """Genera la secció de dades diàries - AMB DATA FORMATADA I RÈTOL D'ESPERA"""
+        """Genera la secció de dades diàries"""
         if estacio_id not in diari_data or not diari_data[estacio_id]:
-            # 🔹 NOU: Rètol d'espera quan no hi ha dades
-            html = '''
-            <div class="espera-container">
-                <div class="espera-missatge">
-                    <span class="espera-punt"></span>
-                    <span>Esperant dades vàlides del període</span>
-                    <span class="espera-punt"></span>
-                </div>
-            </div>
-            '''
-            return html
+            return ""
         
         diari = diari_data[estacio_id]
-        
-        # 🔹 NOU: Obtenir i formatar la data del dia
-        data_dia_original = diari.get('DATA_DIA', '')
-        data_dia_formatted = Utilitats.format_data_dia(data_dia_original)
-        titol_diari = f"📅 Dades Diàries del dia {data_dia_formatted} (Des de les 00:00 UTC)" if data_dia_formatted else "📅 Dades Diàries (Des de les 00:00 UTC)"
-        
-        html = f'''
-        <div style="margin-top: 15px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 10px;">{titol_diari}</div>
+        html = '''
+        <div style="margin-top: 20px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 10px;">📅 Dades Diàries (des de les 00:00 UTC)</div>
             <div class="columns-4-container">
         '''
         
@@ -1433,10 +1506,10 @@ def generar_banner_html(metadades, periode_data, diari_data):
     return output_path
 
 # ============================================================================
-# 🔹 FUNCIÓ GENERADORA D'INDIVIDUALS (AMB TOTES LES MILLORES)
+# 🔹 FUNCIÓ GENERADORA D'INDIVIDUALS (DEL FITXER BO)
 # ============================================================================
 def generar_banners_individuals(metadades, periode_data, diari_data):
-    """Genera banners individuals per a cada estació - AMB TOTES LES MILLORES"""
+    """Genera banners individuals per a cada estació - VERSIÓ DEL FITXER BO"""
     print("🔄 Generant banners individuals...")
     
     banners_generats = []
@@ -1453,7 +1526,6 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         
         html = HTMLGenerator.generar_head(f"Banner Fix - {periode.get('NOM_ESTACIO', estacio_id)}")
         
-        # 🔹 NOVA CAPÇALERA REDISSENYADA
         html += f'''
     <div class="meteo-overlay">
         <div class="overlay-header">
@@ -1467,10 +1539,9 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
             </div>
             
             <div class="header-center">
-                <!-- 🔹 NOU: Grup de botons superior alineat amb el nom -->
-                <div class="top-controls-group">
-                    <!-- Selector d'estacions estilitzat com els botons -->
-                    <div class="station-selector-wrapper">
+                <div class="station-controls">
+                    <div class="station-selector">
+                        <label for="navEstacions">Navegar a:</label>
                         <select id="navEstacions" onchange="window.location.href=this.value">
                             <option value="">-- Selecciona una estació --</option>
         '''
@@ -1493,7 +1564,6 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         html += f'''
                         </select>
                     </div>
-                    
                     <div class="station-icon">
                         <a href="banner.html" title="Veure totes les estacions">
                             <i class="fas fa-list"></i>
@@ -1508,9 +1578,9 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
                     </div>
                 </div>
                 
-                <!-- 🔹 RÈTOL VERD PUJAT -->
+                <!-- 🆕 CANVI: Substituïm el rètol "BANNER FIX" per la frase explicativa -->
                 <div class="rotation-status-container">
-                    <div class="rotation-status">
+                    <div class="rotation-status" style="max-width: 500px; white-space: normal; line-height: 1.4; padding: 8px 15px;">
                         <i class="fas fa-info-circle"></i>
                         Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
                     </div>
@@ -1537,7 +1607,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         # Generar columnes amb totes les correccions
         html += HTMLGenerator.generar_columnes_dades(periode, metadades, estacio_id, periode.get('NOM_ESTACIO', estacio_id), diari_data)
         
-        # Generar dades diàries (amb la data formatada i el rètol d'espera)
+        # Generar dades diàries (amb hores de registre)
         html += HTMLGenerator.generar_dades_diaries(diari_data, estacio_id)
         
         html += f'''
@@ -1649,10 +1719,10 @@ def main():
     print("   ✅ Rellotges duals")
     print("   ✅ Disseny responsive millorat")
     print("   ✅ Precipitació del període a les targetes (banner.html)")
-    print("   ✅ NOVA capçalera individuals amb selector integrat")
-    print("   ✅ NOVA data a dades diàries (DD/MM/AAAA)")
-    print("   ✅ NOU rètol d'espera animat quan no hi ha dades")
+    print("   ✅ Banners individuals amb frase explicativa i botó sense pestanya")
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
 
 if __name__ == "__main__":
     main()
+
+
