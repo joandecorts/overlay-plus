@@ -1256,7 +1256,7 @@ class HTMLGenerator:
                     zona = "CET"
                 
                 data_hora_local = data_hora_utc + timedelta(hours=desplacament)
-                hora_formatted = data_hora_local.strftime("%H:%M") + " " + zona
+                hora_formatted = data_hora_local.strftime("%H:%M:%S") + " " + zona
                 
                 html += f'''
                 <div class="data-item">
