@@ -454,7 +454,7 @@ class DataLoader:
             return {}
 
 # ============================================================================
-# GENERADOR HTML - AMB TOTES LES CORRECCIONS I MILLORES
+# GENERADOR HTML - AMB TOTES LES CORRECCIONS I MILLORES D'ESPAIS
 # ============================================================================
 class HTMLGenerator:
     @staticmethod
@@ -502,10 +502,10 @@ class HTMLGenerator:
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #3949ab;
-            gap: 10px;
+            gap: 8px;
         }}
         
         .station-info {{
@@ -584,7 +584,7 @@ class HTMLGenerator:
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
         }}
         
         /* 🔹 NOU: Grup de botons superior alineat amb el nom */
@@ -663,20 +663,21 @@ class HTMLGenerator:
             color: #4fc3f7;
         }}
         
-        /* 🔹 Rètol verd pujat */
+        /* 🔹 Rètol verd PUJAT i més compacte */
         .rotation-status-container {{
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             width: 100%;
             justify-content: flex-end;
-            margin-top: 0;
+            margin-top: 3px;
+            margin-bottom: 3px;
         }}
         
         .rotation-status {{
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
@@ -692,12 +693,12 @@ class HTMLGenerator:
         
         /* ===== CONTINGUT PRINCIPAL ===== */
         .overlay-content {{
-            margin: 10px 0;
+            margin: 8px 0;
         }}
         
         .columns-4-container {{
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }}
         
@@ -707,24 +708,24 @@ class HTMLGenerator:
         }}
         
         .data-column {{
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }}
         
         .column-title {{
             color: #bbdefb;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
             border-bottom: 1px solid #3949ab;
         }}
         
-        /* 🔹 Dades en marcs */
+        /* 🔹 Dades en marcs més compactes */
         .data-item {{
             background: linear-gradient(145deg, #1a237e, #283593);
             border-radius: 6px;
-            padding: 8px 10px;
-            margin-bottom: 8px;
+            padding: 6px 8px;
+            margin-bottom: 5px;
             border: 2px solid #3949ab;
             display: flex;
             justify-content: space-between;
@@ -736,19 +737,19 @@ class HTMLGenerator:
         .data-label {{
             color: #bbdefb;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
         }}
         
         .data-value {{
             color: #ffcc80;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             text-align: right;
             word-break: break-word;
         }}
         
         .hora-registre {{
-            font-size: 10px;
+            font-size: 9px;
             color: #90caf9;
             display: block;
             margin-top: 2px;
@@ -756,10 +757,10 @@ class HTMLGenerator:
         }}
         
         .periode-info {{
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-style: italic;
             color: #4caf50;
-            margin-top: 3px;
+            margin-top: 2px;
             line-height: 1.2;
         }}
         
@@ -767,8 +768,8 @@ class HTMLGenerator:
         .llista-estacions {{
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            padding: 15px 0;
+            gap: 12px;
+            padding: 12px 0;
             max-width: 1400px;
             margin: 0 auto;
         }}
@@ -777,7 +778,7 @@ class HTMLGenerator:
             background: linear-gradient(145deg, #1e1e2e, #252536);
             border-radius: 10px;
             border: 2px solid #3949ab;
-            padding: 15px;
+            padding: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -796,10 +797,10 @@ class HTMLGenerator:
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border-bottom: 2px solid #3949ab;
-            padding-bottom: 8px;
-            gap: 10px;
+            padding-bottom: 6px;
+            gap: 8px;
         }}
         
         .station-title {{
@@ -807,15 +808,15 @@ class HTMLGenerator:
         }}
         
         .station-municipi {{
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #4fc3f7;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             word-break: break-word;
         }}
         
         .station-comarca {{
-            font-size: 13px;
+            font-size: 12px;
             color: #bbdefb;
         }}
         
@@ -825,31 +826,31 @@ class HTMLGenerator:
         }}
         
         .station-body {{
-            margin: 12px 0;
+            margin: 10px 0;
         }}
         
         .weather-data {{
             display: flex;
             justify-content: space-around;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }}
         
         .weather-item {{
             text-align: center;
-            flex: 1 1 80px;
-            min-width: 70px;
+            flex: 1 1 70px;
+            min-width: 60px;
         }}
         
         .weather-item i {{
-            font-size: 22px;
+            font-size: 20px;
             color: #ffcc80;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             display: block;
         }}
         
         .weather-value {{
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #ffffff;
         }}
@@ -862,11 +863,11 @@ class HTMLGenerator:
         .temp-desconeguda {{ color: #bbdefb; }}
         
         .station-footer {{
-            margin-top: 12px;
-            padding-top: 8px;
+            margin-top: 10px;
+            padding-top: 6px;
             border-top: 1px solid #3949ab;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             color: #bbdefb;
         }}
         
@@ -886,8 +887,8 @@ class HTMLGenerator:
         .espera-container {{
             background: rgba(10, 25, 49, 0.8);
             border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 15px;
+            margin: 15px 0;
             text-align: center;
             border: 2px dashed #4fc3f7;
             animation: esperaParpelleig 2s infinite ease-in-out;
@@ -897,33 +898,33 @@ class HTMLGenerator:
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            font-size: 18px;
+            gap: 12px;
+            font-size: 16px;
             font-weight: bold;
             color: #4fc3f7;
         }}
         
         .espera-punt {{
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background-color: #4caf50;
             border-radius: 50%;
-            box-shadow: 0 0 10px #4caf50;
+            box-shadow: 0 0 8px #4caf50;
             animation: puntVerd 1.5s infinite ease-in-out;
         }}
         
-        /* ===== PEU DE PÀGINA ===== */
+        /* ===== PEU DE PÀGINA MÉS COMPACTE ===== */
         .overlay-footer {{
-            margin-top: 10px;
-            padding-top: 8px;
+            margin-top: 8px;
+            padding-top: 6px;
             border-top: 1px solid #3949ab;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
             color: #9fa8da;
-            gap: 8px;
+            gap: 5px;
         }}
         
         .footer-left, .footer-center, .footer-right {{
@@ -942,7 +943,7 @@ class HTMLGenerator:
         
         .email-icon {{
             color: #4fc3f7;
-            font-size: 14px;
+            font-size: 12px;
         }}
         
         /* ===== CONTENIDORS INVISIBLES PER A MÒBILS ===== */
@@ -960,15 +961,27 @@ class HTMLGenerator:
             flex: 1 1 auto;
         }}
         
-        @media (max-width: 768px) {{
-            .mobile-container {{
-                flex-direction: column;
-                width: 100%;
-            }}
-            
-            .mobile-container > * {{
-                width: 100%;
-            }}
+        /* Grups de navegació invisibles */
+        .nav-group {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }}
+        
+        .control-group {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: flex-end;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
         }}
         
         /* ===== MEDIA QUERIES ===== */
@@ -991,8 +1004,9 @@ class HTMLGenerator:
             .overlay-header {{
                 flex-direction: column;
                 align-items: stretch;
-                margin-bottom: 5px;
-                padding-bottom: 5px;
+                margin-bottom: 4px;
+                padding-bottom: 4px;
+                gap: 5px;
             }}
             
             .station-info, .header-center, .header-right {{
@@ -1012,12 +1026,23 @@ class HTMLGenerator:
             
             .clock-row-digital {{
                 justify-content: center;
+                gap: 5px;
             }}
             
             .top-controls-group {{
                 flex-direction: column;
                 width: 100%;
-                gap: 8px;
+                gap: 5px;
+            }}
+            
+            .nav-group, .control-group {{
+                width: 100%;
+                justify-content: center;
+            }}
+            
+            .nav-group > *, .control-group > * {{
+                flex: 1 1 auto;
+                min-width: 60px;
             }}
             
             .station-selector-wrapper {{
@@ -1032,20 +1057,26 @@ class HTMLGenerator:
             .nav-btn, .station-icon a, .station-icon button {{
                 width: 100%;
                 justify-content: center;
+                padding: 6px 8px;
+                font-size: 12px;
             }}
             
             .rotation-status-container {{
                 justify-content: center;
+                margin-top: 2px;
+                margin-bottom: 2px;
             }}
             
             .rotation-status {{
                 width: 100%;
                 justify-content: center;
+                font-size: 10px;
+                padding: 3px 8px;
             }}
             
             .columns-4-container {{
                 flex-direction: column;
-                gap: 8px;
+                gap: 6px;
             }}
             
             .column {{
@@ -1053,20 +1084,32 @@ class HTMLGenerator:
                 min-width: auto;
             }}
             
+            .data-item {{
+                padding: 5px 6px;
+                margin-bottom: 4px;
+            }}
+            
             .overlay-footer {{
-                margin-top: 5px;
-                padding-top: 5px;
-                gap: 5px;
+                flex-direction: column;
+                gap: 3px;
+                margin-top: 4px;
+                padding-top: 4px;
+                font-size: 9px;
             }}
             
             .footer-left, .footer-center, .footer-right {{
                 text-align: center;
                 width: 100%;
+                padding: 2px 0;
             }}
             
             .llista-estacions {{
-                gap: 8px;
-                padding: 8px 0;
+                gap: 6px;
+                padding: 6px 0;
+            }}
+            
+            .station-card {{
+                padding: 10px;
             }}
         }}
         
@@ -1085,30 +1128,26 @@ class HTMLGenerator:
                 min-width: 24px;
             }}
             
-            .data-item {{
-                padding: 6px 8px;
-            }}
-            
             .data-label {{
-                font-size: 12px;
+                font-size: 11px;
             }}
             
             .data-value {{
-                font-size: 13px;
+                font-size: 12px;
             }}
             
             .rotation-status {{
-                font-size: 11px;
-                padding: 5px 8px;
+                font-size: 9px;
+                padding: 3px 6px;
             }}
             
             .llista-estacions {{
                 grid-template-columns: 1fr;
-                gap: 6px;
+                gap: 5px;
             }}
             
             .overlay-footer {{
-                font-size: 10px;
+                font-size: 8px;
             }}
         }}
     </style>
@@ -1335,8 +1374,8 @@ class HTMLGenerator:
         titol_diari = f"📅 Dades Diàries del dia {data_dia_formatted} (Des de les 00:00 UTC)" if data_dia_formatted else "📅 Dades Diàries (Des de les 00:00 UTC)"
         
         html = f'''
-        <div style="margin-top: 15px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
-            <div class="column-title" style="text-align: center; margin-bottom: 10px;">{titol_diari}</div>
+        <div style="margin-top: 12px; padding: 12px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
+            <div class="column-title" style="text-align: center; margin-bottom: 8px;">{titol_diari}</div>
             <div class="mobile-container">
         '''
         
@@ -1602,7 +1641,7 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
         
         html = HTMLGenerator.generar_head(f"Banner Fix - {periode.get('NOM_ESTACIO', estacio_id)}")
         
-        # 🔹 NOVA CAPÇALERA REDISSENYADA
+        # 🔹 NOVA CAPÇALERA REDISSENYADA AMB CONTENIDORS INVISIBLES
         html += f'''
     <div class="meteo-overlay">
         <div class="overlay-header">
@@ -1616,52 +1655,47 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
             </div>
             
             <div class="header-center">
-                <!-- 🔹 NOU: Grup de botons superior alineat amb el nom -->
+                <!-- 🔹 NOU: Grup de botons superior amb contenidors invisibles -->
                 <div class="top-controls-group">
-                    <!-- Selector d'estacions estilitzat com els botons -->
-                    <div class="station-selector-wrapper">
-                        <select id="navEstacions" onchange="window.location.href=this.value">
-                            <option value="">-- Selecciona una estació --</option>
-        '''
-        
-        # Ordenar estacions per nom (alfabèticament)
-        estacions_ordenades = []
-        for altre_id, altre_meta in metadades.items():
-            if altre_id in periode_data:
-                nom_altre = periode_data[altre_id].get('NOM_ESTACIO', altre_id)
-                estacions_ordenades.append((nom_altre, altre_id))
-        
-        # Ordenar per nom
-        estacions_ordenades.sort(key=lambda x: x[0].lower())
-        
-        # Afegir opcions ordenades
-        for nom_altre, altre_id in estacions_ordenades:
-            selected = 'selected' if altre_id == estacio_id else ''
-            html += f'<option value="index_{altre_id}.html" {selected}>{nom_altre}</option>\n'
-        
-        html += f'''
-                        </select>
+                    <!-- Grup de navegació (PNG 1) -->
+                    <div class="nav-group">
+                        <button class="nav-btn" onclick="window.location.href='#'" title="Anterior">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <div class="rotation-status" style="margin:0; padding:6px 10px;">2/45</div>
+                        <button class="nav-btn" onclick="window.location.href='#'" title="Següent">
+                            Següent <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="nav-btn" onclick="window.location.href='#'" title="Aturar">
+                            <i class="fas fa-pause"></i> Aturar
+                        </button>
                     </div>
                     
-                    <div class="station-icon">
-                        <a href="banner.html" title="Veure totes les estacions">
-                            <i class="fas fa-list"></i>
-                            <span class="icon-text">Totes</span>
+                    <!-- Grup de controls (PNG 2) -->
+                    <div class="control-group">
+                        <div class="fixed-container speed-control">
+                            <label for="rotationSpeed">Vel:</label>
+                            <input type="range" id="rotationSpeed" min="5" max="120" value="30">
+                            <span id="currentSpeed">30s</span>
+                        </div>
+                        <div class="fixed-container mini-countdown">
+                            <span>⏱</span>
+                            <span id="miniTimer">30</span>
+                        </div>
+                        <a href="banner.html" class="nav-btn" title="Estacions">
+                            <i class="fas fa-list"></i> Estacions
                         </a>
-                    </div>
-                    <div class="station-icon">
-                        <a href="index.html" title="Tornar al banner principal">
-                            <i class="fas fa-home"></i>
-                            <span class="icon-text">Principal</span>
+                        <a href="index.html" class="nav-btn" title="Principal">
+                            <i class="fas fa-home"></i> Principal
                         </a>
                     </div>
                 </div>
                 
-                <!-- 🔹 RÈTOL VERD PUJAT -->
+                <!-- 🔹 RÈTOL VERD PUJAT I COMPACTE -->
                 <div class="rotation-status-container">
                     <div class="rotation-status">
                         <i class="fas fa-info-circle"></i>
-                        Per veure aquesta o una altra estació de forma estàtica estant en scroll, prem “Estacions” i escull la desitjada.
+                        Prem “Estacions” per canviar d'estació
                     </div>
                 </div>
             </div>
@@ -1708,23 +1742,19 @@ def generar_banners_individuals(metadades, periode_data, diari_data):
 
             function aplicarCanvis() {{
                 // MODIFICAR EL BOTÓ "PRINCIPAL" PERQUE OBRIRI DINS DEL MATEIX CONTENIDOR
-                const botoPrincipal = document.querySelector('.station-icon a[href="index.html"]');
+                const botoPrincipal = document.querySelector('.control-group a[href="index.html"]');
                 if (botoPrincipal) {{
-                    // Canviar l'enllaç per un botó que faci la funció
                     const botoPare = botoPrincipal.parentNode;
                     const iconClass = botoPrincipal.querySelector('i')?.className || 'fas fa-home';
                     const textSpan = botoPrincipal.querySelector('.icon-text')?.innerHTML || 'Principal';
 
-                    // Crear el nou botó
                     const nouBoto = document.createElement('button');
                     nouBoto.innerHTML = `<i class="${{iconClass}}"></i> <span class="icon-text">${{textSpan}}</span>`;
-                    nouBoto.className = botoPrincipal.className; // Mantenir les classes
+                    nouBoto.className = botoPrincipal.className;
                     nouBoto.title = botoPrincipal.title;
                     nouBoto.onclick = function() {{
-                        window.parent.location.href = 'index.html'; // Això carrega index.html dins del contenidor pare
+                        window.parent.location.href = 'index.html';
                     }};
-
-                    // Substituir l'enllaç pel botó
                     botoPare.replaceChild(nouBoto, botoPrincipal);
                 }}
             }}
@@ -1804,6 +1834,7 @@ def main():
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
     print("   ✅ RESTAURAT l'estil de les targetes a banner.html")
     print("   ✅ CONTENIDORS INVISIBLES per a mòbils (eliminats espais verticals)")
+    print("   ✅ MÒBILS: Elements apilats sense espais innecessaris")
 
 if __name__ == "__main__":
     main()
