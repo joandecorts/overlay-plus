@@ -960,18 +960,7 @@ class HTMLGenerator:
             flex: 1 1 auto;
         }}
         
-        @media (max-width: 768px) {{
-            .mobile-container {{
-                flex-direction: column;
-                width: 100%;
-            }}
-            
-            .mobile-container > * {{
-                width: 100%;
-            }}
-        }}
-        
-        /* ===== MEDIA QUERIES ===== */
+        /* ===== MEDIA QUERIES PER A MÒBILS (APILAR ELEMENTS) ===== */
         @media (max-width: 900px) {{
             .clock-time-digital {{
                 font-size: 18px;
@@ -988,11 +977,13 @@ class HTMLGenerator:
                 padding: 5px;
             }}
             
+            /* 🔹 CAPÇALERA: Tots els elements en columna */
             .overlay-header {{
                 flex-direction: column;
                 align-items: stretch;
                 margin-bottom: 5px;
                 padding-bottom: 5px;
+                gap: 5px;
             }}
             
             .station-info, .header-center, .header-right {{
@@ -1012,8 +1003,10 @@ class HTMLGenerator:
             
             .clock-row-digital {{
                 justify-content: center;
+                gap: 5px;
             }}
             
+            /* 🔹 GRUPS DE CONTROLS: En columna */
             .top-controls-group {{
                 flex-direction: column;
                 width: 100%;
@@ -1032,17 +1025,25 @@ class HTMLGenerator:
             .nav-btn, .station-icon a, .station-icon button {{
                 width: 100%;
                 justify-content: center;
+                padding: 6px 8px;
+                font-size: 12px;
             }}
             
+            /* 🔹 RÈTOL VERD: Centrat i ample complet */
             .rotation-status-container {{
                 justify-content: center;
+                margin-top: 2px;
+                margin-bottom: 2px;
             }}
             
             .rotation-status {{
                 width: 100%;
                 justify-content: center;
+                font-size: 11px;
+                padding: 4px 8px;
             }}
             
+            /* 🔹 COLUMNES DE DADES: En columna */
             .columns-4-container {{
                 flex-direction: column;
                 gap: 8px;
@@ -1053,20 +1054,35 @@ class HTMLGenerator:
                 min-width: auto;
             }}
             
+            /* 🔹 PEU DE PÀGINA: En columna i més compacte */
             .overlay-footer {{
+                flex-direction: column;
+                gap: 3px;
                 margin-top: 5px;
                 padding-top: 5px;
-                gap: 5px;
+                font-size: 10px;
             }}
             
             .footer-left, .footer-center, .footer-right {{
                 text-align: center;
                 width: 100%;
+                padding: 2px 0;
             }}
             
+            /* 🔹 LLISTA D'ESTACIONS: Més compacta */
             .llista-estacions {{
                 gap: 8px;
                 padding: 8px 0;
+            }}
+            
+            .station-card {{
+                padding: 12px;
+            }}
+            
+            /* 🔹 DADES DIÀRIES: Més compactes */
+            .data-item {{
+                padding: 6px 8px;
+                margin-bottom: 5px;
             }}
         }}
         
@@ -1085,10 +1101,6 @@ class HTMLGenerator:
                 min-width: 24px;
             }}
             
-            .data-item {{
-                padding: 6px 8px;
-            }}
-            
             .data-label {{
                 font-size: 12px;
             }}
@@ -1098,8 +1110,8 @@ class HTMLGenerator:
             }}
             
             .rotation-status {{
-                font-size: 11px;
-                padding: 5px 8px;
+                font-size: 10px;
+                padding: 3px 6px;
             }}
             
             .llista-estacions {{
@@ -1108,7 +1120,7 @@ class HTMLGenerator:
             }}
             
             .overlay-footer {{
-                font-size: 10px;
+                font-size: 9px;
             }}
         }}
     </style>
@@ -1803,7 +1815,7 @@ def main():
     print("   ✅ NOU rètol d'espera animat (NOMÉS quan falten dades diàries)")
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
     print("   ✅ RESTAURAT l'estil de les targetes a banner.html")
-    print("   ✅ CONTENIDORS INVISIBLES per a mòbils (eliminats espais verticals)")
+    print("   ✅ MÒBILS: Tots els elements apilats verticalment (eliminats espais)")
 
 if __name__ == "__main__":
     main()
