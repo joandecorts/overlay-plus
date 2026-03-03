@@ -870,7 +870,7 @@ class HTMLGenerator:
             color: #bbdefb;
         }}
         
-        /* ===== NOU: RÈTOL D'ESPERA INTERMITENT ===== */
+        /* ===== NOU: RÈTOL D'ESPERA INTERMITENT (NOMÉS PER DADES DIÀRIES) ===== */
         @keyframes esperaParpelleig {{
             0% {{ opacity: 0.7; }}
             50% {{ opacity: 1; }}
@@ -914,8 +914,8 @@ class HTMLGenerator:
         
         /* ===== PEU DE PÀGINA ===== */
         .overlay-footer {{
-            margin-top: 15px;
-            padding-top: 10px;
+            margin-top: 10px;
+            padding-top: 8px;
             border-top: 1px solid #3949ab;
             display: flex;
             flex-wrap: wrap;
@@ -923,7 +923,7 @@ class HTMLGenerator:
             align-items: center;
             font-size: 11px;
             color: #9fa8da;
-            gap: 10px;
+            gap: 8px;
         }}
         
         .footer-left, .footer-center, .footer-right {{
@@ -943,6 +943,32 @@ class HTMLGenerator:
         .email-icon {{
             color: #4fc3f7;
             font-size: 14px;
+        }}
+        
+        /* ===== CONTENIDORS INVISIBLES PER A MÒBILS ===== */
+        .mobile-container {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }}
+        
+        .mobile-container > * {{
+            flex: 1 1 auto;
+        }}
+        
+        @media (max-width: 768px) {{
+            .mobile-container {{
+                flex-direction: column;
+                width: 100%;
+            }}
+            
+            .mobile-container > * {{
+                width: 100%;
+            }}
         }}
         
         /* ===== MEDIA QUERIES ===== */
@@ -965,6 +991,8 @@ class HTMLGenerator:
             .overlay-header {{
                 flex-direction: column;
                 align-items: stretch;
+                margin-bottom: 5px;
+                padding-bottom: 5px;
             }}
             
             .station-info, .header-center, .header-right {{
@@ -1017,7 +1045,7 @@ class HTMLGenerator:
             
             .columns-4-container {{
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
             }}
             
             .column {{
@@ -1026,9 +1054,9 @@ class HTMLGenerator:
             }}
             
             .overlay-footer {{
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
+                margin-top: 5px;
+                padding-top: 5px;
+                gap: 5px;
             }}
             
             .footer-left, .footer-center, .footer-right {{
@@ -1037,8 +1065,8 @@ class HTMLGenerator:
             }}
             
             .llista-estacions {{
-                grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 8px;
+                padding: 8px 0;
             }}
         }}
         
@@ -1076,6 +1104,11 @@ class HTMLGenerator:
             
             .llista-estacions {{
                 grid-template-columns: 1fr;
+                gap: 6px;
+            }}
+            
+            .overlay-footer {{
+                font-size: 10px;
             }}
         }}
     </style>
@@ -1156,7 +1189,7 @@ class HTMLGenerator:
     @staticmethod
     def generar_columnes_dades(periode_data, metadades, estacio_id, nom_estacio, diari_data=None):
         """Genera les 4 columnes de dades"""
-        html = '<div class="columns-4-container">\n'
+        html = '<div class="mobile-container">\n'
         
         data_formatted = ""
         periode_formatted = ""
@@ -1282,7 +1315,7 @@ class HTMLGenerator:
     def generar_dades_diaries(diari_data, estacio_id):
         """Genera la secció de dades diàries - AMB DATA FORMATADA I RÈTOL D'ESPERA"""
         if estacio_id not in diari_data or not diari_data[estacio_id]:
-            # 🔹 NOU: Rètol d'espera quan no hi ha dades
+            # 🔹 NOU: Rètol d'espera quan no hi ha dades diàries
             html = '''
             <div class="espera-container">
                 <div class="espera-missatge">
@@ -1304,7 +1337,7 @@ class HTMLGenerator:
         html = f'''
         <div style="margin-top: 15px; padding: 15px; background: rgba(26, 35, 126, 0.7); border-radius: 8px; border: 2px solid #5c6bc0;">
             <div class="column-title" style="text-align: center; margin-bottom: 10px;">{titol_diari}</div>
-            <div class="columns-4-container">
+            <div class="mobile-container">
         '''
         
         vars_per_columna = len(Config.VARIABLES_DIARI_COMPLETES) // 4 + 1
@@ -1767,9 +1800,10 @@ def main():
     print("   ✅ Precipitació del període a les targetes (banner.html)")
     print("   ✅ NOVA capçalera individuals amb selector integrat")
     print("   ✅ NOVA data a dades diàries (DD/MM/AAAA)")
-    print("   ✅ NOU rètol d'espera animat quan no hi ha dades")
+    print("   ✅ NOU rètol d'espera animat (NOMÉS quan falten dades diàries)")
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
     print("   ✅ RESTAURAT l'estil de les targetes a banner.html")
+    print("   ✅ CONTENIDORS INVISIBLES per a mòbils (eliminats espais verticals)")
 
 if __name__ == "__main__":
     main()
