@@ -20,7 +20,7 @@ STATIONS = [
     # {'code': 'WG', 'name': 'ALGERRI_WG', 'display_name': 'Algerri'},  # COM
     # {'code': 'X3', 'name': 'ALGUAIRE_X3', 'display_name': 'Alguaire'},  # COM
     # {'code': 'ZB', 'name': 'ALINS___SALORIA_2451_M_ZB', 'display_name': 'Alins - Salòria (2.451 m)'},  # COM
-    {'code': 'YT', 'name': 'ALT_ANEU___BONABE_1693_M_YT', 'display_name': 'Alt Àneu - Bonabé (1.693 m)'},
+    {'code': '00', 'name': 'ALT_ANEU___BONABE_1693_M_YT', 'display_name': 'Alt Àneu - Bonabé (1.693 m)'},
     {'code': 'Z1', 'name': 'ALT_ANEU___BONAIGUA_2266_M_Z1', 'display_name': 'Alt Àneu - Bonaigua (2.266 m)'},
     # {'code': 'UU', 'name': 'AMPOSTA_UU', 'display_name': 'Amposta'},  # COM
     # {'code': 'XX', 'name': 'ANGLESOLA___TORNABOUS_XX', 'display_name': 'Anglesola - Tornabous'},  # COM
