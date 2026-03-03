@@ -496,7 +496,7 @@ class HTMLGenerator:
             margin: 0 auto;
         }}
         
-        /* ===== CAPÇALERA REDISSENYADA ===== */
+        /* ===== CAPÇALERA ===== */
         .overlay-header {{
             display: flex;
             flex-wrap: wrap;
@@ -577,7 +577,7 @@ class HTMLGenerator:
             text-align: left;
         }}
         
-        /* ===== CONTROLS CENTRALS REDISSENYATS ===== */
+        /* ===== CONTROLS CENTRALS ===== */
         .header-center {{
             text-align: center;
             flex: 2 1 350px;
@@ -587,7 +587,6 @@ class HTMLGenerator:
             gap: 8px;
         }}
         
-        /* 🔹 NOU: Grup de botons superior alineat amb el nom */
         .top-controls-group {{
             display: flex;
             flex-wrap: wrap;
@@ -597,7 +596,6 @@ class HTMLGenerator:
             width: 100%;
         }}
         
-        /* 🔹 NOU: Selector d'estacions estilitzat com els botons */
         .station-selector-wrapper {{
             display: inline-flex;
             align-items: center;
@@ -637,7 +635,6 @@ class HTMLGenerator:
             color: #4fc3f7;
         }}
         
-        /* Botons amb la mateixa alçada */
         .nav-btn, .station-icon a, .station-icon button {{
             display: inline-flex;
             align-items: center;
@@ -663,7 +660,6 @@ class HTMLGenerator:
             color: #4fc3f7;
         }}
         
-        /* 🔹 Rètol verd pujat */
         .rotation-status-container {{
             display: flex;
             align-items: center;
@@ -719,7 +715,7 @@ class HTMLGenerator:
             border-bottom: 1px solid #3949ab;
         }}
         
-        /* 🔹 Dades en marcs */
+        /* 🔹 PASTILLES INVISIBLES (mateix color de fons) */
         .data-item {{
             background: linear-gradient(145deg, #1a237e, #283593);
             border-radius: 6px;
@@ -763,7 +759,7 @@ class HTMLGenerator:
             line-height: 1.2;
         }}
         
-        /* ===== LLISTA D'ESTACIONS (banner.html) - RESTAURAT DEL FITXER ORIGINAL ===== */
+        /* ===== LLISTA D'ESTACIONS (banner.html) ===== */
         .llista-estacions {{
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -870,7 +866,7 @@ class HTMLGenerator:
             color: #bbdefb;
         }}
         
-        /* ===== NOU: RÈTOL D'ESPERA INTERMITENT (NOMÉS PER DADES DIÀRIES) ===== */
+        /* ===== NOU: RÈTOL D'ESPERA INTERMITENT ===== */
         @keyframes esperaParpelleig {{
             0% {{ opacity: 0.7; }}
             50% {{ opacity: 1; }}
@@ -960,7 +956,7 @@ class HTMLGenerator:
             flex: 1 1 auto;
         }}
         
-        /* ===== MEDIA QUERIES PER A MÒBILS (APILAR ELEMENTS) ===== */
+        /* ===== MEDIA QUERIES - NOMÉS PER A MÒBILS ===== */
         @media (max-width: 900px) {{
             .clock-time-digital {{
                 font-size: 18px;
@@ -977,13 +973,12 @@ class HTMLGenerator:
                 padding: 5px;
             }}
             
-            /* 🔹 CAPÇALERA: Tots els elements en columna */
+            /* 🔹 CAPÇALERA: Tots els elements apilats */
             .overlay-header {{
                 flex-direction: column;
                 align-items: stretch;
                 margin-bottom: 5px;
                 padding-bottom: 5px;
-                gap: 5px;
             }}
             
             .station-info, .header-center, .header-right {{
@@ -1003,10 +998,8 @@ class HTMLGenerator:
             
             .clock-row-digital {{
                 justify-content: center;
-                gap: 5px;
             }}
             
-            /* 🔹 GRUPS DE CONTROLS: En columna */
             .top-controls-group {{
                 flex-direction: column;
                 width: 100%;
@@ -1025,25 +1018,18 @@ class HTMLGenerator:
             .nav-btn, .station-icon a, .station-icon button {{
                 width: 100%;
                 justify-content: center;
-                padding: 6px 8px;
-                font-size: 12px;
             }}
             
-            /* 🔹 RÈTOL VERD: Centrat i ample complet */
             .rotation-status-container {{
                 justify-content: center;
-                margin-top: 2px;
-                margin-bottom: 2px;
             }}
             
             .rotation-status {{
                 width: 100%;
                 justify-content: center;
-                font-size: 11px;
-                padding: 4px 8px;
             }}
             
-            /* 🔹 COLUMNES DE DADES: En columna */
+            /* 🔹 COLUMNES DE DADES: En columna i centrades */
             .columns-4-container {{
                 flex-direction: column;
                 gap: 8px;
@@ -1054,35 +1040,53 @@ class HTMLGenerator:
                 min-width: auto;
             }}
             
-            /* 🔹 PEU DE PÀGINA: En columna i més compacte */
+            /* 🔹 PASTILLES DE DADES: Centrades */
+            .data-item {{
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 5px;
+            }}
+            
+            .data-label {{
+                margin-bottom: 2px;
+            }}
+            
+            .data-value {{
+                text-align: center;
+            }}
+            
+            /* 🔹 PEU DE PÀGINA: En columna i centrat */
             .overlay-footer {{
                 flex-direction: column;
                 gap: 3px;
                 margin-top: 5px;
                 padding-top: 5px;
-                font-size: 10px;
+                text-align: center;
             }}
             
             .footer-left, .footer-center, .footer-right {{
                 text-align: center;
                 width: 100%;
-                padding: 2px 0;
+                justify-content: center;
             }}
             
-            /* 🔹 LLISTA D'ESTACIONS: Més compacta */
+            .footer-right {{
+                justify-content: center;
+            }}
+            
             .llista-estacions {{
                 gap: 8px;
                 padding: 8px 0;
             }}
             
-            .station-card {{
-                padding: 12px;
+            .mobile-container {{
+                flex-direction: column;
+                width: 100%;
             }}
             
-            /* 🔹 DADES DIÀRIES: Més compactes */
-            .data-item {{
-                padding: 6px 8px;
-                margin-bottom: 5px;
+            .mobile-container > * {{
+                width: 100%;
             }}
         }}
         
@@ -1110,8 +1114,8 @@ class HTMLGenerator:
             }}
             
             .rotation-status {{
-                font-size: 10px;
-                padding: 3px 6px;
+                font-size: 11px;
+                padding: 5px 8px;
             }}
             
             .llista-estacions {{
@@ -1120,7 +1124,7 @@ class HTMLGenerator:
             }}
             
             .overlay-footer {{
-                font-size: 9px;
+                font-size: 10px;
             }}
         }}
     </style>
@@ -1815,7 +1819,7 @@ def main():
     print("   ✅ NOU rètol d'espera animat (NOMÉS quan falten dades diàries)")
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
     print("   ✅ RESTAURAT l'estil de les targetes a banner.html")
-    print("   ✅ MÒBILS: Tots els elements apilats verticalment (eliminats espais)")
+    print("   ✅ MÒBILS: Pastilles de dades centrades i apilades (sense espais)")
 
 if __name__ == "__main__":
     main()
