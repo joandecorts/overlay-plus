@@ -40,7 +40,7 @@ jobs:
         run: |
           set -e
 
-          lftp -u "${{ secrets.NOMINALIA_FTP_USER }},${{ secrets.NOMINALIA_FTP_PASS }}" p.tb-hosting.com <<EOF
+          lftp -u "${{ secrets.NOMINALIA_FTP_USER }},${{ secrets.NOMINALIA_FTP_PASS }}" "${{ secrets.NOMINALIA_FTP_HOST }}" <<EOF
           set ftp:ssl-allow no
           set ftp:passive-mode true
           set net:max-retries 2
