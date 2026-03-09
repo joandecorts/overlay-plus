@@ -1,0 +1,68 @@
+name: Deploy overlay-plus partial to Nominalia
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/banner.html'
+      - 'public/index_*.html'
+      - 'public/station_list.json'
+      - '.github/workflows/deploy-overlay-plus.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build deploy package
+        run: |
+          set -e
+          rm -rf deploy-package
+          mkdir -p deploy-package
+          cp public/banner.html deploy-package/
+          cp public/station_list.json deploy-package/
+          find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+          echo "Files prepared for deploy:"
+          ls -1 deploy-package
+
+      - name: Delete old remote banner and station pages
+        env:
+          FTP_HOST: ${{ secrets.NOMINALIA_FTP_HOST }}
+          FTP_PORT: ${{ secrets.NOMINALIA_FTP_PORT }}
+          FTP_USER: ${{ secrets.NOMINALIA_FTP_USER }}
+          FTP_PASS: ${{ secrets.NOMINALIA_FTP_PASS }}
+          REMOTE_DIR: /ginys/public_html/overlay-plus
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+          lftp -u "$FTP_USER","$FTP_PASS" -p "$FTP_PORT" "$FTP_HOST" <<'EOF'
+          set ftp:ssl-allow true
+          set ssl:verify-certificate no
+          cd $REMOTE_DIR
+          glob -a rm -f index_*.html
+          rm -f banner.html
+          rm -f station_list.json
+          bye
+          EOF
+
+      - name: Upload fresh banner and station pages
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.NOMINALIA_FTP_HOST }}
+          username: ${{ secrets.NOMINALIA_FTP_USER }}
+          password: ${{ secrets.NOMINALIA_FTP_PASS }}
+          port: ${{ secrets.NOMINALIA_FTP_PORT }}
+          protocol: ftps
+          server-dir: /ginys/public_html/overlay-plus/
+          local-dir: ./deploy-package/
+          state-name: .ftp-deploy-sync-state-overlay-plus-partial.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
