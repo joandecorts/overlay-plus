@@ -2,10 +2,29 @@ name: Deploy overlay-plus partial to Nominalia
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/banner.html'
+      - 'public/index_*.html'
+      - 'public/station_list.json'
+      - '.github/workflows/deploy-overlay-plus.yml'
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Test
-        run: echo "Workflow detected correctly"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build deploy package
+        run: |
+          mkdir -p deploy-package
+          cp public/banner.html deploy-package/
+          cp public/station_list.json deploy-package/
+          find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+
+      - name: Show package contents
+        run: ls -1 deploy-package
