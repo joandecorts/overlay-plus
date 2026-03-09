@@ -7,10 +7,14 @@ on:
   # 2. EXECUCIÓ MANUAL (GITHUB UI)
   workflow_dispatch:
 
+concurrency:
+  group: execute-scrapers-and-deploy
+  cancel-in-progress: true
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    
+
     steps:
       # 1. Obtenir el codi
       - name: Checkout code
@@ -32,29 +36,70 @@ jobs:
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
-          
+
           echo "Executant SCRAPER PRINCIPAL (executor_meteo.py) amb respostes automàtiques..."
           echo -e "1\n1\ns\n" | python executor_meteo.py
-          
+
           echo "Executant generador de banners..."
           python generador_banners.py
           echo "=== PROCÉS FINALITZAT ==="
 
-      # 5. PUJAR CANVIS AL REPOSITORI
+      # 5. DESPLEGAR A NOMINALIA DES DEL MATEIX WORKSPACE
+      - name: Build deploy package
+        run: |
+          set -euo pipefail
+          rm -rf deploy-package
+          mkdir -p deploy-package
+          cp public/banner.html deploy-package/
+          cp public/station_list.json deploy-package/
+          find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+          echo "Files prepared for Nominalia:"
+          ls -1 deploy-package | sort
+          echo "Total files:"
+          find deploy-package -maxdepth 1 -type f | wc -l
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Delete old remote files and upload new ones
+        run: |
+          set -euo pipefail
+
+          lftp -u "${{ secrets.NOMINALIA_FTP_USER }},${{ secrets.NOMINALIA_FTP_PASS }}" "${{ secrets.NOMINALIA_FTP_HOST }}" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-allow no
+          set ftp:passive-mode true
+          set net:max-retries 2
+          set net:timeout 30
+          set net:reconnect-interval-base 5
+          set xfer:clobber true
+
+          cd /www/ginys/public_html/overlay-plus
+          pwd
+          cls -1
+
+          glob -a rm -f index_*.html
+          rm -f banner.html
+          rm -f station_list.json
+
+          lcd deploy-package
+          mput *
+
+          bye
+          EOF
+
+      # 6. PUJAR CANVIS AL REPOSITORI
       - name: Commit and push all updates
         env:
-          # Utilitza el token d'acció de GitHub, més segur
           GH_TOKEN: ${{ secrets.Auto_Cron_Job_Token }}
         run: |
-          # A. Configurar l'usuari per al commit
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          
-          # B. Afegir tots els canvis
+
           git add --all
-          
-          # C. Crear commit (ignora si no hi ha canvis)
+
           git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
-          
-          # D. Fer push (amb GITHUB_TOKEN)
+
           git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus"
