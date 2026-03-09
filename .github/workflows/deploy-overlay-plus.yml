@@ -11,6 +11,10 @@ on:
       - 'public/station_list.json'
       - '.github/workflows/deploy-overlay-plus.yml'
 
+concurrency:
+  group: deploy-overlay-plus-nominalia
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,14 +26,16 @@ jobs:
 
       - name: Build deploy package
         run: |
-          set -e
+          set -euo pipefail
           rm -rf deploy-package
           mkdir -p deploy-package
           cp public/banner.html deploy-package/
           cp public/station_list.json deploy-package/
           find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
           echo "Files prepared for deploy:"
-          ls -1 deploy-package
+          ls -1 deploy-package | sort
+          echo "Total files:"
+          find deploy-package -maxdepth 1 -type f | wc -l
 
       - name: Install lftp
         run: |
@@ -38,16 +44,20 @@ jobs:
 
       - name: Delete old remote files and upload new ones
         run: |
-          set -e
+          set -euo pipefail
 
-          lftp -u "${{ secrets.NOMINALIA_FTP_USER }},${{ secrets.NOMINALIA_FTP_PASS }}" "${{ secrets.NOMINALIA_FTP_HOST }}" <<EOF
+          lftp -u "${{ secrets.NOMINALIA_FTP_USER }},${{ secrets.NOMINALIA_FTP_PASS }}" "${{ secrets.NOMINALIA_FTP_HOST }}" <<'EOF'
+          set cmd:fail-exit yes
           set ftp:ssl-allow no
           set ftp:passive-mode true
           set net:max-retries 2
           set net:timeout 30
+          set net:reconnect-interval-base 5
           set xfer:clobber true
 
           cd /www/ginys/public_html/overlay-plus
+          pwd
+          cls -1
 
           glob -a rm -f index_*.html
           rm -f banner.html
