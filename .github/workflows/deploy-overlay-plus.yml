@@ -14,6 +14,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -27,16 +28,41 @@ jobs:
           cp public/banner.html deploy-package/
           cp public/station_list.json deploy-package/
           find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+          echo "Files prepared for deploy:"
           ls -1 deploy-package
 
-      - name: Upload files to Nominalia
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
-        with:
-          server: ${{ secrets.NOMINALIA_FTP_HOST }}
-          username: ${{ secrets.NOMINALIA_FTP_USER }}
-          password: ${{ secrets.NOMINALIA_FTP_PASS }}
-          port: ${{ secrets.NOMINALIA_FTP_PORT }}
-          protocol: ftp
-          server-dir: /www/ginys/public_html/overlay-plus/
-          local-dir: ./deploy-package/
-          state-name: .ftp-deploy-sync-state-overlay-plus.json
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Delete old remote files and upload new ones
+        env:
+          FTP_HOST: ${{ secrets.NOMINALIA_FTP_HOST }}
+          FTP_PORT: ${{ secrets.NOMINALIA_FTP_PORT }}
+          FTP_USER: ${{ secrets.NOMINALIA_FTP_USER }}
+          FTP_PASS: ${{ secrets.NOMINALIA_FTP_PASS }}
+          REMOTE_DIR: /www/ginys/public_html/overlay-plus
+        run: |
+          set -e
+
+          [ -n "$FTP_HOST" ] || { echo "Missing secret: NOMINALIA_FTP_HOST"; exit 1; }
+          [ -n "$FTP_PORT" ] || { echo "Missing secret: NOMINALIA_FTP_PORT"; exit 1; }
+          [ -n "$FTP_USER" ] || { echo "Missing secret: NOMINALIA_FTP_USER"; exit 1; }
+          [ -n "$FTP_PASS" ] || { echo "Missing secret: NOMINALIA_FTP_PASS"; exit 1; }
+
+          lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<EOF
+          set ftp:ssl-allow no
+          set ftp:passive-mode true
+          set net:max-retries 2
+          set net:timeout 30
+          set xfer:clobber true
+          open -p $FTP_PORT "$FTP_HOST"
+          cd "$REMOTE_DIR"
+          glob -a rm -f index_*.html
+          rm -f banner.html
+          rm -f station_list.json
+          lcd deploy-package
+          mput *
+          bye
+          EOF
