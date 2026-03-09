@@ -27,5 +27,16 @@ jobs:
           cp public/banner.html deploy-package/
           cp public/station_list.json deploy-package/
           find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
-          echo "Files prepared for deploy:"
           ls -1 deploy-package
+
+      - name: Upload files to Nominalia
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.NOMINALIA_FTP_HOST }}
+          username: ${{ secrets.NOMINALIA_FTP_USER }}
+          password: ${{ secrets.NOMINALIA_FTP_PASS }}
+          port: ${{ secrets.NOMINALIA_FTP_PORT }}
+          protocol: ftp
+          server-dir: /www/ginys/public_html/overlay-plus/
+          local-dir: ./deploy-package/
+          state-name: .ftp-deploy-sync-state-overlay-plus.json
