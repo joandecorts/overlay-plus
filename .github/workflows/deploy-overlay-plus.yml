@@ -39,17 +39,30 @@ jobs:
           FTP_PASS: ${{ secrets.NOMINALIA_FTP_PASS }}
           REMOTE_DIR: /ginys/public_html/overlay-plus
         run: |
+          set -e
+
+          if [ -z "$FTP_HOST" ]; then echo "Missing secret: NOMINALIA_FTP_HOST"; exit 1; fi
+          if [ -z "$FTP_USER" ]; then echo "Missing secret: NOMINALIA_FTP_USER"; exit 1; fi
+          if [ -z "$FTP_PASS" ]; then echo "Missing secret: NOMINALIA_FTP_PASS"; exit 1; fi
+
+          # Default to 21 if no secret is set
+          if [ -z "$FTP_PORT" ]; then FTP_PORT=21; fi
+
           sudo apt-get update
           sudo apt-get install -y lftp
-          lftp -u "$FTP_USER","$FTP_PASS" -p "$FTP_PORT" "$FTP_HOST" <<'EOF'
+
+          lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<EOF
           set ftp:ssl-allow true
           set ssl:verify-certificate no
-          cd $REMOTE_DIR
+          set net:max-retries 2
+          set net:timeout 20
+          open -p $FTP_PORT "$FTP_HOST"
+          cd "$REMOTE_DIR"
           glob -a rm -f index_*.html
           rm -f banner.html
           rm -f station_list.json
           bye
-          EOF
+EOF
 
       - name: Upload fresh banner and station pages
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
@@ -57,7 +70,7 @@ jobs:
           server: ${{ secrets.NOMINALIA_FTP_HOST }}
           username: ${{ secrets.NOMINALIA_FTP_USER }}
           password: ${{ secrets.NOMINALIA_FTP_PASS }}
-          port: ${{ secrets.NOMINALIA_FTP_PORT }}
+          port: ${{ secrets.NOMINALIA_FTP_PORT || '21' }}
           protocol: ftps
           server-dir: /ginys/public_html/overlay-plus/
           local-dir: ./deploy-package/
