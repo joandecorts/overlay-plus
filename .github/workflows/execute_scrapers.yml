@@ -1,3 +1,64 @@
+name: Executar Scrapers i Actualitzar Dades
+
+on:
+  repository_dispatch:
+    types: [trigger_scrapers]
+  workflow_dispatch:
+
+concurrency:
+  group: execute-scrapers-and-deploy
+  cancel-in-progress: true
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pandas openpyxl
+
+      - name: Run meteo.cat scrapers and generators
+        run: |
+          echo "=== INICIANT PROCÉS ==="
+
+          echo "Executant SCRAPER PRINCIPAL (executor_meteo.py) amb respostes automàtiques..."
+          echo -e "1\n1\ns\n" | python executor_meteo.py
+
+          echo "Executant generador de banners..."
+          python generador_banners.py
+
+          echo "=== PROCÉS FINALITZAT ==="
+
+      - name: Build deploy package
+        run: |
+          set -euo pipefail
+          rm -rf deploy-package
+          mkdir -p deploy-package
+
+          cp public/banner.html deploy-package/
+          cp public/station_list.json deploy-package/
+          find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+
+          echo "Files prepared for Nominalia:"
+          ls -1 deploy-package | sort
+          echo "Total files:"
+          find deploy-package -maxdepth 1 -type f | wc -l
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
       - name: Upload new files first and delete obsolete ones after
         run: |
           set -euo pipefail
@@ -6,7 +67,7 @@
 
           echo "Preparing local manifest..."
           cd deploy-package
-          ls -1 > ../local_manifest.txt
+          ls -1 | sort > ../local_manifest.txt
           cd ..
 
           echo "Uploading files first..."
@@ -36,14 +97,14 @@
           bye
           " > remote_manifest_raw.txt
 
-          grep -E '^(index_[A-Z0-9]+\.html|banner\.html|station_list\.json)$' remote_manifest_raw.txt | sort > remote_manifest.txt
+          grep -E '^(index_[A-Z0-9]+\.html|banner\.html|station_list\.json)$' remote_manifest_raw.txt | sort > remote_manifest.txt || true
           sort local_manifest.txt -o local_manifest.txt
 
           echo "Local manifest:"
           cat local_manifest.txt
 
           echo "Remote manifest:"
-          cat remote_manifest.txt
+          cat remote_manifest.txt || true
 
           comm -23 remote_manifest.txt local_manifest.txt > files_to_delete.txt || true
 
@@ -77,3 +138,16 @@
           cls -1
           bye
           "
+
+      - name: Commit and push all updates
+        env:
+          GH_TOKEN: ${{ secrets.Auto_Cron_Job_Token }}
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          git add --all
+
+          git commit -m "Update automàtic: dades i banners [$(date -u +'%Y-%m-%d %H:%M')]" || echo "No hi ha canvis per cometre"
+
+          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/joandecorts/overlay-plus"
