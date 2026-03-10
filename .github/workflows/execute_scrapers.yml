@@ -1,10 +1,8 @@
 name: Executar Scrapers i Actualitzar Dades
 
 on:
-  # 1. DISPARAT DES DE CRON-JOB.ORG (EXTERN)
   repository_dispatch:
     types: [trigger_scrapers]
-  # 2. EXECUCIÓ MANUAL (GITHUB UI)
   workflow_dispatch:
 
 concurrency:
@@ -16,23 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Obtenir el codi
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3. Instal·lar dependències
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install pandas openpyxl
 
-      # 4. EXECUTAR ELS TEUS SCRAPERS I GENERADORS
       - name: Run meteo.cat scrapers and generators
         run: |
           echo "=== INICIANT PROCÉS ==="
@@ -42,17 +36,19 @@ jobs:
 
           echo "Executant generador de banners..."
           python generador_banners.py
+
           echo "=== PROCÉS FINALITZAT ==="
 
-      # 5. DESPLEGAR A NOMINALIA DES DEL MATEIX WORKSPACE
       - name: Build deploy package
         run: |
           set -euo pipefail
           rm -rf deploy-package
           mkdir -p deploy-package
+
           cp public/banner.html deploy-package/
           cp public/station_list.json deploy-package/
           find public -maxdepth 1 -type f -name 'index_*.html' -exec cp {} deploy-package/ \;
+
           echo "Files prepared for Nominalia:"
           ls -1 deploy-package | sort
           echo "Total files:"
@@ -63,7 +59,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Delete old remote files and upload new ones
+      - name: Upload new files first and delete obsolete ones after
         run: |
           set -euo pipefail
 
@@ -76,21 +72,25 @@ jobs:
           set net:reconnect-interval-base 5
           set xfer:clobber true
 
+          lcd deploy-package
           cd /www/ginys/public_html/overlay-plus
           pwd
           cls -1
 
-          glob -a rm -f index_*.html
-          rm -f banner.html
-          rm -f station_list.json
+          mirror -R \
+            --verbose \
+            --only-newer \
+            --parallel=2 \
+            --delete \
+            --delete-after \
+            ./ ./
 
-          lcd deploy-package
-          mput *
+          echo "Remote files after deploy:"
+          cls -1
 
           bye
           EOF
 
-      # 6. PUJAR CANVIS AL REPOSITORI
       - name: Commit and push all updates
         env:
           GH_TOKEN: ${{ secrets.Auto_Cron_Job_Token }}
