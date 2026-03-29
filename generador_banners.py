@@ -1270,7 +1270,9 @@ class HTMLGenerator:
         html += '<div class="data-column">\n'
         html += '<div class="column-title">Dades addicionals</div>\n'
         
+        # 🔹 CANVI IMPORTANT: Període amb zona horària correcta (CET/CEST)
         if data_formatted and periode_formatted:
+            # Utilitzem periode_formatted que ja inclou la zona horària correcta (CET o CEST)
             periode_display = f'''<div style="line-height: 1.3;">
                 <div style="font-size: 15px;">{data_formatted}</div>
                 <div style="font-size: 13px; color: #ffcc80;">{periode_formatted}</div>
@@ -1820,6 +1822,7 @@ def main():
     print("   ✅ Colors dels selects corregits (negre sobre blanc)")
     print("   ✅ RESTAURAT l'estil de les targetes a banner.html")
     print("   ✅ MÒBILS: Pastilles de dades centrades i apilades (sense espais)")
+    print("   ✅ CORREGIT: Període amb zona horària correcta (CET/CEST)")
 
 if __name__ == "__main__":
     main()
