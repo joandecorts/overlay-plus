@@ -125,26 +125,25 @@ class Utilitats:
         Format: '31/01/2026' i '06:30-07:30 CET'
         """
         try:
-            # Parsejar data UTC
-            data_utc = datetime.strptime(data_utc_str, "%Y-%m-%d")
-            
-            # Determinar desplaçament i zona
-            if Utilitats.es_cest(data_utc):
-                desplacament = 2  # CEST
-                zona_horaria = "CEST"
-            else:
-                desplacament = 1  # CET
-                zona_horaria = "CET"
-            
-            # Parsejar interval del període
+            # Parsejar interval del període per obtenir l'hora
             if ' - ' in periode_utc_str:
                 hora_inici_str, hora_fi_str = periode_utc_str.split(' - ')
                 
-                # Crear objectes datetime
+                # 🔹 CANVI IMPORTANT: Crear datetime amb hora per determinar CEST correctament
+                # Utilitzem l'hora d'inici del període per determinar la zona
                 hora_inici_utc = datetime.strptime(f"{data_utc_str} {hora_inici_str.strip()}", "%Y-%m-%d %H:%M")
+                
+                # Determinar desplaçament i zona BASAT EN L'HORA COMPLETA (data + hora)
+                if Utilitats.es_cest(hora_inici_utc):
+                    desplacament = 2  # CEST
+                    zona_horaria = "CEST"
+                else:
+                    desplacament = 1  # CET
+                    zona_horaria = "CET"
+                
+                # Aplicar desplaçament a les dues hores
                 hora_fi_utc = datetime.strptime(f"{data_utc_str} {hora_fi_str.strip()}", "%Y-%m-%d %H:%M")
                 
-                # Aplicar desplaçament
                 hora_inici_local = hora_inici_utc + timedelta(hours=desplacament)
                 hora_fi_local = hora_fi_utc + timedelta(hours=desplacament)
                 
@@ -155,6 +154,7 @@ class Utilitats:
                 return data_local_formatted, periode_local_formatted, zona_horaria
             else:
                 # Si no és un interval, retornar simple
+                data_utc = datetime.strptime(data_utc_str, "%Y-%m-%d")
                 data_formatted = data_utc.strftime("%d/%m/%Y")
                 return data_formatted, periode_utc_str, "TU"
                 
